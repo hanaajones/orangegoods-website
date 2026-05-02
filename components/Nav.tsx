@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 const startProjectHref = "mailto:hello@orangegoods.co?subject=Start%20a%20Project";
-const buildOnlineHref = "https://orangegoods.co/goods/";
+const buildOnlineHref = "/build";
 const hatImage = "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg";
 
 const products = [
@@ -24,16 +24,16 @@ const serviceLinks = [
 ];
 
 const customLinks = [
-  { label: "Our Process", href: "#process" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Our Process", href: "/#process" },
+  { label: "Gallery", href: "/#gallery" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 const aboutLinks = [
-  { label: "Our Story", href: "#about" },
-  { label: "The OG Difference", href: "#about" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Contact", href: "mailto:hello@orangegoods.co" },
+  { label: "Our Story", href: "/#about" },
+  { label: "The OG Difference", href: "/#about" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function MenuLink({
@@ -124,6 +124,28 @@ export function Nav() {
                 ABOUT ▾
               </button>
             </nav>
+            {/* Profile + Cart icons */}
+            <div className="hidden items-center gap-1 md:flex">
+              <Link
+                href="/portal"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
+                aria-label="My account"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </Link>
+              <Link
+                href="/build"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
+                aria-label="Cart"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </Link>
+            </div>
+
             <Link
               href={startProjectHref}
               className="inline-flex min-h-10 items-center rounded-full bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] transition hover:bg-white/90 md:min-h-11 md:px-5 md:text-sm"
