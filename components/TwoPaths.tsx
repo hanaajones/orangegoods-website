@@ -47,7 +47,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
     <Reveal className="px-4 py-8 md:px-8 lg:px-12">
       <section id="paths" className="mx-auto max-w-6xl">
         <h2
-          className="mb-8 text-3xl font-extrabold uppercase leading-tight text-[#FF4200] md:text-4xl"
+          className="mb-8 text-center text-3xl font-extrabold uppercase leading-tight text-[#FF4200] md:text-4xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
           {title}
