@@ -28,7 +28,7 @@ export function Testimonials({
             Trusted By Real Brands
           </p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-            Proof that thoughtful merch actually lands.
+            Trusted by our clients.
           </h2>
         </div>
 
@@ -58,9 +58,9 @@ export function Testimonials({
           ))}
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 rounded-[1.75rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-5 sm:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {logos.map((logo) => (
-            <div key={logo.name} className="relative h-16 rounded-[1rem] bg-white/5 p-3">
+            <div key={logo.name} className="relative h-16 rounded-xl border border-[#1C1C1C]/8 bg-white p-3">
               <Image
                 src={logo.image}
                 alt={logo.name}
