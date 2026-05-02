@@ -83,34 +83,10 @@ export default function HomePage() {
       {/* Full-width photo carousel */}
       <PhotoCarousel />
 
-      <Reveal className="px-4 py-6 md:px-8 lg:px-12">
-        <section className="mx-auto max-w-6xl rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.88)] p-8 backdrop-blur">
-          <div className="grid gap-8 md:grid-cols-[1fr_0.9fr]">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                One Team, End to End
-              </p>
-              <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-                From first brief to final shipment
-              </h2>
-            </div>
-            <div className="space-y-4 text-base leading-7 text-[var(--og-muted)] md:text-lg">
-              <p>
-                Design, production, and fulfillment handled in a single process.
-                No vendor juggling, no broken phone games
-              </p>
-              <p>
-                Quality goods, direct communication, and a faster path from
-                concept to delivery
-              </p>
-            </div>
-          </div>
-        </section>
-      </Reveal>
       <ProcessSteps
         eyebrow="How It Works"
         title="A clear path from brief to delivery"
-        description="Structured enough to keep the project moving. Human enough to keep the work clear"
+        description="One team handles design, production, and delivery — start to finish. No vendor juggling, no broken phone games"
         steps={homeProcess}
       />
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
