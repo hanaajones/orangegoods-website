@@ -49,25 +49,17 @@ export default function HomePage() {
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
 
-      <Reveal className="px-4 py-14 md:px-8 lg:px-12">
-        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#ff9e7a]">
-              The Merch Problem
-            </p>
-            <h2 className="mt-4 max-w-md text-3xl font-semibold leading-tight md:text-4xl">
-              Most merch is an afterthought
-            </h2>
-          </div>
-          <div className="space-y-4 text-base leading-7 text-[#dacbbb] md:text-lg">
-            <p>
-              Sourced from five vendors. Arrived off-brand. Sat in a closet.
-              Orange Goods fixes that - one team handles design, production,
-              and fulfillment from day one
-            </p>
-          </div>
-        </section>
-      </Reveal>
+      <div className="px-4 py-14 text-center md:px-8 lg:px-12">
+        <p
+          className="text-xs font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
+          style={{ fontFamily: "var(--font-accent)" }}
+        >
+          The Merch Problem
+        </p>
+        <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#1C1C1C]/70 md:text-xl">
+          Sourced from five vendors. Arrived off-brand. Sat in a closet. Orange Goods fixes that — one team handles design, production, and fulfillment from day one
+        </p>
+      </div>
 
       {/* Full-width photo carousel */}
       <PhotoCarousel />
