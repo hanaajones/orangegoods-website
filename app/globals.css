@@ -114,3 +114,18 @@ img {
 .text-balance {
   text-wrap: balance;
 }
+
+/* ── Font utility classes ── */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-body {
+  font-family: var(--font-body);
+}
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}

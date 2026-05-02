@@ -35,7 +35,7 @@ export function Hero({
         <div className="flex flex-col justify-between gap-10">
           <div>
             <motion.p
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
               className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]"
@@ -59,7 +59,7 @@ export function Hero({
                 <motion.span
                   key={word}
                   variants={{
-                    hidden: { opacity: 0, y: 24 },
+                    hidden: { opacity: 1, y: 0 },
                     show: { opacity: 1, y: 0 },
                   }}
                   transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
@@ -70,7 +70,7 @@ export function Hero({
               ))}
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.18 }}
               className="mt-6 max-w-2xl text-lg leading-7 text-[var(--og-muted)] md:text-xl"
@@ -80,7 +80,7 @@ export function Hero({
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.26 }}
             className="flex flex-col gap-4"
@@ -120,7 +120,7 @@ export function Hero({
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 1, scale: 1 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.15 }}
           className="relative overflow-hidden rounded-[1.8rem] bg-[#1b1512] p-5 text-[#f5efe6]"

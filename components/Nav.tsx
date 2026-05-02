@@ -84,11 +84,13 @@ export function Nav() {
             >
               ☰
             </button>
-            <Link
-              href="/"
-              className="text-center text-xs font-black tracking-[0.24em] text-[var(--og-ink)] sm:text-sm md:text-left md:tracking-[0.28em]"
-            >
-              ORANGE GOODS
+            <Link href="/" className="flex items-center" aria-label="Orange Goods">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logos/OrangeGoods_Logo_Secondary_Orange.svg"
+                alt="Orange Goods"
+                className="h-7 w-auto md:h-8"
+              />
             </Link>
             <nav className="hidden items-center gap-6 md:flex">
               <button
