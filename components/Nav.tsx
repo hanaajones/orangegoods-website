@@ -238,9 +238,7 @@ export function Nav() {
                       sizes="300px"
                       className="object-cover"
                     />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                      <Link href={buildOnlineHref} className="btn-og inline-flex w-full justify-center text-xs">Start Building</Link>
-                    </div>
+
                   </div>
                   {/* Col 2: Products */}
                   <div>
@@ -263,6 +261,9 @@ export function Nav() {
                       <MenuLink href="/services#og-crafted">OG Crafted</MenuLink>
                       <MenuLink href="/quiz">Find My Goods</MenuLink>
                       <MenuLink href="/faq">FAQ</MenuLink>
+                    </div>
+                    <div className="mt-3">
+                      <Link href={buildOnlineHref} className="inline-flex items-center rounded-xl bg-[#FF4200] px-3 py-1.5 text-[10px] font-bold uppercase text-white transition hover:-translate-y-[2px]" style={{ fontFamily: "var(--font-display)" }}>Start Building</Link>
                     </div>
                   </div>
                 </div>
