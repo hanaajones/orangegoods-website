@@ -119,7 +119,7 @@ export default function HomePage() {
         </section>
       </Reveal>
       {/* Quiz callout — bottom of page */}
-      <div className="bg-[#F3EFE7] px-4 py-10 text-center md:px-8">
+      <div className="bg-[#F3EFE7] px-4 py-20 text-center md:px-8 md:py-24">
         <p className="text-base text-[#1C1C1C]/60">Not sure what to order?</p>
         <h3
           className="mt-1 text-2xl uppercase text-[#FF4200] md:text-3xl"
