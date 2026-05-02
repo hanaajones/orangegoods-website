@@ -87,10 +87,10 @@ export function Footer() {
           {/* CTA row */}
           <div className="mt-10 flex flex-col items-start gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
             <p
-              className="text-2xl uppercase leading-tight text-[#FF4200] md:text-3xl"
+              className="text-2xl uppercase leading-tight text-white md:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              We love making good goods
+              We love <span className="text-[#FF4200]">making good</span> goods
             </p>
             <div className="flex flex-wrap gap-3">
               <a
