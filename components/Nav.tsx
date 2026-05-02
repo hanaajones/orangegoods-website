@@ -97,7 +97,7 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("custom")}
                 onClick={() => setActiveMenu(activeMenu === "custom" ? null : "custom")}
-                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 CUSTOM ▾
               </button>
@@ -105,13 +105,13 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("build")}
                 onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
-                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 BUILD ONLINE ▾
               </button>
               <Link
                 href="/#process"
-                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 DESIGN
               </Link>
@@ -119,14 +119,14 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("about")}
                 onClick={() => setActiveMenu(activeMenu === "about" ? null : "about")}
-                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 ABOUT ▾
               </button>
             </nav>
             <Link
               href={startProjectHref}
-              className="inline-flex min-h-10 items-center rounded-full bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#d73b05] md:min-h-11 md:px-5 md:text-sm"
+              className="inline-flex min-h-10 items-center rounded-full bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] transition hover:bg-white/90 md:min-h-11 md:px-5 md:text-sm"
             >
               <span className="md:hidden">Start</span>
               <span className="hidden md:inline">START A PROJECT</span>
