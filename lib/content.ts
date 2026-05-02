@@ -33,6 +33,7 @@ export const twoPaths = [
     details: ["100+ pieces", "6–10 weeks", "Unlimited customization"],
     href: startProjectHref,
     label: "Start a Project",
+    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
   },
   {
     title: "Ready Made",
@@ -41,6 +42,7 @@ export const twoPaths = [
     details: ["100+ pieces", "2–4 weeks", "Quick turnaround"],
     href: buildOnlineHref,
     label: "Build Online",
+    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
   },
 ];
 

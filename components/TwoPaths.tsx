@@ -8,6 +8,7 @@ type PathItem = {
   details: string[];
   href: string;
   label: string;
+  image?: string;
 };
 
 export function TwoPaths({ items, title }: { items: PathItem[]; title: string }) {
@@ -60,6 +61,18 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
                 key={item.title}
                 className={`flex flex-col rounded-[2rem] p-8 md:p-10 ${cfg.bg}`}
               >
+                {/* Photo */}
+                {item.image && (
+                  <div className="-mx-8 -mt-8 mb-6 h-48 overflow-hidden rounded-t-[2rem] md:-mx-10 md:-mt-10 md:h-56">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
+
                 {/* Icon + badge */}
                 <div className="flex items-start justify-between">
                   {cfg.icon}
