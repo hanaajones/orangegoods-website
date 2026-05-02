@@ -159,7 +159,7 @@ export function Nav() {
 
           {activeMenu ? (
             <div
-              className="absolute left-6 right-6 top-[calc(100%+0.75rem)] hidden rounded-[2rem] border border-[#1C1C1C]/10 bg-[#E4DFCD] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] backdrop-blur md:block"
+              className="absolute left-6 right-6 top-[calc(100%+0.75rem)] hidden rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
