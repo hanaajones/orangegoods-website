@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CaliforniaBanner } from "@/components/CaliforniaBanner";
-import { DesignCallout } from "@/components/DesignCallout";
 import { PhotoCarousel } from "@/components/PhotoCarousel";
 import { ProductCategories } from "@/components/ProductCategories";
 import { ServicesPreview } from "@/components/ServicesPreview";
@@ -68,9 +67,6 @@ export default function HomePage() {
 
       {/* Two production paths */}
       <ServicesPreview />
-
-      {/* Design: do you have artwork? */}
-      <DesignCallout />
 
       <ProcessSteps
         eyebrow="How It Works"

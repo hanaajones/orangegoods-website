@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import { DesignCallout } from "@/components/DesignCallout";
 
 const designProjectHref =
   "mailto:hello@orangegoods.co?subject=Design%20Project";
@@ -381,6 +382,8 @@ export default function DesignPage() {
           </Link>
         </section>
       </Reveal>
+
+      <DesignCallout />
     </main>
   );
 }
