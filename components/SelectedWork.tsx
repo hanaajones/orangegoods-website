@@ -144,7 +144,7 @@ export function SelectedWork() {
         </div>
 
         <div className="grid auto-rows-[19rem] grid-cols-1 gap-3 md:grid-cols-4 md:gap-4">
-          {selectedWork.map((item) => (
+          {selectedWork.slice(0, 8).map((item) => (
             <WorkImage key={`${item.title}-${item.src}`} item={item} />
           ))}
         </div>
