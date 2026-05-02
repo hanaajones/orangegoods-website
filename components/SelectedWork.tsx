@@ -136,7 +136,7 @@ export function SelectedWork() {
           <h2 className="text-5xl font-semibold leading-none text-[var(--og-blue)] md:text-7xl">
             SELECTED WORK
           </h2>
-          <p className="max-w-md text-base leading-7 text-[var(--og-muted)] md:text-lg">
+          <p className="mx-auto max-w-md text-base leading-7 text-[var(--og-muted)] md:text-lg">
             A closer look at the goods, finishes, packaging, and production
             details brands actually send out into the world
           </p>

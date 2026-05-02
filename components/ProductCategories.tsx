@@ -64,7 +64,7 @@ export function ProductCategories() {
           >
             We handle it all
           </h2>
-          <p className="mt-2 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
+          <p className="mx-auto mt-2 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
             Hats to hoodies, drinkware to kits — every product category, made right, start to finish
           </p>
         </div>
