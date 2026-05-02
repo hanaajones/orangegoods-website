@@ -103,7 +103,7 @@ export function Nav() {
               />
             </Link>
             {/* Nav — centered */}
-            <nav className="hidden flex-1 items-center justify-center gap-6 md:flex">
+            <nav className="hidden flex-1 items-center justify-center gap-10 md:flex">
               <button
                 type="button"
                 onMouseEnter={() => setActiveMenu("custom")}
