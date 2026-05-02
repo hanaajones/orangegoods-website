@@ -52,6 +52,12 @@ export function ProcessSteps({
             </article>
           ))}
         </div>
+
+        <div className="mt-10 text-center">
+          <a href="/contact" className="btn-og inline-flex">
+            START A PROJECT
+          </a>
+        </div>
       </section>
     </Reveal>
   );
