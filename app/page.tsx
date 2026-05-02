@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ProductCategories } from "@/components/ProductCategories";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
