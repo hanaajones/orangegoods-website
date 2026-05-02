@@ -224,28 +224,41 @@ export function Nav() {
               ) : null}
 
               {activeMenu === "build" ? (
-                <div className="flex flex-col gap-5">
-                  <div className="relative h-40 w-full overflow-hidden rounded-[1.25rem] bg-[#e0c7ad]">
+                <div className="grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
+                  {/* Col 1: Photo */}
+                  <div className="relative min-h-[18rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
                     <Image
                       src={products[0].image}
-                      alt="Orange Goods hat"
+                      alt="Orange Goods"
                       fill
-                      sizes="420px"
+                      sizes="300px"
                       className="object-cover"
                     />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                      <Link href={buildOnlineHref} className="btn-og inline-flex w-full justify-center text-xs">Start Building</Link>
+                    </div>
                   </div>
+                  {/* Col 2: Products */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Build Online
+                      Products
                     </p>
-                    <div className="grid gap-1 sm:grid-cols-2">
-                      {["All Products", "Hats", "Apparel", "Socks", "Accessories", "Drinkware", "Blankets"].map(
-                        (label) => (
-                          <MenuLink key={label} href={buildOnlineHref}>
-                            {label}
-                          </MenuLink>
-                        ),
-                      )}
+                    <div className="grid gap-1">
+                      {["Hats", "Apparel", "Drinkware", "Bags + Totes", "Accessories", "Socks"].map((label) => (
+                        <MenuLink key={label} href={buildOnlineHref}>{label}</MenuLink>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Col 3: Info */}
+                  <div>
+                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                      How It Works
+                    </p>
+                    <div className="grid gap-1">
+                      <MenuLink href="/services#ready-made">Ready Made</MenuLink>
+                      <MenuLink href="/services#og-crafted">OG Crafted</MenuLink>
+                      <MenuLink href="/quiz">Find My Goods</MenuLink>
+                      <MenuLink href="/faq">FAQ</MenuLink>
                     </div>
                   </div>
                 </div>
