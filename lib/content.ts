@@ -23,7 +23,7 @@ export const homeStats: Stat[] = [
   { value: "15+", label: "Product categories" },
 ];
 
-export const twoPathsTitle = "Two ways to start";
+export const twoPathsTitle = "How do you want to start?";
 
 export const twoPaths = [
   {

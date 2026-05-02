@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CaliforniaBanner } from "@/components/CaliforniaBanner";
 import { PhotoCarousel } from "@/components/PhotoCarousel";
 import { ProductCategories } from "@/components/ProductCategories";
 import { ServicesPreview } from "@/components/ServicesPreview";
@@ -27,9 +26,6 @@ export default function HomePage() {
 
       {/* Checkers divider */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      {/* California banner */}
-      <CaliforniaBanner />
-
       <img src="/graphics/OrangeGoods_Checkers_Orange.svg" alt="" aria-hidden="true" className="w-full" />
 
       {/* Trust signal */}
@@ -43,20 +39,24 @@ export default function HomePage() {
 
       {/* Checkers divider */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/graphics/OrangeGoods_Checkers_Blue.svg" alt="" aria-hidden="true" className="w-full" />
-
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
 
-      <div className="px-4 py-14 text-center md:px-8 lg:px-12">
+      <div className="px-4 py-16 text-center md:px-8 md:py-20 lg:px-12">
         <p
-          className="text-xs font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
+          className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
           style={{ fontFamily: "var(--font-accent)" }}
         >
           The Merch Problem
         </p>
-        <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-[#1C1C1C]/70 md:text-xl">
-          Sourced from five vendors. Arrived off-brand. Sat in a closet. Orange Goods fixes that — one team handles design, production, and fulfillment from day one
+        <h2
+          className="mx-auto mt-4 max-w-3xl text-3xl uppercase leading-tight text-[#FF4200] md:text-5xl"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Most merch ends up in a closet
+        </h2>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#1C1C1C]/60 md:text-lg">
+          Sourced from five vendors. Arrived off-brand. Sat in a box. We fix that — one team handles design, production, and delivery from day one
         </p>
       </div>
 

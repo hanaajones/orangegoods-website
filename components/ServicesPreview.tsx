@@ -31,10 +31,10 @@ export function ServicesPreview() {
             className="text-3xl uppercase leading-tight text-[#FF4200] md:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Two production paths
+            How we build it
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
-            OG Crafted is fully custom from scratch. Ready Made starts with premium blanks and decorates locally. Both are 100+ pieces, both are retail quality.
+            OG Crafted is built from scratch — custom everything. Ready Made starts with premium blanks, decorated locally. Both are 100+ pieces, both are retail quality.
           </p>
         </div>
 
