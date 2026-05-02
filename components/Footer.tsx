@@ -26,12 +26,7 @@ export function Footer() {
                 className="h-24 w-auto"
               />
             </Link>
-            <p
-              className="max-w-sm text-3xl uppercase leading-tight text-white md:text-4xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              We make goods<br />that people<br />actually love.
-            </p>
+
             <div className="flex flex-col gap-2 text-sm text-white/70">
               <a
                 href="mailto:hello@orangegoods.co"
@@ -107,7 +102,10 @@ export function Footer() {
 
         {/* CTA row */}
         <div className="mt-8 flex flex-col items-start gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
-          <p className="text-lg font-semibold text-white/80 md:text-xl">
+          <p
+            className="text-2xl uppercase leading-tight text-white md:text-3xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             Ready to make something worth keeping?
           </p>
           <a
