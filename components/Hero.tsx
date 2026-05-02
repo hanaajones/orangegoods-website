@@ -21,13 +21,6 @@ export function Hero() {
         <div
           className="relative hidden flex-col items-start justify-center overflow-hidden bg-[#F3EFE7] py-16 pl-14 pr-10 lg:flex lg:w-1/2 xl:pl-20"
         >
-          <p
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-[#FF4200]/70"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            Custom Branded Goods & Designs
-          </p>
-
           <h1
             className="mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
@@ -39,15 +32,8 @@ export function Hero() {
             className="mt-5 max-w-sm text-lg leading-7 text-[#1C1C1C]/80"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            One team handles everything — design, production, and delivery.
+            Design, production, and delivery — handled.
             Built for brands that care about quality.
-          </p>
-
-          <p
-            className="mt-3 text-xs uppercase tracking-[0.28em] text-[#0B32A0]/60"
-            style={{ fontFamily: "var(--font-accent)" }}
-          >
-            Los Angeles, California
           </p>
 
           <div className="mt-8 flex flex-row flex-wrap gap-3">
