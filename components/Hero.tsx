@@ -45,7 +45,7 @@ export function Hero() {
               START A PROJECT
             </Link>
             <Link
-              href="https://orangegoods.co/goods/"
+              href="/build"
               className="inline-flex items-center rounded-full border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
               style={{ fontFamily: "var(--font-display)" }}
             >
@@ -90,7 +90,7 @@ export function Hero() {
               START A PROJECT
             </Link>
             <Link
-              href="https://orangegoods.co/goods/"
+              href="/build"
               className="inline-flex items-center rounded-full border border-white px-5 py-3 text-xs font-semibold text-white"
               style={{ fontFamily: "var(--font-display)" }}
             >

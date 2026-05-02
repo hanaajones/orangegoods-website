@@ -7,10 +7,7 @@ import { SelectedWork } from "@/components/SelectedWork";
 import { Testimonials } from "@/components/Testimonials";
 import { TwoPaths } from "@/components/TwoPaths";
 import {
-  buildOnlineHref,
-  homeHero,
   homeProcess,
-  homeStats,
   logos,
   startProjectHref,
   testimonials,

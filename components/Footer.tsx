@@ -3,12 +3,12 @@ import Image from "next/image";
 
 const footerLinks = [
   { label: "Custom", href: "/#paths" },
-  { label: "Build Online", href: "https://orangegoods.co/goods/" },
+  { label: "Build Online", href: "/build" },
   { label: "Design", href: "/#process" },
   { label: "About", href: "/#about" },
   { label: "Contact", href: "mailto:hello@orangegoods.co" },
   { label: "FAQ", href: "/#faq" },
-  { label: "Insights", href: "https://orangegoods.co/insights/" },
+  { label: "Insights", href: "/insights" },
 ];
 
 export function Footer() {
