@@ -83,6 +83,8 @@ export default function HomePage() {
       {/* Full-width photo carousel */}
       <PhotoCarousel />
 
+      <div className="py-10" />
+
       <ProcessSteps
         eyebrow="How It Works"
         title="A clear path from brief to delivery"
