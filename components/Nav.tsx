@@ -87,7 +87,7 @@ export function Nav() {
             <Link href="/" className="flex items-center" aria-label="Orange Goods">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logos/OrangeGoods_Logo_Secondary_Orange.svg"
+                src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
                 alt="Orange Goods"
                 className="h-7 w-auto md:h-8"
               />
