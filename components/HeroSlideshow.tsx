@@ -12,44 +12,29 @@ const photos = [
 
 export function HeroSlideshow() {
   const [current, setCurrent] = useState(0);
-  const [next, setNext] = useState<number | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setNext((current + 1) % photos.length);
+      setCurrent((prev) => (prev + 1) % photos.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, [current]);
-
-  useEffect(() => {
-    if (next === null) return;
-    const t = setTimeout(() => {
-      setCurrent(next);
-      setNext(null);
-    }, 300);
-    return () => clearTimeout(t);
-  }, [next]);
+  }, []);
 
   return (
-    <div className="absolute inset-0">
-      <img
-        key={`current-${current}`}
-        src={photos[current]}
-        alt="Orange Goods custom merch"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-      />
-      {next !== null && (
+    <div className="absolute inset-0 h-full w-full">
+      {photos.map((src, i) => (
         <img
-          key={`next-${next}`}
-          src={photos[next]}
-          alt=""
-          aria-hidden="true"
+          key={src}
+          src={src}
+          alt={i === 0 ? "Orange Goods custom merch" : ""}
+          aria-hidden={i !== 0}
           className="absolute inset-0 h-full w-full object-cover object-center"
           style={{
-            animation: "fadeIn 0.3s ease forwards",
+            opacity: i === current ? 1 : 0,
+            transition: "opacity 0.4s ease-in-out",
           }}
         />
-      )}
+      ))}
     </div>
   );
 }
