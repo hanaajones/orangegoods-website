@@ -101,7 +101,7 @@ export function Hero() {
 
       {/* ── MARQUEE: product categories ── */}
       <div
-        className="overflow-hidden border-y-4 border-[#1C1C1C] bg-white"
+        className="overflow-hidden border-y-[3px] border-[#1C1C1C] bg-white"
         style={{ height: "72px" }}
       >
         <div className="animate-marquee flex h-full w-max items-center gap-14 px-14">
