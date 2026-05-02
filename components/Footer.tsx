@@ -30,9 +30,10 @@ export function Footer() {
             <div className="flex flex-col gap-2 text-sm text-white/70">
               <a
                 href="mailto:hello@orangegoods.co"
-                className="transition hover:text-[#FF4200]"
+                className="flex items-center gap-1.5 transition hover:text-[#FF4200]"
               >
-                hello@orangegoods.co
+                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FF7F00]">Email Us</span>
+                <span>hello@orangegoods.co</span>
               </a>
               <a
                 href="sms:+12133764663"
