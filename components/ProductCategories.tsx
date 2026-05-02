@@ -56,14 +56,17 @@ export function ProductCategories() {
             className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
             style={{ fontFamily: "var(--font-accent)" }}
           >
-            What We Make
+            Unlimited Capabilities
           </p>
           <h2
             className="mt-3 text-3xl font-extrabold uppercase tracking-tight text-[#FF4200] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Everything your brand needs.
+            We handle it all.
           </h2>
+          <p className="mt-2 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
+            Hats to hoodies, drinkware to kits — every product category, made right, start to finish.
+          </p>
         </div>
 
         {/* Category grid */}

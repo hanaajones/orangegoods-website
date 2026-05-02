@@ -28,11 +28,8 @@ export default function HomePage() {
       {/* Value prop — OG Crafted vs Ready Made */}
       <TwoPaths items={twoPaths} title={twoPathsTitle} />
 
-      {/* Product categories — Mello-style photo grid */}
+      {/* Product categories — visual capabilities grid */}
       <ProductCategories />
-
-      {/* Capabilities */}
-      <Capabilities />
 
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
