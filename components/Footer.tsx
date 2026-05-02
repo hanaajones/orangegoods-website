@@ -29,8 +29,11 @@ export function Footer() {
                 className="h-10 w-auto"
               />
             </Link>
-            <p className="max-w-sm text-xl font-semibold leading-snug text-white/90 md:text-2xl">
-              We make goods that people actually love.
+            <p
+              className="max-w-sm text-3xl uppercase leading-tight text-white md:text-4xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              We make goods<br />that people<br />actually love.
             </p>
             <div className="flex flex-col gap-2 text-sm text-white/70">
               <a
