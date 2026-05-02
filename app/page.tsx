@@ -27,14 +27,14 @@ export default function HomePage() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/graphics/OrangeGoods_Checkers_Orange.svg" alt="" aria-hidden="true" className="w-full" />
 
-      {/* Trust signal first */}
+      {/* Trust signal */}
       <Testimonials testimonials={testimonials} logos={logos} />
 
-      {/* Value prop — OG Crafted vs Ready Made */}
-      <TwoPaths items={twoPaths} title={twoPathsTitle} />
-
-      {/* Product categories — visual capabilities grid */}
+      {/* Product categories — We Handle It All */}
       <ProductCategories />
+
+      {/* Two ways to start */}
+      <TwoPaths items={twoPaths} title={twoPathsTitle} />
 
       {/* Checkers divider */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
