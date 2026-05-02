@@ -70,6 +70,15 @@ export function Nav() {
 
   return (
     <>
+      {/* Backdrop overlay when mega menu is open */}
+      {activeMenu && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 transition-opacity duration-200"
+          onClick={() => setActiveMenu(null)}
+          aria-hidden="true"
+        />
+      )}
+
       <header className="sticky top-0 z-40">
         <div
           className="relative"
