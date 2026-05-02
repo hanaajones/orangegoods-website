@@ -103,9 +103,8 @@ function WorkImage({ item }: { item: WorkItem }) {
 
   return (
     <figure
-      className={`group relative min-h-[18rem] overflow-hidden bg-[var(--og-sand)] ${item.className} ${
-        isTall ? "md:min-h-[39rem]" : "md:min-h-[19rem]"
-      }`}
+      className="group relative shrink-0 snap-start overflow-hidden rounded-[1.5rem] bg-[var(--og-sand)]"
+      style={{ width: "clamp(220px, 32vw, 300px)", height: "320px" }}
     >
       <Image
         src={src}
@@ -143,7 +142,9 @@ export function SelectedWork() {
           </p>
         </div>
 
-        <div className="grid auto-rows-[19rem] grid-cols-1 gap-3 md:grid-cols-4 md:gap-4">
+        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:-mx-8 md:pl-8 md:pr-8 lg:-mx-12 lg:pl-12"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
           {selectedWork.slice(0, 8).map((item) => (
             <WorkImage key={`${item.title}-${item.src}`} item={item} />
           ))}

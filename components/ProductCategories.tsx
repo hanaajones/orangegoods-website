@@ -69,14 +69,19 @@ export function ProductCategories() {
           </p>
         </div>
 
-        {/* Category grid */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        {/* Category horizontal scroll */}
+        <div className="relative">
+          {/* Fade edges */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent" />
+          <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:-mx-8 md:pl-8 md:pr-8 lg:-mx-12 lg:pl-12"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
           {categories.map((cat) => (
             <Link
               key={cat.name}
               href={cat.href}
-              className={`group relative overflow-hidden rounded-[2rem] ${cat.span}`}
-              style={{ minHeight: "260px" }}
+              className="group relative shrink-0 snap-start overflow-hidden rounded-[2rem]"
+              style={{ width: "clamp(260px, 38vw, 360px)", height: "380px" }}
             >
               {/* Background photo */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -105,6 +110,7 @@ export function ProductCategories() {
               </div>
             </Link>
           ))}
+          </div>
         </div>
       </section>
     </Reveal>
