@@ -110,7 +110,7 @@ export function Nav() {
                 onClick={() => setActiveMenu(activeMenu === "custom" ? null : "custom")}
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
-                CUSTOM ▾
+                CUSTOM <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </button>
               <button
                 type="button"
@@ -118,7 +118,7 @@ export function Nav() {
                 onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
-                BUILD ONLINE ▾
+                BUILD ONLINE <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </button>
               <Link
                 href="/design"
@@ -138,7 +138,7 @@ export function Nav() {
                 onClick={() => setActiveMenu(activeMenu === "about" ? null : "about")}
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
-                ABOUT ▾
+                ABOUT <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </button>
             </nav>
             {/* Right group: icons + CTA */}
