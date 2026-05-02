@@ -19,7 +19,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
       muted: "text-white/70",
       tagBg: "bg-white/20 text-white",
       btn: "btn-og-white",
-      badge: "FULLY CUSTOM",
+      badge: "HUMAN-LED",
       badgeColor: "text-white/60",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -33,7 +33,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
       muted: "text-white/70",
       tagBg: "bg-white/15 text-white",
       btn: "btn-og-white",
-      badge: "READY MADE",
+      badge: "SELF-SERVE",
       badgeColor: "text-white/60",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -116,6 +116,13 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
             );
           })}
         </div>
+
+        {/* Education note */}
+        <p className="mt-6 text-center text-sm text-[#1C1C1C]/45">
+          Not sure which is right? Either path works — we&apos;ll sort out the details together.
+          {" "}
+          <a href="/about" className="text-[#FF4200] hover:underline">Learn about OG Crafted vs Ready Made →</a>
+        </p>
       </section>
     </Reveal>
   );

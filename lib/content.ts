@@ -23,25 +23,25 @@ export const homeStats: Stat[] = [
   { value: "15+", label: "Product categories" },
 ];
 
-export const twoPathsTitle = "Two ways to order";
+export const twoPathsTitle = "Two ways to start";
 
 export const twoPaths = [
   {
-    title: "OG Crafted",
+    title: "Talk to Us",
     description:
-      "Built from scratch. Custom fabric, fit, finish, and trims — fully yours. The highest level of customization we offer. Takes longer, but there's nothing like it",
-    details: ["100+ pieces", "6–10 weeks", "Unlimited customization"],
+      "Tell us what you need. We'll figure out the right product, production method, and timeline — and send you a quote. Best for custom projects, large orders, or anything with specific requirements.",
+    details: ["Custom products", "Full-service", "Any complexity"],
     href: startProjectHref,
-    label: "Start a Project",
+    label: "Start a Conversation",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
   },
   {
-    title: "Ready Made",
+    title: "Build Online",
     description:
-      "Premium blanks, decorated locally. Embroidery, screen print, patches — applied cleanly and fast. Great quality, faster delivery",
-    details: ["100+ pieces", "2–4 weeks", "Quick turnaround"],
+      "Pick a product, pick a style, upload your logo. We'll send you a quote same day. Best if you know what you want and want to move fast.",
+    details: ["Fast quotes", "Instant start", "Easy process"],
     href: buildOnlineHref,
-    label: "Build Online",
+    label: "Start Building",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
   },
 ];
