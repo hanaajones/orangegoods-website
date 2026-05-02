@@ -7,15 +7,13 @@ import { useState } from "react";
 
 const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
-const hatImage = "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg";
-
 const products = [
-  { label: "Hats", href: "/goods/hats" },
-  { label: "Apparel", href: "#" },
-  { label: "Socks", href: "#" },
-  { label: "Accessories", href: "#" },
-  { label: "Drinkware", href: "#" },
-  { label: "Blankets", href: "#" },
+  { label: "Hats", href: "/goods/hats", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif" },
+  { label: "Apparel", href: "#", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif" },
+  { label: "Drinkware", href: "#", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif" },
+  { label: "Bags + Totes", href: "#", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif" },
+  { label: "Accessories", href: "#", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },
+  { label: "Socks", href: "#", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },
 ];
 
 const serviceLinks = [
@@ -25,7 +23,7 @@ const serviceLinks = [
 
 const customLinks = [
   { label: "Our Process", href: "/#process" },
-  { label: "Gallery", href: "/#gallery" },
+  { label: "Gallery", href: "/gallery" },
   { label: "FAQ", href: "/faq" },
 ];
 
@@ -67,6 +65,7 @@ function MenuLink({
 
 export function Nav() {
   const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
+  const [hoveredProduct, setHoveredProduct] = useState(products[0].image);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -164,44 +163,33 @@ export function Nav() {
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
-                <div className="grid gap-5 md:grid-cols-[40fr_35fr_25fr]">
-                  <div className="rounded-[1.5rem] bg-white/8 p-6 text-[#f7f1e8]">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff9e7a]">
-                      Start A Project
-                    </p>
-                    <p className="mt-3 text-3xl font-semibold leading-tight">
-                      From concept to delivery, handled
-                    </p>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                      <Link
-                        href={startProjectHref}
-                        className="inline-flex min-h-11 items-center rounded-full bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#d73b05]"
-                      >
-                        Start a Project
-                      </Link>
-                      <Link
-                        href={buildOnlineHref}
-                        className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-[#ff9e7a] hover:text-[#ff9e7a]"
-                      >
-                        Build Online
-                      </Link>
-                      <Link
-                        href="/quiz"
-                        className="inline-flex min-h-11 items-center rounded-full border border-[#ff9e7a]/40 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#ff9e7a] transition hover:border-[#ff9e7a] hover:text-white"
-                      >
-                        Find Your Goods
-                      </Link>
+                <div className="grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
+                  {/* Col 1: Photo — switches on product hover */}
+                  <div className="relative min-h-[18rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
+                    <Image
+                      src={hoveredProduct}
+                      alt="Orange Goods product"
+                      fill
+                      sizes="300px"
+                      className="object-cover transition-opacity duration-300"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/70 to-transparent p-4">
+                      <Link href={startProjectHref} className="btn-og inline-flex justify-center text-xs">Start a Project</Link>
+                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-white/40 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/10" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
                     </div>
                   </div>
+                  {/* Col 2: Products */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Products
                     </p>
                     <div className="grid gap-1">
                       {products.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>
-                          {item.label}
-                        </MenuLink>
+                        <div key={item.label} onMouseEnter={() => setHoveredProduct(item.image)}>
+                          <MenuLink href={item.href}>
+                            {item.label}
+                          </MenuLink>
+                        </div>
                       ))}
                     </div>
                     <div className="mt-4 border-t border-white/10 pt-4">
@@ -219,7 +207,7 @@ export function Nav() {
                   </div>
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Learn
+                      Explore
                     </p>
                     <div className="grid gap-1">
                       {customLinks.map((item) => (
@@ -239,7 +227,7 @@ export function Nav() {
                 <div className="grid gap-6 md:grid-cols-[0.85fr_1fr]">
                   <div className="relative min-h-[16rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
                     <Image
-                      src={hatImage}
+                      src={products[0].image}
                       alt="Orange Goods hat"
                       fill
                       sizes="420px"
