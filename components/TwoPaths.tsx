@@ -63,7 +63,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
               >
                 {/* Photo */}
                 {item.image && (
-                  <div className="-mx-8 -mt-8 mb-6 h-48 overflow-hidden rounded-t-[2rem] md:-mx-10 md:-mt-10 md:h-56">
+                  <div className="-mx-8 -mt-8 mb-6 h-64 overflow-hidden rounded-t-[2rem] md:-mx-10 md:-mt-10 md:h-72">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image}
