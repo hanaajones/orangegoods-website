@@ -38,7 +38,7 @@ export function Hero() {
           <div className="mt-8 flex flex-row flex-wrap gap-3">
             <Link
               href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-              className="inline-flex items-center rounded-xl bg-[#FF4200] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
+              className="btn-lift inline-flex items-center rounded-xl bg-[#FF4200] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               START A PROJECT
@@ -86,7 +86,7 @@ export function Hero() {
           <div className="flex gap-3 pt-1">
             <Link
               href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-              className="inline-flex items-center rounded-xl bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
+              className="btn-lift inline-flex items-center rounded-xl bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
               style={{ fontFamily: "var(--font-display)" }}
             >
               START A PROJECT
