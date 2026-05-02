@@ -116,7 +116,7 @@ export default function HomePage() {
               {[
                 { label: "CA-Based Team", detail: "Southern California, not a call center" },
                 { label: "In-House Design", detail: "Human designers, not AI templates" },
-                { label: "Product Experts", detail: "10+ years in design & manufacturing" },
+                { label: "Product Experts", detail: "15+ years in design & manufacturing" },
                 { label: "Direct Access", detail: "Talk to the people making your goods" },
               ].map(({ label, detail }) => (
                 <div key={label} className="rounded-2xl border border-[var(--og-sand)] bg-white p-4">
