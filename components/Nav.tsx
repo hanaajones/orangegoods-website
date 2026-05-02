@@ -172,7 +172,7 @@ export function Nav() {
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
-                <div className="grid gap-5 md:grid-cols-[0.8fr_1fr_1fr_1fr]">
+                <div className="grid gap-3 md:grid-cols-[1.4fr_0.9fr_0.9fr_0.9fr]">
                   {/* Col 1: Photo */}
                   <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
                     <Image
@@ -230,7 +230,7 @@ export function Nav() {
               ) : null}
 
               {activeMenu === "build" ? (
-                <div className="grid gap-5 md:grid-cols-[0.8fr_1fr_1fr_1fr]">
+                <div className="grid gap-3 md:grid-cols-[1.4fr_0.9fr_0.9fr_0.9fr]">
                   {/* Col 1: Photo */}
                   <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
                     <Image
