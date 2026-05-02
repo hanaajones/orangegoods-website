@@ -58,18 +58,21 @@ export function Testimonials({
           ))}
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {logos.map((logo) => (
-            <div key={logo.name} className="relative h-16 rounded-xl border border-[#1C1C1C]/8 bg-white p-3">
-              <Image
-                src={logo.image}
-                alt={logo.name}
-                fill
-                sizes="160px"
-                className="object-contain p-3"
-              />
-            </div>
-          ))}
+        {/* Logo marquee */}
+        <div className="mt-8 overflow-hidden">
+          <div className="animate-marquee flex w-max items-center gap-12">
+            {[...logos, ...logos, ...logos].map((logo, i) => (
+              <div key={`${logo.name}-${i}`} className="relative h-10 w-32 flex-none opacity-60 grayscale transition hover:opacity-100 hover:grayscale-0">
+                <Image
+                  src={logo.image}
+                  alt={logo.name}
+                  fill
+                  sizes="128px"
+                  className="object-contain"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </Reveal>
