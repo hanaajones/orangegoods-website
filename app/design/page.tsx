@@ -26,7 +26,7 @@ const services = [
     description: "Custom hand-crafted artwork for any product",
   },
   {
-    name: "Wordmarks & Logos",
+    name: "Wordmarks + Logos",
     description: "Brand marks built for merch and print",
   },
   {
@@ -172,7 +172,7 @@ export default function DesignPage() {
       <section className="bg-[var(--og-blue)] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-            Graphic & Brand Design
+            Graphic + Brand Design
           </p>
           <h1 className="mt-5 max-w-5xl text-6xl leading-none text-white md:text-8xl lg:text-9xl">
             FORGET AI — WE&apos;VE GOT HUMANS
@@ -276,7 +276,7 @@ export default function DesignPage() {
       <Reveal className="bg-white/45 px-4 py-16 md:px-8 md:py-20 lg:px-12">
         <section id="pricing" className="mx-auto max-w-6xl scroll-mt-28">
           <SectionHeading
-            title="PACKAGES & PRICING"
+            title="PACKAGES + PRICING"
             description="Select a package that works for you. We'll reach out with next steps"
           />
           <div className="mt-10 grid gap-5 lg:grid-cols-3">

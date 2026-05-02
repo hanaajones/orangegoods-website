@@ -24,7 +24,7 @@ const categories = [
     span: "",
   },
   {
-    name: "Bags & Totes",
+    name: "Bags + Totes",
     description: "Totes, backpacks, duffels — branded carry that doesn't look like a trade-show giveaway",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
@@ -38,7 +38,7 @@ const categories = [
     span: "",
   },
   {
-    name: "Packaging & Kits",
+    name: "Packaging + Kits",
     description: "Retail-ready boxes, tissue, tags, and full gift kits. The unbox moment, done right",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2024/07/OrangeGoods_ABoutUs_5-1.jpg",

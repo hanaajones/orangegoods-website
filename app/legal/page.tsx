@@ -2,15 +2,15 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Legal — Orange Goods",
-  description: "Terms & Conditions, Privacy Policy, and Cookie Notice for Orange Goods",
+  description: "Terms + Conditions, Privacy Policy, and Cookie Notice for Orange Goods",
 };
 
 const sections = [
   {
-    title: "Terms & Conditions",
+    title: "Terms + Conditions",
     items: [
       {
-        heading: "1. Orders & Production",
+        heading: "1. Orders + Production",
         body: "All goods are made-to-order unless otherwise stated. Full payment is required before production begins unless agreed in writing. Production starts only after written artwork approval and payment confirmation. Once production has begun, orders cannot be canceled or modified",
       },
       {
@@ -22,15 +22,15 @@ const sections = [
         body: "Custom manufacturing includes normal industry tolerances. Minor variations are not considered defects, including slight color differences between screens and physical goods, fabric shade differences between dye lots, placement tolerances, embroidery density or thread variation, size tolerances, and natural material inconsistencies. These variations are inherent in custom production and are accepted upon approval",
       },
       {
-        heading: "4. Turnaround & Delivery",
+        heading: "4. Turnaround + Delivery",
         body: "Estimated timelines are not guaranteed. Delays may occur due to production complexity, material shortages, freight delays, customs processing, carrier issues, weather events, or other circumstances outside our control. While certain delays may be outside our control, we take proactive steps to communicate clearly, problem-solve quickly, and ensure the best possible outcome for your project",
       },
       {
-        heading: "5. Shipping & Risk of Loss",
+        heading: "5. Shipping + Risk of Loss",
         body: "Risk transfers to the client once goods are delivered to the carrier. Orange Goods is not responsible for carrier delays, lost shipments, or delivery issues caused by incorrect addresses provided by the client. If an issue arises in transit, we assist in filing claims, communicating with carriers, and working toward a resolution whenever possible",
       },
       {
-        heading: "6. Defects & Returns",
+        heading: "6. Defects + Returns",
         body: "If you believe your order contains a manufacturing defect, notify us within 3 days of delivery and provide clear photos. Defective items must be returned to Orange Goods before replacements or credits are issued. Custom goods are otherwise non-returnable due to their made-to-order nature. If a legitimate production issue occurs, we will review it promptly and determine the best path forward to make it right",
       },
       {
@@ -46,7 +46,7 @@ const sections = [
         body: "You represent that you own or have the legal right to use all submitted artwork. You agree to indemnify Orange Goods against any claims related to intellectual property infringement arising from client-provided designs",
       },
       {
-        heading: "10. Content & Marketing Usage",
+        heading: "10. Content + Marketing Usage",
         body: "Unless otherwise agreed in writing, Orange Goods may photograph, film, or otherwise document completed products for use in website galleries, social media, email marketing, advertising, internal portfolio use, and sales materials. If your project is confidential, please notify us in writing before production begins",
       },
       {
@@ -75,7 +75,7 @@ const sections = [
         body: "If you opt in, we may send promotional emails or SMS messages. You may unsubscribe at any time using the link in emails or by replying STOP to SMS messages",
       },
       {
-        heading: "4. Cookies & Tracking",
+        heading: "4. Cookies + Tracking",
         body: "We use cookies and tracking technologies including Google Analytics and Meta Pixel to measure performance and improve advertising. You may disable cookies in your browser settings",
       },
       {

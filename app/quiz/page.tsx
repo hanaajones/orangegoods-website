@@ -41,7 +41,7 @@ const questions: Question[] = [
     eyebrow: "1 of 6",
     title: "WHAT'S THIS MERCH FOR?",
     subtext: "Tell us where the goods need to win first",
-    options: ["Retail / Selling", "Team & Staff", "Event Giveaway", "Corporate Gift"],
+    options: ["Retail / Selling", "Team + Staff", "Event Giveaway", "Corporate Gift"],
   },
   {
     id: "timeline",
@@ -69,7 +69,7 @@ const questions: Question[] = [
     eyebrow: "5 of 6",
     title: "WHAT'S THE VIBE?",
     subtext: "Pick the direction that feels most like the brand moment",
-    options: ["Premium & Elevated", "Fun & Playful", "Clean & Minimal", "Bold & Graphic"],
+    options: ["Premium + Elevated", "Fun + Playful", "Clean + Minimal", "Bold + Graphic"],
   },
   {
     id: "use",
@@ -172,7 +172,7 @@ const scoreRules: Partial<Record<QuestionId, Record<string, Partial<Record<Produ
       customFlannel: 3,
       tumbler: 1,
     },
-    "Team & Staff": {
+    "Team + Staff": {
       hoodie: 3,
       structuredCap: 2,
       premiumTee: 2,
@@ -268,26 +268,26 @@ const scoreRules: Partial<Record<QuestionId, Record<string, Partial<Record<Produ
     },
   },
   vibe: {
-    "Premium & Elevated": {
+    "Premium + Elevated": {
       structuredCap: 3,
       hoodie: 3,
       tumbler: 3,
       customFlannel: 3,
       beanie: 2,
     },
-    "Fun & Playful": {
+    "Fun + Playful": {
       socks: 4,
       patchKit: 3,
       dadHat: 2,
       canvasTote: 2,
     },
-    "Clean & Minimal": {
+    "Clean + Minimal": {
       dadHat: 3,
       premiumTee: 2,
       tumbler: 2,
       canvasTote: 2,
     },
-    "Bold & Graphic": {
+    "Bold + Graphic": {
       premiumTee: 4,
       structuredCap: 2,
       canvasTote: 2,
@@ -348,7 +348,7 @@ function getWhyText(product: Product, answers: Answers) {
   const purposeLine =
     purpose === "Retail / Selling"
       ? "It has enough perceived value to sell, not just hand out"
-      : purpose === "Team & Staff"
+      : purpose === "Team + Staff"
         ? "It gives your team something consistent, useful, and easy to keep in rotation"
         : purpose === "Event Giveaway"
           ? "It is simple to hand off, easy to understand, and built to keep your event visible afterward"
@@ -357,13 +357,13 @@ function getWhyText(product: Product, answers: Answers) {
             : "It gives you a strong merch starting point without overcomplicating the project";
 
   const vibeLine =
-    vibe === "Premium & Elevated"
+    vibe === "Premium + Elevated"
       ? "The finish can feel premium while still staying practical"
-      : vibe === "Fun & Playful"
+      : vibe === "Fun + Playful"
         ? "There is plenty of room for color, personality, and a memorable design detail"
-        : vibe === "Clean & Minimal"
+        : vibe === "Clean + Minimal"
           ? "It works well with restrained branding and clean artwork"
-          : vibe === "Bold & Graphic"
+          : vibe === "Bold + Graphic"
             ? "It gives your artwork enough surface area and presence to do the heavy lifting"
             : "It can flex with the creative direction once the artwork is set";
 
@@ -371,11 +371,11 @@ function getWhyText(product: Product, answers: Answers) {
     return "A premium tumbler with your logo gets used every single day. That means steady impressions on a desk, in a car, or on the way into work";
   }
 
-  if (product.id === "socks" && purpose === "Event Giveaway" && vibe === "Fun & Playful") {
+  if (product.id === "socks" && purpose === "Event Giveaway" && vibe === "Fun + Playful") {
     return "Socks are one of the most talked-about giveaways we make. Everyone takes them, and the right design makes them easy to wear again";
   }
 
-  if (product.id === "structuredCap" && purpose === "Retail / Selling" && vibe === "Premium & Elevated" && use === "Wear It Every Day") {
+  if (product.id === "structuredCap" && purpose === "Retail / Selling" && vibe === "Premium + Elevated" && use === "Wear It Every Day") {
     return "A structured cap at this quality level sells because it feels like real retail. It is the kind of piece people actually keep wearing";
   }
 

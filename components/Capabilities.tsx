@@ -40,7 +40,7 @@ export function Capabilities() {
             We&apos;ll handle it all
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
-            From idea to production &amp; delivery — every capability in-house
+            From idea to production + delivery — every capability in-house
           </p>
         </div>
 

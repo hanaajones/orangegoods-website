@@ -18,7 +18,7 @@ const productTiles = [
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
   },
   {
-    name: "Bags & Totes",
+    name: "Bags + Totes",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
   },
   {

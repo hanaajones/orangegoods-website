@@ -81,7 +81,7 @@ export function Hero() {
             Everything your<br />brand wears
           </h1>
           <p className="text-sm leading-5 text-white/80">
-            Hats, tees, socks, drinkware &amp; more — custom from scratch or fast from premium blanks
+            Hats, tees, socks, drinkware + more — custom from scratch or fast from premium blanks
           </p>
           <div className="flex gap-3 pt-1">
             <Link
