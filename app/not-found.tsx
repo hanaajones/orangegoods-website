@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-[calc(100vh-84px)] flex-col items-center justify-center overflow-hidden bg-[#FF4200] px-4 text-center">
+    <main className="relative flex min-h-[calc(100vh-84px)] flex-col items-center justify-center overflow-hidden bg-[#081E6F] px-4 text-center">
 
       {/* Background checkers */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -32,7 +32,7 @@ export default function NotFound() {
         </p>
 
         <h1
-          className="mt-3 text-5xl uppercase leading-tight text-white md:text-7xl"
+          className="mt-3 text-5xl uppercase leading-tight text-[#FF4200] md:text-7xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
           Wrong goods,<br />wrong page.
