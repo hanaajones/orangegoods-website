@@ -63,21 +63,21 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
                 {/* Icon + badge */}
                 <div className="flex items-start justify-between">
                   {cfg.icon}
-                  <span className={`text-xs font-bold uppercase tracking-[0.2em] ${cfg.badgeColor}`}>
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">
                     {cfg.badge}
                   </span>
                 </div>
 
                 {/* Title */}
                 <h3
-                  className={`mt-6 text-3xl uppercase leading-tight ${cfg.text} md:text-4xl`}
+                  className="mt-6 text-3xl uppercase leading-tight text-white md:text-4xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {item.title}
                 </h3>
 
                 {/* Description */}
-                <p className={`mt-4 text-base leading-7 ${cfg.muted}`}>
+                <p className="mt-4 text-base leading-7 text-white/70">
                   {item.description}
                 </p>
 
@@ -86,7 +86,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
                   {item.details.map((detail) => (
                     <span
                       key={detail}
-                      className={`rounded-xl px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] ${cfg.tagBg}`}
+                      className="rounded-xl bg-white/20 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-white"
                     >
                       {detail}
                     </span>
