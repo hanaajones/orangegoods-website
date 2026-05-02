@@ -163,22 +163,17 @@ export function Nav() {
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
+                <div className="flex flex-col gap-4">
                 <div className="grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
-                  {/* Col 1: Photo + buttons below */}
-                  <div className="flex flex-col gap-3">
-                    <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
-                      <Image
-                        src={hoveredProduct}
-                        alt="Orange Goods product"
-                        fill
-                        sizes="300px"
-                        className="object-cover transition-opacity duration-300"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <Link href={startProjectHref} className="btn-og inline-flex justify-center text-xs">Start a Project</Link>
-                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/20" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
-                    </div>
+                  {/* Col 1: Photo */}
+                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
+                    <Image
+                      src={hoveredProduct}
+                      alt="Orange Goods product"
+                      fill
+                      sizes="300px"
+                      className="object-cover transition-opacity duration-300"
+                    />
                   </div>
                   {/* Col 2: Products */}
                   <div>
@@ -222,6 +217,12 @@ export function Nav() {
                       </MenuLink>
                     </div>
                   </div>
+                </div>
+                {/* Bottom-right CTAs */}
+                <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-3">
+                  <Link href="/quiz" className="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/20" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
+                  <Link href={startProjectHref} className="btn-og text-xs">Start a Project</Link>
+                </div>
                 </div>
               ) : null}
 
