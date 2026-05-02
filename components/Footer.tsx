@@ -27,19 +27,19 @@ export function Footer() {
               />
             </Link>
 
-            <div className="flex flex-col gap-2 text-sm text-white/70">
+            <div className="flex flex-col text-sm text-white/70">
               <a
                 href="mailto:hello@orangegoods.co"
-                className="flex items-center gap-1.5 transition hover:text-[#FF4200]"
+                className="flex items-center gap-2 transition hover:text-[#FF4200]"
               >
-                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FF7F00]">Email Us</span>
+                <span className="w-16 text-xs font-semibold uppercase tracking-[0.15em] text-[#FF7F00]">Email Us</span>
                 <span>hello@orangegoods.co</span>
               </a>
               <a
                 href="sms:+12133764663"
-                className="flex items-center gap-1.5 transition hover:text-[#FF4200]"
+                className="mt-3 flex items-center gap-2 transition hover:text-[#FF4200]"
               >
-                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FF7F00]">Text Us</span>
+                <span className="w-16 text-xs font-semibold uppercase tracking-[0.15em] text-[#FF7F00]">Text Us</span>
                 <span>(213) 376-4663</span>
               </a>
             </div>
