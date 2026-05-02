@@ -136,10 +136,7 @@ export function SelectedWork() {
           <h2 className="text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
             RECENT CUSTOM PROJECTS
           </h2>
-          <p className="mx-auto max-w-md text-base leading-7 text-[var(--og-muted)] md:text-lg">
-            A closer look at the goods, finishes, packaging, and production
-            details brands actually send out into the world
-          </p>
+
         </div>
 
         <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:pl-8 md:pr-8 lg:pl-12"
