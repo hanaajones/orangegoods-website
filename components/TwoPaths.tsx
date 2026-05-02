@@ -15,9 +15,6 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
     <Reveal className="px-4 py-8 md:px-8 lg:px-12">
       <section id="paths" className="mx-auto max-w-6xl">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-            Two Paths
-          </p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
             {title}
           </h2>
