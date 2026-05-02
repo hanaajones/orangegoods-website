@@ -109,7 +109,7 @@ export function Footer() {
             Ready to make something worth keeping?
           </p>
           <a
-            href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
+            href="/contact"
             className="btn-lift inline-flex min-h-12 items-center rounded-xl bg-[#FF4200] px-6 text-sm font-semibold uppercase tracking-[0.1em] text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >

@@ -64,7 +64,7 @@ export default function PortalDashboardPage() {
               Request reorder
             </Link>
             <a
-              href="mailto:hello@orangegoods.co"
+              href="/contact"
               className="flex rounded-[1.5rem] border border-[#1C1C1C]/10 bg-[#F3EFE7] px-5 py-4 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
             >
               Contact us

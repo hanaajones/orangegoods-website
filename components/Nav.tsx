@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-const startProjectHref = "mailto:hello@orangegoods.co?subject=Start%20a%20Project";
+const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
 const hatImage = "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg";
 
@@ -150,7 +150,7 @@ export function Nav() {
               </Link>
               <Link
                 href={startProjectHref}
-                className="inline-flex min-h-10 items-center rounded-full bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] transition hover:bg-white/90 md:min-h-11 md:px-5 md:text-sm"
+                className="btn-lift inline-flex min-h-10 items-center rounded-xl bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] md:min-h-11 md:px-5 md:text-sm"
               >
                 <span className="md:hidden">Start</span>
                 <span className="hidden md:inline">START A PROJECT</span>

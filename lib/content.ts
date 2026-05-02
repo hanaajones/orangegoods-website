@@ -4,7 +4,7 @@ type Stat = {
 };
 
 export const startProjectHref =
-  "mailto:hello@orangegoods.co?subject=Start%20a%20Project";
+  "/contact";
 
 export const buildOnlineHref = "https://orangegoods.co/goods/";
 

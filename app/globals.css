@@ -183,7 +183,7 @@ h1, h2, h3 {
   text-decoration: none;
 }
 .btn-primary:hover {
-  background-color: #d73b05;
+  
   border-color: rgba(255,255,255,0.25);
   transform: translateY(-3px);
   box-shadow: 0 10px 28px rgba(255,66,0,0.30);
