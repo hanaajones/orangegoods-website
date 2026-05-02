@@ -134,7 +134,7 @@ export function SelectedWork() {
       <section id="gallery">
         <div className="mb-8 flex flex-col items-center gap-4 px-4 text-center md:mb-10 md:px-8 lg:px-12">
           <h2 className="text-5xl font-semibold leading-none text-[var(--og-blue)] md:text-7xl">
-            SELECTED WORK
+            RECENT CUSTOM PROJECTS
           </h2>
           <p className="mx-auto max-w-md text-base leading-7 text-[var(--og-muted)] md:text-lg">
             A closer look at the goods, finishes, packaging, and production
