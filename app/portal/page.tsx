@@ -24,7 +24,7 @@ export default function PortalLoginPage() {
           >
             WELCOME BACK
           </h1>
-          <p className="text-base leading-7 text-[#1C1C1C]/68">Sign in to your Orange Goods account.</p>
+          <p className="text-base leading-7 text-[#1C1C1C]/68">Sign in to your Orange Goods account</p>
         </div>
         <div className="mt-8">
           <PortalLoginForm />

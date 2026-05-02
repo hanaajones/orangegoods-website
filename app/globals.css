@@ -143,6 +143,23 @@ img {
   font-family: var(--font-accent);
 }
 
+.insight-content > * + * {
+  margin-top: 1.35rem;
+}
+
+.insight-content h2 {
+  margin-top: 2.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--og-blue);
+}
+
+.insight-content p {
+  font-family: var(--font-body);
+}
+
 h1, h2, h3 {
   font-family: var(--font-display);
   text-transform: uppercase;

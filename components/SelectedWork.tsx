@@ -139,7 +139,7 @@ export function SelectedWork() {
           </h2>
           <p className="max-w-md text-base leading-7 text-[var(--og-muted)] md:text-lg">
             A closer look at the goods, finishes, packaging, and production
-            details brands actually send out into the world.
+            details brands actually send out into the world
           </p>
         </div>
 

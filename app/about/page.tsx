@@ -9,27 +9,27 @@ const sections = [
   {
     title: "A Passion for Quality",
     eyebrow: "Easton's Story",
-    body: "Easton Jones founded Orange Goods in Southern California after more than 15 years in custom merch, product design, and manufacturing. Family, surfing, quality, and craft shape how he works: make goods worth keeping, pay attention to the details, and treat every project like it belongs to a real person.",
+    body: "Easton Jones founded Orange Goods in Southern California after more than 15 years in custom merch, product design, and manufacturing. Family, surfing, quality, and craft shape how he works: make goods worth keeping, pay attention to the details, and treat every project like it belongs to a real person",
   },
   {
     title: "Product Experts",
     eyebrow: "End-User First",
-    body: "We do not build mass-produced junk or cheap giveaway trash. We think about who will wear it, carry it, wash it, gift it, and keep it, then design the product around that real use.",
+    body: "We do not build mass-produced junk or cheap giveaway trash. We think about who will wear it, carry it, wash it, gift it, and keep it, then design the product around that real use",
   },
   {
     title: "Design Experts",
     eyebrow: "In House",
-    body: "Our designers create custom artwork, hand-drawn illustrations, timeless emblems, and production-ready layouts that feel like they belong to your brand instead of a template library.",
+    body: "Our designers create custom artwork, hand-drawn illustrations, timeless emblems, and production-ready layouts that feel like they belong to your brand instead of a template library",
   },
   {
     title: "Sustainability",
     eyebrow: "Less Waste",
-    body: "Quality goods stay in rotation longer, which means less waste. We also support upcycled materials programs for projects that need a more responsible path from concept to delivery.",
+    body: "Quality goods stay in rotation longer, which means less waste. We also support upcycled materials programs for projects that need a more responsible path from concept to delivery",
   },
   {
     title: "Small Town Service, Global Reach",
     eyebrow: "Personal Attention",
-    body: "Orange Goods is a small team, not a corporate warehouse. You get direct communication and dependable execution for projects ranging from Fortune 500 brand programs to startup launches.",
+    body: "Orange Goods is a small team, not a corporate warehouse. You get direct communication and dependable execution for projects ranging from Fortune 500 brand programs to startup launches",
   },
 ];
 
@@ -46,7 +46,7 @@ export default function AboutPage() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/85 md:text-xl">
             A small team making custom goods with product knowledge, design
-            taste, and real care for what people keep.
+            taste, and real care for what people keep
           </p>
         </div>
       </section>
@@ -58,20 +58,20 @@ export default function AboutPage() {
               The Meaning of Orange Goods
             </p>
             <h2 className="mt-4 text-4xl leading-tight md:text-6xl">
-              Not random. Not trendy.
+              Not random. Not trendy
             </h2>
           </div>
           <div className="space-y-5 text-lg leading-8 text-[var(--og-muted)]">
             <p>
               &quot;Orange Goods&quot; is an actual retail term. Specialty goods are
               moderately durable items, like clothing, that need periodic
-              replacement due to regular use.
+              replacement due to regular use
             </p>
             <p>
               They sit between yellow goods, which are convenience items, and
               red goods, which are shopping items. That is the name because it
               literally describes what we make: useful goods built to live with
-              your audience.
+              your audience
             </p>
           </div>
         </section>
@@ -113,11 +113,11 @@ export default function AboutPage() {
               Made With Care
             </p>
             <h2 className="mt-4 text-4xl leading-tight text-white md:text-6xl">
-              Goods worth keeping.
+              Goods worth keeping
             </h2>
             <p className="mt-5 text-lg leading-8 text-white/78">
               The best branded goods do not feel disposable. They feel useful,
-              specific, and considered from the first sketch to the last box.
+              specific, and considered from the first sketch to the last box
             </p>
             <Link
               href={startProjectHref}
@@ -131,7 +131,7 @@ export default function AboutPage() {
 
       <CTASection
         title="Ready to make something worth keeping?"
-        description="Tell us what you are making, how many you need, and when it has to land."
+        description="Tell us what you are making, how many you need, and when it has to land"
         buttonLabel="Start a Project"
         buttonHref={startProjectHref}
       />

@@ -18,10 +18,10 @@ export default function PortalAccountPage() {
           className="text-4xl font-extrabold uppercase tracking-tight text-[#FF4200] sm:text-5xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Account settings.
+          Account settings
         </h1>
         <p className="max-w-3xl text-base leading-7 text-[#1C1C1C]/66">
-          Manage your profile, addresses, and password.
+          Manage your profile, addresses, and password
         </p>
       </section>
 

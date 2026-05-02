@@ -311,7 +311,7 @@ export function ReadyMadeServicePage({
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="faq" className="mx-auto max-w-6xl">
-          <SectionHeader title="FAQ." />
+          <SectionHeader title="FAQ" />
           <div className="mt-8 grid gap-3">
             {content.faqs.map((faq) => (
               <details

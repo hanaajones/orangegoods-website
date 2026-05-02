@@ -18,7 +18,7 @@ export default async function LandingPageTemplate({
         </h1>
         <p className="mt-4 max-w-2xl text-lg leading-7 text-[var(--og-muted)]">
           Scaffolded route for future campaign-specific landing pages. Content can
-          be hardcoded now and extracted into a CMS later.
+          be hardcoded now and extracted into a CMS later
         </p>
       </section>
     </main>

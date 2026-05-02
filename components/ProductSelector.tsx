@@ -35,7 +35,7 @@ export function ProductSelector({
             Product Selector
           </p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-            Pick a shape, then build every detail from the ground up.
+            Pick a shape, then build every detail from the ground up
           </h2>
         </div>
 

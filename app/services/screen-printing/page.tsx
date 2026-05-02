@@ -45,44 +45,44 @@ const content: ReadyMadeServicePageContent = {
   hero: {
     title: "Ready Made Screen Printing",
     description:
-      "Premium blanks. Screen printed in downtown LA. In your hands in 1-2 weeks.",
+      "Premium blanks. Screen printed in downtown LA. In your hands in 1-2 weeks",
     image: screenPrintingHeroImage,
     alt: "Orange Goods screen printing work",
     primaryHref:
       "mailto:hello@orangegoods.co?subject=Ready%20Made%20Screen%20Printing",
   },
   overview: {
-    title: "Bold prints. Fast turns.",
+    title: "Bold prints. Fast turns",
     cards: [
       {
         title: "Downtown LA",
-        body: "Printed 10 minutes from our office. Local quality control, no international shipping guesswork.",
+        body: "Printed 10 minutes from our office. Local quality control, no international shipping guesswork",
       },
       {
         title: "1-2 Week Turn",
-        body: "From approved artwork to finished goods in 7-14 days. Rush available.",
+        body: "From approved artwork to finished goods in 7-14 days. Rush available",
       },
     ],
   },
   process: {
-    title: "Simple from start to finish.",
+    title: "Simple from start to finish",
     steps: [
       {
         title: "Choose your blanks",
-        body: "Tees, hoodies, sweatpants, totes, and more. Premium-weight blanks only.",
+        body: "Tees, hoodies, sweatpants, totes, and more. Premium-weight blanks only",
       },
       {
         title: "Share your artwork",
-        body: "Vector files preferred. Up to 6 colors per design. We handle screen setup and color matching.",
+        body: "Vector files preferred. Up to 6 colors per design. We handle screen setup and color matching",
       },
       {
         title: "Delivered fast",
-        body: "In-hand in 1-2 weeks. Shipped direct or available for LA pickup.",
+        body: "In-hand in 1-2 weeks. Shipped direct or available for LA pickup",
       },
     ],
   },
   products: {
-    title: "What we print on.",
+    title: "What we print on",
     items: [
       {
         name: "Tees",
@@ -117,55 +117,55 @@ const content: ReadyMadeServicePageContent = {
     ],
   },
   pricing: {
-    title: "Transparent pricing.",
+    title: "Transparent pricing",
     description:
-      "Screen printing pricing depends on product, ink colors, and quantity. More colors = slightly higher cost per unit.",
+      "Screen printing pricing depends on product, ink colors, and quantity. More colors = slightly higher cost per unit",
     cards: [
       {
         title: "100 Piece Minimum",
-        body: "Mix styles across the same design. 50 tees + 50 hoodies = one order, one graphic.",
+        body: "Mix styles across the same design. 50 tees + 50 hoodies = one order, one graphic",
       },
       {
         title: "Quote-Based Pricing",
-        body: "We'll send an exact quote within 1 business day.",
+        body: "We'll send an exact quote within 1 business day",
       },
     ],
     ctaHref:
       "mailto:hello@orangegoods.co?subject=Ready%20Made%20Screen%20Print%20Quote",
   },
   gallery: {
-    title: "From the shop.",
+    title: "From the shop",
     items: galleryImages,
   },
   faqs: [
     {
       question: "What's the minimum order?",
-      answer: "100 pieces. Mix styles - same artwork, different products.",
+      answer: "100 pieces. Mix styles - same artwork, different products",
     },
     {
       question: "How many ink colors can I use?",
       answer:
-        "Up to 6 spot colors. More colors may affect pricing - we'll detail it in your quote.",
+        "Up to 6 spot colors. More colors may affect pricing - we'll detail it in your quote",
     },
     {
       question: "How long does it take?",
-      answer: "1-2 weeks from artwork approval. Rush available on select orders.",
+      answer: "1-2 weeks from artwork approval. Rush available on select orders",
     },
     {
       question: "What file formats do you need?",
       answer:
-        ".ai or .eps vector files preferred. RGB/Pantone color callouts appreciated.",
+        ".ai or .eps vector files preferred. RGB/Pantone color callouts appreciated",
     },
     {
       question: "What's the difference between Ready Made and OG Crafted?",
       answer:
-        "Ready Made is fast - premium blanks, decorated locally, quick turns. OG Crafted is built from scratch for brands that want fully custom materials and construction.",
+        "Ready Made is fast - premium blanks, decorated locally, quick turns. OG Crafted is built from scratch for brands that want fully custom materials and construction",
     },
   ],
   finalCta: {
-    title: "In your hands in 1-2 weeks.",
+    title: "In your hands in 1-2 weeks",
     description:
-      "Send us your artwork, quantity, and preferred blanks. We'll quote the print run fast.",
+      "Send us your artwork, quantity, and preferred blanks. We'll quote the print run fast",
     href: "mailto:hello@orangegoods.co?subject=Ready%20Made%20Screen%20Printing",
   },
 };

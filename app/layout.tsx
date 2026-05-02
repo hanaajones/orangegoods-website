@@ -6,14 +6,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://orangegoods.co"),
   title: "Orange Goods — Custom Branded Merchandise, Los Angeles",
   description:
-    "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team.",
+    "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Orange Goods — Custom Branded Merchandise, Los Angeles",
     description:
-      "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team.",
+      "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team",
     url: "https://orangegoods.co",
     siteName: "Orange Goods",
     images: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Orange Goods — Custom Branded Merchandise, Los Angeles",
     description:
-      "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team.",
+      "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team",
     images: ["https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif"],
   },
 };

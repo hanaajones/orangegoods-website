@@ -77,11 +77,11 @@ export function NewsletterPopup() {
                 className="text-4xl uppercase leading-tight text-[#FF4200] md:text-5xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Get $150 off your first order.
+                Get $150 off your first order
               </h2>
 
               <p className="mt-4 text-lg leading-7 text-[#1C1C1C]/70">
-                Sign up and we&apos;ll apply it to your project.
+                Sign up and we&apos;ll apply it to your project
               </p>
 
               <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
@@ -103,7 +103,7 @@ export function NewsletterPopup() {
               </form>
 
               <p className="mt-5 text-sm text-[#1C1C1C]/40">
-                Valid on orders 100+ pieces. One per customer.
+                Valid on orders 100+ pieces. One per customer
               </p>
             </>
           ) : (
@@ -117,10 +117,10 @@ export function NewsletterPopup() {
                 className="text-3xl uppercase text-[#FF4200]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                You&apos;re in.
+                You&apos;re in
               </h2>
               <p className="mt-3 text-base text-[#1C1C1C]/60">
-                Mention this when you start your project.
+                Mention this when you start your project
               </p>
               <button
                 onClick={dismiss}

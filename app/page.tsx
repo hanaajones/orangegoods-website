@@ -47,10 +47,10 @@ export default function HomePage() {
           className="mt-1 text-2xl uppercase text-[#FF4200] md:text-3xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Take our 60-second quiz.
+          Take our 60-second quiz
         </h3>
         <p className="mx-auto mt-2 max-w-sm text-sm text-[#1C1C1C]/50">
-          Answer a few questions and we&apos;ll recommend the right products for your brand.
+          Answer a few questions and we&apos;ll recommend the right products for your brand
         </p>
         <Link href="/quiz" className="btn-og mt-6 inline-flex">
           FIND MY GOODS
@@ -70,14 +70,14 @@ export default function HomePage() {
               The Merch Problem
             </p>
             <h2 className="mt-4 max-w-md text-3xl font-semibold leading-tight md:text-4xl">
-              Most merch is an afterthought.
+              Most merch is an afterthought
             </h2>
           </div>
           <div className="space-y-4 text-base leading-7 text-[#dacbbb] md:text-lg">
             <p>
               Sourced from five vendors. Arrived off-brand. Sat in a closet.
               Orange Goods fixes that - one team handles design, production,
-              and fulfillment from day one.
+              and fulfillment from day one
             </p>
           </div>
         </section>
@@ -91,17 +91,17 @@ export default function HomePage() {
                 One Team, End to End
               </p>
               <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-                From first brief to final shipment.
+                From first brief to final shipment
               </h2>
             </div>
             <div className="space-y-4 text-base leading-7 text-[var(--og-muted)] md:text-lg">
               <p>
                 Design, production, and fulfillment handled in a single process.
-                No vendor juggling, no broken phone games.
+                No vendor juggling, no broken phone games
               </p>
               <p>
                 Quality goods, direct communication, and a faster path from
-                concept to delivery.
+                concept to delivery
               </p>
             </div>
           </div>
@@ -109,8 +109,8 @@ export default function HomePage() {
       </Reveal>
       <ProcessSteps
         eyebrow="How It Works"
-        title="A clear path from brief to delivery."
-        description="Structured enough to keep the project moving. Human enough to keep the work clear."
+        title="A clear path from brief to delivery"
+        description="Structured enough to keep the project moving. Human enough to keep the work clear"
         steps={homeProcess}
       />
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
@@ -132,13 +132,13 @@ export default function HomePage() {
               Southern California
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-              Real people. Real craft. No corporate nonsense.
+              Real people. Real craft. No corporate nonsense
             </h2>
             <p className="mt-5 text-base leading-7 text-[var(--og-muted)] md:text-lg">
               Orange Goods is a small, tight-knit team based in Southern California.
               We&apos;re designers, manufacturers, and brand obsessives — not a
               fulfillment warehouse or a faceless platform. Every project gets
-              a real person behind it who cares about the outcome.
+              a real person behind it who cares about the outcome
             </p>
             {/* Trust strip */}
             <div className="mt-8 grid grid-cols-2 gap-4">
@@ -159,7 +159,7 @@ export default function HomePage() {
       </Reveal>
       <CTASection
         title="Ready to make something worth keeping?"
-        description="Tell us what you're making, how many you need, and when it has to land."
+        description="Tell us what you're making, how many you need, and when it has to land"
         buttonLabel="Start a Project"
         buttonHref={startProjectHref}
       />

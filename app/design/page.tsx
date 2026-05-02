@@ -90,15 +90,15 @@ const services = [
 const processSteps = [
   {
     title: "GIVE US THE DEETS",
-    body: "We start with a conversation about your brand, your goals, and what you need. Vision, values, audience, reference points.",
+    body: "We start with a conversation about your brand, your goals, and what you need. Vision, values, audience, reference points",
   },
   {
     title: "DEVELOPMENT",
-    body: "Our team gets to work. Concepts, drafts, revisions. You'll see work in progress and have input at every stage.",
+    body: "Our team gets to work. Concepts, drafts, revisions. You'll see work in progress and have input at every stage",
   },
   {
     title: "FINALIZATION",
-    body: "Approved designs delivered as hi-res vector files, production-ready for any decoration method.",
+    body: "Approved designs delivered as hi-res vector files, production-ready for any decoration method",
   },
 ];
 
@@ -107,7 +107,7 @@ const pricingPackages = [
     name: "CITRUS CLASSIC",
     price: "$3,000",
     description:
-      "A great way to explore new design ideas and find what resonates with your brand.",
+      "A great way to explore new design ideas and find what resonates with your brand",
     features: ["5 designs", "2 revisions included", "60% deposit to start"],
     href: "mailto:hello@orangegoods.co?subject=Citrus%20Classic%20Package",
   },
@@ -115,7 +115,7 @@ const pricingPackages = [
     name: "CALIFORNIA GROVE",
     price: "$4,000",
     description:
-      "A step up to refine your brand's identity with designs that elevate your presence.",
+      "A step up to refine your brand's identity with designs that elevate your presence",
     features: ["10 designs", "2 revisions included", "60% deposit to start"],
     href: "mailto:hello@orangegoods.co?subject=California%20Grove%20Package",
     featured: true,
@@ -124,7 +124,7 @@ const pricingPackages = [
     name: "GOLDEN ORCHARD",
     price: "$5,500",
     description:
-      "A comprehensive set of designs that make a bold impact and set your brand apart.",
+      "A comprehensive set of designs that make a bold impact and set your brand apart",
     features: ["15 designs", "3 revisions included", "60% deposit to start"],
     href: "mailto:hello@orangegoods.co?subject=Golden%20Orchard%20Package",
   },
@@ -175,11 +175,11 @@ export default function DesignPage() {
             Graphic & Brand Design
           </p>
           <h1 className="mt-5 max-w-5xl text-6xl leading-none text-white md:text-8xl lg:text-9xl">
-            FORGET AI — WE&apos;VE GOT HUMANS.
+            FORGET AI — WE&apos;VE GOT HUMANS
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/80 md:text-xl">
             In-house designers who know merch. From apparel graphics to full
-            brand systems — built by people who&apos;ve seen it printed.
+            brand systems — built by people who&apos;ve seen it printed
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link
@@ -277,7 +277,7 @@ export default function DesignPage() {
         <section id="pricing" className="mx-auto max-w-6xl scroll-mt-28">
           <SectionHeading
             title="PACKAGES & PRICING"
-            description="Select a package that works for you. We'll reach out with next steps."
+            description="Select a package that works for you. We'll reach out with next steps"
           />
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
             {pricingPackages.map((pkg) => (

@@ -8,7 +8,7 @@ interface Message {
 }
 
 const PHONE = "2133764663";
-const GREETING = "Hey! 👋 What can we help you with today? Drop us a message and we'll text you back.";
+const GREETING = "Hey! 👋 What can we help you with today? Drop us a message and we'll text you back";
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ export function ChatWidget() {
       { from: "user", text },
       {
         from: "bot",
-        text: "Got it! Tap the button below to send this to us via text — we'll reply to your phone.",
+        text: "Got it! Tap the button below to send this to us via text — we'll reply to your phone",
       },
     ]);
     setInput("");

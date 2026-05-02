@@ -66,7 +66,7 @@ export function PortalShell({ children }: { children: ReactNode }) {
           >
             Customer Portal
           </p>
-          <p className="mt-3">Track custom goods, review order details, and keep account information current.</p>
+          <p className="mt-3">Track custom goods, review order details, and keep account information current</p>
         </div>
       </aside>
       <main className="mx-auto w-full max-w-7xl px-6 py-10 lg:px-10 lg:py-12">{children}</main>

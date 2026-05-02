@@ -28,7 +28,7 @@ export function Testimonials({
             Trusted By Real Brands
           </p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-            Trusted by the greats.
+            Trusted by the greats
           </h2>
         </div>
 

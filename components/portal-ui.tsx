@@ -106,7 +106,7 @@ export function PortalOrderTimeline({ order }: { order: PortalOrder }) {
       label: order.artworkApprovedDate ? "Artwork approved" : "Awaiting approval",
       detail: order.artworkApprovedDate,
       state: order.artworkApprovedDate ? "complete" : "current",
-      icon: order.artworkApprovedDate ? "✓" : "...",
+      icon: order.artworkApprovedDate ? "✓" : "..",
     },
     {
       label: order.timelineState.productionComplete ? "Complete" : "In production",

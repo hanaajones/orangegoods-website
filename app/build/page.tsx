@@ -66,10 +66,10 @@ export default function BuildPage() {
       <section className="bg-[#0B32A0] px-4 py-16 text-white sm:px-6 md:py-24 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <h1 className="max-w-4xl text-6xl leading-[0.86] text-[#FF4200] sm:text-7xl md:text-8xl lg:text-9xl">
-            LET&apos;S MAKE SOMETHING.
+            LET&apos;S MAKE SOMETHING
           </h1>
           <p className="mt-6 max-w-2xl font-body text-lg leading-8 text-white/85 md:text-2xl">
-            Tell us what you need. We&apos;ll handle the rest.
+            Tell us what you need. We&apos;ll handle the rest
           </p>
         </div>
       </section>
@@ -92,7 +92,7 @@ export default function BuildPage() {
             <section className="transition-opacity duration-300">
               <StepHeader
                 title="WHAT ARE YOU MAKING?"
-                subtext="Pick everything that applies."
+                subtext="Pick everything that applies"
               />
 
               <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
@@ -146,7 +146,7 @@ export default function BuildPage() {
             <section className="transition-opacity duration-300">
               <StepHeader
                 title="HOW MANY DO YOU NEED?"
-                subtext="Give us a ballpark - we'll dial it in."
+                subtext="Give us a ballpark - we'll dial it in"
               />
 
               <div className="mt-7 grid gap-7">
@@ -171,7 +171,7 @@ export default function BuildPage() {
 
           {step === 3 && !success ? (
             <section className="transition-opacity duration-300">
-              <StepHeader title="WHO ARE YOU?" subtext="Last step - we promise." />
+              <StepHeader title="WHO ARE YOU?" subtext="Last step - we promise" />
 
               <div className="mt-7 grid gap-5 md:grid-cols-2">
                 <Field name="firstName" label="First Name" autoComplete="given-name" />
@@ -212,11 +212,11 @@ export default function BuildPage() {
                   <CheckIcon className="size-11" />
                 </div>
                 <h2 className="text-5xl leading-none text-[#FF4200] sm:text-6xl">
-                  YOU&apos;RE ON THE LIST.
+                  YOU&apos;RE ON THE LIST
                 </h2>
                 <p className="mx-auto mt-5 max-w-xl font-body text-lg leading-8 text-white/85">
                   We&apos;ll review your project and get back to you within 1 business day.
-                  Real humans, real fast.
+                  Real humans, real fast
                 </p>
                 <Link href="/" className="btn-og-white mt-8">
                   Back to Homepage

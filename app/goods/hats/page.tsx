@@ -99,11 +99,11 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-10 md:px-8 lg:px-12">
         <section id="overview" className="mx-auto max-w-6xl">
-          <SectionHeader eyebrow="Overview" title="Built to spec." />
+          <SectionHeader eyebrow="Overview" title="Built to spec" />
           <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--og-muted)]">
             Orange Goods custom hats are built to spec - your fabric, your
             shape, your finish. We handle design, production, and delivery from
-            a single point of contact.
+            a single point of contact
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {hatCallouts.map((callout) => (
@@ -125,7 +125,7 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="pricing" className="mx-auto max-w-6xl">
-          <SectionHeader title="Transparent pricing. No surprises." />
+          <SectionHeader title="Transparent pricing. No surprises" />
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {hatPricing.map((card, index) => (
               <article
@@ -162,7 +162,7 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="styles" className="mx-auto max-w-6xl">
-          <SectionHeader title="Hat styles." />
+          <SectionHeader title="Hat styles" />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {hatStyles.map((style) => (
               <article
@@ -189,7 +189,7 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="materials" className="mx-auto max-w-6xl">
-          <SectionHeader title="Materials." />
+          <SectionHeader title="Materials" />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {hatMaterials.map((material) => (
               <article
@@ -213,7 +213,7 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="decoration" className="mx-auto max-w-6xl">
-          <SectionHeader title="Decoration options." />
+          <SectionHeader title="Decoration options" />
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {hatDecoration.map((group) => (
               <article
@@ -242,14 +242,14 @@ export default function HatsPage() {
       <Gallery
         id="gallery"
         eyebrow="From the shop"
-        title="From the shop."
-        description="Recent product, decoration, packaging, and finishing work."
+        title="From the shop"
+        description="Recent product, decoration, packaging, and finishing work"
         items={hatGallery}
       />
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="process" className="mx-auto max-w-6xl">
-          <SectionHeader title="How it works." />
+          <SectionHeader title="How it works" />
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {hatProcess.map((step, index) => (
               <article
@@ -277,7 +277,7 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="faq" className="mx-auto max-w-6xl">
-          <SectionHeader title="FAQ." />
+          <SectionHeader title="FAQ" />
           <div className="mt-8 grid gap-3">
             {hatFaqs.map((faq) => (
               <details
@@ -298,7 +298,7 @@ export default function HatsPage() {
 
       <CTASection
         title="Ready to start your hat project?"
-        description="Share your style, quantity, timeline, and artwork. We'll shape the plan from there."
+        description="Share your style, quantity, timeline, and artwork. We'll shape the plan from there"
         buttonLabel="Start a Project"
         buttonHref={startHatsHref}
       />

@@ -125,7 +125,7 @@ export function Footer() {
       <div className="bg-[#0B32A0] px-4 py-4 md:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
           <p className="text-xs text-white/60">
-            © {new Date().getFullYear()} Orange Goods. All rights reserved.
+            © {new Date().getFullYear()} Orange Goods. All rights reserved
           </p>
           <p className="text-xs text-white/60">South Bay, California</p>
         </div>

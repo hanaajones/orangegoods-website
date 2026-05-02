@@ -17,10 +17,10 @@ export default function PortalOrdersPage() {
           className="text-4xl font-extrabold uppercase tracking-tight text-[#FF4200] sm:text-5xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Past and active orders.
+          Past and active orders
         </h1>
         <p className="max-w-3xl text-base leading-7 text-[#1C1C1C]/66">
-          Review production status, delivery history, and reorder details for every Orange Goods custom goods program.
+          Review production status, delivery history, and reorder details for every Orange Goods custom goods program
         </p>
       </section>
 

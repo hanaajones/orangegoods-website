@@ -56,7 +56,7 @@ export default function GoodsPage() {
             CUSTOM GOODS
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-            Everything your brand wears, made right.
+            Everything your brand wears, made right
           </p>
         </div>
       </section>

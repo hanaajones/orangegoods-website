@@ -8,17 +8,17 @@ const sections = [
       {
         question: "What's the minimum order quantity?",
         answer:
-          "100 pieces minimum across the board. You can mix styles — for example, hats and tees in the same order — as long as the design is consistent and the total hits 100. Ready Made orders follow the same rule.",
+          "100 pieces minimum across the board. You can mix styles — for example, hats and tees in the same order — as long as the design is consistent and the total hits 100. Ready Made orders follow the same rule",
       },
       {
         question: "How long does it take?",
         answer:
-          "OG Crafted typically takes 3-6 weeks from final approval. Ready Made (local embroidery or screen print) is 1-2 weeks.",
+          "OG Crafted typically takes 3-6 weeks from final approval. Ready Made (local embroidery or screen print) is 1-2 weeks",
       },
       {
         question: "What's the difference between OG Crafted and Ready Made?",
         answer:
-          "OG Crafted is fully custom - your fabric, your shape, built from scratch. Ready Made uses premium blanks decorated locally in downtown LA for faster turns.",
+          "OG Crafted is fully custom - your fabric, your shape, built from scratch. Ready Made uses premium blanks decorated locally in downtown LA for faster turns",
       },
     ],
   },
@@ -28,11 +28,11 @@ const sections = [
       {
         question: "Do I need to have artwork ready?",
         answer:
-          "No. We offer full graphic design services. We can work from a brief, reference images, or from scratch. Vector files (.ai, .eps, .pdf) are preferred for existing artwork.",
+          "No. We offer full graphic design services. We can work from a brief, reference images, or from scratch. Vector files (.ai, .eps, .pdf) are preferred for existing artwork",
       },
       {
         question: "Can you design my merch for me?",
-        answer: "Yes. Check out our Design page for packages and pricing.",
+        answer: "Yes. Check out our Design page for packages and pricing",
       },
     ],
   },
@@ -42,16 +42,16 @@ const sections = [
       {
         question: "How is pricing determined?",
         answer:
-          "Pricing depends on product, quantity, materials, and decoration. We quote every project individually to make sure it's accurate.",
+          "Pricing depends on product, quantity, materials, and decoration. We quote every project individually to make sure it's accurate",
       },
       {
         question: "Are there hidden fees?",
         answer:
-          "No. Our quotes are all-in - product, decoration, and standard US shipping included. No setup fees, no surprise charges.",
+          "No. Our quotes are all-in - product, decoration, and standard US shipping included. No setup fees, no surprise charges",
       },
       {
         question: "What's your payment structure?",
-        answer: "We require a deposit to start. Full payment before shipment.",
+        answer: "We require a deposit to start. Full payment before shipment",
       },
     ],
   },
@@ -61,12 +61,12 @@ const sections = [
       {
         question: "Do you ship internationally?",
         answer:
-          "We primarily ship to US addresses. Ask about international shipping when you start a project.",
+          "We primarily ship to US addresses. Ask about international shipping when you start a project",
       },
       {
         question: "Can I pick up locally in LA?",
         answer:
-          "Yes. We're based in downtown Los Angeles. Local pickup is available for Ready Made orders.",
+          "Yes. We're based in downtown Los Angeles. Local pickup is available for Ready Made orders",
       },
     ],
   },
@@ -76,12 +76,12 @@ const sections = [
       {
         question: "What products do you offer?",
         answer:
-          "Hats, apparel, socks, drinkware, bags, accessories, packaging, blankets, and more. Check our goods pages for specifics.",
+          "Hats, apparel, socks, drinkware, bags, accessories, packaging, blankets, and more. Check our goods pages for specifics",
       },
       {
         question: "Can I see samples before ordering?",
         answer:
-          "Yes. We can provide samples for most products. Ask about sample availability when you start your project.",
+          "Yes. We can provide samples for most products. Ask about sample availability when you start your project",
       },
     ],
   },
@@ -132,7 +132,7 @@ export default function FaqPage() {
 
       <CTASection
         title="Still have questions?"
-        description="Send us a note and we'll point you in the right direction."
+        description="Send us a note and we'll point you in the right direction"
         buttonLabel="Contact Us"
         buttonHref="/contact"
       />

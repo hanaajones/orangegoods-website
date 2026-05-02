@@ -19,10 +19,10 @@ export default function PortalDashboardPage() {
           className="text-4xl font-extrabold uppercase tracking-tight text-[#FF4200] sm:text-5xl"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Good to see you, Alex.
+          Good to see you, Alex
         </h1>
         <p className="max-w-3xl text-base leading-7 text-[#1C1C1C]/66">
-          Here&apos;s the current snapshot of your Orange Goods account, recent custom goods orders, and the next steps your team can take.
+          Here&apos;s the current snapshot of your Orange Goods account, recent custom goods orders, and the next steps your team can take
         </p>
       </section>
 

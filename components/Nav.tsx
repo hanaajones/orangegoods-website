@@ -170,7 +170,7 @@ export function Nav() {
                       Start A Project
                     </p>
                     <p className="mt-3 text-3xl font-semibold leading-tight">
-                      From concept to delivery, handled.
+                      From concept to delivery, handled
                     </p>
                     <div className="mt-6 flex flex-wrap gap-3">
                       <Link
