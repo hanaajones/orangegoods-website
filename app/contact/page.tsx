@@ -155,10 +155,27 @@ export default function ContactPage() {
               </label>
             </div>
 
+            {/* File upload */}
+            <div className="space-y-2">
+              <label className="block">
+                <span className="text-sm font-medium text-[#1C1C1C]">Upload artwork or files <span className="font-normal text-[#1C1C1C]/50">(optional)</span></span>
+                <input
+                  type="file"
+                  name="artwork"
+                  multiple
+                  accept=".ai,.eps,.pdf,.svg,.png,.jpg,.jpeg,.zip"
+                  className="mt-2 block w-full cursor-pointer rounded-xl border border-[#0B32A0]/20 bg-[#F3EFE7] px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:rounded-lg file:border-0 file:bg-[#0B32A0] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-white file:transition hover:file:bg-[#081E6F]"
+                />
+              </label>
+              <p className="text-xs text-[#1C1C1C]/45">
+                Vector files preferred — AI, EPS, PDF, SVG. PNG/JPG accepted at 300dpi+. Have larger files? Share a Dropbox or WeTransfer link in your message.
+              </p>
+            </div>
+
             <button
               type="submit"
               disabled={submitting}
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05] disabled:cursor-wait disabled:opacity-70 md:w-fit"
+              className="btn-og inline-flex w-full justify-center md:w-fit"
             >
               {submitting ? "Sending" : "Send Message"}
             </button>
