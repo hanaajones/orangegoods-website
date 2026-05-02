@@ -2,6 +2,22 @@
 
 /* ── Custom Fonts ── */
 @font-face {
+  font-family: 'Sirenia';
+  src: url('/fonts/sirenia-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sirenia';
+  src: url('/fonts/sirenia-semi-bold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'FatFrank';
   src: url('/fonts/FatFrank-Regular.woff2') format('woff2'),
        url('/fonts/FatFrank-Regular.woff') format('woff');
@@ -57,15 +73,24 @@
   --font-display: 'FatFrank', sans-serif;
   --font-body: 'NoirPro', sans-serif;
   --font-accent: 'JukeboxJohnny', cursive;
+  --font-sirenia: 'Sirenia', sans-serif;
 
-  --og-orange: #ff4200;
-  --og-ink: #16110f;
-  --og-cream: #f5efe6;
-  --og-sand: #e3d4c1;
-  --og-clay: #c6a27d;
-  --og-muted: #69594f;
-  --background: #f7f2ea;
-  --foreground: #16110f;
+  /* ── Official OG Brand Colors ── */
+  /* RULE: Never use black or dark text on orange backgrounds. Always use white. */
+  --og-orange: #FF4200;
+  --og-blue: #0B32A0;
+  --og-tangerine: #FF7F00;
+  --og-dark-blue: #081E6F;
+  --og-warm-grey: #F3EFE7;
+  --og-sand: #E4DFCD;
+  --og-off-black: #1C1C1C;
+
+  /* ── Aliases (used throughout components) ── */
+  --og-ink: #1C1C1C;
+  --og-cream: #F3EFE7;
+  --og-muted: #5a5a5a;
+  --background: #F3EFE7;
+  --foreground: #1C1C1C;
 }
 
 * {
@@ -80,13 +105,12 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(255, 66, 0, 0.14), transparent 26%),
-    linear-gradient(180deg, #fbf7f1 0%, #f5efe6 52%, #f2e6d8 100%);
+    radial-gradient(circle at top left, rgba(255, 66, 0, 0.10), transparent 28%),
+    linear-gradient(180deg, #F3EFE7 0%, #EDE8DC 60%, #E4DFCD 100%);
   color: var(--foreground);
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 
@@ -107,3 +131,108 @@ img {
 .text-balance {
   text-wrap: balance;
 }
+
+/* ── Font utility classes ── */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-body {
+  font-family: var(--font-body);
+}
+.font-accent {
+  font-family: var(--font-accent);
+}
+
+.insight-content > * + * {
+  margin-top: 1.35rem;
+}
+
+.insight-content h2 {
+  margin-top: 2.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--og-blue);
+}
+
+.insight-content p {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 50s linear infinite;
+}
+
+/* ── Button base ──
+   All CTA buttons share: rounded-xl, FatFrank uppercase, px-6 py-3, text-sm, tracking-wide
+   Lift animation on hover, no color change
+   Color variants: .btn-og (orange), .btn-og-white (white on dark/orange bg)
+*/
+.btn-og,
+.btn-og-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  padding: 0.7rem 1.5rem;
+  min-height: 44px;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 2px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+.btn-og {
+  background-color: #FF4200;
+  color: #ffffff;
+}
+.btn-og:hover {
+  transform: translateY(-3px);
+}
+.btn-og:active  { transform: translateY(-1px); }
+
+.btn-og-white {
+  background-color: #ffffff;
+  color: #FF4200;
+}
+.btn-og-white:hover {
+  transform: translateY(-3px);
+}
+.btn-og-white:active { transform: translateY(-1px); }
+
+/* Legacy alias — keep working */
+.btn-lift,
+.btn-primary,
+.btn-secondary {
+  transition: transform 0.15s ease !important;
+}
+.btn-lift:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-3px) !important;
+}
+.btn-lift:active,
+.btn-primary:active,
+.btn-secondary:active { transform: translateY(-1px) !important; }

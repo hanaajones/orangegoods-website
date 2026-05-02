@@ -34,8 +34,8 @@ export function ProductSelector({
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
             Product Selector
           </p>
-          <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
-            Pick a shape, then build every detail from the ground up.
+          <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
+            Pick a shape, then build every detail from the ground up
           </h2>
         </div>
 
@@ -50,8 +50,8 @@ export function ProductSelector({
                 onClick={() => setActiveId(style.id)}
                 className={`min-h-[15rem] min-w-[16rem] snap-start rounded-[1.75rem] border p-5 text-left transition ${
                   active
-                    ? "border-[var(--og-orange)] bg-[#1d1714] text-[#f5efe6]"
-                    : "border-black/10 bg-[rgba(255,248,241,0.86)] text-[var(--og-ink)]"
+                    ? "border-[var(--og-orange)] bg-[var(--og-blue)] text-[#f5efe6]"
+                    : "border-[#0B32A0]/20 bg-[rgba(255,248,241,0.86)] text-[var(--og-blue)]"
                 }`}
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
@@ -70,11 +70,11 @@ export function ProductSelector({
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-          <section className="rounded-[2rem] border border-black/10 bg-[rgba(255,248,241,0.88)] p-6">
+          <section className="rounded-[2rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-6">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
               Active Style
             </p>
-            <h3 className="mt-4 text-3xl font-semibold text-[var(--og-ink)]">
+            <h3 className="mt-4 text-3xl font-semibold text-[var(--og-blue)]">
               {activeStyle.name}
             </h3>
             <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--og-muted)] md:text-lg">
@@ -93,7 +93,7 @@ export function ProductSelector({
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-black/10 bg-[#1d1714] p-6 text-[#f5efe6]">
+          <section className="rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-6 text-[#f5efe6]">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#ff9e7a]">
               Customization Options
             </p>

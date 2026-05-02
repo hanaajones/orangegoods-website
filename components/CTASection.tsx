@@ -13,8 +13,8 @@ export function CTASection({
   buttonHref: string;
 }) {
   return (
-    <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-      <section className="mx-auto max-w-6xl rounded-[2rem] bg-[#ff4200] p-8 text-white shadow-[0_24px_80px_rgba(255,66,0,0.28)] md:p-10">
+    <Reveal className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
+      <section className="mx-auto max-w-6xl rounded-[2rem] bg-[var(--og-blue)] p-8 text-white shadow-[0_24px_80px_rgba(8,30,111,0.22)] md:p-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/70">
@@ -29,7 +29,7 @@ export function CTASection({
           </div>
           <Link
             href={buttonHref}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#1d1714] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#302722]"
+            className="btn-og-white"
           >
             {buttonLabel}
           </Link>

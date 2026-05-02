@@ -34,7 +34,7 @@ export function Gallery({
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
             {eyebrow}
           </p>
-          <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
+          <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
             {title}
           </h2>
           <p className="mt-4 text-base leading-7 text-[var(--og-muted)] md:text-lg">
@@ -50,7 +50,7 @@ export function Gallery({
               transition={{ duration: 0.2 }}
               type="button"
               onClick={() => setActiveImage(item)}
-              className="group relative min-h-[20rem] min-w-[17rem] snap-start overflow-hidden rounded-[1.75rem] border border-black/10 bg-[#eadaca] text-left shadow-[0_12px_40px_rgba(22,17,15,0.08)]"
+              className="group relative min-h-[20rem] min-w-[17rem] snap-start overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/20 bg-[#eadaca] text-left shadow-[0_12px_40px_rgba(8,30,111,0.08)]"
             >
               <Image
                 src={item.image}
@@ -86,7 +86,7 @@ export function Gallery({
               <button
                 type="button"
                 onClick={() => setActiveImage(null)}
-                className="absolute right-4 top-4 z-10 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-white/90 text-sm font-semibold text-[var(--og-ink)]"
+                className="absolute right-4 top-4 z-10 inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-white/90 text-sm font-semibold text-[var(--og-blue)]"
               >
                 Close
               </button>

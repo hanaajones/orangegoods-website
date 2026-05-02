@@ -4,17 +4,17 @@ type Stat = {
 };
 
 export const startProjectHref =
-  "mailto:hello@orangegoods.co?subject=Start%20a%20Project";
+  "/contact";
 
-export const buildOnlineHref = "https://orangegoods.co/goods/";
+export const buildOnlineHref = "/build";
 
 export const hatImage =
   "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg";
 
 export const homeHero = {
-  title: "Merch people actually keep.",
+  title: "Merch people actually keep",
   description:
-    "Orange Goods handles everything - product development, design, production, and delivery. One team. One process. Built for brands that care about quality.",
+    "Orange Goods handles everything - product development, design, production, and delivery. One team. One process. Built for brands that care about quality",
 };
 
 export const homeStats: Stat[] = [
@@ -23,24 +23,26 @@ export const homeStats: Stat[] = [
   { value: "15+", label: "Product categories" },
 ];
 
-export const twoPathsTitle = "Two ways to order.";
+export const twoPathsTitle = "How do you want to start?";
 
 export const twoPaths = [
   {
-    title: "Start a Project",
+    title: "Talk to Us",
     description:
-      "Fully custom from the ground up. Your fabric, fit, and finish - handled. Hats, apparel, socks, drinkware, and more.",
-    details: ["100+ MOQ", "3-6 weeks", "Full custom"],
+      "Tell us what you need. We'll figure out the right product, production method, and timeline — and send you a quote. Best for custom projects, large orders, or anything with specific requirements.",
+    details: ["Custom products", "Full-service", "Any complexity"],
     href: startProjectHref,
-    label: "Start a Project",
+    label: "Start a Conversation",
+    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
   },
   {
     title: "Build Online",
     description:
-      "Premium blanks, faster turns. Decoration applied cleanly - embroidery, print, patches. Ship in 2-3 weeks.",
-    details: ["50+ MOQ", "2-3 weeks", "Quick turnaround"],
+      "Pick a product, pick a style, upload your logo. We'll send you a quote same day. Best if you know what you want and want to move fast.",
+    details: ["Fast quotes", "Instant start", "Easy process"],
     href: buildOnlineHref,
-    label: "Build Online",
+    label: "Start Building",
+    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
   },
 ];
 
@@ -89,19 +91,19 @@ export const homeGallery = [
 export const testimonials = [
   {
     quote: "They brought our project to life in a new and unique way",
-    name: "Joe K.",
+    name: "Joe K",
     role: "Field Marketing Manager",
     logo: "https://orangegoods.co/wp-content/uploads/2024/06/OrangeGoodsClients_Website_2024-36-3.png",
   },
   {
     quote: "Our go-to for giveaways and super creative options",
-    name: "Robin D.",
+    name: "Robin D",
     role: "Director, Strategic Initiatives, Stanford Medicine",
     logo: "https://orangegoods.co/wp-content/uploads/2024/07/SM_Web_vert_LG.png",
   },
   {
     quote: "Truly happy with the turnout",
-    name: "Sophia P.",
+    name: "Sophia P",
     role: "Marketing Ops Manager, Verve Coffee",
     logo: "https://orangegoods.co/wp-content/uploads/2025/04/OrangeGoodsClients_Website_2025_VerveCoffee.avif",
   },
@@ -133,21 +135,21 @@ export const logos = [
 export const homeProcess = [
   {
     title: "Share your brief",
-    body: "Tell us what you need. Product, quantity, timeline, budget.",
+    body: "Tell us what you need. Product, quantity, timeline, budget",
   },
   {
     title: "We handle design",
-    body: "Mockups, tech packs, approvals. Nothing goes to production without your sign-off.",
+    body: "Mockups, tech packs, approvals. Nothing goes to production without your sign-off",
   },
   {
     title: "Production + delivery",
-    body: "Factory-direct production. Shipped to your door with tracking.",
+    body: "Factory-direct production. Shipped to your door with tracking",
   },
 ];
 
 export const hatHero = {
   title: "Fully Custom Hats",
-  description: "Built from the ground up - fabric, fit, and finish.",
+  description: "Built from the ground up - fabric, fit, and finish",
   image: hatImage,
 };
 
@@ -164,7 +166,7 @@ export const hatAnchorLinks = [
 
 export const hatCallouts = [
   { title: "OG Crafted", body: "Fully custom, 100+ MOQ" },
-  { title: "Ready Made", body: "Premium blanks, 50+ MOQ, faster turn" },
+  { title: "Ready Made", body: "Premium blanks, 100+ MOQ, faster turn" },
 ];
 
 export const hatPricing = [
@@ -202,21 +204,21 @@ export const hatStyles = [
 export const hatMaterials = [
   {
     name: "Cotton Twill",
-    description: "The standard. Clean, structured, versatile.",
+    description: "The standard. Clean, structured, versatile",
   },
-  { name: "Canvas", description: "Heavier weight. Built to last." },
-  { name: "Corduroy", description: "Textured and retail-forward." },
-  { name: "Nylon", description: "Lightweight and weather-resistant." },
+  { name: "Canvas", description: "Heavier weight. Built to last" },
+  { name: "Corduroy", description: "Textured and retail-forward" },
+  { name: "Nylon", description: "Lightweight and weather-resistant" },
   {
     name: "Ripstop",
-    description: "Technical. Used in outdoor and performance styles.",
+    description: "Technical. Used in outdoor and performance styles",
   },
   {
     name: "Washed Denim",
-    description: "Broken-in feel. Great for lifestyle brands.",
+    description: "Broken-in feel. Great for lifestyle brands",
   },
-  { name: "Mesh", description: "Breathable. Classic trucker structure." },
-  { name: "Camo", description: "Seasonal and lifestyle-ready." },
+  { name: "Mesh", description: "Breathable. Classic trucker structure" },
+  { name: "Camo", description: "Seasonal and lifestyle-ready" },
 ];
 
 export const hatDecoration = [
@@ -244,40 +246,40 @@ export const hatDecoration = [
 export const hatProcess = [
   {
     title: "Brief + direction",
-    body: "Share your vision. We'll align on product, materials, and timeline.",
+    body: "Share your vision. We'll align on product, materials, and timeline",
   },
   {
     title: "Mockups + approval",
-    body: "We build a tech pack. Nothing moves to production without your sign-off.",
+    body: "We build a tech pack. Nothing moves to production without your sign-off",
   },
   {
     title: "Production + delivery",
-    body: "Factory-direct production. Shipped with tracking.",
+    body: "Factory-direct production. Shipped with tracking",
   },
 ];
 
 export const hatFaqs = [
   {
     question: "What's the minimum order?",
-    answer: "100 units for fully custom. 50 units for decorated blanks.",
+    answer: "100 pieces minimum. You can mix styles (e.g. hats + tees) as long as the same design applies across all pieces and the total hits 100",
   },
   {
     question: "How long does it take?",
     answer:
-      "Custom hats typically take 3-6 weeks from final approval. Rush available on select styles.",
+      "Custom hats typically take 3-6 weeks from final approval. Rush available on select styles",
   },
   {
     question: "What file formats do you need?",
-    answer: ".ai, .eps, or .pdf with vector artwork. No artwork yet? We can help.",
+    answer: ".ai, .eps, or .pdf with vector artwork. No artwork yet? We can help",
   },
   {
     question: "Do you ship internationally?",
     answer:
-      "We primarily ship to US addresses. Ask about international shipping when you start a project.",
+      "We primarily ship to US addresses. Ask about international shipping when you start a project",
   },
   {
     question: "What does pricing include?",
-    answer: "Sampling, production, and standard shipping to one US address.",
+    answer: "Sampling, production, and standard shipping to one US address",
   },
 ];
 
