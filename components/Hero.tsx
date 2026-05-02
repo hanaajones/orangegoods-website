@@ -1,164 +1,138 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 
-type Stat = {
-  value: string;
-  label: string;
-};
+const categories = [
+  "Hats", "Apparel", "Socks", "Drinkware",
+  "Bags", "Accessories", "Packaging", "Embroidery",
+];
 
-type HeroProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  stats: Stat[];
-  ctaLabel: string;
-  ctaHref: string;
-  secondaryCtaLabel?: string;
-  secondaryCtaHref?: string;
-};
-
-export function Hero({
-  eyebrow,
-  title,
-  description,
-  stats,
-  ctaLabel,
-  ctaHref,
-  secondaryCtaLabel,
-  secondaryCtaHref,
-}: HeroProps) {
+export function Hero() {
   return (
-    <section className="px-4 pb-8 pt-8 md:px-8 md:pt-14 lg:px-12">
-      <div className="mx-auto grid max-w-6xl gap-10 rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.84)] p-6 shadow-[0_24px_80px_rgba(8,30,111,0.08)] backdrop-blur md:grid-cols-[1.1fr_0.9fr] md:p-8">
-        <div className="flex flex-col justify-between gap-10">
-          <div>
-            <motion.p
-              initial={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]"
-            >
-              {eyebrow}
-            </motion.p>
-            <motion.h1
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: {
-                  transition: {
-                    staggerChildren: 0.08,
-                  },
-                },
-              }}
-              className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-[var(--og-blue)] md:text-7xl"
-            >
-              {title.split(" ").map((word) => (
-                <motion.span
-                  key={word}
-                  variants={{
-                    hidden: { opacity: 1, y: 0 },
-                    show: { opacity: 1, y: 0 },
-                  }}
-                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-                  className="mr-[0.28em] inline-block"
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 1, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.18 }}
-              className="mt-6 max-w-2xl text-lg leading-7 text-[var(--og-muted)] md:text-xl"
-            >
-              {description}
-            </motion.p>
-          </div>
+    <>
+      {/* ── HERO: split screen ── */}
+      <section className="flex h-[calc(90vh-64px)] min-h-[500px] w-full overflow-hidden">
 
-          <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.26 }}
-            className="flex flex-col gap-4"
-          >
-            <div className="grid gap-3 sm:grid-cols-3">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[#fff8f1] p-4"
-                >
-                  <div className="text-3xl font-semibold text-[var(--og-blue)]">
-                    {stat.value}
-                  </div>
-                  <div className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--og-muted)]">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href={ctaHref}
-                className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
-              >
-                {ctaLabel}
-              </Link>
-              {secondaryCtaLabel && secondaryCtaHref ? (
-                <Link
-                  href={secondaryCtaHref}
-                  className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-blue)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--og-dark-blue)]"
-                >
-                  {secondaryCtaLabel}
-                </Link>
-              ) : null}
-            </div>
-          </motion.div>
+        {/* Left: photo slideshow */}
+        <div className="relative w-full lg:w-1/2">
+          <HeroSlideshow />
         </div>
 
-        <motion.div
-          initial={{ opacity: 1, scale: 1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="relative overflow-hidden rounded-[1.8rem] bg-[var(--og-dark-blue)] p-5 text-[#f5efe6]"
+        {/* Right: text panel */}
+        <div
+          className="relative hidden flex-col items-start justify-center overflow-hidden bg-[#F3EFE7] py-16 pl-14 pr-10 lg:flex lg:w-1/2 xl:pl-20"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,66,0,0.34),transparent_38%)]" />
-          <div className="relative flex h-full min-h-[26rem] flex-col justify-between rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-6">
+          <p
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-[#FF4200]/70"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            Custom Branded Goods & Designs
+          </p>
+
+          <h1
+            className="mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Merch people<br />actually keep.
+          </h1>
+
+          <p
+            className="mt-5 max-w-sm text-lg leading-7 text-[#1C1C1C]/80"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
+            One team handles everything — design, production, and delivery.
+            Built for brands that care about quality.
+          </p>
+
+          <p
+            className="mt-3 text-xs uppercase tracking-[0.28em] text-[#0B32A0]/60"
+            style={{ fontFamily: "var(--font-accent)" }}
+          >
+            Los Angeles, California
+          </p>
+
+          <div className="mt-8 flex flex-row flex-wrap gap-3">
+            <Link
+              href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
+              className="inline-flex items-center rounded-full bg-[#FF4200] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              START A PROJECT
+            </Link>
+            <Link
+              href="https://orangegoods.co/goods/"
+              className="inline-flex items-center rounded-full border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              BUILD ONLINE
+            </Link>
+          </div>
+
+          {/* Stats row */}
+          <div
+            className="mt-12 flex gap-8 border-t border-black/10 pt-8"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff9e7a]">
-                15+ Product Categories
-              </p>
-              <p className="mt-4 max-w-sm text-2xl font-semibold leading-tight">
-                Shirts, hats, socks, drinkware, accessories, blankets, bags,
-                beanies, polos, totes, towels, flannels, outerwear, and activewear.
-              </p>
+              <div className="text-2xl font-bold text-[#FF4200]">100+</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">MOQ</div>
             </div>
-            <div className="grid gap-3">
-              <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ffcfbf]">
-                  California Team
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[#e6d8ca]">
-                  Quality goods for corporate gifting, retail, and events, built
-                  without vendor juggling.
-                </p>
-              </div>
-              <div className="rounded-[1.4rem] border border-white/10 bg-white/6 p-4">
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#ffcfbf]">
-                  Crafted To Be Kept
-                </p>
-                <p className="mt-2 text-sm leading-6 text-[#e6d8ca]">
-                  The product, artwork, production, and delivery path stay inside
-                  one system.
-                </p>
-              </div>
+            <div>
+              <div className="text-2xl font-bold text-[#FF4200]">3–6 wks</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Timeline</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold text-[#FF4200]">15+</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Categories</div>
             </div>
           </div>
-        </motion.div>
+        </div>
+
+        {/* Mobile: overlay text on image */}
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 bg-gradient-to-t from-black/80 to-transparent p-6 lg:hidden">
+          <h1
+            className="text-4xl uppercase leading-tight text-white"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Merch people actually keep.
+          </h1>
+          <div className="flex gap-3">
+            <Link
+              href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
+              className="inline-flex items-center rounded-full bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              START A PROJECT
+            </Link>
+            <Link
+              href="https://orangegoods.co/goods/"
+              className="inline-flex items-center rounded-full border border-white px-5 py-3 text-xs font-semibold text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              BUILD ONLINE
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MARQUEE: product categories ── */}
+      <div
+        className="overflow-hidden border-y-4 border-[#FF4200] bg-[#FF4200]"
+        style={{ height: "56px" }}
+      >
+        <div className="animate-marquee flex h-full w-max items-center gap-16 px-16">
+          {Array.from({ length: 4 }).flatMap((_, i) =>
+            categories.map((cat) => (
+              <span
+                key={`${cat}-${i}`}
+                className="flex-none text-xs font-semibold uppercase tracking-[0.28em] text-white"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {cat}
+              </span>
+            ))
+          )}
+        </div>
       </div>
-    </section>
+    </>
   );
 }

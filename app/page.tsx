@@ -1,14 +1,13 @@
 import Image from "next/image";
 import { CTASection } from "@/components/CTASection";
-import { Gallery } from "@/components/Gallery";
 import { Hero } from "@/components/Hero";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
+import { SelectedWork } from "@/components/SelectedWork";
 import { Testimonials } from "@/components/Testimonials";
 import { TwoPaths } from "@/components/TwoPaths";
 import {
   buildOnlineHref,
-  homeGallery,
   homeHero,
   homeProcess,
   homeStats,
@@ -22,16 +21,8 @@ import {
 export default function HomePage() {
   return (
     <main className="pb-24 md:pb-0">
-      <Hero
-        eyebrow="Custom Branded Goods & Designs"
-        title={homeHero.title}
-        description={homeHero.description}
-        stats={homeStats}
-        ctaLabel="Start a Project"
-        ctaHref={startProjectHref}
-        secondaryCtaLabel="Build Online"
-        secondaryCtaHref={buildOnlineHref}
-      />
+      <Hero />
+      <SelectedWork />
 
       <Reveal className="px-4 py-14 md:px-8 lg:px-12">
         <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-dark-blue)] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
@@ -79,13 +70,6 @@ export default function HomePage() {
       </Reveal>
 
       <TwoPaths items={twoPaths} title={twoPathsTitle} />
-      <Gallery
-        id="gallery"
-        eyebrow="Selected Work"
-        title="Real goods. Real brands."
-        description="Factory direct hats, trims, drinkware, packaging, and retail-finished goods."
-        items={homeGallery}
-      />
       <Testimonials testimonials={testimonials} logos={logos} />
       <ProcessSteps
         eyebrow="How It Works"
