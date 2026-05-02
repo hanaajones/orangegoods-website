@@ -119,7 +119,7 @@ function WorkImage({ item }: { item: WorkItem }) {
         }}
         className="object-cover transition duration-500 group-hover:scale-[1.04]"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_28%,rgba(8,30,111,0.68)_100%)] opacity-75 transition group-hover:opacity-100" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-75 transition group-hover:opacity-100" />
       <figcaption className="absolute inset-x-0 bottom-0 translate-y-3 p-5 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white">
           {item.title}

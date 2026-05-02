@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PhotoCarousel } from "@/components/PhotoCarousel";
 import { ProductCategories } from "@/components/ProductCategories";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
@@ -58,6 +59,9 @@ export default function HomePage() {
 
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
+
+      {/* Full-width photo carousel */}
+      <PhotoCarousel />
 
       <Reveal className="px-4 py-14 md:px-8 lg:px-12">
         <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
