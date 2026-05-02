@@ -55,11 +55,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
               </div>
               <Link
                 href={item.href}
-                className={`mt-8 inline-flex min-h-12 items-center rounded-xl px-5 text-sm font-semibold uppercase tracking-[0.14em] transition ${
-                  index === 0
-                    ? "bg-[var(--og-orange)] text-white hover:bg-[#d73b05]"
-                    : "bg-[var(--og-blue)] text-white hover:bg-[var(--og-dark-blue)]"
-                }`}
+                className="btn-og mt-8"
               >
                 {item.label}
               </Link>
