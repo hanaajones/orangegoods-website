@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Capabilities } from "@/components/Capabilities";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { ProcessSteps } from "@/components/ProcessSteps";
@@ -25,6 +26,9 @@ export default function HomePage() {
 
       {/* Value prop — OG Crafted vs Ready Made */}
       <TwoPaths items={twoPaths} title={twoPathsTitle} />
+
+      {/* Capabilities */}
+      <Capabilities />
 
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
