@@ -163,15 +163,27 @@ export function Nav() {
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
-                <div className="grid gap-6 md:grid-cols-3">
-                  {/* Col 1: Products */}
+                <div className="grid gap-5 md:grid-cols-[0.8fr_1fr_1fr_1fr]">
+                  {/* Col 1: Photo */}
+                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
+                    <Image
+                      src={hoveredProduct}
+                      alt="Orange Goods product"
+                      fill
+                      sizes="260px"
+                      className="object-cover transition-opacity duration-300"
+                    />
+                  </div>
+                  {/* Col 2: Products */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Products
                     </p>
                     <div className="grid gap-1">
                       {products.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
+                        <div key={item.label} onMouseEnter={() => setHoveredProduct(item.image)}>
+                          <MenuLink href={item.href}>{item.label}</MenuLink>
+                        </div>
                       ))}
                     </div>
                   </div>
