@@ -20,11 +20,11 @@ export default function HomePage() {
     <main className="pb-24 md:pb-0">
       <Hero />
 
-      {/* Value prop — what OG does and which lane you're in */}
-      <TwoPaths items={twoPaths} title={twoPathsTitle} />
-
-      {/* Trust signal */}
+      {/* Trust signal first */}
       <Testimonials testimonials={testimonials} logos={logos} />
+
+      {/* Value prop — OG Crafted vs Ready Made */}
+      <TwoPaths items={twoPaths} title={twoPathsTitle} />
 
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
