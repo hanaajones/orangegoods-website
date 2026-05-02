@@ -42,7 +42,7 @@ export default function PortalAccountPage() {
           </div>
           <button
             type="button"
-            className="mt-6 inline-flex rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+            className="mt-6 inline-flex rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
           >
             Save changes
           </button>
@@ -66,7 +66,7 @@ export default function PortalAccountPage() {
           </div>
           <button
             type="button"
-            className="mt-6 inline-flex rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+            className="mt-6 inline-flex rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
           >
             Save address
           </button>
@@ -107,7 +107,7 @@ export default function PortalAccountPage() {
               <AccountField label="Country" defaultValue="United States" />
               <button
                 type="button"
-                className="col-span-full mt-2 inline-flex w-fit rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+                className="col-span-full mt-2 inline-flex w-fit rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
               >
                 Save billing address
               </button>

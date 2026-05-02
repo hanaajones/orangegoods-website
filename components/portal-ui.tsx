@@ -58,7 +58,7 @@ export function PortalSectionCard({
 
 export function StatusBadge({ status }: { status: PortalOrderStatus }) {
   return (
-    <span className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${statusStyles[status]}`}>
+    <span className={`inline-flex rounded-xl border px-3 py-1 text-xs font-semibold ${statusStyles[status]}`}>
       {status}
     </span>
   );
@@ -88,7 +88,7 @@ export function PortalOrderCard({ order }: { order: PortalOrder }) {
         </div>
         <Link
           href={`/portal/orders/${order.id}`}
-          className="inline-flex rounded-full border border-[#1C1C1C]/10 bg-white px-4 py-2 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
+          className="inline-flex rounded-xl border border-[#1C1C1C]/10 bg-white px-4 py-2 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
         >
           View order
         </Link>
@@ -139,7 +139,7 @@ export function PortalOrderTimeline({ order }: { order: PortalOrder }) {
           <li key={`${step.label}-${index}`} className="grid grid-cols-[2.75rem_1fr] gap-4">
             <div className="flex flex-col items-center">
               <div
-                className={`flex h-11 w-11 items-center justify-center rounded-full border text-base ${
+                className={`flex h-11 w-11 items-center justify-center rounded-xl border text-base ${
                   isComplete
                     ? "border-[#081E6F] bg-[#0B32A0] text-white"
                     : isCurrent

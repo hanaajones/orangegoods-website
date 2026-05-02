@@ -49,7 +49,7 @@ export function PortalShell({ children }: { children: ReactNode }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`whitespace-nowrap rounded-full px-4 py-2.5 transition ${
+                className={`whitespace-nowrap rounded-xl px-4 py-2.5 transition ${
                   isActive ? "bg-white/90 text-[#FF7F00]" : "text-white hover:bg-white/15 hover:text-white"
                 }`}
               >

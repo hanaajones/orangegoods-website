@@ -58,13 +58,13 @@ export default function HatsPage() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href={startHatsHref}
-                className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
+                className="inline-flex min-h-12 items-center rounded-xl bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
               >
                 Start a Project
               </Link>
               <Link
                 href={`${buildOnlineHref}hats`}
-                className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-blue)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--og-dark-blue)]"
+                className="inline-flex min-h-12 items-center rounded-xl bg-[var(--og-blue)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--og-dark-blue)]"
               >
                 Build Online
               </Link>
@@ -89,7 +89,7 @@ export default function HatsPage() {
             <Link
               key={item.href}
               href={item.href}
-              className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+              className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
             >
               {item.label}
             </Link>
@@ -196,7 +196,7 @@ export default function HatsPage() {
                 key={material.name}
                 className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
               >
-                <div className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-[var(--og-orange)] text-sm font-black text-white">
+                <div className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-xl bg-[var(--og-orange)] text-sm font-black text-white">
                   {material.name.slice(0, 1)}
                 </div>
                 <h3 className="mt-4 text-xl font-semibold text-[var(--og-blue)]">
@@ -227,7 +227,7 @@ export default function HatsPage() {
                   {group.items.map((item) => (
                     <li
                       key={item}
-                      className="rounded-full bg-[#efe2d2] px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-muted)]"
+                      className="rounded-xl bg-[#efe2d2] px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-muted)]"
                     >
                       {item}
                     </li>

@@ -38,14 +38,14 @@ export function Hero() {
           <div className="mt-8 flex flex-row flex-wrap gap-3">
             <Link
               href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-              className="inline-flex items-center rounded-full bg-[#FF4200] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
+              className="inline-flex items-center rounded-xl bg-[#FF4200] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
               style={{ fontFamily: "var(--font-display)" }}
             >
               START A PROJECT
             </Link>
             <Link
               href="/build"
-              className="inline-flex items-center rounded-full border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
+              className="inline-flex items-center rounded-xl border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
               style={{ fontFamily: "var(--font-display)" }}
             >
               BUILD ONLINE
@@ -86,14 +86,14 @@ export function Hero() {
           <div className="flex gap-3 pt-1">
             <Link
               href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-              className="inline-flex items-center rounded-full bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
+              className="inline-flex items-center rounded-xl bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
               style={{ fontFamily: "var(--font-display)" }}
             >
               START A PROJECT
             </Link>
             <Link
               href="/build"
-              className="inline-flex items-center rounded-full border border-white/80 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur-sm"
+              className="inline-flex items-center rounded-xl border border-white/80 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur-sm"
               style={{ fontFamily: "var(--font-display)" }}
             >
               BUILD ONLINE

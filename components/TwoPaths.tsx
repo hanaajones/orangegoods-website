@@ -43,7 +43,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
                 {item.details.map((detail) => (
                   <span
                     key={detail}
-                    className={`rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] ${
+                    className={`rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.16em] ${
                       index === 0
                         ? "bg-[#fff0e8] text-[var(--og-orange)]"
                         : "bg-[#e9edf8] text-[var(--og-blue)]"
@@ -55,7 +55,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
               </div>
               <Link
                 href={item.href}
-                className={`mt-8 inline-flex min-h-12 items-center rounded-full px-5 text-sm font-semibold uppercase tracking-[0.14em] transition ${
+                className={`mt-8 inline-flex min-h-12 items-center rounded-xl px-5 text-sm font-semibold uppercase tracking-[0.14em] transition ${
                   index === 0
                     ? "bg-[var(--og-orange)] text-white hover:bg-[#d73b05]"
                     : "bg-[var(--og-blue)] text-white hover:bg-[var(--og-dark-blue)]"

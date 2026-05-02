@@ -127,13 +127,13 @@ export function ReadyMadeServicePage({
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href={content.hero.primaryHref}
-                className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
+                className="inline-flex min-h-12 items-center rounded-xl bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
               >
                 Start a Project
               </Link>
               <Link
                 href="#pricing"
-                className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-blue)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--og-dark-blue)]"
+                className="inline-flex min-h-12 items-center rounded-xl bg-[var(--og-blue)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--og-dark-blue)]"
               >
                 See Pricing
               </Link>
@@ -158,7 +158,7 @@ export function ReadyMadeServicePage({
             <Link
               key={item.href}
               href={item.href}
-              className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+              className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
             >
               {item.label}
             </Link>
@@ -278,7 +278,7 @@ export function ReadyMadeServicePage({
           </div>
           <Link
             href={content.pricing.ctaHref}
-            className="mt-8 inline-flex min-h-12 items-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
+            className="mt-8 inline-flex min-h-12 items-center rounded-xl bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
           >
             Get a Quote
           </Link>

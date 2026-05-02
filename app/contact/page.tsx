@@ -1,16 +1,36 @@
-import Link from "next/link";
+"use client";
+
+import { FormEvent, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 
-const projectOptions = [
-  "Custom Hats",
-  "Apparel",
-  "Design Services",
-  "Screen Printing",
-  "Embroidery",
-  "Other",
-];
+const inputClass =
+  "min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]";
+
+const labelClass =
+  "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
 
 export default function ContactPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSubmitting(true);
+
+    const formData = new FormData(event.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    setSubmitting(false);
+    setSubmitted(true);
+    event.currentTarget.reset();
+  }
+
   return (
     <main className="bg-[var(--og-warm-grey)] pb-24 md:pb-0">
       <section className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
@@ -18,117 +38,123 @@ export default function ContactPage() {
           <h1 className="text-6xl leading-none text-[var(--og-orange)] md:text-8xl lg:text-9xl">
             GET IN TOUCH
           </h1>
-          <p className="mt-5 text-lg leading-8 text-[var(--og-muted)] md:text-xl">
-            We respond within one business day.
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--og-muted)] md:text-xl">
+            Tell us what you are making. We respond within one business day.
           </p>
         </div>
       </section>
 
       <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
-        <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+        <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.78fr_1.22fr]">
           <div className="space-y-8">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                Email
-              </p>
-              <a
-                href="mailto:hello@orangegoods.co"
-                className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-              >
-                hello@orangegoods.co
-              </a>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                Text
-              </p>
-              <a
-                href="sms:+12133764663"
-                className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-              >
-                (213) 376-4663
-              </a>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                Instagram
-              </p>
-              <a
-                href="https://www.instagram.com/orangegoods"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-              >
-                @orangegoods
-              </a>
-            </div>
+            {[
+              ["Email", "hello@orangegoods.co", "mailto:hello@orangegoods.co"],
+              ["Text", "(213) 376-4663", "sms:+12133764663"],
+              ["Instagram", "@orangegoods", "https://www.instagram.com/orangegoods"],
+            ].map(([label, value, href]) => (
+              <div key={label}>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  {label}
+                </p>
+                <a
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                >
+                  {value}
+                </a>
+              </div>
+            ))}
             <p className="text-lg leading-8 text-[var(--og-muted)]">
               Based in Los Angeles, CA
             </p>
           </div>
 
-          <form className="grid gap-5 border border-[#0B32A0]/20 bg-white/75 p-6 md:p-8">
-            <label className="grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]">
-              Name
-              <input
-                name="name"
-                className="min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
-              />
-            </label>
-            <label className="grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]">
-              Company
-              <input
-                name="company"
-                className="min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
-              />
-            </label>
+          <form
+            onSubmit={handleSubmit}
+            className="grid gap-5 border border-[#0B32A0]/20 bg-white/80 p-6 md:p-8"
+          >
+            {submitted ? (
+              <div className="border border-[var(--og-orange)] bg-[var(--og-orange)] p-5 text-white">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em]">
+                  Message Sent
+                </p>
+                <p className="mt-2 text-lg leading-7">
+                  Thanks. We will be in touch within 1 business day.
+                </p>
+              </div>
+            ) : null}
+
             <div className="grid gap-5 md:grid-cols-2">
-              <label className="grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]">
-                Email
-                <input
-                  name="email"
-                  type="email"
-                  className="min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
-                />
+              <label className={labelClass}>
+                Name
+                <input name="name" required className={inputClass} />
               </label>
-              <label className="grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]">
-                Phone optional
-                <input
-                  name="phone"
-                  type="tel"
-                  className="min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
-                />
+              <label className={labelClass}>
+                Company
+                <input name="company" className={inputClass} />
               </label>
             </div>
-            <label className="grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]">
-              What are you looking for?
-              <select
-                name="projectType"
-                className="min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select one
-                </option>
-                {projectOptions.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </label>
-            <label className="grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]">
-              Message
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <label className={labelClass}>
+                Email
+                <input name="email" type="email" required className={inputClass} />
+              </label>
+              <label className={labelClass}>
+                Phone
+                <input name="phone" type="tel" className={inputClass} />
+              </label>
+            </div>
+
+            <label className={labelClass}>
+              What are you making?
               <textarea
-                name="message"
+                name="project"
                 rows={6}
+                required
                 className="border border-[#0B32A0]/20 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
               />
             </label>
-            <Link
-              href="mailto:hello@orangegoods.co?subject=Orange%20Goods%20Contact"
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05] md:w-fit"
+
+            <div className="grid gap-5 md:grid-cols-3">
+              <label className={labelClass}>
+                Quantity
+                <select name="quantity" required defaultValue="" className={inputClass}>
+                  <option value="" disabled>Select</option>
+                  {["<50", "50-100", "100-250", "250-500", "500+"].map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label className={labelClass}>
+                Timeline
+                <select name="timeline" required defaultValue="" className={inputClass}>
+                  <option value="" disabled>Select</option>
+                  {["ASAP", "2-4 weeks", "1-2 months", "2+ months", "Not sure"].map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label className={labelClass}>
+                Budget Range
+                <select name="budget" defaultValue="" className={inputClass}>
+                  <option value="" disabled>Select</option>
+                  {["<$2,500", "$2,500-$5,000", "$5,000-$10,000", "$10,000+", "Not sure"].map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05] disabled:cursor-wait disabled:opacity-70 md:w-fit"
             >
-              SEND MESSAGE
-            </Link>
+              {submitting ? "Sending" : "Send Message"}
+            </button>
           </form>
         </section>
       </Reveal>

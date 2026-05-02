@@ -29,7 +29,7 @@ export function CTASection({
           </div>
           <Link
             href={buttonHref}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
+            className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
           >
             {buttonLabel}
           </Link>

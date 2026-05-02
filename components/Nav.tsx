@@ -30,6 +30,7 @@ const customLinks = [
 ];
 
 const aboutLinks = [
+  { label: "About", href: "/about" },
   { label: "Our Story", href: "/#about" },
   { label: "The OG Difference", href: "/#about" },
   { label: "FAQ", href: "/faq" },
@@ -80,7 +81,7 @@ export function Nav() {
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full text-xl font-semibold text-white md:hidden"
+              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl text-xl font-semibold text-white md:hidden"
               aria-label="Open menu"
             >
               ☰
@@ -131,7 +132,7 @@ export function Nav() {
             <div className="hidden shrink-0 items-center gap-1 md:flex">
               <Link
                 href="/portal"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white transition hover:bg-white/15"
                 aria-label="My account"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -295,7 +296,7 @@ export function Nav() {
             </Link>
             <Link
               href={startProjectHref}
-              className="inline-flex min-h-10 items-center rounded-full bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.1em] text-white"
+              className="inline-flex min-h-10 items-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.1em] text-white"
             >
               Start
             </Link>
@@ -305,7 +306,7 @@ export function Nav() {
               { label: "CUSTOM", href: "/#paths" },
               { label: "BUILD ONLINE", href: buildOnlineHref },
               { label: "DESIGN", href: "/design" },
-              { label: "ABOUT", href: "/#about" },
+              { label: "ABOUT", href: "/about" },
             ].map((item) => (
               <Link
                 key={item.label}
@@ -324,13 +325,13 @@ export function Nav() {
       <div className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden">
         <Link
           href={startProjectHref}
-          className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
+          className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
         >
           Start a Project
         </Link>
         <Link
           href={buildOnlineHref}
-          className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
+          className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
         >
           Build Online
         </Link>

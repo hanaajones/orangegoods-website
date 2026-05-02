@@ -184,13 +184,13 @@ export default function DesignPage() {
           <div className="mt-9 flex flex-wrap gap-3">
             <Link
               href={designProjectHref}
-              className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
+              className="inline-flex min-h-12 items-center rounded-xl bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
             >
               DESIGN WITH US
             </Link>
             <Link
               href="#pricing"
-              className="inline-flex min-h-12 items-center rounded-full border border-white px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:border-[var(--og-orange)] hover:text-[#ff9e7a]"
+              className="inline-flex min-h-12 items-center rounded-xl border border-white px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:border-[var(--og-orange)] hover:text-[#ff9e7a]"
             >
               VIEW PRICING
             </Link>
@@ -225,10 +225,10 @@ export default function DesignPage() {
                 <div
                   className={`h-10 w-10 ${
                     index % 3 === 0
-                      ? "rounded-full bg-[var(--og-orange)]"
+                      ? "rounded-xl bg-[var(--og-orange)]"
                       : index % 3 === 1
                         ? "bg-[var(--og-blue)]"
-                        : "rounded-full bg-[var(--og-sand)]"
+                        : "rounded-xl bg-[var(--og-sand)]"
                   }`}
                 />
                 <h3 className="mt-5 text-2xl leading-tight text-[var(--og-blue)]">
@@ -331,7 +331,7 @@ export default function DesignPage() {
                 </ul>
                 <Link
                   href={pkg.href}
-                  className={`mt-auto inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-semibold uppercase tracking-[0.14em] transition ${
+                  className={`mt-auto inline-flex min-h-12 items-center justify-center rounded-xl px-5 text-sm font-semibold uppercase tracking-[0.14em] transition ${
                     pkg.featured
                       ? "bg-[var(--og-orange)] text-white hover:bg-[#d73b05]"
                       : "bg-[var(--og-blue)] text-white hover:bg-[var(--og-blue)]"
@@ -375,7 +375,7 @@ export default function DesignPage() {
           </h2>
           <Link
             href={designProjectHref}
-            className="inline-flex min-h-12 shrink-0 items-center rounded-full bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
+            className="inline-flex min-h-12 shrink-0 items-center rounded-xl bg-[var(--og-orange)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
           >
             DESIGN WITH US
           </Link>

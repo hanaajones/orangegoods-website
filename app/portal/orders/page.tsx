@@ -90,7 +90,7 @@ export default function PortalOrdersPage() {
               <div className="lg:text-right">
                 <Link
                   href={`/portal/orders/${order.id}`}
-                  className="inline-flex rounded-full border border-[#1C1C1C]/10 bg-[#F3EFE7] px-4 py-2 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
+                  className="inline-flex rounded-xl border border-[#1C1C1C]/10 bg-[#F3EFE7] px-4 py-2 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
                 >
                   View details
                 </Link>

@@ -110,7 +110,7 @@ export function Footer() {
           </p>
           <a
             href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-            className="inline-flex min-h-12 items-center rounded-full bg-[#FF4200] px-6 text-sm font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#d73b05]"
+            className="inline-flex min-h-12 items-center rounded-xl bg-[#FF4200] px-6 text-sm font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#d73b05]"
           >
             Start a Project
           </a>

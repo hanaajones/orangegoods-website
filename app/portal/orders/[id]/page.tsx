@@ -48,13 +48,13 @@ export default async function PortalOrderDetailPage({
           <div className="flex flex-wrap gap-3">
             <Link
               href="#"
-              className="inline-flex rounded-full border border-[#1C1C1C]/10 bg-white px-5 py-3 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
+              className="inline-flex rounded-xl border border-[#1C1C1C]/10 bg-white px-5 py-3 text-sm font-semibold text-[#1C1C1C] hover:border-[#0B32A0] hover:text-[#0B32A0]"
             >
               Download invoice
             </Link>
             <Link
               href={`/build?product=${order.productSlug}`}
-              className="inline-flex rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(8,30,111,0.14)] transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+              className="inline-flex rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(8,30,111,0.14)] transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
             >
               Reorder this product
             </Link>
