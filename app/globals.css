@@ -59,6 +59,7 @@
   --font-accent: 'JukeboxJohnny', cursive;
 
   /* ── Official OG Brand Colors ── */
+  /* RULE: Never use black or dark text on orange backgrounds. Always use white. */
   --og-orange: #FF4200;
   --og-blue: #0B32A0;
   --og-tangerine: #FF7F00;
