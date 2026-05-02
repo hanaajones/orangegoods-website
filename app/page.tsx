@@ -65,15 +65,15 @@ export default function HomePage() {
 
       <div style={{ height: "30px" }} />
 
-      {/* Two production paths */}
-      <ServicesPreview />
-
       <ProcessSteps
         eyebrow="How It Works"
         title="A clear path from brief to delivery"
         description="One team handles design, production, and delivery — start to finish. No vendor juggling, no broken phone games"
         steps={homeProcess}
       />
+
+      {/* How we build it */}
+      <ServicesPreview />
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section
           id="about"
