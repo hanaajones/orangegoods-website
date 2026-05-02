@@ -9,98 +9,71 @@ const categories = [
 export function Hero() {
   return (
     <>
-      {/* ── HERO: split screen ── */}
-      <section className="flex h-[calc(90vh-64px)] min-h-[500px] w-full overflow-hidden">
+      {/* ── HERO: full-width slideshow ── */}
+      <section className="relative h-[calc(90vh-80px)] min-h-[520px] w-full overflow-hidden">
 
-        {/* Left: photo slideshow */}
-        <div className="relative w-full lg:w-1/2">
-          <HeroSlideshow />
-        </div>
+        {/* Full-width background slideshow */}
+        <HeroSlideshow />
 
-        {/* Right: text panel */}
-        <div
-          className="relative hidden flex-col items-start justify-center overflow-hidden bg-[#F3EFE7] py-16 pl-14 pr-10 lg:flex lg:w-1/2 xl:pl-20"
-        >
-          <h1
-            className="mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Merch people<br />actually keep.
-          </h1>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#081E6F]/75 via-[#081E6F]/40 to-transparent" />
 
-          <p
-            className="mt-5 max-w-sm text-lg leading-7 text-[#1C1C1C]/80"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            Design, production, and delivery — handled.
-            Built for brands that care about quality.
-          </p>
-
-          <div className="mt-8 flex flex-row flex-wrap gap-3">
-            <Link
-              href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-              className="inline-flex items-center rounded-full bg-[#FF4200] px-7 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
+        {/* Content — left-aligned, vertically centered */}
+        <div className="absolute inset-0 flex items-center px-8 md:px-16 lg:px-24">
+          <div className="max-w-2xl">
+            <h1
+              className="text-5xl uppercase leading-[1.0] tracking-tight text-white md:text-7xl lg:text-[5.5rem]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              START A PROJECT
-            </Link>
-            <Link
-              href="https://orangegoods.co/goods/"
-              className="inline-flex items-center rounded-full border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              BUILD ONLINE
-            </Link>
-          </div>
+              Merch people<br />actually keep.
+            </h1>
 
-          {/* Stats row */}
-          <div
-            className="mt-12 flex gap-8 border-t border-black/10 pt-8"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">100+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">MOQ</div>
+            <p
+              className="mt-5 max-w-md text-lg leading-7 text-white/85 md:text-xl"
+              style={{ fontFamily: "var(--font-body)" }}
+            >
+              Design, production, and delivery — handled.<br />
+              Built for brands that care about quality.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
+                className="inline-flex items-center rounded-full bg-[#FF4200] px-8 py-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#d73b05]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                START A PROJECT
+              </Link>
+              <Link
+                href="https://orangegoods.co/goods/"
+                className="inline-flex items-center rounded-full border-2 border-white px-8 py-4 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-white hover:text-[#FF4200]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                BUILD ONLINE
+              </Link>
             </div>
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">3–6 wks</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Timeline</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">15+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Categories</div>
-            </div>
-          </div>
-        </div>
 
-        {/* Mobile: overlay text on image */}
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 bg-gradient-to-t from-black/80 to-transparent p-6 lg:hidden">
-          <h1
-            className="text-4xl uppercase leading-tight text-white"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Merch people actually keep.
-          </h1>
-          <div className="flex gap-3">
-            <Link
-              href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
-              className="inline-flex items-center rounded-full bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
-              style={{ fontFamily: "var(--font-display)" }}
+            {/* Stats */}
+            <div
+              className="mt-10 flex gap-8 border-t border-white/20 pt-8"
+              style={{ fontFamily: "var(--font-body)" }}
             >
-              START A PROJECT
-            </Link>
-            <Link
-              href="https://orangegoods.co/goods/"
-              className="inline-flex items-center rounded-full border border-white px-5 py-3 text-xs font-semibold text-white"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              BUILD ONLINE
-            </Link>
+              {[
+                { value: "100+", label: "MOQ" },
+                { value: "3–6 wks", label: "Timeline" },
+                { value: "15+", label: "Categories" },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <div className="text-2xl font-bold text-[#FF4200]">{stat.value}</div>
+                  <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-white/60">{stat.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── MARQUEE: product categories ── */}
+      {/* ── MARQUEE ── */}
       <div
         className="overflow-hidden border-y-4 border-[#FF4200] bg-[#FF4200]"
         style={{ height: "56px" }}
