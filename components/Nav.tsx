@@ -46,7 +46,7 @@ function MenuLink({
 }) {
   if (disabled) {
     return (
-      <span className="flex min-h-10 items-center justify-between rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#f7f1e8]/55">
+      <span className="flex min-h-10 items-center justify-between rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1C1C]/40">
         {children}
         <span className="text-[0.65rem]">Soon</span>
       </span>
@@ -56,7 +56,7 @@ function MenuLink({
   return (
     <Link
       href={href}
-      className="flex min-h-10 items-center rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#f7f1e8] transition hover:bg-white/10 hover:text-[#ff9e7a]"
+      className="flex min-h-10 items-center rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1C1C] transition hover:bg-[#1C1C1C]/8 hover:text-[#FF4200]"
     >
       {children}
     </Link>
@@ -159,7 +159,7 @@ export function Nav() {
 
           {activeMenu ? (
             <div
-              className="absolute left-6 right-6 top-[calc(100%+0.75rem)] hidden rounded-[2rem] border border-white/10 bg-[var(--og-blue)] p-5 text-[#f7f1e8] shadow-[0_28px_90px_rgba(8,30,111,0.24)] backdrop-blur md:block"
+              className="absolute left-6 right-6 top-[calc(100%+0.75rem)] hidden rounded-[2rem] border border-[#1C1C1C]/10 bg-[#E4DFCD] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] backdrop-blur md:block"
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
@@ -189,7 +189,7 @@ export function Nav() {
                         </div>
                       ))}
                     </div>
-                    <div className="mt-4 border-t border-white/10 pt-4">
+                    <div className="mt-4 border-t border-[#1C1C1C]/15 pt-4">
                       <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                         Services
                       </p>
@@ -218,7 +218,7 @@ export function Nav() {
                     </div>
                     {/* Buttons below Case Studies */}
                     <div className="mt-4 flex flex-col gap-2">
-                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/20" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
+                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-[#0B32A0]/30 bg-transparent px-4 py-2 text-xs font-bold uppercase text-[#0B32A0] transition hover:bg-[#0B32A0]/10" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
                       <Link href={startProjectHref} className="btn-og justify-center text-xs">Start a Project</Link>
                     </div>
                   </div>
