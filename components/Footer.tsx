@@ -16,10 +16,10 @@ export function Footer() {
     <footer className="text-white">
       {/* Main footer body — off-black */}
       <div className="bg-[#081E6F]">
-      <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 lg:px-12">
-        <div className="grid gap-12 md:grid-cols-[1fr_auto]">
+      <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-12 lg:px-12">
+        <div className="grid gap-8 md:grid-cols-[1fr_auto]">
           {/* Left col */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-5">
             <Link href="/" aria-label="Orange Goods">
               <Image
                 src="/logos/OrangeGoods_Logo_Main_Horizontal_White.svg"
@@ -76,17 +76,17 @@ export function Footer() {
           </div>
 
           {/* Right col */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-6">
             <div>
               <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/40">
                 Navigation
               </p>
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-2">
                 {footerLinks.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/70 transition hover:text-white"
+                      className="text-xs text-white/50 transition hover:text-white/80"
                     >
                       {link.label}
                     </Link>
@@ -111,7 +111,7 @@ export function Footer() {
         </div>
 
         {/* CTA row */}
-        <div className="mt-16 flex flex-col items-start gap-4 border-t border-white/10 pt-10 md:flex-row md:items-center md:justify-between">
+        <div className="mt-8 flex flex-col items-start gap-4 border-t border-white/10 pt-8 md:flex-row md:items-center md:justify-between">
           <p className="text-lg font-semibold text-white/80 md:text-xl">
             Ready to make something worth keeping?
           </p>
