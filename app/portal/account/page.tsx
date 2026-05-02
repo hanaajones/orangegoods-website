@@ -1,4 +1,10 @@
+"use client";
+
+import { useState } from "react";
+
 export default function PortalAccountPage() {
+  const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
+
   return (
     <div className="space-y-8">
       <section className="space-y-3">
@@ -15,11 +21,12 @@ export default function PortalAccountPage() {
           Account settings.
         </h1>
         <p className="max-w-3xl text-base leading-7 text-[#1C1C1C]/66">
-          This is a UI-only placeholder for profile, shipping, and password controls until the real account system is wired in.
+          Manage your profile, addresses, and password.
         </p>
       </section>
 
       <div className="grid gap-8">
+        {/* Profile */}
         <section className="rounded-[2rem] border border-[#1C1C1C]/10 bg-white p-6 shadow-[0_18px_45px_rgba(8,30,111,0.12)] sm:p-8">
           <h2
             className="text-2xl font-bold uppercase tracking-tight text-[#FF4200]"
@@ -35,12 +42,13 @@ export default function PortalAccountPage() {
           </div>
           <button
             type="button"
-            className="mt-6 inline-flex rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(8,30,111,0.14)] transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+            className="mt-6 inline-flex rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
           >
             Save changes
           </button>
         </section>
 
+        {/* Shipping address */}
         <section className="rounded-[2rem] border border-[#1C1C1C]/10 bg-white p-6 shadow-[0_18px_45px_rgba(8,30,111,0.12)] sm:p-8">
           <h2
             className="text-2xl font-bold uppercase tracking-tight text-[#FF4200]"
@@ -56,8 +64,58 @@ export default function PortalAccountPage() {
             <AccountField label="Postal code" defaultValue="94103" />
             <AccountField label="Country" defaultValue="United States" />
           </div>
+          <button
+            type="button"
+            className="mt-6 inline-flex rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+          >
+            Save address
+          </button>
         </section>
 
+        {/* Billing address */}
+        <section className="rounded-[2rem] border border-[#1C1C1C]/10 bg-white p-6 shadow-[0_18px_45px_rgba(8,30,111,0.12)] sm:p-8">
+          <div className="flex items-start justify-between gap-4">
+            <h2
+              className="text-2xl font-bold uppercase tracking-tight text-[#FF4200]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Billing address
+            </h2>
+          </div>
+
+          {/* Checkbox */}
+          <label className="mt-4 flex cursor-pointer items-center gap-3">
+            <input
+              type="checkbox"
+              checked={billingSameAsShipping}
+              onChange={(e) => setBillingSameAsShipping(e.target.checked)}
+              className="h-5 w-5 cursor-pointer rounded border-[#1C1C1C]/20 accent-[#FF4200]"
+            />
+            <span className="text-sm font-medium text-[#1C1C1C]">
+              Billing address is the same as shipping address
+            </span>
+          </label>
+
+          {/* Conditional billing fields */}
+          {!billingSameAsShipping && (
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              <AccountField label="Address line 1" defaultValue="" />
+              <AccountField label="Address line 2" defaultValue="" />
+              <AccountField label="City" defaultValue="" />
+              <AccountField label="State" defaultValue="" />
+              <AccountField label="Postal code" defaultValue="" />
+              <AccountField label="Country" defaultValue="United States" />
+              <button
+                type="button"
+                className="col-span-full mt-2 inline-flex w-fit rounded-full bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
+              >
+                Save billing address
+              </button>
+            </div>
+          )}
+        </section>
+
+        {/* Password */}
         <section className="rounded-[2rem] border border-[#1C1C1C]/10 bg-white p-6 shadow-[0_18px_45px_rgba(8,30,111,0.12)] sm:p-8">
           <h2
             className="text-2xl font-bold uppercase tracking-tight text-[#FF4200]"
