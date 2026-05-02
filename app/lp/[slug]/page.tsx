@@ -13,7 +13,7 @@ export default async function LandingPageTemplate({
         <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
           Landing Page Template
         </p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-[var(--og-ink)]">
+        <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] text-[var(--og-blue)]">
           {slug}
         </h1>
         <p className="mt-4 max-w-2xl text-lg leading-7 text-[var(--og-muted)]">

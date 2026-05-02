@@ -47,7 +47,7 @@ function MenuLink({
 }) {
   if (disabled) {
     return (
-      <span className="flex min-h-10 items-center justify-between rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[var(--og-muted)] opacity-45">
+      <span className="flex min-h-10 items-center justify-between rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#f7f1e8]/55">
         {children}
         <span className="text-[0.65rem]">Soon</span>
       </span>
@@ -57,7 +57,7 @@ function MenuLink({
   return (
     <Link
       href={href}
-      className="flex min-h-10 items-center rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[var(--og-blue)] transition hover:bg-[#f1e5d8] hover:text-[var(--og-orange)]"
+      className="flex min-h-10 items-center rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#f7f1e8] transition hover:bg-white/10 hover:text-[#ff9e7a]"
     >
       {children}
     </Link>
@@ -75,11 +75,11 @@ export function Nav() {
           className="relative"
           onMouseLeave={() => setActiveMenu(null)}
         >
-          <div className="flex items-center justify-between bg-[#FF4200] px-4 py-4 shadow-[0_4px_24px_rgba(255,66,0,0.20)] md:px-8">
+          <div className="flex items-center justify-between border-b border-[#0B32A0]/20 bg-[rgba(255,248,241,0.86)] px-4 py-4 shadow-[0_4px_24px_rgba(8,30,111,0.08)] backdrop-blur md:px-8">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full text-xl font-semibold text-white md:hidden"
+              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border border-[#0B32A0]/20 text-xl font-semibold text-[var(--og-blue)] md:hidden"
               aria-label="Open menu"
             >
               ☰
@@ -87,7 +87,7 @@ export function Nav() {
             <Link href="/" className="flex items-center" aria-label="Orange Goods">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/logos/OrangeGoods_Logo_Secondary_White.svg"
+                src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
                 alt="Orange Goods"
                 className="h-7 w-auto md:h-8"
               />
@@ -97,7 +97,7 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("custom")}
                 onClick={() => setActiveMenu(activeMenu === "custom" ? null : "custom")}
-                className="text-sm font-semibold tracking-[0.16em] text-white transition hover:text-white/70"
+                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
               >
                 CUSTOM ▾
               </button>
@@ -105,13 +105,13 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("build")}
                 onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
-                className="text-sm font-semibold tracking-[0.16em] text-white transition hover:text-white/70"
+                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
               >
                 BUILD ONLINE ▾
               </button>
               <Link
                 href="/#process"
-                className="text-sm font-semibold tracking-[0.16em] text-white transition hover:text-white/70"
+                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
               >
                 DESIGN
               </Link>
@@ -119,14 +119,14 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("about")}
                 onClick={() => setActiveMenu(activeMenu === "about" ? null : "about")}
-                className="text-sm font-semibold tracking-[0.16em] text-white transition hover:text-white/70"
+                className="text-sm font-semibold tracking-[0.16em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
               >
                 ABOUT ▾
               </button>
             </nav>
             <Link
               href={startProjectHref}
-              className="inline-flex min-h-10 items-center rounded-full bg-white px-4 text-xs font-semibold uppercase tracking-[0.1em] text-[#FF4200] transition hover:bg-white/90 md:min-h-11 md:px-5 md:text-sm"
+              className="inline-flex min-h-10 items-center rounded-full bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#d73b05] md:min-h-11 md:px-5 md:text-sm"
             >
               <span className="md:hidden">Start</span>
               <span className="hidden md:inline">START A PROJECT</span>
@@ -135,12 +135,12 @@ export function Nav() {
 
           {activeMenu ? (
             <div
-              className="absolute left-0 right-0 top-[calc(100%+0.75rem)] hidden rounded-[2rem] border border-[#0B32A0]/20 bg-[rgba(251,247,241,0.96)] p-5 shadow-[0_28px_90px_rgba(8,30,111,0.16)] backdrop-blur md:block"
+              className="absolute left-6 right-6 top-[calc(100%+0.75rem)] hidden rounded-[2rem] border border-white/10 bg-[var(--og-dark-blue)] p-5 text-[#f7f1e8] shadow-[0_28px_90px_rgba(8,30,111,0.24)] backdrop-blur md:block"
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
                 <div className="grid gap-5 md:grid-cols-[40fr_35fr_25fr]">
-                  <div className="rounded-[1.5rem] bg-[var(--og-dark-blue)] p-6 text-[#f7f1e8]">
+                  <div className="rounded-[1.5rem] bg-white/8 p-6 text-[#f7f1e8]">
                     <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#ff9e7a]">
                       Start A Project
                     </p>
@@ -173,7 +173,7 @@ export function Nav() {
                         </MenuLink>
                       ))}
                     </div>
-                    <div className="mt-4 border-t border-[#0B32A0]/20 pt-4">
+                    <div className="mt-4 border-t border-white/10 pt-4">
                       <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                         Services
                       </p>

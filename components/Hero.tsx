@@ -31,7 +31,7 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className="px-4 pb-8 pt-8 md:px-8 md:pt-14 lg:px-12">
-      <div className="mx-auto grid max-w-6xl gap-10 rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.84)] p-6 shadow-[0_24px_80px_rgba(22,17,15,0.08)] backdrop-blur md:grid-cols-[1.1fr_0.9fr] md:p-8">
+      <div className="mx-auto grid max-w-6xl gap-10 rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.84)] p-6 shadow-[0_24px_80px_rgba(8,30,111,0.08)] backdrop-blur md:grid-cols-[1.1fr_0.9fr] md:p-8">
         <div className="flex flex-col justify-between gap-10">
           <div>
             <motion.p
@@ -53,7 +53,7 @@ export function Hero({
                   },
                 },
               }}
-              className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-[var(--og-ink)] md:text-7xl"
+              className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.94] tracking-[-0.06em] text-[var(--og-blue)] md:text-7xl"
             >
               {title.split(" ").map((word) => (
                 <motion.span
@@ -89,9 +89,9 @@ export function Hero({
               {stats.map((stat) => (
                 <div
                   key={stat.label}
-                  className="rounded-[1.5rem] border border-black/10 bg-[#fff8f1] p-4"
+                  className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[#fff8f1] p-4"
                 >
-                  <div className="text-3xl font-semibold text-[var(--og-ink)]">
+                  <div className="text-3xl font-semibold text-[var(--og-blue)]">
                     {stat.value}
                   </div>
                   <div className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--og-muted)]">
@@ -110,7 +110,7 @@ export function Hero({
               {secondaryCtaLabel && secondaryCtaHref ? (
                 <Link
                   href={secondaryCtaHref}
-                  className="inline-flex min-h-12 items-center rounded-full border border-black/10 px-6 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-ink)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+                  className="inline-flex min-h-12 items-center rounded-full bg-[var(--og-blue)] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[var(--og-dark-blue)]"
                 >
                   {secondaryCtaLabel}
                 </Link>
@@ -123,7 +123,7 @@ export function Hero({
           initial={{ opacity: 1, scale: 1 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="relative overflow-hidden rounded-[1.8rem] bg-[#1b1512] p-5 text-[#f5efe6]"
+          className="relative overflow-hidden rounded-[1.8rem] bg-[var(--og-dark-blue)] p-5 text-[#f5efe6]"
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,66,0,0.34),transparent_38%)]" />
           <div className="relative flex h-full min-h-[26rem] flex-col justify-between rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-6">

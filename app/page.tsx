@@ -34,7 +34,7 @@ export default function HomePage() {
       />
 
       <Reveal className="px-4 py-14 md:px-8 lg:px-12">
-        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-black/10 bg-[#1d1714] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
+        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-dark-blue)] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#ff9e7a]">
               The Merch Problem
@@ -60,7 +60,7 @@ export default function HomePage() {
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
                 One Team, End to End
               </p>
-              <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
+              <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
                 From first brief to final shipment.
               </h2>
             </div>
@@ -111,7 +111,7 @@ export default function HomePage() {
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
               Small-Town Service
             </p>
-            <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
+            <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
               Easton built Orange Goods around one idea: goods worth keeping.
             </h2>
             <p className="mt-5 text-base leading-7 text-[var(--og-muted)] md:text-lg">
