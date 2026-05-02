@@ -13,7 +13,7 @@ export function CTASection({
   buttonHref: string;
 }) {
   return (
-    <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+    <Reveal className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
       <section className="mx-auto max-w-6xl rounded-[2rem] bg-[var(--og-blue)] p-8 text-white shadow-[0_24px_80px_rgba(8,30,111,0.22)] md:p-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
