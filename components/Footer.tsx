@@ -13,8 +13,9 @@ const footerLinks = [
 
 export function Footer() {
   return (
-    <footer className="bg-[#0B32A0] text-white">
-      {/* Main footer body */}
+    <footer className="text-white">
+      {/* Main footer body — off-black */}
+      <div className="bg-[#1C1C1C]">
       <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 lg:px-12">
         <div className="grid gap-12 md:grid-cols-[1fr_auto]">
           {/* Left col */}
@@ -120,13 +121,15 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-white/10 px-4 py-5 md:px-8 lg:px-12">
+      </div>
+
+      {/* Bottom strip — blue */}
+      <div className="bg-[#0B32A0] px-4 py-4 md:px-8 lg:px-12">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/60">
             © {new Date().getFullYear()} Orange Goods. All rights reserved.
           </p>
-          <p className="text-xs text-white/40">Los Angeles, CA</p>
+          <p className="text-xs text-white/60">Los Angeles, CA</p>
         </div>
       </div>
     </footer>
