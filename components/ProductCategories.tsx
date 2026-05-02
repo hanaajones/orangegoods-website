@@ -48,10 +48,10 @@ const categories = [
 
 export function ProductCategories() {
   return (
-    <Reveal className="px-4 py-14 md:px-8 lg:px-12">
-      <section className="mx-auto max-w-6xl">
+    <Reveal className="py-14">
+      <section>
         {/* Header */}
-        <div className="mb-10">
+        <div className="mb-10 px-4 md:px-8 lg:px-12">
           <p
             className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
             style={{ fontFamily: "var(--font-accent)" }}
@@ -69,11 +69,9 @@ export function ProductCategories() {
           </p>
         </div>
 
-        {/* Category horizontal scroll */}
+        {/* Category horizontal scroll — full width */}
         <div className="relative">
-          {/* Fade edges */}
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-white to-transparent" />
-          <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:-mx-8 md:pl-8 md:pr-8 lg:-mx-12 lg:pl-12"
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:pl-8 md:pr-8 lg:pl-12"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
           {categories.map((cat) => (

@@ -130,9 +130,9 @@ function WorkImage({ item }: { item: WorkItem }) {
 
 export function SelectedWork() {
   return (
-    <Reveal className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
-      <section id="gallery" className="mx-auto max-w-7xl">
-        <div className="mb-8 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between">
+    <Reveal className="py-16 md:py-20">
+      <section id="gallery">
+        <div className="mb-8 flex flex-col gap-4 px-4 md:mb-10 md:flex-row md:items-end md:justify-between md:px-8 lg:px-12">
           <h2 className="text-5xl font-semibold leading-none text-[var(--og-blue)] md:text-7xl">
             SELECTED WORK
           </h2>
@@ -142,7 +142,7 @@ export function SelectedWork() {
           </p>
         </div>
 
-        <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:-mx-8 md:pl-8 md:pr-8 lg:-mx-12 lg:pl-12"
+        <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 pl-4 pr-4 md:pl-8 md:pr-8 lg:pl-12"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {selectedWork.slice(0, 8).map((item) => (
