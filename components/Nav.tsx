@@ -75,7 +75,8 @@ export function Nav() {
           className="relative"
           onMouseLeave={() => setActiveMenu(null)}
         >
-          <div className="flex items-center justify-between bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:px-8">
+          <div className="flex items-center bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:px-8">
+            {/* Mobile hamburger */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
@@ -84,7 +85,8 @@ export function Nav() {
             >
               ☰
             </button>
-            <Link href="/" className="flex items-center" aria-label="Orange Goods">
+            {/* Logo — left */}
+            <Link href="/" className="flex shrink-0 items-center" aria-label="Orange Goods">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
@@ -92,7 +94,8 @@ export function Nav() {
                 className="h-9 w-auto md:h-10"
               />
             </Link>
-            <nav className="hidden items-center gap-6 md:flex">
+            {/* Nav — centered */}
+            <nav className="hidden flex-1 items-center justify-center gap-6 md:flex">
               <button
                 type="button"
                 onMouseEnter={() => setActiveMenu("custom")}
@@ -124,8 +127,8 @@ export function Nav() {
                 ABOUT ▾
               </button>
             </nav>
-            {/* Profile + Cart icons */}
-            <div className="hidden items-center gap-1 md:flex">
+            {/* Right group: icons + CTA */}
+            <div className="hidden shrink-0 items-center gap-1 md:flex">
               <Link
                 href="/portal"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
@@ -144,15 +147,14 @@ export function Nav() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </Link>
+              <Link
+                href={startProjectHref}
+                className="inline-flex min-h-10 items-center rounded-full bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] transition hover:bg-white/90 md:min-h-11 md:px-5 md:text-sm"
+              >
+                <span className="md:hidden">Start</span>
+                <span className="hidden md:inline">START A PROJECT</span>
+              </Link>
             </div>
-
-            <Link
-              href={startProjectHref}
-              className="inline-flex min-h-10 items-center rounded-full bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] transition hover:bg-white/90 md:min-h-11 md:px-5 md:text-sm"
-            >
-              <span className="md:hidden">Start</span>
-              <span className="hidden md:inline">START A PROJECT</span>
-            </Link>
           </div>
 
           {activeMenu ? (
