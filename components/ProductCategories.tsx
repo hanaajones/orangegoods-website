@@ -72,7 +72,8 @@ export function ProductCategories() {
             <Link
               key={cat.name}
               href={cat.href}
-              className="group relative shrink-0 snap-start overflow-hidden rounded-[2rem]"
+              className="group relative shrink-0 snap-start overflow-hidden rounded-[2rem] border-2 border-[#0B32A0]"
+              style={{ boxShadow: "8px 8px 0px #081E6F" }}
               style={{ width: "clamp(260px, 38vw, 360px)", height: "380px" }}
             >
               {/* Background photo */}
