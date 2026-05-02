@@ -17,8 +17,8 @@ export function Reveal({
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+      initial={{ opacity: 1, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 20 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
