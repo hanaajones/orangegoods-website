@@ -70,13 +70,13 @@ export function ProductCategories() {
         </div>
 
         {/* Category grid */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {categories.map((cat) => (
             <Link
               key={cat.name}
               href={cat.href}
               className={`group relative overflow-hidden rounded-[2rem] ${cat.span}`}
-              style={{ minHeight: "320px" }}
+              style={{ minHeight: "260px" }}
             >
               {/* Background photo */}
               {/* eslint-disable-next-line @next/next/no-img-element */}

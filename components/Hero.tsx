@@ -73,14 +73,17 @@ export function Hero() {
         </div>
 
         {/* Mobile: overlay text on image */}
-        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 bg-gradient-to-t from-black/80 to-transparent p-6 lg:hidden">
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-5 pb-6 pt-16 lg:hidden">
           <h1
-            className="text-4xl uppercase leading-tight text-white"
+            className="text-3xl uppercase leading-tight text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Merch people actually keep.
+            Everything your<br />brand wears.
           </h1>
-          <div className="flex gap-3">
+          <p className="text-sm leading-5 text-white/80">
+            Hats, tees, socks, drinkware &amp; more — custom from scratch or fast from premium blanks.
+          </p>
+          <div className="flex gap-3 pt-1">
             <Link
               href="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
               className="inline-flex items-center rounded-full bg-[#FF4200] px-5 py-3 text-xs font-semibold text-white"
@@ -90,7 +93,7 @@ export function Hero() {
             </Link>
             <Link
               href="/build"
-              className="inline-flex items-center rounded-full border border-white px-5 py-3 text-xs font-semibold text-white"
+              className="inline-flex items-center rounded-full border border-white/80 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur-sm"
               style={{ fontFamily: "var(--font-display)" }}
             >
               BUILD ONLINE
@@ -102,14 +105,14 @@ export function Hero() {
       {/* ── MARQUEE: product categories ── */}
       <div
         className="overflow-hidden border-y-[3px] border-[#1C1C1C] bg-white"
-        style={{ height: "72px" }}
+        style={{ height: "clamp(56px, 8vw, 72px)" }}
       >
         <div className="animate-marquee flex h-full w-max items-center gap-14 px-14">
           {Array.from({ length: 4 }).flatMap((_, i) =>
             categories.map((cat) => (
               <span
                 key={`${cat}-${i}`}
-                className="flex-none text-[28px] text-[#1C1C1C]"
+                className="flex-none text-[clamp(18px,3.5vw,28px)] text-[#1C1C1C]"
                 style={{ fontFamily: "var(--font-sirenia)", fontWeight: 600 }}
               >
                 {cat}
