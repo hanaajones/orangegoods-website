@@ -127,7 +127,7 @@ export function ProductCategories() {
         {/* Header */}
         <div className="mb-10 px-4 text-center md:px-8 lg:px-12">
           <h2
-            className="text-3xl font-extrabold uppercase tracking-tight text-[#FF4200] md:text-4xl"
+            className="text-3xl font-extrabold uppercase tracking-tight text-[#FF4200] md:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             We handle it all

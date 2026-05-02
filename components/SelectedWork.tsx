@@ -133,7 +133,7 @@ export function SelectedWork() {
     <Reveal className="py-16 md:py-20">
       <section id="gallery">
         <div className="mb-8 flex flex-col items-center gap-4 px-4 text-center md:mb-10 md:px-8 lg:px-12">
-          <h2 className="text-5xl font-semibold leading-none text-[var(--og-blue)] md:text-7xl">
+          <h2 className="text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
             RECENT CUSTOM PROJECTS
           </h2>
           <p className="mx-auto max-w-md text-base leading-7 text-[var(--og-muted)] md:text-lg">
