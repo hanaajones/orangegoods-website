@@ -2,6 +2,14 @@
 
 /* ── Custom Fonts ── */
 @font-face {
+  font-family: 'Sirenia';
+  src: url('/fonts/sirenia-medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'FatFrank';
   src: url('/fonts/FatFrank-Regular.woff2') format('woff2'),
        url('/fonts/FatFrank-Regular.woff') format('woff');
@@ -57,6 +65,7 @@
   --font-display: 'FatFrank', sans-serif;
   --font-body: 'NoirPro', sans-serif;
   --font-accent: 'JukeboxJohnny', cursive;
+  --font-sirenia: 'Sirenia', sans-serif;
 
   /* ── Official OG Brand Colors ── */
   /* RULE: Never use black or dark text on orange backgrounds. Always use white. */
@@ -144,5 +153,5 @@ h1, h2, h3 {
 }
 
 .animate-marquee {
-  animation: marquee 22s linear infinite;
+  animation: marquee 50s linear infinite;
 }
