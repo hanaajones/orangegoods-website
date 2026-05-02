@@ -221,9 +221,9 @@ export function Nav() {
               ) : null}
 
               {activeMenu === "build" ? (
-                <div className="grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
+                <div className="grid gap-5 md:grid-cols-[0.8fr_1fr_1fr_1fr]">
                   {/* Col 1: Photo */}
-                  <div className="relative min-h-[18rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
+                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
                     <Image
                       src={products[0].image}
                       alt="Orange Goods"
@@ -244,7 +244,7 @@ export function Nav() {
                       ))}
                     </div>
                   </div>
-                  {/* Col 3: Info */}
+                  {/* Col 3: How It Works */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       How It Works
@@ -253,7 +253,17 @@ export function Nav() {
                       <MenuLink href="/services#ready-made">Ready Made</MenuLink>
                       <MenuLink href="/services#og-crafted">OG Crafted</MenuLink>
                       <MenuLink href="/quiz">Find My Goods</MenuLink>
+                    </div>
+                  </div>
+                  {/* Col 4: Explore */}
+                  <div>
+                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                      Explore
+                    </p>
+                    <div className="grid gap-1">
                       <MenuLink href="/faq">FAQ</MenuLink>
+                      <MenuLink href="/gallery">Gallery</MenuLink>
+                      <MenuLink href="/case-studies">Case Studies</MenuLink>
                     </div>
                     <div className="mt-3">
                       <Link href={buildOnlineHref} className="btn-og">Start Building</Link>
