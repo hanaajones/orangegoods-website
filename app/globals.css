@@ -10,6 +10,14 @@
 }
 
 @font-face {
+  font-family: 'Sirenia';
+  src: url('/fonts/sirenia-semi-bold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'FatFrank';
   src: url('/fonts/FatFrank-Regular.woff2') format('woff2'),
        url('/fonts/FatFrank-Regular.woff') format('woff');

@@ -102,15 +102,15 @@ export function Hero() {
       {/* ── MARQUEE: product categories ── */}
       <div
         className="overflow-hidden border-y-4 border-[#1C1C1C] bg-white"
-        style={{ height: "52px" }}
+        style={{ height: "72px" }}
       >
         <div className="animate-marquee flex h-full w-max items-center gap-14 px-14">
           {Array.from({ length: 4 }).flatMap((_, i) =>
             categories.map((cat) => (
               <span
                 key={`${cat}-${i}`}
-                className="flex-none text-sm text-[#1C1C1C]"
-                style={{ fontFamily: "var(--font-sirenia)", fontWeight: 500 }}
+                className="flex-none text-[28px] text-[#1C1C1C]"
+                style={{ fontFamily: "var(--font-sirenia)", fontWeight: 600 }}
               >
                 {cat}
               </span>
