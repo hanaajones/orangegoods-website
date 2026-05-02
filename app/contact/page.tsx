@@ -36,7 +36,7 @@ export default function ContactPage() {
     <main className="bg-[var(--og-warm-grey)] pb-24 md:pb-0">
       <section className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <h1 className="text-6xl leading-none text-[var(--og-orange)] md:text-8xl lg:text-9xl">
+          <h1 className="text-4xl leading-none text-[var(--og-orange)] sm:text-6xl md:text-8xl lg:text-9xl">
             GET IN TOUCH
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--og-muted)] md:text-xl">

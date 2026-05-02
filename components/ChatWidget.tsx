@@ -56,7 +56,7 @@ export function ChatWidget() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-36 right-5 z-[60] flex w-[340px] flex-col overflow-hidden rounded-2xl shadow-2xl md:bottom-24"
+          className="fixed bottom-36 right-4 z-[60] flex w-[min(340px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl shadow-2xl md:bottom-24"
           style={{ border: "3px solid #FF4200", maxHeight: "480px" }}
         >
           {/* Header */}

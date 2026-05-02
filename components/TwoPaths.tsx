@@ -59,11 +59,11 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
             return (
               <article
                 key={item.title}
-                className={`flex flex-col rounded-[2rem] p-8 md:p-10 ${cfg.bg}`}
+                className={`flex flex-col rounded-[2rem] p-6 md:p-8 lg:p-10 ${cfg.bg}`}
               >
                 {/* Photo */}
                 {item.image && (
-                  <div className="-mx-8 -mt-8 mb-6 h-64 overflow-hidden rounded-t-[2rem] md:-mx-10 md:-mt-10 md:h-72">
+                  <div className="-mx-6 -mt-6 mb-6 h-56 overflow-hidden rounded-t-[2rem] md:-mx-8 md:-mt-8 md:h-64 lg:-mx-10 lg:-mt-10 lg:h-72">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={item.image}
