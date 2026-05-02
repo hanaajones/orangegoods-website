@@ -56,7 +56,7 @@ export function ChatWidget() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-24 right-5 z-50 flex w-[340px] flex-col overflow-hidden rounded-2xl shadow-2xl"
+          className="fixed bottom-36 right-5 z-[60] flex w-[340px] flex-col overflow-hidden rounded-2xl shadow-2xl md:bottom-24"
           style={{ border: "3px solid #FF4200", maxHeight: "480px" }}
         >
           {/* Header */}
@@ -138,7 +138,7 @@ export function ChatWidget() {
       {/* Toggle button */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#FF4200] shadow-lg ring-2 ring-transparent transition-all hover:bg-[#d73b05] hover:ring-white"
+        className="fixed bottom-20 right-5 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#FF4200] shadow-lg ring-2 ring-transparent transition-all hover:bg-[#d73b05] hover:ring-white md:bottom-5"
         aria-label={open ? "Close chat" : "Chat with us"}
       >
         {open ? (
