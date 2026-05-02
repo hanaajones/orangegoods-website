@@ -16,7 +16,7 @@ export function Footer() {
         <div className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16 lg:px-12">
 
           {/* 3-column grid: logo | contact | nav */}
-          <div className="grid gap-10 md:grid-cols-3 md:items-start">
+          <div className="grid gap-10 md:grid-cols-3 md:items-center">
 
             {/* Left: Logo */}
             <div className="flex justify-start">
