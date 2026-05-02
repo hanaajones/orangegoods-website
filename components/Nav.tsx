@@ -163,67 +163,48 @@ export function Nav() {
               onMouseEnter={() => setActiveMenu(activeMenu)}
             >
               {activeMenu === "custom" ? (
-                <div className="flex flex-col gap-4">
-                <div className="grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
-                  {/* Col 1: Photo */}
-                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
-                    <Image
-                      src={hoveredProduct}
-                      alt="Orange Goods product"
-                      fill
-                      sizes="300px"
-                      className="object-cover transition-opacity duration-300"
-                    />
-                  </div>
-                  {/* Col 2: Products */}
+                <div className="grid gap-6 md:grid-cols-3">
+                  {/* Col 1: Products */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Products
                     </p>
                     <div className="grid gap-1">
                       {products.map((item) => (
-                        <div key={item.label} onMouseEnter={() => setHoveredProduct(item.image)}>
-                          <MenuLink href={item.href}>
-                            {item.label}
-                          </MenuLink>
+                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Col 2: Ready Made Services */}
+                  <div>
+                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                      Ready Made Services
+                    </p>
+                    <div className="grid gap-1">
+                      {serviceLinks.map((item) => (
+                        <div key={item.label}>
+                          <MenuLink href={item.href}>{item.label}</MenuLink>
+                          {item.note && <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p>}
                         </div>
                       ))}
                     </div>
-                    <div className="mt-4 border-t border-[#1C1C1C]/15 pt-4">
-                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                        Ready Made Services
-                      </p>
-                      <div className="grid gap-1">
-                        {serviceLinks.map((item) => (
-                          <div key={item.label}>
-                            <MenuLink href={item.href}>{item.label}</MenuLink>
-                            {item.note && <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
+                  {/* Col 3: Explore */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Explore
                     </p>
                     <div className="grid gap-1">
                       {customLinks.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>
-                          {item.label}
-                        </MenuLink>
+                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
                       ))}
-                      <MenuLink href="/case-studies">
-                        Case Studies
-                      </MenuLink>
+                      <MenuLink href="/case-studies">Case Studies</MenuLink>
                     </div>
-                    {/* Buttons below Case Studies */}
-                    <div className="mt-4 flex flex-col gap-2">
+                    <div className="mt-4 flex flex-wrap gap-2">
                       <Link href="/quiz" className="btn-og-white border border-[#0B32A0]/30 text-[#0B32A0]">Find Your Goods</Link>
                       <Link href={startProjectHref} className="btn-og">Start a Project</Link>
                     </div>
                   </div>
-                </div>
                 </div>
               ) : null}
 
