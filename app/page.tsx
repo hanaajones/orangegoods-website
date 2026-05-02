@@ -83,7 +83,7 @@ export default function HomePage() {
       {/* Full-width photo carousel */}
       <PhotoCarousel />
 
-      <div className="py-10" />
+      <div style={{ height: "30px" }} />
 
       <ProcessSteps
         eyebrow="How It Works"
