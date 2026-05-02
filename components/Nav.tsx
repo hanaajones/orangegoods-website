@@ -224,8 +224,8 @@ export function Nav() {
               ) : null}
 
               {activeMenu === "build" ? (
-                <div className="grid gap-6 md:grid-cols-[0.85fr_1fr]">
-                  <div className="relative min-h-[16rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
+                <div className="flex flex-col gap-5">
+                  <div className="relative h-40 w-full overflow-hidden rounded-[1.25rem] bg-[#e0c7ad]">
                     <Image
                       src={products[0].image}
                       alt="Orange Goods hat"
