@@ -19,6 +19,14 @@ export default function HomePage() {
   return (
     <main className="pb-24 md:pb-0">
       <Hero />
+
+      {/* Value prop — what OG does and which lane you're in */}
+      <TwoPaths items={twoPaths} title={twoPathsTitle} />
+
+      {/* Trust signal */}
+      <Testimonials testimonials={testimonials} logos={logos} />
+
+      {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
 
       <Reveal className="px-4 py-14 md:px-8 lg:px-12">
@@ -65,9 +73,6 @@ export default function HomePage() {
           </div>
         </section>
       </Reveal>
-
-      <TwoPaths items={twoPaths} title={twoPathsTitle} />
-      <Testimonials testimonials={testimonials} logos={logos} />
       <ProcessSteps
         eyebrow="How It Works"
         title="A clear path from brief to delivery."
