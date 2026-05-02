@@ -54,85 +54,77 @@ export function NewsletterPopup() {
 
       {/* Modal */}
       <div
-        className="fixed inset-x-4 bottom-6 z-[90] mx-auto max-w-md rounded-2xl bg-[#081E6F] text-white shadow-2xl md:bottom-auto md:left-1/2 md:top-1/2 md:inset-x-auto md:-translate-x-1/2 md:-translate-y-1/2"
+        className="fixed inset-x-4 bottom-6 z-[90] mx-auto max-w-xl rounded-2xl bg-white shadow-2xl md:bottom-auto md:left-1/2 md:top-1/2 md:inset-x-auto md:-translate-x-1/2 md:-translate-y-1/2"
         role="dialog"
         aria-modal="true"
       >
         {/* Close */}
         <button
           onClick={dismiss}
-          className="absolute right-4 top-4 text-white/50 transition hover:text-white"
+          className="absolute right-5 top-5 text-[#1C1C1C]/30 transition hover:text-[#1C1C1C]"
           aria-label="Close"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
           </svg>
         </button>
 
-        <div className="px-7 pb-8 pt-8">
+        <div className="px-10 pb-10 pt-10">
           {!submitted ? (
             <>
-              {/* Eyebrow */}
-              <p
-                className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF7F00]"
-                style={{ fontFamily: "var(--font-accent)" }}
-              >
-                Limited Offer
-              </p>
-
               {/* Headline */}
               <h2
-                className="mt-2 text-3xl uppercase leading-tight text-white md:text-4xl"
+                className="text-4xl uppercase leading-tight text-[#FF4200] md:text-5xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Get $150 off your first order.
               </h2>
 
-              <p className="mt-3 text-sm leading-6 text-white/70">
-                Join our list and we&apos;ll apply $150 toward your first project — no strings, just real goods. Unsubscribe anytime.
+              <p className="mt-4 text-lg leading-7 text-[#1C1C1C]/70">
+                Sign up and we&apos;ll apply it to your project.
               </p>
 
-              <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-3">
+              <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
                   required
-                  className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white placeholder-white/40 outline-none focus:border-[#FF4200] focus:bg-white/15"
+                  className="rounded-xl border border-[#1C1C1C]/15 bg-[#F3EFE7] px-5 py-4 text-base text-[#1C1C1C] placeholder-[#1C1C1C]/40 outline-none focus:border-[#FF4200]"
                 />
                 <button
                   type="submit"
                   disabled={loading}
-                  className="btn-og w-full justify-center"
+                  className="btn-og w-full justify-center py-4 text-base"
                 >
                   {loading ? "CLAIMING…" : "CLAIM MY $150"}
                 </button>
               </form>
 
-              <p className="mt-4 text-center text-xs text-white/30">
+              <p className="mt-5 text-sm text-[#1C1C1C]/40">
                 Valid on orders 100+ pieces. One per customer.
               </p>
             </>
           ) : (
-            <div className="py-4 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#FF4200]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <div className="py-6 text-center">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#FF4200]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
               <h2
-                className="text-2xl uppercase text-white"
+                className="text-3xl uppercase text-[#FF4200]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 You&apos;re in.
               </h2>
-              <p className="mt-2 text-sm text-white/70">
-                We&apos;ll be in touch. Mention this offer when you start your project.
+              <p className="mt-3 text-base text-[#1C1C1C]/60">
+                Mention this when you start your project.
               </p>
               <button
                 onClick={dismiss}
-                className="btn-og mt-6 w-full justify-center"
+                className="btn-og mt-8 w-full justify-center"
               >
                 START A PROJECT
               </button>
