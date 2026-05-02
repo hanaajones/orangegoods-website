@@ -21,11 +21,11 @@ export function Footer() {
           <div className="flex flex-col gap-8">
             <Link href="/" aria-label="Orange Goods">
               <Image
-                src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
+                src="/logos/OrangeGoods_Logo_Main_Horizontal_White.svg"
                 alt="Orange Goods"
                 width={180}
                 height={48}
-                className="h-10 w-auto brightness-0 invert"
+                className="h-10 w-auto"
               />
             </Link>
             <p className="max-w-sm text-xl font-semibold leading-snug text-white/90 md:text-2xl">
@@ -40,9 +40,10 @@ export function Footer() {
               </a>
               <a
                 href="sms:+12133764663"
-                className="transition hover:text-[#FF4200]"
+                className="flex items-center gap-1.5 transition hover:text-[#FF4200]"
               >
-                (213) 376-4663
+                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#FF7F00]">Text Us</span>
+                <span>(213) 376-4663</span>
               </a>
             </div>
             <a
