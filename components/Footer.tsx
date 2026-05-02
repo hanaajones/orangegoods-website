@@ -90,7 +90,7 @@ export function Footer() {
               className="text-2xl uppercase leading-tight text-[#FF4200] md:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Goods you'll actually love
+              We love making good goods
             </p>
             <div className="flex flex-wrap gap-3">
               <a
