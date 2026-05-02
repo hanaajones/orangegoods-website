@@ -18,6 +18,11 @@ const products = [
   { label: "Blankets", href: "#" },
 ];
 
+const serviceLinks = [
+  { label: "Embroidery (Ready Made)", href: "/services/embroidery" },
+  { label: "Screen Printing (Ready Made)", href: "/services/screen-printing" },
+];
+
 const customLinks = [
   { label: "Our Process", href: "#process" },
   { label: "Gallery", href: "#gallery" },
@@ -165,6 +170,18 @@ export function Nav() {
                           {item.label}
                         </MenuLink>
                       ))}
+                    </div>
+                    <div className="mt-4 border-t border-black/10 pt-4">
+                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Services
+                      </p>
+                      <div className="grid gap-1">
+                        {serviceLinks.map((item) => (
+                          <MenuLink key={item.label} href={item.href}>
+                            {item.label}
+                          </MenuLink>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <div>
