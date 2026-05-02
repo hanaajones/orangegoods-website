@@ -21,6 +21,10 @@ export default function HomePage() {
     <main className="pb-24 md:pb-0">
       <Hero />
 
+      {/* Checkers divider */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/graphics/OrangeGoods_Checkers_Orange.svg" alt="" aria-hidden="true" className="w-full" />
+
       {/* Trust signal first */}
       <Testimonials testimonials={testimonials} logos={logos} />
 
@@ -29,6 +33,10 @@ export default function HomePage() {
 
       {/* Product categories — visual capabilities grid */}
       <ProductCategories />
+
+      {/* Checkers divider */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/graphics/OrangeGoods_Checkers_Blue.svg" alt="" aria-hidden="true" className="w-full" />
 
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
