@@ -179,7 +179,7 @@ h1, h2, h3 {
   min-height: 44px;
   font-family: var(--font-display);
   font-size: 0.78rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0;
   text-transform: uppercase;
   font-weight: 700;
   border: 2px solid transparent;
@@ -194,7 +194,6 @@ h1, h2, h3 {
 }
 .btn-og:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(255,66,0,0.28);
 }
 .btn-og:active  { transform: translateY(-1px); }
 
@@ -204,7 +203,6 @@ h1, h2, h3 {
 }
 .btn-og-white:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(255,255,255,0.20);
 }
 .btn-og-white:active { transform: translateY(-1px); }
 
@@ -212,13 +210,12 @@ h1, h2, h3 {
 .btn-lift,
 .btn-primary,
 .btn-secondary {
-  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  transition: transform 0.15s ease !important;
 }
 .btn-lift:hover,
 .btn-primary:hover,
 .btn-secondary:hover {
   transform: translateY(-3px) !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
 }
 .btn-lift:active,
 .btn-primary:active,
