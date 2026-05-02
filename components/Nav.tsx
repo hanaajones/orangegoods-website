@@ -31,8 +31,8 @@ const customLinks = [
 
 const aboutLinks = [
   { label: "About", href: "/about" },
-  { label: "Our Story", href: "/#about" },
-  { label: "The OG Difference", href: "/#about" },
+  { label: "OG Crafted vs Ready Made", href: "/services" },
+  { label: "Design", href: "/design" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
