@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { notFound } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 
 const catalog: Record<string, {
   name: string; price: number; image: string; images?: string[];
@@ -79,8 +79,10 @@ const expandableSections = [
   { title: "Shipping", key: "shipping" },
 ];
 
-export default function ShopProductPage({ params }: { params: { slug: string } }) {
-  const product = catalog[params.slug];
+export default function ShopProductPage() {
+  const params = useParams();
+  const slug = typeof params.slug === "string" ? params.slug : "";
+  const product = catalog[slug];
   if (!product) notFound();
 
   const [activeColor, setActiveColor] = useState(product.colors?.[0]);
