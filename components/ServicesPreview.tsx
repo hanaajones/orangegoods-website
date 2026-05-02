@@ -20,15 +20,6 @@ const tiers = [
     href: "/services#ready-made",
     bg: "bg-[#0B32A0]",
   },
-  {
-    title: "Design",
-    badge: "In-House Creative",
-    description:
-      "Our team handles logos, illustrations, and full merch identities. Human designers, not templates.",
-    detail: "5–10 business days",
-    href: "/services#design",
-    bg: "bg-[#081E6F]",
-  },
 ];
 
 export function ServicesPreview() {
@@ -40,14 +31,14 @@ export function ServicesPreview() {
             className="text-3xl uppercase leading-tight text-[#FF4200] md:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Three ways we work
+            Two production paths
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
-            Every project is different. Here's how we approach each one.
+            OG Crafted is fully custom from scratch. Ready Made starts with premium blanks and decorates locally. Both are 100+ pieces, both are retail quality.
           </p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           {tiers.map((tier) => (
             <Link
               key={tier.title}
