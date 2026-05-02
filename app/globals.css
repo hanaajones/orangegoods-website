@@ -1,6 +1,63 @@
 @import "tailwindcss";
 
+/* ── Custom Fonts ── */
+@font-face {
+  font-family: 'FatFrank';
+  src: url('/fonts/FatFrank-Regular.woff2') format('woff2'),
+       url('/fonts/FatFrank-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NoirPro';
+  src: url('/fonts/NoirPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NoirPro';
+  src: url('/fonts/NoirPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NoirPro';
+  src: url('/fonts/NoirPro-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NoirPro';
+  src: url('/fonts/NoirPro-Heavy.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JukeboxJohnny';
+  src: url('/fonts/TAYJukeboxJohnny.woff') format('woff'),
+       url('/fonts/TAYJukeboxJohnny.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 :root {
+  --font-display: 'FatFrank', sans-serif;
+  --font-body: 'NoirPro', sans-serif;
+  --font-accent: 'JukeboxJohnny', cursive;
+
   --og-orange: #ff4200;
   --og-ink: #16110f;
   --og-cream: #f5efe6;

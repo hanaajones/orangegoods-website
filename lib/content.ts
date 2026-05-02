@@ -3,33 +3,43 @@ type Stat = {
   label: string;
 };
 
+export const startProjectHref =
+  "mailto:hello@orangegoods.co?subject=Start%20a%20Project";
+
+export const buildOnlineHref = "https://orangegoods.co/goods/";
+
+export const hatImage =
+  "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg";
+
 export const homeHero = {
-  title: "Custom branded goods and designs",
+  title: "Merch people actually keep.",
   description:
-    "We’ll make your brand stand out with quality, unique merch for corporate gifting, retail, and events. Crafted to be kept and loved, our California team handles the production from idea to delivery.",
+    "Orange Goods handles everything - product development, design, production, and delivery. One team. One process. Built for brands that care about quality.",
 };
 
 export const homeStats: Stat[] = [
-  { value: "100", label: "MOQ minimum" },
-  { value: "3–6 weeks", label: "Typical timeline" },
+  { value: "100+", label: "MOQ" },
+  { value: "3-6 wks", label: "Typical timeline" },
   { value: "15+", label: "Product categories" },
 ];
 
+export const twoPathsTitle = "Two ways to order.";
+
 export const twoPaths = [
   {
-    title: "OG Crafted",
+    title: "Start a Project",
     description:
-      "Fully custom fabrics, materials, designs, and finishes, tailored to your brand from the ground up.",
-    details: ["100 MOQ", "3–6 weeks", "Exact vision"],
-    href: "/goods/hats",
-    label: "Explore Custom",
+      "Fully custom from the ground up. Your fabric, fit, and finish - handled. Hats, apparel, socks, drinkware, and more.",
+    details: ["100+ MOQ", "3-6 weeks", "Full custom"],
+    href: startProjectHref,
+    label: "Start a Project",
   },
   {
-    title: "Ready Made",
+    title: "Build Online",
     description:
-      "Premium blanks, faster turns, and lower order counts for teams that want quality without a full custom build.",
-    details: ["50+ MOQ", "Faster path", "Build online"],
-    href: "https://orangegoods.co/goods/",
+      "Premium blanks, faster turns. Decoration applied cleanly - embroidery, print, patches. Ship in 2-3 weeks.",
+    details: ["50+ MOQ", "2-3 weeks", "Quick turnaround"],
+    href: buildOnlineHref,
     label: "Build Online",
   },
 ];
@@ -37,7 +47,7 @@ export const twoPaths = [
 export const homeGallery = [
   {
     title: "Factory Direct Headwear",
-    image: "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg",
+    image: hatImage,
   },
   {
     title: "Graphic Design",
@@ -122,149 +132,183 @@ export const logos = [
 
 export const homeProcess = [
   {
-    title: "Give Us The Deets",
-    body: "Share your project details on the form. Select products from the catalog or collaborate on a unique idea.",
+    title: "Share your brief",
+    body: "Tell us what you need. Product, quantity, timeline, budget.",
   },
   {
-    title: "Artwork + Design",
-    body: "Orange Goods can develop 100% original artwork in-house, or work from existing assets you already have.",
+    title: "We handle design",
+    body: "Mockups, tech packs, approvals. Nothing goes to production without your sign-off.",
   },
   {
-    title: "Production + Delivery",
-    body: "On time, on budget, on brand. The team keeps you informed and ships finished goods directly to you.",
-  },
-  {
-    title: "Fulfillment If Needed",
-    body: "The current site also highlights fulfillment as part of the broader offer when projects need a longer tail.",
+    title: "Production + delivery",
+    body: "Factory-direct production. Shipped to your door with tracking.",
   },
 ];
 
 export const hatHero = {
-  eyebrow: "Custom Hats",
-  title: "Fully branded headwear, built from the ground up",
-  description:
-    "Custom fabrics, colors, taping, labels, and decoration from the ground up, with Orange Goods guiding the full process.",
-  image:
-    "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods-Hat-8.avif",
-  stats: [
-    { value: "100 pcs", label: "MOQ per style" },
-    { value: "30 days", label: "Quick custom turn" },
-    { value: "8–10 weeks", label: "Full project window" },
-  ] satisfies Stat[],
+  title: "Fully Custom Hats",
+  description: "Built from the ground up - fabric, fit, and finish.",
+  image: hatImage,
 };
 
-export const hatSelectorStyles = [
+export const hatAnchorLinks = [
+  { label: "Overview", href: "#overview" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "Styles", href: "#styles" },
+  { label: "Materials", href: "#materials" },
+  { label: "Decoration", href: "#decoration" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Process", href: "#process" },
+  { label: "FAQ", href: "#faq" },
+];
+
+export const hatCallouts = [
+  { title: "OG Crafted", body: "Fully custom, 100+ MOQ" },
+  { title: "Ready Made", body: "Premium blanks, 50+ MOQ, faster turn" },
+];
+
+export const hatPricing = [
   {
-    id: "dad-hat",
-    name: "Dad Hat",
-    description:
-      "A classic low-profile shape suited for washed fabrics, embroidery, and metal clasp details like the Verve Coffee example.",
-    shape: "Low profile",
-    fit: "Relaxed fit",
+    title: "Core Build",
+    price: "From $13/unit",
+    note: "100 qty",
+    features: [
+      "Custom fabric selection",
+      "Custom shape + structure",
+      "Interior label",
+      "One front decoration",
+    ],
   },
   {
-    id: "snapback",
-    name: "Snapback",
-    description:
-      "Structured front panels with a sharper shape for bold branding, patches, and higher crown builds.",
-    shape: "Structured crown",
-    fit: "Classic street fit",
-  },
-  {
-    id: "trucker",
-    name: "Trucker",
-    description:
-      "Foam or structured front with breathable rear panels for event, retail, and hospitality programs.",
-    shape: "Mesh-backed",
-    fit: "High crown",
-  },
-  {
-    id: "beanie",
-    name: "Beanie",
-    description:
-      "A knit headwear option for colder weather, woven labels, folded cuffs, and softer logo applications.",
-    shape: "Soft knit",
-    fit: "Close fit",
+    title: "Enhanced Build",
+    price: "Add $1.75/unit",
+    note: "2 extra details",
+    features: [
+      "Everything in Core Build",
+      "Plus 2 of: side/back embroidery, custom interior taping, additional decoration placement",
+    ],
   },
 ];
 
-export const hatOptions = [
+export const hatStyles = [
+  "Structured 5-panel (OG100)",
+  "Unstructured 6-panel (OG200)",
+  "Trucker (OG300)",
+  "Bucket Hat (OG400)",
+  "Beanie (OG500)",
+  "Visor (OG600)",
+].map((name) => ({ name, image: hatImage }));
+
+export const hatMaterials = [
+  {
+    name: "Cotton Twill",
+    description: "The standard. Clean, structured, versatile.",
+  },
+  { name: "Canvas", description: "Heavier weight. Built to last." },
+  { name: "Corduroy", description: "Textured and retail-forward." },
+  { name: "Nylon", description: "Lightweight and weather-resistant." },
+  {
+    name: "Ripstop",
+    description: "Technical. Used in outdoor and performance styles.",
+  },
+  {
+    name: "Washed Denim",
+    description: "Broken-in feel. Great for lifestyle brands.",
+  },
+  { name: "Mesh", description: "Breathable. Classic trucker structure." },
+  { name: "Camo", description: "Seasonal and lifestyle-ready." },
+];
+
+export const hatDecoration = [
   {
     title: "Embroidery",
-    description: "Front, back, or side embroidery with sizing and placement dialed in per style.",
+    items: ["Flat embroidery", "3D puff embroidery", "Chain stitch"],
   },
   {
     title: "Patches",
-    description: "Woven, leather, rubber, or specialty patch treatments for more dimensional branding.",
+    items: [
+      "Woven patch",
+      "Embroidered patch",
+      "Leather patch",
+      "PVC patch",
+      "Felt patch",
+      "Chenille patch",
+    ],
   },
   {
-    title: "Interior Labels",
-    description: "Custom taping, woven labels, and inside branding that make the hat feel finished.",
-  },
-  {
-    title: "Closures + Trims",
-    description: "Metal clasps, snap closures, fabric choices, and finishing details matched to the build.",
+    title: "Print",
+    items: ["Direct print", "Sublimated patch"],
   },
 ];
 
 export const hatProcess = [
   {
-    title: "Submit Brief",
-    body: "Share your quantity, style direction, timeline, and target budget so the quote is grounded from the start.",
+    title: "Brief + direction",
+    body: "Share your vision. We'll align on product, materials, and timeline.",
   },
   {
-    title: "Design Proof",
-    body: "Artwork, placement, fabrics, labels, and trims get translated into a production-ready plan.",
+    title: "Mockups + approval",
+    body: "We build a tech pack. Nothing moves to production without your sign-off.",
   },
   {
-    title: "Sample Review",
-    body: "Standard builds sample in about 2 weeks, with photos for approval and optional physical shipment.",
+    title: "Production + delivery",
+    body: "Factory-direct production. Shipped with tracking.",
+  },
+];
+
+export const hatFaqs = [
+  {
+    question: "What's the minimum order?",
+    answer: "100 units for fully custom. 50 units for decorated blanks.",
   },
   {
-    title: "Production + Delivery",
-    body: "Most hat projects run 8 to 10 weeks from kickoff to delivery depending on complexity and approvals.",
+    question: "How long does it take?",
+    answer:
+      "Custom hats typically take 3-6 weeks from final approval. Rush available on select styles.",
+  },
+  {
+    question: "What file formats do you need?",
+    answer: ".ai, .eps, or .pdf with vector artwork. No artwork yet? We can help.",
+  },
+  {
+    question: "Do you ship internationally?",
+    answer:
+      "We primarily ship to US addresses. Ask about international shipping when you start a project.",
+  },
+  {
+    question: "What does pricing include?",
+    answer: "Sampling, production, and standard shipping to one US address.",
   },
 ];
 
 export const hatGallery = [
   {
-    title: "Orange Goods Hat 8",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods-Hat-8.avif",
+    title: "Factory Direct Headwear",
+    image: hatImage,
   },
   {
-    title: "Orange Goods Hat 7",
+    title: "Graphic Design",
     image:
-      "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods-Hat-7.avif",
+      "https://orangegoods.co/wp-content/uploads/2024/07/GraphicDesign-271x300.jpg",
   },
   {
-    title: "Sundream Supply Hat",
+    title: "Embroidery",
     image:
-      "https://orangegoods.co/wp-content/uploads/2025/03/SundreamSupply_Hat_12-e1744953909670.avif",
+      "https://orangegoods.co/wp-content/uploads/2024/07/Embroidery_2-271x300.jpg",
   },
   {
-    title: "Fox Mercantile Hat",
+    title: "Packaging",
     image:
-      "https://orangegoods.co/wp-content/uploads/2024/06/IMG6732-R01-021A-e1719280438860.jpg",
+      "https://orangegoods.co/wp-content/uploads/2025/01/Packaging_Stanford-271x300.jpg",
   },
   {
-    title: "Customer Hat Detail",
+    title: "Drinkware",
     image:
-      "https://orangegoods.co/wp-content/uploads/2024/06/Customer_2.jpg",
+      "https://orangegoods.co/wp-content/uploads/2024/07/Drinkware-1-271x300.jpg",
   },
   {
-    title: "Hat Back Detail",
+    title: "Retail Finishing",
     image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/BGxHJ-23.jpg",
-  },
-  {
-    title: "Hat Project Still",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/06/BGxHJ-89.jpg",
-  },
-  {
-    title: "Sundream Supply Alt",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/03/SundreamSupply_Hat_17.avif",
+      "https://orangegoods.co/wp-content/uploads/2024/07/HangTag-271x300.jpg",
   },
 ];

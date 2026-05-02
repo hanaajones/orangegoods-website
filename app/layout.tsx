@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
-import { MobileCTABar } from "@/components/MobileCTABar";
 import { Nav } from "@/components/Nav";
 
 const figtree = Figtree({
@@ -27,7 +26,6 @@ export default function RootLayout({
           <div className="absolute inset-x-0 top-0 -z-10 h-[28rem] bg-[radial-gradient(circle_at_top,rgba(255,66,0,0.18),transparent_60%)]" />
           <Nav />
           {children}
-          <MobileCTABar />
         </div>
       </body>
     </html>

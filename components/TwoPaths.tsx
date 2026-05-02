@@ -3,22 +3,23 @@ import { Reveal } from "@/components/Reveal";
 
 type PathItem = {
   title: string;
+  eyebrow?: string;
   description: string;
   details: string[];
   href: string;
   label: string;
 };
 
-export function TwoPaths({ items }: { items: PathItem[] }) {
+export function TwoPaths({ items, title }: { items: PathItem[]; title: string }) {
   return (
-    <Reveal className="px-4 py-8 md:px-8 lg:px-12" >
+    <Reveal className="px-4 py-8 md:px-8 lg:px-12">
       <section id="paths" className="mx-auto max-w-6xl">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
             Two Paths
           </p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
-            One route for fully custom. One route for faster premium blanks.
+            {title}
           </h2>
         </div>
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -32,8 +33,11 @@ export function TwoPaths({ items }: { items: PathItem[] }) {
               }`}
             >
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                {item.title}
+                {item.eyebrow ?? item.title}
               </p>
+              <h3 className="mt-4 text-3xl font-semibold leading-tight">
+                {item.title}
+              </h3>
               <p className="mt-4 text-lg leading-7 opacity-90">{item.description}</p>
               <div className="mt-6 flex flex-wrap gap-2">
                 {item.details.map((detail) => (

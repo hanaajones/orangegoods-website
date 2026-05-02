@@ -15,6 +15,8 @@ type HeroProps = {
   stats: Stat[];
   ctaLabel: string;
   ctaHref: string;
+  secondaryCtaLabel?: string;
+  secondaryCtaHref?: string;
 };
 
 export function Hero({
@@ -24,6 +26,8 @@ export function Hero({
   stats,
   ctaLabel,
   ctaHref,
+  secondaryCtaLabel,
+  secondaryCtaHref,
 }: HeroProps) {
   return (
     <section className="px-4 pb-8 pt-8 md:px-8 md:pt-14 lg:px-12">
@@ -103,12 +107,14 @@ export function Hero({
               >
                 {ctaLabel}
               </Link>
-              <Link
-                href="/goods/hats"
-                className="inline-flex min-h-12 items-center rounded-full border border-black/10 px-6 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-ink)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
-              >
-                Explore Hats
-              </Link>
+              {secondaryCtaLabel && secondaryCtaHref ? (
+                <Link
+                  href={secondaryCtaHref}
+                  className="inline-flex min-h-12 items-center rounded-full border border-black/10 px-6 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-ink)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+                >
+                  {secondaryCtaLabel}
+                </Link>
+              ) : null}
             </div>
           </motion.div>
         </div>

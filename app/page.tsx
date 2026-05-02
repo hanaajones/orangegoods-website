@@ -7,13 +7,16 @@ import { Reveal } from "@/components/Reveal";
 import { Testimonials } from "@/components/Testimonials";
 import { TwoPaths } from "@/components/TwoPaths";
 import {
+  buildOnlineHref,
   homeGallery,
   homeHero,
   homeProcess,
   homeStats,
   logos,
+  startProjectHref,
   testimonials,
   twoPaths,
+  twoPathsTitle,
 } from "@/lib/content";
 
 export default function HomePage() {
@@ -25,27 +28,26 @@ export default function HomePage() {
         description={homeHero.description}
         stats={homeStats}
         ctaLabel="Start a Project"
-        ctaHref="mailto:hello@orangegoods.co?subject=Start%20a%20Project"
+        ctaHref={startProjectHref}
+        secondaryCtaLabel="Build Online"
+        secondaryCtaHref={buildOnlineHref}
       />
 
       <Reveal className="px-4 py-14 md:px-8 lg:px-12">
         <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-black/10 bg-[#1d1714] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#ff9e7a]">
-              Why Most Merch Gets Ignored
+              The Merch Problem
             </p>
             <h2 className="mt-4 max-w-md text-3xl font-semibold leading-tight md:text-4xl">
-              Generic. Rushed. Forgotten in a week.
+              Most merch is an afterthought.
             </h2>
           </div>
           <div className="space-y-4 text-base leading-7 text-[#dacbbb] md:text-lg">
             <p>
-              Most teams piece merch together across blanks, printers, decorators,
-              and shipping vendors.
-            </p>
-            <p>
-              The result is usually off-brand, overcomplicated, or not worth
-              keeping.
+              Sourced from five vendors. Arrived off-brand. Sat in a closet.
+              Orange Goods fixes that - one team handles design, production,
+              and fulfillment from day one.
             </p>
           </div>
         </section>
@@ -56,40 +58,39 @@ export default function HomePage() {
           <div className="grid gap-8 md:grid-cols-[1fr_0.9fr]">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                One Team, End To End
+                One Team, End to End
               </p>
               <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
-                Crafted to be kept and loved, with our California team handling
-                production from idea to delivery.
+                From first brief to final shipment.
               </h2>
             </div>
             <div className="space-y-4 text-base leading-7 text-[var(--og-muted)] md:text-lg">
               <p>
-                Orange Goods combines product development, graphic design,
-                production, and fulfillment in one process.
+                Design, production, and fulfillment handled in a single process.
+                No vendor juggling, no broken phone games.
               </p>
               <p>
-                You get quality goods, direct communication, and a clearer path
-                from first brief to final shipment.
+                Quality goods, direct communication, and a faster path from
+                concept to delivery.
               </p>
             </div>
           </div>
         </section>
       </Reveal>
 
-      <TwoPaths items={twoPaths} />
+      <TwoPaths items={twoPaths} title={twoPathsTitle} />
       <Gallery
         id="gallery"
-        eyebrow="Selected Goods"
-        title="Real product work pulled from the current site."
+        eyebrow="Selected Work"
+        title="Real goods. Real brands."
         description="Factory direct hats, trims, drinkware, packaging, and retail-finished goods."
         items={homeGallery}
       />
       <Testimonials testimonials={testimonials} logos={logos} />
       <ProcessSteps
         eyebrow="How It Works"
-        title="A tighter process makes better merch."
-        description="Orange Goods already lays out the workflow clearly. This version turns it into a direct project path."
+        title="A clear path from brief to delivery."
+        description="Structured enough to keep the project moving. Human enough to keep the work clear."
         steps={homeProcess}
       />
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
@@ -111,21 +112,21 @@ export default function HomePage() {
               Small-Town Service
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-ink)] md:text-5xl">
-              Easton and Casey built Orange Goods around quality service and thoughtful design.
+              Easton built Orange Goods around one idea: goods worth keeping.
             </h2>
             <p className="mt-5 text-base leading-7 text-[var(--og-muted)] md:text-lg">
-              Longtime friends with more than 25 years of combined experience,
-              they partner with teams that appreciate quality goods, direct
-              communication, and a more considered process.
+              Over a decade of experience in custom merch, design, and
+              production. We partner with brands that care about quality - and
+              we treat every project like it matters.
             </p>
           </div>
         </section>
       </Reveal>
       <CTASection
         title="Ready to make something worth keeping?"
-        description="Tell us what you are making, what quantity you need, and where it has to land."
+        description="Tell us what you're making, how many you need, and when it has to land."
         buttonLabel="Start a Project"
-        buttonHref="mailto:hello@orangegoods.co?subject=Ready%20to%20make%20something%20worth%20keeping"
+        buttonHref={startProjectHref}
       />
     </main>
   );
