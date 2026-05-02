@@ -215,7 +215,7 @@ export function Nav() {
                           {item.label}
                         </MenuLink>
                       ))}
-                      <MenuLink href="#" disabled>
+                      <MenuLink href="/case-studies">
                         Case Studies
                       </MenuLink>
                     </div>
