@@ -18,7 +18,7 @@ const products = [
 
 const serviceLinks = [
   { label: "Embroidery (Ready Made)", href: "/services/embroidery", note: "" },
-  { label: "Screen Printing (Ready Made)", href: "/services/screen-printing", note: "Quick turnaround, 2–3 weeks" },
+  { label: "Screen Printing (Ready Made)", href: "/services/screen-printing", note: "Quick turnaround products, 2–3 weeks" },
 ];
 
 const customLinks = [
