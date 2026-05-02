@@ -27,18 +27,18 @@ export const twoPathsTitle = "Two ways to order.";
 
 export const twoPaths = [
   {
-    title: "Start a Project",
+    title: "OG Crafted",
     description:
-      "Fully custom from the ground up. Your fabric, fit, and finish - handled. Hats, apparel, socks, drinkware, and more.",
-    details: ["100+ MOQ", "3-6 weeks", "Full custom"],
+      "Built from scratch. Custom fabric, fit, finish, and trims — fully yours. The highest level of customization we offer. Takes longer, but there's nothing like it.",
+    details: ["100+ pieces", "6–10 weeks", "Unlimited customization"],
     href: startProjectHref,
     label: "Start a Project",
   },
   {
-    title: "Build Online",
+    title: "Ready Made",
     description:
-      "Premium blanks, faster turns. Decoration applied cleanly - embroidery, print, patches. Ship in 2-3 weeks.",
-    details: ["100+ MOQ", "2-3 weeks", "Quick turnaround"],
+      "Premium blanks, decorated locally. Embroidery, screen print, patches — applied cleanly and fast. Great quality, faster delivery.",
+    details: ["100+ pieces", "2–4 weeks", "Quick turnaround"],
     href: buildOnlineHref,
     label: "Build Online",
   },
