@@ -75,9 +75,7 @@ export function Footer() {
           {/* Right col */}
           <div className="flex flex-col gap-6">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/40">
-                Navigation
-              </p>
+
               <ul className="flex flex-col gap-2">
                 {footerLinks.map((link) => (
                   <li key={link.label}>
