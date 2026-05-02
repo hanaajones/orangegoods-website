@@ -105,7 +105,7 @@ export default function HomePage() {
             <div className="mt-8 grid grid-cols-2 gap-4">
               {[
                 { label: "CA-Based Team", detail: "Southern California, not a call center" },
-                { label: "In-House Design", detail: "Human designers, not AI templates" },
+                { label: "In-House Design", detail: "Built by human designers on the West Coast" },
                 { label: "Product Experts", detail: "15+ years in design + manufacturing" },
                 { label: "Direct Access", detail: "Talk to the people making your goods" },
               ].map(({ label, detail }) => (
