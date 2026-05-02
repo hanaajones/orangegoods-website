@@ -75,11 +75,11 @@ export function Nav() {
           className="relative"
           onMouseLeave={() => setActiveMenu(null)}
         >
-          <div className="flex items-center justify-between border-b border-[#0B32A0]/20 bg-[rgba(255,248,241,0.86)] px-4 py-4 shadow-[0_4px_24px_rgba(8,30,111,0.08)] backdrop-blur md:px-8">
+          <div className="flex items-center justify-between bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:px-8">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full border border-[#0B32A0]/20 text-xl font-semibold text-[var(--og-blue)] md:hidden"
+              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-full text-xl font-semibold text-white md:hidden"
               aria-label="Open menu"
             >
               ☰
