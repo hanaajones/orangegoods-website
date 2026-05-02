@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Reveal } from "@/components/Reveal";
 
 const categories = [
@@ -98,6 +98,29 @@ export function ProductCategories() {
     scrollRef.current.scrollLeft = scrollLeft.current - walk;
   }
 
+  // Infinite scroll: jump when near edges
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const third = el.scrollWidth / 3;
+    if (el.scrollLeft < third * 0.1) {
+      // Near start — jump to middle
+      el.scrollLeft += third;
+    } else if (el.scrollLeft > third * 1.9) {
+      // Near end — jump to middle
+      el.scrollLeft -= third;
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    // Start at middle set
+    el.scrollLeft = el.scrollWidth / 3;
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   return (
     <Reveal className="py-14">
       <section>
@@ -117,7 +140,7 @@ export function ProductCategories() {
         {/* Drag-to-scroll carousel */}
         <div
           ref={scrollRef}
-          className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-6 pl-4 pr-4 select-none md:pl-8 md:pr-8 lg:pl-12"
+          className="flex gap-5 overflow-x-auto pb-6 pl-4 pr-4 select-none md:pl-8 md:pr-8 lg:pl-12"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -128,12 +151,12 @@ export function ProductCategories() {
           onMouseUp={onMouseUp}
           onMouseMove={onMouseMove}
         >
-          {categories.map((cat) => (
+          {[...categories, ...categories, ...categories].map((cat, idx) => (
             <Link
-              key={cat.name}
+              key={`${cat.name}-${idx}`}
               href={cat.href}
               draggable={false}
-              className="group relative shrink-0 snap-start overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0]"
+              className="group relative shrink-0 overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0]"
               style={{
                 width: "clamp(260px, 38vw, 360px)",
                 height: "400px",
