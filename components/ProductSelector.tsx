@@ -50,7 +50,7 @@ export function ProductSelector({
                 onClick={() => setActiveId(style.id)}
                 className={`min-h-[15rem] min-w-[16rem] snap-start rounded-[1.75rem] border p-5 text-left transition ${
                   active
-                    ? "border-[var(--og-orange)] bg-[var(--og-dark-blue)] text-[#f5efe6]"
+                    ? "border-[var(--og-orange)] bg-[var(--og-blue)] text-[#f5efe6]"
                     : "border-[#0B32A0]/20 bg-[rgba(255,248,241,0.86)] text-[var(--og-blue)]"
                 }`}
               >
@@ -93,7 +93,7 @@ export function ProductSelector({
             </div>
           </section>
 
-          <section className="rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-dark-blue)] p-6 text-[#f5efe6]">
+          <section className="rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-6 text-[#f5efe6]">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#ff9e7a]">
               Customization Options
             </p>

@@ -35,7 +35,7 @@ export default function HomePage() {
       <SelectedWork />
 
       <Reveal className="px-4 py-14 md:px-8 lg:px-12">
-        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-dark-blue)] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
+        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-8 text-[#f7f1e8] md:grid-cols-[0.95fr_1.05fr]">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#ff9e7a]">
               The Merch Problem

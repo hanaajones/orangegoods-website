@@ -141,7 +141,7 @@ export function PortalOrderTimeline({ order }: { order: PortalOrder }) {
               <div
                 className={`flex h-11 w-11 items-center justify-center rounded-full border text-base ${
                   isComplete
-                    ? "border-[#081E6F] bg-[#081E6F] text-white"
+                    ? "border-[#081E6F] bg-[#0B32A0] text-white"
                     : isCurrent
                       ? "border-[#0B32A0] bg-[#0B32A0]/10 text-[#FF7F00]"
                       : "border-[#1C1C1C]/15 bg-white text-[#1C1C1C]/45"

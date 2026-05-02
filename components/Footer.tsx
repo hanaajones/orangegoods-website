@@ -6,14 +6,14 @@ const footerLinks = [
   { label: "Build Online", href: "/build" },
   { label: "Design", href: "/#process" },
   { label: "About", href: "/#about" },
-  { label: "Contact", href: "mailto:hello@orangegoods.co" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Contact", href: "/contact" },
+  { label: "FAQ", href: "/faq" },
   { label: "Insights", href: "/insights" },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-[#081E6F] text-white">
+    <footer className="bg-[#0B32A0] text-white">
       {/* Main footer body */}
       <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 lg:px-12">
         <div className="grid gap-12 md:grid-cols-[1fr_auto]">

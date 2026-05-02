@@ -58,7 +58,7 @@ export function Testimonials({
           ))}
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 rounded-[1.75rem] border border-[#0B32A0]/20 bg-[var(--og-dark-blue)] p-5 sm:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-4 rounded-[1.75rem] border border-[#0B32A0]/20 bg-[var(--og-blue)] p-5 sm:grid-cols-4">
           {logos.map((logo) => (
             <div key={logo.name} className="relative h-16 rounded-[1rem] bg-white/5 p-3">
               <Image

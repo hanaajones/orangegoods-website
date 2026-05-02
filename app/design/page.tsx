@@ -169,7 +169,7 @@ function SectionHeading({
 export default function DesignPage() {
   return (
     <main className="pb-24 md:pb-0">
-      <section className="bg-[var(--og-dark-blue)] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+      <section className="bg-[var(--og-blue)] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
             Graphic & Brand Design
@@ -285,7 +285,7 @@ export default function DesignPage() {
                 key={pkg.name}
                 className={`relative flex min-h-[28rem] flex-col border p-6 ${
                   pkg.featured
-                    ? "border-[var(--og-orange)] bg-[var(--og-dark-blue)] text-white shadow-[0_24px_70px_rgba(255,66,0,0.18)]"
+                    ? "border-[var(--og-orange)] bg-[var(--og-blue)] text-white shadow-[0_24px_70px_rgba(255,66,0,0.18)]"
                     : "border-[#0B32A0]/20 bg-[rgba(255,248,241,0.9)] text-[var(--og-off-black)]"
                 }`}
               >
@@ -334,7 +334,7 @@ export default function DesignPage() {
                   className={`mt-auto inline-flex min-h-12 items-center justify-center rounded-full px-5 text-sm font-semibold uppercase tracking-[0.14em] transition ${
                     pkg.featured
                       ? "bg-[var(--og-orange)] text-white hover:bg-[#d73b05]"
-                      : "bg-[var(--og-blue)] text-white hover:bg-[var(--og-dark-blue)]"
+                      : "bg-[var(--og-blue)] text-white hover:bg-[var(--og-blue)]"
                   }`}
                 >
                   GET STARTED
@@ -368,7 +368,7 @@ export default function DesignPage() {
         </section>
       </Reveal>
 
-      <Reveal className="bg-[var(--og-dark-blue)] px-4 py-16 md:px-8 md:py-20 lg:px-12">
+      <Reveal className="bg-[var(--og-blue)] px-4 py-16 md:px-8 md:py-20 lg:px-12">
         <section className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           <h2 className="max-w-3xl text-5xl leading-none text-white md:text-7xl">
             Ready for fresh squeezed designs?
