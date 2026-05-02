@@ -109,13 +109,22 @@ export function Footer() {
           >
             Ready to make something worth keeping?
           </p>
-          <a
-            href="/contact"
-            className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Start a Project
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="/contact"
+              className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Start a Project
+            </a>
+            <a
+              href="/quiz"
+              className="btn-og-white inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Take the Merch Quiz
+            </a>
+          </div>
         </div>
       </div>
 
