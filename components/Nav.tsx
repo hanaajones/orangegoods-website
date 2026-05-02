@@ -17,8 +17,8 @@ const products = [
 ];
 
 const serviceLinks = [
-  { label: "Embroidery (Ready Made)", href: "/services/embroidery" },
-  { label: "Screen Printing (Ready Made)", href: "/services/screen-printing" },
+  { label: "Embroidery (Ready Made)", href: "/services/embroidery", note: "" },
+  { label: "Screen Printing (Ready Made)", href: "/services/screen-printing", note: "Quick turnaround, 2–3 weeks" },
 ];
 
 const customLinks = [
@@ -191,13 +191,14 @@ export function Nav() {
                     </div>
                     <div className="mt-4 border-t border-[#1C1C1C]/15 pt-4">
                       <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                        Services
+                        Ready Made Services
                       </p>
                       <div className="grid gap-1">
                         {serviceLinks.map((item) => (
-                          <MenuLink key={item.label} href={item.href}>
-                            {item.label}
-                          </MenuLink>
+                          <div key={item.label}>
+                            <MenuLink href={item.href}>{item.label}</MenuLink>
+                            {item.note && <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p>}
+                          </div>
                         ))}
                       </div>
                     </div>
