@@ -69,6 +69,10 @@ export function Hero() {
               <div className="text-2xl font-bold text-[#FF4200]">15+</div>
               <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Categories</div>
             </div>
+            <div>
+              <div className="text-2xl font-bold text-[#FF4200]">250K+</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Products Made</div>
+            </div>
           </div>
         </div>
 
