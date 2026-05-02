@@ -544,9 +544,12 @@ export default function QuizPage() {
               >
                 Retake quiz
               </button>
-              <Link href="/contact" className="btn-og-white border border-[#1C1C1C]/12">
-                Not seeing it? Let&apos;s talk.
-              </Link>
+              <p className="text-sm text-[#1C1C1C]/50">
+                Not seeing what you&apos;re looking for?{" "}
+                <Link href="/goods" className="text-[#FF4200] hover:underline">See more options</Link>
+                {" or "}
+                <Link href="/contact" className="text-[#FF4200] hover:underline">contact us</Link>.
+              </p>
             </div>
           </div>
         </section>
