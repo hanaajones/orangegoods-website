@@ -122,7 +122,7 @@ export function Footer() {
               className="inline-flex items-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white transition hover:-translate-y-[3px]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Take the Merch Quiz
+              Merch Quiz
             </a>
           </div>
         </div>
