@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CaliforniaBanner } from "@/components/CaliforniaBanner";
 import { PhotoCarousel } from "@/components/PhotoCarousel";
 import { ProductCategories } from "@/components/ProductCategories";
+import { ServicesPreview } from "@/components/ServicesPreview";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { ProcessSteps } from "@/components/ProcessSteps";
@@ -25,6 +27,9 @@ export default function HomePage() {
 
       {/* Checkers divider */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* California banner */}
+      <CaliforniaBanner />
+
       <img src="/graphics/OrangeGoods_Checkers_Orange.svg" alt="" aria-hidden="true" className="w-full" />
 
       {/* Trust signal */}
@@ -67,6 +72,9 @@ export default function HomePage() {
       <PhotoCarousel />
 
       <div style={{ height: "30px" }} />
+
+      {/* Three ways we work */}
+      <ServicesPreview />
 
       <ProcessSteps
         eyebrow="How It Works"
