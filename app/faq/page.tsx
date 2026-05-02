@@ -8,7 +8,7 @@ const sections = [
       {
         question: "What's the minimum order quantity?",
         answer:
-          "100 units for fully custom (OG Crafted). 50 units for Ready Made decorated blanks. Mix and match styles as long as the design is the same.",
+          "100 pieces minimum across the board. You can mix styles — for example, hats and tees in the same order — as long as the design is consistent and the total hits 100. Ready Made orders follow the same rule.",
       },
       {
         question: "How long does it take?",

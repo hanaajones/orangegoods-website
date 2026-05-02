@@ -123,7 +123,7 @@ export default function ContactPage() {
                 Quantity
                 <select name="quantity" required defaultValue="" className={inputClass}>
                   <option value="" disabled>Select</option>
-                  {["<50", "50-100", "100-250", "250-500", "500+"].map((option) => (
+                  {["100-250", "250-500", "500-1,000", "1,000+"].map((option) => (
                     <option key={option}>{option}</option>
                   ))}
                 </select>

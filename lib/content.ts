@@ -38,7 +38,7 @@ export const twoPaths = [
     title: "Build Online",
     description:
       "Premium blanks, faster turns. Decoration applied cleanly - embroidery, print, patches. Ship in 2-3 weeks.",
-    details: ["50+ MOQ", "2-3 weeks", "Quick turnaround"],
+    details: ["100+ MOQ", "2-3 weeks", "Quick turnaround"],
     href: buildOnlineHref,
     label: "Build Online",
   },
@@ -164,7 +164,7 @@ export const hatAnchorLinks = [
 
 export const hatCallouts = [
   { title: "OG Crafted", body: "Fully custom, 100+ MOQ" },
-  { title: "Ready Made", body: "Premium blanks, 50+ MOQ, faster turn" },
+  { title: "Ready Made", body: "Premium blanks, 100+ MOQ, faster turn" },
 ];
 
 export const hatPricing = [
@@ -259,7 +259,7 @@ export const hatProcess = [
 export const hatFaqs = [
   {
     question: "What's the minimum order?",
-    answer: "100 units for fully custom. 50 units for decorated blanks.",
+    answer: "100 pieces minimum. You can mix styles (e.g. hats + tees) as long as the same design applies across all pieces and the total hits 100.",
   },
   {
     question: "How long does it take?",

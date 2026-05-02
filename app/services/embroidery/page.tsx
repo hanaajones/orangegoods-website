@@ -120,7 +120,7 @@ const content: ReadyMadeServicePageContent = {
     cards: [
       {
         title: "100 Piece Minimum",
-        body: "Mix and match styles. As long as the design is the same, you can split across products. (e.g., 50 hats + 50 tees = one order)",
+        body: "Mix and match styles. As long as the design is the same, you can split across products. (e.g., 60 hats + 40 tees = one 100-piece order)",
       },
       {
         title: "Quote-Based Pricing",
