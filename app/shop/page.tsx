@@ -14,6 +14,7 @@ const products = [
     status: "available",
     description: "Unstructured dad hat. OG embroidered logo front.",
     tag: "Bestseller",
+    href: "/shop/og-classic-cap",
   },
   {
     name: "OG Trucker",
@@ -22,6 +23,7 @@ const products = [
     status: "available",
     description: "Mesh back, structured front. Snapback closure.",
     tag: null,
+    href: "/shop/og-trucker",
   },
   {
     name: "OG Crew Socks",
@@ -30,6 +32,7 @@ const products = [
     status: "available",
     description: "Custom knit crew socks. One size fits most.",
     tag: null,
+    href: "/shop/og-crew-socks",
   },
   {
     name: "OG 5-Panel",
@@ -93,9 +96,10 @@ export default function ShopPage() {
       <section className="px-4 py-12 md:px-8 lg:px-12">
         <div className="mx-auto max-w-6xl grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (
-            <article
+            <Link
               key={product.name}
-              className={`group flex flex-col overflow-hidden rounded-[1.5rem] border border-[#1C1C1C]/10 bg-white ${product.status === "coming-soon" ? "opacity-60" : ""}`}
+              href={(product as {href?: string}).href ?? "/contact"}
+              className={`group flex flex-col overflow-hidden rounded-[1.5rem] border border-[#1C1C1C]/10 bg-white transition ${product.status === "coming-soon" ? "pointer-events-none opacity-50" : "hover:-translate-y-1"}`}
             >
               {/* Photo */}
               <div className="relative aspect-square overflow-hidden bg-[#E4DFCD]">
@@ -145,7 +149,7 @@ export default function ShopPage() {
                   )}
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
