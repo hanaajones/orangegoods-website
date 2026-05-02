@@ -216,12 +216,12 @@ export function Nav() {
                         Case Studies
                       </MenuLink>
                     </div>
+                    {/* Buttons below Case Studies */}
+                    <div className="mt-4 flex flex-col gap-2">
+                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/20" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
+                      <Link href={startProjectHref} className="btn-og justify-center text-xs">Start a Project</Link>
+                    </div>
                   </div>
-                </div>
-                {/* Bottom-right CTAs */}
-                <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-3">
-                  <Link href="/quiz" className="inline-flex items-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/20" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
-                  <Link href={startProjectHref} className="btn-og text-xs">Start a Project</Link>
                 </div>
                 </div>
               ) : null}
