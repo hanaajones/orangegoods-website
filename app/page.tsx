@@ -100,16 +100,31 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col justify-center">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-              Small-Town Service
+              Southern California
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-              Easton built Orange Goods around one idea: goods worth keeping.
+              Real people. Real craft. No corporate nonsense.
             </h2>
             <p className="mt-5 text-base leading-7 text-[var(--og-muted)] md:text-lg">
-              Over a decade of experience in custom merch, design, and
-              production. We partner with brands that care about quality - and
-              we treat every project like it matters.
+              Orange Goods is a small, tight-knit team based in Southern California.
+              We&apos;re designers, manufacturers, and brand obsessives — not a
+              fulfillment warehouse or a faceless platform. Every project gets
+              a real person behind it who cares about the outcome.
             </p>
+            {/* Trust strip */}
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              {[
+                { label: "CA-Based Team", detail: "Southern California, not a call center" },
+                { label: "In-House Design", detail: "Human designers, not AI templates" },
+                { label: "Product Experts", detail: "10+ years in design & manufacturing" },
+                { label: "Direct Access", detail: "Talk to the people making your goods" },
+              ].map(({ label, detail }) => (
+                <div key={label} className="rounded-2xl border border-[var(--og-sand)] bg-white p-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FF4200]" style={{ fontFamily: "var(--font-display)" }}>{label}</p>
+                  <p className="mt-1 text-sm leading-5 text-[#1C1C1C]/60">{detail}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </Reveal>
