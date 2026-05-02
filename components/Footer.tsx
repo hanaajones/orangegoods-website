@@ -26,7 +26,7 @@ export function Footer() {
                   alt="Orange Goods"
                   width={320}
                   height={96}
-                  className="h-24 w-auto"
+                  className="h-[115px] w-auto"
                 />
               </Link>
             </div>
@@ -90,7 +90,7 @@ export function Footer() {
               className="text-2xl uppercase leading-tight text-white md:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Let's make something worth keeping
+              Goods you'll actually love
             </p>
             <div className="flex flex-wrap gap-3">
               <a
