@@ -164,18 +164,20 @@ export function Nav() {
             >
               {activeMenu === "custom" ? (
                 <div className="grid gap-5 md:grid-cols-[1fr_1fr_1fr]">
-                  {/* Col 1: Photo — switches on product hover */}
-                  <div className="relative min-h-[18rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
-                    <Image
-                      src={hoveredProduct}
-                      alt="Orange Goods product"
-                      fill
-                      sizes="300px"
-                      className="object-cover transition-opacity duration-300"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/70 to-transparent p-4">
+                  {/* Col 1: Photo + buttons below */}
+                  <div className="flex flex-col gap-3">
+                    <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
+                      <Image
+                        src={hoveredProduct}
+                        alt="Orange Goods product"
+                        fill
+                        sizes="300px"
+                        className="object-cover transition-opacity duration-300"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
                       <Link href={startProjectHref} className="btn-og inline-flex justify-center text-xs">Start a Project</Link>
-                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-white/40 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/10" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
+                      <Link href="/quiz" className="inline-flex justify-center rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold uppercase text-white transition hover:bg-white/20" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
                     </div>
                   </div>
                   {/* Col 2: Products */}
