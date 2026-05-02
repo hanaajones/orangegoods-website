@@ -28,7 +28,7 @@ export default function NotFound() {
           className="text-sm font-semibold uppercase tracking-[0.28em] text-white/60"
           style={{ fontFamily: "var(--font-accent)" }}
         >
-          You're lost
+          You&apos;re lost
         </p>
 
         <h1
@@ -39,7 +39,7 @@ export default function NotFound() {
         </h1>
 
         <p className="mx-auto mt-5 max-w-md text-lg leading-7 text-white/70">
-          This page doesn't exist. But we make goods that do. Let's get you somewhere useful.
+          This page doesn&apos;t exist. But we make goods that do. Let&apos;s get you somewhere useful.
         </p>
 
         <div className="mt-10 flex flex-wrap justify-center gap-3">

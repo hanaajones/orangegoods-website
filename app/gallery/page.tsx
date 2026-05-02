@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export const metadata = {
   title: "Gallery — Orange Goods",
   description: "A look at the custom goods, finishes, and projects we've made for brands across the country.",
@@ -49,7 +47,7 @@ export default function GalleryPage() {
             Gallery
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/70">
-            A look at the goods we've made — hats, apparel, drinkware, bags, and everything in between.
+            A look at the goods we&apos;ve made — hats, apparel, drinkware, bags, and everything in between.
           </p>
         </div>
       </section>

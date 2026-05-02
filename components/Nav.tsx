@@ -9,7 +9,7 @@ const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
 const products = [
   { label: "Hats", href: "/goods/hats", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif" },
-  { label: "Apparel", href: "/goods/apparel", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif" },
+  { label: "Apparel", href: "/build/products/as-colour-5001", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif" },
   { label: "Drinkware", href: "/goods/drinkware", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif" },
   { label: "Bags + Totes", href: "/goods/bags", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif" },
   { label: "Accessories", href: "/goods/accessories", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },

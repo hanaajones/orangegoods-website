@@ -150,6 +150,15 @@ export default function BuildPage() {
               />
 
               <div className="mt-7 grid gap-7">
+                {products.includes("Apparel") ? (
+                  <Link
+                    href="/build/products/as-colour-5001"
+                    className="flex min-h-16 items-center justify-between rounded-xl border-2 border-[#FF4200] bg-white px-4 font-display text-2xl uppercase leading-none text-[#0B32A0] transition hover:-translate-y-1"
+                  >
+                    Custom Shirt
+                    <span className="text-[#FF4200]">→</span>
+                  </Link>
+                ) : null}
                 <PillGroup title="Quantity" options={quantities} value={quantity} onChange={setQuantity} />
                 <PillGroup title="Timeline" options={timelines} value={timeline} onChange={setTimeline} />
                 <PillGroup title="Budget" options={budgets} value={budget} onChange={setBudget} />

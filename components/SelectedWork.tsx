@@ -99,7 +99,6 @@ function fallbackFor(src: string) {
 
 function WorkImage({ item }: { item: WorkItem }) {
   const [src, setSrc] = useState(item.src);
-  const isTall = item.className.includes("row-span-2");
 
   return (
     <figure
