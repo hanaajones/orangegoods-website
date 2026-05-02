@@ -185,6 +185,12 @@ export function Nav() {
                       >
                         Build Online
                       </Link>
+                      <Link
+                        href="/quiz"
+                        className="inline-flex min-h-11 items-center rounded-full border border-[#ff9e7a]/40 px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#ff9e7a] transition hover:border-[#ff9e7a] hover:text-white"
+                      >
+                        Find Your Goods
+                      </Link>
                     </div>
                   </div>
                   <div>

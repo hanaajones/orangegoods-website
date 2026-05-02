@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 
 const inputClass =
@@ -40,6 +41,12 @@ export default function ContactPage() {
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--og-muted)] md:text-xl">
             Tell us what you are making. We respond within one business day.
+          </p>
+          <p className="mt-4 text-sm text-[#1C1C1C]/50">
+            Not sure what you need?{" "}
+            <Link href="/quiz" className="font-semibold text-[#FF4200] hover:underline">
+              Take the quiz →
+            </Link>
           </p>
         </div>
       </section>

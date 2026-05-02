@@ -38,6 +38,23 @@ export default function HomePage() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/graphics/OrangeGoods_Checkers_Blue.svg" alt="" aria-hidden="true" className="w-full" />
 
+      {/* Quiz callout */}
+      <div className="bg-[#F3EFE7] px-4 py-10 text-center md:px-8">
+        <p className="text-base text-[#1C1C1C]/60">Not sure what to order?</p>
+        <h3
+          className="mt-1 text-2xl uppercase text-[#FF4200] md:text-3xl"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Take our 60-second quiz.
+        </h3>
+        <p className="mx-auto mt-2 max-w-sm text-sm text-[#1C1C1C]/50">
+          Answer a few questions and we&apos;ll recommend the right products for your brand.
+        </p>
+        <Link href="/quiz" className="btn-og mt-6 inline-flex">
+          FIND MY GOODS
+        </Link>
+      </div>
+
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
 
