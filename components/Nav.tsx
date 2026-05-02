@@ -89,7 +89,7 @@ export function Nav() {
               <img
                 src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
                 alt="Orange Goods"
-                className="h-7 w-auto md:h-8"
+                className="h-9 w-auto md:h-10"
               />
             </Link>
             <nav className="hidden items-center gap-6 md:flex">
