@@ -153,7 +153,7 @@ export function ReadyMadeServicePage({
       </section>
 
       <div className="sticky top-[5.75rem] z-30 border-y border-[#0B32A0]/20 bg-[rgba(251,247,241,0.9)] px-4 py-3 backdrop-blur md:px-8 lg:px-12">
-        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto">
+        <nav className="mx-auto flex max-w-6xl justify-center gap-2 overflow-x-auto">
           {anchorLinks.map((item) => (
             <Link
               key={item.href}
