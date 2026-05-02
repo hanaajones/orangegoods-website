@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Capabilities } from "@/components/Capabilities";
+import { ProductCategories } from "@/components/ProductCategories";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
 import { ProcessSteps } from "@/components/ProcessSteps";
@@ -26,6 +27,9 @@ export default function HomePage() {
 
       {/* Value prop — OG Crafted vs Ready Made */}
       <TwoPaths items={twoPaths} title={twoPathsTitle} />
+
+      {/* Product categories — Mello-style photo grid */}
+      <ProductCategories />
 
       {/* Capabilities */}
       <Capabilities />
