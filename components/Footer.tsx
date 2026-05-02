@@ -21,9 +21,9 @@ export function Footer() {
               <Image
                 src="/logos/OrangeGoods_Logo_Secondary_FullColor.svg"
                 alt="Orange Goods"
-                width={180}
-                height={48}
-                className="h-10 w-auto"
+                width={320}
+                height={96}
+                className="h-24 w-auto"
               />
             </Link>
             <p
