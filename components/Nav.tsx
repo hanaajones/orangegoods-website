@@ -219,8 +219,8 @@ export function Nav() {
                     </div>
                     {/* Buttons below Case Studies */}
                     <div className="mt-4 flex flex-col gap-2">
-                      <Link href="/quiz" className="btn-og-white border border-[#0B32A0]/30 text-[#0B32A0]">Find Your Goods</Link>
-                      <Link href={startProjectHref} className="btn-og">Start a Project</Link>
+                      <Link href="/quiz" className="btn-og-white w-full justify-center border border-[#0B32A0]/30 text-[#0B32A0]">Find Your Goods</Link>
+                      <Link href={startProjectHref} className="btn-og w-full justify-center">Start a Project</Link>
                     </div>
                   </div>
                 </div>
