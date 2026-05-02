@@ -3,7 +3,7 @@ import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/Reveal";
 
-const startProjectHref = "mailto:hello@orangegoods.co?subject=Start%20a%20Project";
+const startProjectHref = "/contact";
 
 const sections = [
   {

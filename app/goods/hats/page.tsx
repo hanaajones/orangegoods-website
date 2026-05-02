@@ -17,7 +17,7 @@ import {
   hatStyles,
 } from "@/lib/content";
 
-const startHatsHref = "mailto:hello@orangegoods.co?subject=Custom%20Hats";
+const startHatsHref = "/contact";
 
 function SectionHeader({
   eyebrow,

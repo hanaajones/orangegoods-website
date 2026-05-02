@@ -4,7 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { DesignCallout } from "@/components/DesignCallout";
 
 const designProjectHref =
-  "mailto:hello@orangegoods.co?subject=Design%20Project";
+  "/contact";
 
 const marqueeItems = [
   "FULL LINE DESIGN",
@@ -110,7 +110,7 @@ const pricingPackages = [
     description:
       "A great way to explore new design ideas and find what resonates with your brand",
     features: ["5 designs", "2 revisions included", "60% deposit to start"],
-    href: "mailto:hello@orangegoods.co?subject=Citrus%20Classic%20Package",
+    href: "/contact",
   },
   {
     name: "CALIFORNIA GROVE",
@@ -118,7 +118,7 @@ const pricingPackages = [
     description:
       "A step up to refine your brand's identity with designs that elevate your presence",
     features: ["10 designs", "2 revisions included", "60% deposit to start"],
-    href: "mailto:hello@orangegoods.co?subject=California%20Grove%20Package",
+    href: "/contact",
     featured: true,
   },
   {
@@ -127,7 +127,7 @@ const pricingPackages = [
     description:
       "A comprehensive set of designs that make a bold impact and set your brand apart",
     features: ["15 designs", "3 revisions included", "60% deposit to start"],
-    href: "mailto:hello@orangegoods.co?subject=Golden%20Orchard%20Package",
+    href: "/contact",
   },
 ];
 

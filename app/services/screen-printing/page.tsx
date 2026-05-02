@@ -49,7 +49,7 @@ const content: ReadyMadeServicePageContent = {
     image: screenPrintingHeroImage,
     alt: "Orange Goods screen printing work",
     primaryHref:
-      "mailto:hello@orangegoods.co?subject=Ready%20Made%20Screen%20Printing",
+      "/contact",
   },
   overview: {
     title: "Bold prints. Fast turns",
@@ -131,7 +131,7 @@ const content: ReadyMadeServicePageContent = {
       },
     ],
     ctaHref:
-      "mailto:hello@orangegoods.co?subject=Ready%20Made%20Screen%20Print%20Quote",
+      "/contact",
   },
   gallery: {
     title: "From the shop",
@@ -166,7 +166,7 @@ const content: ReadyMadeServicePageContent = {
     title: "In your hands in 1-2 weeks",
     description:
       "Send us your artwork, quantity, and preferred blanks. We'll quote the print run fast",
-    href: "mailto:hello@orangegoods.co?subject=Ready%20Made%20Screen%20Printing",
+    href: "/contact",
   },
 };
 

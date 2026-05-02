@@ -46,7 +46,7 @@ const content: ReadyMadeServicePageContent = {
     image: embroideryHeroImage,
     alt: "Orange Goods embroidery detail",
     primaryHref:
-      "mailto:hello@orangegoods.co?subject=Ready%20Made%20Embroidery",
+      "/contact",
   },
   overview: {
     title: "Fast. Local. Done right",
@@ -128,7 +128,7 @@ const content: ReadyMadeServicePageContent = {
       },
     ],
     ctaHref:
-      "mailto:hello@orangegoods.co?subject=Ready%20Made%20Embroidery%20Quote",
+      "/contact",
   },
   gallery: {
     title: "From the shop",
@@ -165,7 +165,7 @@ const content: ReadyMadeServicePageContent = {
     title: "Ready in 1-2 weeks",
     description:
       "Send us your artwork, quantity, and preferred blanks. We'll get the project moving",
-    href: "mailto:hello@orangegoods.co?subject=Ready%20Made%20Embroidery",
+    href: "/contact",
   },
 };
 
