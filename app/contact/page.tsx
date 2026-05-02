@@ -67,7 +67,7 @@ export default function ContactPage() {
               </div>
             ))}
             <p className="text-lg leading-8 text-[var(--og-muted)]">
-              Based in Los Angeles, CA
+              Based in South Bay, California
             </p>
           </div>
 

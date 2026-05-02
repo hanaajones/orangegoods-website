@@ -126,7 +126,7 @@ export function Footer() {
           <p className="text-xs text-white/60">
             © {new Date().getFullYear()} Orange Goods. All rights reserved.
           </p>
-          <p className="text-xs text-white/60">Los Angeles, CA</p>
+          <p className="text-xs text-white/60">South Bay, California</p>
         </div>
       </div>
     </footer>
