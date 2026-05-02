@@ -219,8 +219,8 @@ export function Nav() {
                     </div>
                     {/* Buttons below Case Studies */}
                     <div className="mt-4 flex flex-col gap-2">
-                      <Link href="/quiz" className="inline-flex items-center rounded-xl border border-[#0B32A0]/30 bg-transparent px-3 py-1.5 text-[10px] font-bold uppercase text-[#0B32A0] transition hover:bg-[#0B32A0]/10" style={{ fontFamily: "var(--font-display)" }}>Find Your Goods</Link>
-                      <Link href={startProjectHref} className="inline-flex items-center rounded-xl bg-[#FF4200] px-3 py-1.5 text-[10px] font-bold uppercase text-white transition hover:-translate-y-[2px]" style={{ fontFamily: "var(--font-display)" }}>Start a Project</Link>
+                      <Link href="/quiz" className="btn-og-white border border-[#0B32A0]/30 text-[#0B32A0]">Find Your Goods</Link>
+                      <Link href={startProjectHref} className="btn-og">Start a Project</Link>
                     </div>
                   </div>
                 </div>
@@ -263,7 +263,7 @@ export function Nav() {
                       <MenuLink href="/faq">FAQ</MenuLink>
                     </div>
                     <div className="mt-3">
-                      <Link href={buildOnlineHref} className="inline-flex items-center rounded-xl bg-[#FF4200] px-3 py-1.5 text-[10px] font-bold uppercase text-white transition hover:-translate-y-[2px]" style={{ fontFamily: "var(--font-display)" }}>Start Building</Link>
+                      <Link href={buildOnlineHref} className="btn-og">Start Building</Link>
                     </div>
                   </div>
                 </div>
