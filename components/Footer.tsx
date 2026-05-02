@@ -15,7 +15,7 @@ export function Footer() {
   return (
     <footer className="text-white">
       {/* Main footer body — off-black */}
-      <div className="bg-[#1C1C1C]">
+      <div className="bg-[#FF4200]">
       <div className="mx-auto max-w-6xl px-4 py-16 md:px-8 lg:px-12">
         <div className="grid gap-12 md:grid-cols-[1fr_auto]">
           {/* Left col */}
