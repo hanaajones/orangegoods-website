@@ -69,7 +69,7 @@ export function Footer() {
             className="text-2xl uppercase leading-tight text-white md:text-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Ready to make something worth keeping?
+            Let's make something worth keeping
           </p>
           <div className="flex flex-wrap gap-3">
             <a
