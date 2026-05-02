@@ -52,20 +52,14 @@ export function ProductCategories() {
       <section>
         {/* Header */}
         <div className="mb-10 px-4 text-center md:px-8 lg:px-12">
-          <p
-            className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
-            style={{ fontFamily: "var(--font-accent)" }}
-          >
-            Unlimited Capabilities
-          </p>
           <h2
-            className="mt-3 text-3xl font-extrabold uppercase tracking-tight text-[#FF4200] md:text-4xl"
+            className="text-3xl font-extrabold uppercase tracking-tight text-[#FF4200] md:text-4xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             We handle it all
           </h2>
-          <p className="mx-auto mt-2 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
-            Hats to hoodies, drinkware to kits — every product category, made right, start to finish
+          <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
+            Unlimited capabilities — from hats to hoodies, drinkware to kits, and everything in between
           </p>
         </div>
 
