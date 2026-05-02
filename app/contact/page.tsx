@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 
@@ -13,6 +14,7 @@ const labelClass =
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,6 +32,7 @@ export default function ContactPage() {
     setSubmitting(false);
     setSubmitted(true);
     event.currentTarget.reset();
+    router.push("/thank-you");
   }
 
   return (
