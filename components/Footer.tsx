@@ -23,7 +23,7 @@ export function Footer() {
           <div className="flex flex-col gap-5">
             <Link href="/" aria-label="Orange Goods">
               <Image
-                src="/logos/OrangeGoods_Logo_Main_Horizontal_White.svg"
+                src="/logos/OrangeGoods_Logo_Secondary_FullColor.svg"
                 alt="Orange Goods"
                 width={180}
                 height={48}
