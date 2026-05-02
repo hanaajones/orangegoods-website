@@ -51,7 +51,7 @@ export function ProductCategories() {
     <Reveal className="py-14">
       <section>
         {/* Header */}
-        <div className="mb-10 px-4 md:px-8 lg:px-12">
+        <div className="mb-10 px-4 text-center md:px-8 lg:px-12">
           <p
             className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
             style={{ fontFamily: "var(--font-accent)" }}
