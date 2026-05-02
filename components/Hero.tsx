@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <>
       {/* ── HERO: split screen ── */}
-      <section className="flex h-[calc(90vh-64px)] min-h-[500px] w-full overflow-hidden">
+      <section className="flex h-[calc(78vh-64px)] min-h-[460px] w-full overflow-hidden">
 
         {/* Left: photo slideshow */}
         <div className="relative w-full lg:w-1/2">

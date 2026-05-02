@@ -97,7 +97,7 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("custom")}
                 onClick={() => setActiveMenu(activeMenu === "custom" ? null : "custom")}
-                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 CUSTOM ▾
               </button>
@@ -105,13 +105,13 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("build")}
                 onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
-                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 BUILD ONLINE ▾
               </button>
               <Link
-                href="/#process"
-                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+                href="/design"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 DESIGN
               </Link>
@@ -119,7 +119,7 @@ export function Nav() {
                 type="button"
                 onMouseEnter={() => setActiveMenu("about")}
                 onClick={() => setActiveMenu(activeMenu === "about" ? null : "about")}
-                className="font-[family-name:var(--font-display)] text-sm tracking-[0.16em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 ABOUT ▾
               </button>
@@ -280,7 +280,7 @@ export function Nav() {
             {[
               { label: "CUSTOM", href: "/#paths" },
               { label: "BUILD ONLINE", href: buildOnlineHref },
-              { label: "DESIGN", href: "/#process" },
+              { label: "DESIGN", href: "/design" },
               { label: "ABOUT", href: "/#about" },
             ].map((item) => (
               <Link
