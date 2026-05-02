@@ -17,7 +17,7 @@ export function HeroSlideshow() {
   useEffect(() => {
     const interval = setInterval(() => {
       setNext((current + 1) % photos.length);
-    }, 4500);
+    }, 2000);
     return () => clearInterval(interval);
   }, [current]);
 
@@ -26,7 +26,7 @@ export function HeroSlideshow() {
     const t = setTimeout(() => {
       setCurrent(next);
       setNext(null);
-    }, 700);
+    }, 300);
     return () => clearTimeout(t);
   }, [next]);
 
@@ -46,7 +46,7 @@ export function HeroSlideshow() {
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover object-center"
           style={{
-            animation: "fadeIn 0.7s ease forwards",
+            animation: "fadeIn 0.3s ease forwards",
           }}
         />
       )}
