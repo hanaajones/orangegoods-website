@@ -19,7 +19,7 @@ export function ProcessSteps({
   return (
     <Reveal className="px-4 py-8 md:px-8 lg:px-12">
       <section id="process" className="mx-auto max-w-6xl">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
             {eyebrow}
           </h2>
