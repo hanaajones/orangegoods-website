@@ -110,7 +110,7 @@ export function Footer() {
           </p>
           <a
             href="/contact"
-            className="btn-lift inline-flex min-h-12 items-center rounded-xl bg-[#FF4200] px-6 text-sm font-semibold uppercase tracking-[0.1em] text-white"
+            className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Start a Project

@@ -150,7 +150,7 @@ export function Nav() {
               </Link>
               <Link
                 href={startProjectHref}
-                className="btn-lift inline-flex min-h-10 items-center rounded-xl bg-white px-4 font-[family-name:var(--font-display)] text-xs uppercase tracking-[0.1em] text-[#FF4200] md:min-h-11 md:px-5 md:text-sm"
+                className="btn-og-white inline-flex items-center rounded-xl px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-[#FF4200]"
               >
                 <span className="md:hidden">Start</span>
                 <span className="hidden md:inline">START A PROJECT</span>
