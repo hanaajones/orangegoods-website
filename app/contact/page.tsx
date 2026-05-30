@@ -180,7 +180,7 @@ export default function ContactPage() {
               disabled={submitting}
               className="btn-og inline-flex w-full justify-center md:w-fit"
             >
-              {submitting ? "Sending" : "Send Message"}
+              {submitting ? "Sending…" : "Get Started"}
             </button>
           </form>
         </section>
