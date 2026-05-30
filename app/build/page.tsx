@@ -65,7 +65,7 @@ export default function BuildPage() {
     <main className="min-h-screen bg-[#F3EFE7] text-[var(--og-ink)]">
       <section className="bg-[#0B32A0] px-4 py-16 text-white sm:px-6 md:py-24 lg:px-8">
         <div className="mx-auto max-w-5xl">
-          <h1 className="max-w-4xl text-6xl leading-[0.86] text-[#FF4200] sm:text-7xl md:text-8xl lg:text-9xl">
+          <h1 className="max-w-4xl text-5xl leading-[0.86] text-[#FF4200] sm:text-6xl md:text-6xl lg:text-7xl">
             LET&apos;S MAKE SOMETHING
           </h1>
           <p className="mt-6 max-w-2xl font-body text-lg leading-8 text-white/85 md:text-2xl">

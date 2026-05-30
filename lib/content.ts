@@ -96,7 +96,7 @@ export const testimonials = [
     logo: "https://orangegoods.co/wp-content/uploads/2024/06/OrangeGoodsClients_Website_2024-36-3.png",
   },
   {
-    quote: "Our go-to for giveaways and super creative options",
+    quote: "Our go-to for curated event giveaways and team swag",
     name: "Robin D",
     role: "Director, Strategic Initiatives, Stanford Medicine",
     logo: "https://orangegoods.co/wp-content/uploads/2024/07/SM_Web_vert_LG.png",

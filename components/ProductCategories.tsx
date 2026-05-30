@@ -67,14 +67,60 @@ const categories = [
   },
 ];
 
+const CARD_WIDTH = 365; // approx card width + gap
+const AUTO_INTERVAL = 1800; // ms between auto-advances
+
 export function ProductCategories() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isPaused = useRef(false);
   const isDown = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Snap to next card
+  const advance = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const next = el.scrollLeft + CARD_WIDTH;
+    el.scrollTo({ left: next, behavior: "smooth" });
+  }, []);
+
+  // Infinite loop: jump when near edges
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const third = el.scrollWidth / 3;
+    if (el.scrollLeft < third * 0.05) {
+      el.scrollLeft += third;
+    } else if (el.scrollLeft > third * 1.95) {
+      el.scrollLeft -= third;
+    }
+  }, []);
+
+  // Init scroll position
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollLeft = el.scrollWidth / 3;
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Auto-advance interval
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      if (!isPaused.current) advance();
+    }, AUTO_INTERVAL);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [advance]);
+
+  // Drag-to-scroll handlers
   function onMouseDown(e: React.MouseEvent) {
     isDown.current = true;
+    isPaused.current = true;
     startX.current = e.pageX - (scrollRef.current?.offsetLeft ?? 0);
     scrollLeft.current = scrollRef.current?.scrollLeft ?? 0;
     if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
@@ -82,11 +128,13 @@ export function ProductCategories() {
 
   function onMouseLeave() {
     isDown.current = false;
+    isPaused.current = false;
     if (scrollRef.current) scrollRef.current.style.cursor = "grab";
   }
 
   function onMouseUp() {
     isDown.current = false;
+    isPaused.current = false;
     if (scrollRef.current) scrollRef.current.style.cursor = "grab";
   }
 
@@ -98,31 +146,8 @@ export function ProductCategories() {
     scrollRef.current.scrollLeft = scrollLeft.current - walk;
   }
 
-  // Infinite scroll: jump when near edges
-  const handleScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const third = el.scrollWidth / 3;
-    if (el.scrollLeft < third * 0.1) {
-      // Near start — jump to middle
-      el.scrollLeft += third;
-    } else if (el.scrollLeft > third * 1.9) {
-      // Near end — jump to middle
-      el.scrollLeft -= third;
-    }
-  }, []);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    // Start at middle set
-    el.scrollLeft = el.scrollWidth / 3;
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
   return (
-    <Reveal className="py-14">
+    <Reveal className="py-9">
       <section>
         {/* Header */}
         <div className="mb-10 px-4 text-center md:px-8 lg:px-12">
@@ -137,7 +162,7 @@ export function ProductCategories() {
           </p>
         </div>
 
-        {/* Drag-to-scroll carousel */}
+        {/* Snap carousel */}
         <div
           ref={scrollRef}
           className="flex gap-5 overflow-x-auto pb-6 pl-4 pr-4 select-none md:pl-8 md:pr-8 lg:pl-12"
@@ -145,11 +170,14 @@ export function ProductCategories() {
             scrollbarWidth: "none",
             msOverflowStyle: "none",
             cursor: "grab",
+            scrollSnapType: "x mandatory",
           }}
           onMouseDown={onMouseDown}
           onMouseLeave={onMouseLeave}
           onMouseUp={onMouseUp}
           onMouseMove={onMouseMove}
+          onMouseEnter={() => { isPaused.current = true; }}
+          onMouseOut={() => { if (!isDown.current) isPaused.current = false; }}
         >
           {[...categories, ...categories, ...categories].map((cat, idx) => (
             <Link
@@ -161,6 +189,7 @@ export function ProductCategories() {
                 width: "clamp(260px, 38vw, 360px)",
                 height: "400px",
                 boxShadow: "8px 8px 0px #081E6F",
+                scrollSnapAlign: "start",
               }}
             >
               {/* Background photo */}
@@ -185,7 +214,7 @@ export function ProductCategories() {
                 </h3>
                 <p className="mt-1.5 text-sm leading-5 text-white/70">{cat.description}</p>
                 <span
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-[#FF4200] px-4 py-2 text-xs font-semibold text-white transition group-hover:bg-white group-hover:text-[#FF4200]"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-[#FF4200] px-4 py-2 text-xs font-semibold text-white transition group-hover:bg-white group-hover:text-[#FF4200]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   EXPLORE

@@ -175,7 +175,7 @@ export default function DesignPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
             Graphic + Brand Design
           </p>
-          <h1 className="mt-5 max-w-5xl text-6xl leading-none text-white md:text-8xl lg:text-9xl">
+          <h1 className="mt-5 max-w-5xl text-5xl leading-none text-white md:text-6xl lg:text-7xl">
             FORGET AI — WE&apos;VE GOT HUMANS
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/80 md:text-xl">

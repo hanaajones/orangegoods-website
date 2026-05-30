@@ -57,7 +57,7 @@ export function ProductCategoryPage({
             <p className="font-body text-sm font-semibold uppercase tracking-[0.28em] text-white/70">
               Custom Goods
             </p>
-            <h1 className="mt-5 font-display text-6xl uppercase leading-none text-[#FF4200] md:text-8xl lg:text-9xl">
+            <h1 className="mt-5 font-display text-5xl uppercase leading-none text-[#FF4200] md:text-6xl lg:text-7xl">
               {title}
             </h1>
             <p className="mt-6 max-w-2xl font-body text-lg leading-8 text-white/85 md:text-xl">

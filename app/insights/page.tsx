@@ -7,7 +7,7 @@ export default function InsightsPage() {
     <main className="pb-24 md:pb-0">
       <section className="bg-[var(--og-blue)] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <h1 className="text-6xl leading-none text-white md:text-8xl lg:text-9xl">
+          <h1 className="text-5xl leading-none text-white md:text-6xl lg:text-7xl">
             INSIGHTS
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/80 md:text-xl">
