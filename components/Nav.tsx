@@ -132,6 +132,12 @@ export function Nav() {
               >
                 SHOP
               </Link>
+              <Link
+                href="/catalog"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+              >
+                CATALOG
+              </Link>
               <button
                 type="button"
                 onMouseEnter={() => setActiveMenu("about")}
@@ -336,6 +342,7 @@ export function Nav() {
               { label: "BUILD ONLINE", href: buildOnlineHref },
               { label: "DESIGN", href: "/design" },
               { label: "SHOP", href: "/shop" },
+              { label: "CATALOG", href: "/catalog" },
               { label: "ABOUT", href: "/about" },
             ].map((item) => (
               <Link

@@ -73,6 +73,7 @@ const catalog: Record<string, {
   },
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const expandableSections = [
   { title: "Details", key: "details" },
   { title: "Care", key: "care" },

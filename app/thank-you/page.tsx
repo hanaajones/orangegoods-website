@@ -31,7 +31,7 @@ export default function ThankYouPage() {
       </h1>
 
       <p className="mx-auto mt-5 max-w-md text-lg leading-7 text-[#1C1C1C]/70">
-        Thanks for reaching out — we'll be in touch within one business day.
+        Thanks for reaching out — we&apos;ll be in touch within one business day.
       </p>
 
       <p className="mt-3 text-sm text-[#1C1C1C]/40">

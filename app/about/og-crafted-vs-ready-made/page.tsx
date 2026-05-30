@@ -187,7 +187,7 @@ export default function OGCraftedVsReadyMadePage() {
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-[var(--og-muted)]">
             Not sure? Pick the path that matches your situation. Either way,
-            we'll make sure you end up with goods worth keeping.
+            we&apos;ll make sure you end up with goods worth keeping.
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">

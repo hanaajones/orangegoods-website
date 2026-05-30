@@ -58,7 +58,7 @@ export default function SustainabilityPage() {
             Sustainability
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-7 text-white/70">
-            We make goods meant to be kept. That's the whole point. Throwaway merch is the problem — we're not trying to add to it.
+            We make goods meant to be kept. That&apos;s the whole point. Throwaway merch is the problem — we&apos;re not trying to add to it.
           </p>
         </div>
       </section>
@@ -67,7 +67,7 @@ export default function SustainabilityPage() {
       <section className="px-4 py-14 md:px-8 lg:px-12">
         <div className="mx-auto max-w-3xl">
           <p className="text-lg leading-8 text-[#1C1C1C]/70 md:text-xl">
-            We don't have a sustainability certification. We're not a B Corp (yet). What we do have is a point of view:
+            We don&apos;t have a sustainability certification. We&apos;re not a B Corp (yet). What we do have is a point of view:
             goods should be worth the resources it took to make them. A hat that lasts three years is more sustainable than
             a hat that lands in a donation bin three weeks later.
           </p>
@@ -112,9 +112,9 @@ export default function SustainabilityPage() {
             The honest truth
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#1C1C1C]/70">
-            Custom merch has a carbon footprint. We're not going to pretend otherwise. Our job is to make sure that
+            Custom merch has a carbon footprint. We&apos;re not going to pretend otherwise. Our job is to make sure that
             footprint is worth it — by building things people actually use, sourcing from responsible partners, and
-            being honest with clients about the tradeoffs. We're working on doing more, and we'll update this page
+            being honest with clients about the tradeoffs. We&apos;re working on doing more, and we&apos;ll update this page
             as we do.
           </p>
           <p className="mt-4 text-sm text-[#1C1C1C]/40">
@@ -135,7 +135,7 @@ export default function SustainabilityPage() {
           Build something worth keeping
         </h2>
         <p className="mx-auto mt-3 max-w-md text-base leading-7 text-[#1C1C1C]/60">
-          We'd rather make fewer, better things. Tell us about your project.
+          We&apos;d rather make fewer, better things. Tell us about your project.
         </p>
         <Link href={startProjectHref} className="btn-og mt-6 inline-flex">
           Start a Project

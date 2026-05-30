@@ -43,7 +43,7 @@ export default function ContactPage() {
             GET IN TOUCH
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--og-muted)] md:text-xl">
-            What do you want to create? We'll respond within one business day.
+            What do you want to create? We&apos;ll respond within one business day.
           </p>
           <p className="mt-4 text-sm text-[#1C1C1C]/50">
             Not sure what you need?{" "}
