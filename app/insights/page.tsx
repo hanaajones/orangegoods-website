@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
 import { posts } from "./data";
 
@@ -20,10 +21,24 @@ export default function InsightsPage() {
         <section className="mx-auto max-w-6xl">
           <div className="grid gap-5 md:grid-cols-2">
             {posts.map((post) => (
-              <article
+              <Link
                 key={post.slug}
-                className="flex min-h-80 flex-col border border-[#0B32A0]/20 bg-white/75 p-6"
+                href={`/insights/${post.slug}`}
+                className="group flex flex-col overflow-hidden rounded-[1.5rem] border border-[#0B32A0]/20 bg-white/75 transition hover:border-[var(--og-orange)] hover:shadow-md"
               >
+                {post.image && (
+                  <div className="relative aspect-[16/9] w-full overflow-hidden">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover transition-transform duration-500 hover:scale-105"
+                      style={{ objectPosition: post.cropPosition ?? "center center" }}
+                    />
+                  </div>
+                )}
+                <div className="flex flex-1 flex-col p-6">
                 <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em]">
                   <span className="text-[var(--og-orange)]">
                     {post.category}
@@ -36,13 +51,11 @@ export default function InsightsPage() {
                 <p className="mt-4 text-base leading-7 text-[var(--og-muted)]">
                   {post.excerpt}
                 </p>
-                <Link
-                  href={`/insights/${post.slug}`}
-                  className="mt-auto pt-8 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-                >
+                <span className="mt-auto pt-8 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
                   Read more →
-                </Link>
-              </article>
+                </span>
+                </div>
+              </Link>
             ))}
           </div>
         </section>

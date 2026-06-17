@@ -8,7 +8,7 @@ export default function OuterwearPage() {
       image="https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif"
       imageAlt="Orange Goods custom outerwear"
       products={["Jackets", "Coach Jackets", "Windbreakers", "Quarter-Zips", "Vests", "Puffers"]}
-      services={["Embroidery", "Screen Print", "Custom Labels", "Patches"]}
+      services={["Embroidery", "Screen Print", "Labels", "Patches"]}
       faqs={[
         {
           question: "What is the MOQ for custom outerwear?",

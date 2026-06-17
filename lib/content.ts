@@ -134,16 +134,16 @@ export const logos = [
 
 export const homeProcess = [
   {
-    title: "Share your brief",
-    body: "Tell us what you need. Product, quantity, timeline, budget",
+    title: "Tell us what you need",
+    body: "Product, quantity, timeline, budget — that's it. No deck required. We respond same day with a real answer from a real person.",
   },
   {
-    title: "We handle design",
-    body: "Mockups, tech packs, approvals. Nothing goes to production without your sign-off",
+    title: "Free mockups, zero guessing",
+    body: "We design it, send mockups, and iterate until it's right. Nothing goes to production without your sign-off. No extra charges for revisions.",
   },
   {
-    title: "Production + delivery",
-    body: "Factory-direct production. Shipped to your door with tracking",
+    title: "We build it. You receive it.",
+    body: "Factory-direct production, 6–8 weeks start to finish. Full tracking, free shipping, and one contact from first email to final delivery.",
   },
 ];
 

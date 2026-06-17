@@ -74,14 +74,6 @@ export function Footer() {
                   {link.label}
                 </Link>
               ))}
-              <a
-                href="https://orangegoods.co/wp-content/uploads/2025/01/OrangeGoods_FreshPicks.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-white/50 transition hover:text-white/80"
-              >
-                Fresh Picks Guide ↗
-              </a>
             </div>
           </div>
 

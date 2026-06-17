@@ -25,14 +25,14 @@ export function Hero() {
             className="mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Custom goods<br />done right
+            Merch worth<br />keeping
           </h1>
 
           <p
             className="mt-5 max-w-sm text-lg leading-7 text-[#1C1C1C]/80"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Hats, tees, socks, drinkware, outerwear — if your brand puts its name on it, we make it. Fully custom, or from premium blanks. From concept to delivery — no vendor juggling, no corners cut.
+            Custom hats, tees, socks, drinkware, and more — built for brands that give a damn. One team handles everything from design to your door.
           </p>
 
           <div className="mt-8 flex flex-row flex-wrap gap-3">
@@ -78,10 +78,10 @@ export function Hero() {
             className="text-3xl uppercase leading-tight text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Custom goods<br />done right
+            Merch worth keeping
           </h1>
           <p className="text-sm leading-5 text-white/80">
-            Fully custom or premium blanks — no vendor juggling, no corners cut.
+            Built for brands that give a damn. One team, start to finish.
           </p>
           <div className="flex gap-3 pt-1">
             <Link
