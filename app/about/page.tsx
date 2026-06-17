@@ -41,7 +41,7 @@ export default function AboutPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/80">
             Southern California Custom Goods
           </p>
-          <h1 className="mt-5 text-6xl leading-none text-white md:text-8xl lg:text-9xl">
+          <h1 className="mt-5 text-5xl leading-none text-white md:text-6xl lg:text-7xl">
             ABOUT US
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/85 md:text-xl">

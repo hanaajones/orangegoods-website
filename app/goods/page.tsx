@@ -52,7 +52,7 @@ export default function GoodsPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/70">
             Product Categories
           </p>
-          <h1 className="mt-5 text-6xl leading-none text-[var(--og-orange)] md:text-8xl lg:text-9xl">
+          <h1 className="mt-5 text-5xl leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
             CUSTOM GOODS
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">

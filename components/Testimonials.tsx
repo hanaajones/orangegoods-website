@@ -25,7 +25,7 @@ export function Testimonials({
       <section className="mx-auto max-w-6xl rounded-[2rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-6 md:p-8">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-            Trusted By Real Brands
+            Real Brands. Real Results.
           </p>
           <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
             Trusted by the greats

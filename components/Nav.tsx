@@ -29,7 +29,7 @@ const customLinks = [
 
 const aboutLinks = [
   { label: "About", href: "/about" },
-  { label: "OG Crafted vs Ready Made", href: "/services" },
+  { label: "OG Crafted vs Ready Made", href: "/about/og-crafted-vs-ready-made" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];

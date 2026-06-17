@@ -92,7 +92,7 @@ export default function FaqPage() {
     <main className="pb-24 md:pb-0">
       <section className="bg-[var(--og-blue)] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <h1 className="max-w-5xl text-6xl leading-none text-white md:text-8xl lg:text-9xl">
+          <h1 className="max-w-5xl text-5xl leading-none text-white md:text-6xl lg:text-7xl">
             FREQUENTLY ASKED QUESTIONS
           </h1>
         </div>

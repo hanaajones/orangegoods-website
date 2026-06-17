@@ -39,11 +39,11 @@ export default function ContactPage() {
     <main className="bg-[var(--og-warm-grey)] pb-24 md:pb-0">
       <section className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <h1 className="text-4xl leading-none text-[var(--og-orange)] sm:text-6xl md:text-8xl lg:text-9xl">
+          <h1 className="text-4xl leading-none text-[var(--og-orange)] sm:text-5xl md:text-6xl lg:text-7xl">
             GET IN TOUCH
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--og-muted)] md:text-xl">
-            Tell us what you are making. We respond within one business day
+            What do you want to create? We'll respond within one business day.
           </p>
           <p className="mt-4 text-sm text-[#1C1C1C]/50">
             Not sure what you need?{" "}
@@ -133,7 +133,7 @@ export default function ContactPage() {
                 Quantity
                 <select name="quantity" required defaultValue="" className={inputClass}>
                   <option value="" disabled>Select</option>
-                  {["100-250", "250-500", "500-1,000", "1,000+"].map((option) => (
+                  {["100-250", "250-500", "500-1,000", "1,000-2,000", "2,000-5,000", "5,000+"].map((option) => (
                     <option key={option}>{option}</option>
                   ))}
                 </select>
@@ -171,7 +171,7 @@ export default function ContactPage() {
                 />
               </label>
               <p className="text-xs text-[#1C1C1C]/45">
-                Vector files preferred — AI, EPS, PDF, SVG. PNG/JPG accepted at 300dpi+. Have larger files? Share a Dropbox or WeTransfer link in your message.
+                Vector files preferred — AI, EPS, PDF, SVG. Have larger files? Share a Dropbox or WeTransfer link in your message.
               </p>
             </div>
 
@@ -180,7 +180,7 @@ export default function ContactPage() {
               disabled={submitting}
               className="btn-og inline-flex w-full justify-center md:w-fit"
             >
-              {submitting ? "Sending" : "Send Message"}
+              {submitting ? "Sending…" : "Get Started"}
             </button>
           </form>
         </section>

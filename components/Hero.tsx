@@ -25,14 +25,14 @@ export function Hero() {
             className="mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Everything your<br />brand wears
+            Custom goods<br />done right
           </h1>
 
           <p
             className="mt-5 max-w-sm text-lg leading-7 text-[#1C1C1C]/80"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Hats, tees, socks, drinkware, outerwear — if your brand puts its name on it, we make it. Custom from scratch or fast from premium blanks. Always retail quality, always done right
+            Hats, tees, socks, drinkware, outerwear — if your brand puts its name on it, we make it. Fully custom, or from premium blanks. From concept to delivery — no vendor juggling, no corners cut.
           </p>
 
           <div className="mt-8 flex flex-row flex-wrap gap-3">
@@ -59,19 +59,15 @@ export function Hero() {
           >
             <div>
               <div className="text-2xl font-bold text-[#FF4200]">100+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">MOQ</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Min. Order</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[#FF4200]">3–6 wks</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Timeline</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">15+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Categories</div>
+              <div className="text-2xl font-bold text-[#FF4200]">2–8 wks</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Turnaround</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-[#FF4200]">250K+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Products Made</div>
+              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Items Made</div>
             </div>
           </div>
         </div>
@@ -82,10 +78,10 @@ export function Hero() {
             className="text-3xl uppercase leading-tight text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Everything your<br />brand wears
+            Custom goods<br />done right
           </h1>
           <p className="text-sm leading-5 text-white/80">
-            Hats, tees, socks, drinkware + more — custom from scratch or fast from premium blanks
+            Fully custom or premium blanks — no vendor juggling, no corners cut.
           </p>
           <div className="flex gap-3 pt-1">
             <Link
