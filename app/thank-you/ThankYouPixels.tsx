@@ -12,9 +12,10 @@ export default function ThankYouPixels() {
   useEffect(() => {
     // ── Google Ads conversion ───────────────────────────────────────────────
     if (GOOGLE_ADS_ID !== "AW-XXXXXXXXX") {
-      // @ts-expect-error gtag injected by Google tag in layout
-      if (typeof window.gtag === "function") {
-        window.gtag("event", "conversion", {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const gtagFn = (window as any).gtag;
+      if (typeof gtagFn === "function") {
+        gtagFn("event", "conversion", {
           send_to: `${GOOGLE_ADS_ID}/${GOOGLE_ADS_CONVERSION_LABEL}`,
         });
       }
@@ -22,9 +23,10 @@ export default function ThankYouPixels() {
 
     // ── Meta (Facebook) Pixel ──────────────────────────────────────────────
     if (META_PIXEL_ID !== "XXXXXXXXXXXXXXX") {
-      // @ts-expect-error fbq injected by Meta pixel snippet
-      if (typeof window.fbq === "function") {
-        window.fbq("track", "Lead");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const fbqFn = (window as any).fbq;
+      if (typeof fbqFn === "function") {
+        fbqFn("track", "Lead");
       }
     }
 

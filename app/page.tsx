@@ -5,11 +5,13 @@ import { ProductCategories } from "@/components/ProductCategories";
 import { ServicesPreview } from "@/components/ServicesPreview";
 import { CTASection } from "@/components/CTASection";
 import { Hero } from "@/components/Hero";
+import { MerchTipsCarousel } from "@/components/MerchTipsCarousel";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
 import { SelectedWork } from "@/components/SelectedWork";
 import { Testimonials } from "@/components/Testimonials";
 import { TwoPaths } from "@/components/TwoPaths";
+import { UseCaseCarousel } from "@/components/UseCaseCarousel";
 import {
   homeProcess,
   logos,
@@ -28,6 +30,86 @@ export default function HomePage() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/graphics/OrangeGoods_Checkers_Orange.svg" alt="" aria-hidden="true" className="w-full" />
 
+      <UseCaseCarousel />
+
+      <Reveal className="bg-[#F7F4ED] px-4 py-16 md:px-8 md:py-20 lg:px-12">
+        <section id="why-orange-goods" className="mx-auto max-w-6xl scroll-mt-24">
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
+              Why Orange Goods
+            </p>
+            <h2 className="mt-3 max-w-2xl text-4xl leading-[0.95] text-[var(--og-blue)] md:text-5xl">
+              Top 3 reasons brands choose Orange Goods over other merch companies.
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">
+            {[
+              {
+                number: "01",
+                title: "Higher-end product options",
+                copy: "From better blanks and materials to thoughtful decoration details, we help your goods feel closer to retail than promo.",
+                mark: "/logos/OrangeGoods_Logo_Secondary_FullColor.svg",
+                markClassName: "h-28 w-44 md:h-32 md:w-52",
+              },
+              {
+                number: "02",
+                title: "One connected merch partner",
+                copy: "Sourcing, artwork, production, kitting, and delivery stay connected so your team is not managing five different vendors.",
+                mark: "/graphics/OrangeGoods_Checkers_Blue.svg",
+                markClassName: "h-24 w-[24rem] max-w-none md:h-28 md:w-[30rem]",
+              },
+              {
+                number: "03",
+                title: "Built for modern brands",
+                copy: "We move fast, adapt to changes, and support teams that care about quality, service, and long-term brand equity.",
+                mark: "/logos/OrangeGoods_Logo_Main_Orange.svg",
+                markClassName: "h-24 w-48 md:h-28 md:w-56",
+              },
+            ].map((reason) => (
+              <article
+                key={reason.title}
+                className="flex min-h-[25rem] flex-col justify-between overflow-hidden rounded-lg bg-[#E5E2DC] p-6 text-[var(--og-blue)] md:min-h-[31rem] md:p-8"
+              >
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#FF7F00]">
+                    {reason.number}
+                  </p>
+                  <h3 className="mt-7 text-3xl leading-none md:text-4xl">
+                    {reason.title}
+                  </h3>
+                  <p className="mt-4 max-w-sm text-sm leading-6 text-[#1C1C1C]/64">
+                    {reason.copy}
+                  </p>
+                </div>
+                <div className="mt-12 flex min-h-32 items-center justify-center">
+                  {reason.mark.includes("Checkers") ? (
+                    <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-[#F7F4ED] ring-2 ring-[var(--og-blue)]/12">
+                      <Image
+                        src={reason.mark}
+                        alt=""
+                        width={480}
+                        height={112}
+                        aria-hidden="true"
+                        className={`${reason.markClassName} object-cover`}
+                      />
+                    </div>
+                  ) : (
+                    <Image
+                      src={reason.mark}
+                      alt=""
+                      width={260}
+                      height={150}
+                      aria-hidden="true"
+                      className={`${reason.markClassName} object-contain`}
+                    />
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
       {/* Trust signal */}
       <Testimonials testimonials={testimonials} logos={logos} />
 
@@ -37,28 +119,10 @@ export default function HomePage() {
       {/* Two ways to start */}
       <TwoPaths items={twoPaths} title={twoPathsTitle} />
 
-      {/* Checkers divider */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       {/* Work lands here — visitor now knows what they're looking at */}
       <SelectedWork />
 
-      <div className="px-4 py-16 text-center md:px-8 md:py-20 lg:px-12">
-        <p
-          className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
-          style={{ fontFamily: "var(--font-accent)" }}
-        >
-          The Merch Problem
-        </p>
-        <h2
-          className="mx-auto mt-4 max-w-3xl text-3xl uppercase leading-tight text-[#FF4200] md:text-5xl"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Most merch ends up in a closet
-        </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#1C1C1C]/60 md:text-lg">
-          Sourced from five vendors. Arrived off-brand. Sat in a box. We fix that — one team handles design, production, and delivery from day one
-        </p>
-      </div>
+      <MerchTipsCarousel />
 
       {/* Full-width photo carousel */}
       <PhotoCarousel />
@@ -67,8 +131,8 @@ export default function HomePage() {
 
       <ProcessSteps
         eyebrow="How It Works"
-        title="A clear path from brief to delivery"
-        description="One team handles design, production, and delivery — start to finish. No vendor juggling, no broken phone games"
+        title="Transparent process. No surprises."
+        description="We tell you exactly what happens, when, and who's responsible. Unlike the big guys, you talk to one person from first email to final delivery."
         steps={homeProcess}
       />
 
@@ -81,7 +145,7 @@ export default function HomePage() {
         >
           <div className="relative min-h-[20rem] overflow-hidden rounded-[1.75rem] bg-[#d6bea7]">
             <Image
-              src="https://orangegoods.co/wp-content/uploads/2024/07/OrangeGoods_ABoutUs_5-1.jpg"
+              src="/images/product/apparel-tshirt-hero.jpg"
               alt="Orange Goods founders"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -93,21 +157,17 @@ export default function HomePage() {
               Southern California
             </p>
             <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-              Real people. Real craft. No corporate nonsense
+              A real partner,<br />not a platform
             </h2>
             <p className="mt-5 text-base leading-7 text-[var(--og-muted)] md:text-lg">
-              Orange Goods is a small, tight-knit team based in Southern California.
-              We&apos;re designers, manufacturers, and brand obsessives — not a
-              fulfillment warehouse or a faceless platform. Every project gets
-              a real person behind it who cares about the outcome
+              We&apos;re a small, focused team based in Southern California. Not a fulfillment warehouse, not an overseas call center. You get one person who knows your project, handles every step, and is reachable by text.
             </p>
-            {/* Trust strip */}
             <div className="mt-8 grid grid-cols-2 gap-4">
               {[
-                { label: "CA-Based Team", detail: "Southern California, not a call center" },
-                { label: "In-House Design", detail: "Built by human designers on the West Coast" },
-                { label: "Product Experts", detail: "15+ years in design + manufacturing" },
-                { label: "Direct Access", detail: "Talk directly to the people making your goods — not an overseas call center" },
+                { label: "Free mockups", detail: "Every project includes mockups and revisions at no charge" },
+                { label: "One contact", detail: "Same person from your first email to the box at your door" },
+                { label: "Transparent pricing", detail: "No hidden setup fees, no surprise charges at the end" },
+                { label: "Real lead times", detail: "We tell you exactly when it ships — and we hit it" },
               ].map(({ label, detail }) => (
                 <div key={label} className="rounded-2xl border border-[var(--og-sand)] bg-white p-4">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FF4200]" style={{ fontFamily: "var(--font-display)" }}>{label}</p>

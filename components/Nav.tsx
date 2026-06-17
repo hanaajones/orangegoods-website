@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
+const showBuildOnlineNav = false;
 const products = [
   { label: "Hats", href: "/goods/hats", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif" },
   { label: "Apparel", href: "/build/products/as-colour-5001", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif" },
@@ -25,6 +26,12 @@ const customLinks = [
   { label: "Our Process", href: "/#process" },
   { label: "Gallery", href: "/gallery" },
   { label: "FAQ", href: "/faq" },
+];
+
+const howItWorksLinks = [
+  { label: "Ready Made", href: "/services#ready-made" },
+  { label: "OG Crafted", href: "/services#og-crafted" },
+  { label: "Find My Goods", href: "/quiz" },
 ];
 
 const aboutLinks = [
@@ -66,6 +73,16 @@ export function Nav() {
   const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
   const [hoveredProduct, setHoveredProduct] = useState(products[0].image);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
+
+  const scheduleClose = () => {
+    if (closeTimer[0]) clearTimeout(closeTimer[0]);
+    closeTimer[1](setTimeout(() => setActiveMenu(null), 150));
+  };
+
+  const cancelClose = () => {
+    if (closeTimer[0]) clearTimeout(closeTimer[0]);
+  };
 
   return (
     <>
@@ -81,7 +98,8 @@ export function Nav() {
       <header className="sticky top-0 z-40">
         <div
           className="relative"
-          onMouseLeave={() => setActiveMenu(null)}
+          onMouseLeave={scheduleClose}
+          onMouseEnter={cancelClose}
         >
           <div className="flex items-center bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:px-8">
             {/* Mobile hamburger */}
@@ -110,16 +128,18 @@ export function Nav() {
                 onClick={() => setActiveMenu(activeMenu === "custom" ? null : "custom")}
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
-                CUSTOM <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                GOODS <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </button>
-              <button
-                type="button"
-                onMouseEnter={() => setActiveMenu("build")}
-                onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
-                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
-              >
-                BUILD ONLINE <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-              </button>
+              {showBuildOnlineNav ? (
+                <button
+                  type="button"
+                  onMouseEnter={() => setActiveMenu("build")}
+                  onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
+                  className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+                >
+                  BUILD ONLINE <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+              ) : null}
               <Link
                 href="/design"
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
@@ -130,7 +150,19 @@ export function Nav() {
                 href="/shop"
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
-                SHOP
+                SHOP OG
+              </Link>
+              <Link
+                href="/fresh-picks"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+              >
+                FRESH PICKS
+              </Link>
+              <Link
+                href="/gallery"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+              >
+                GALLERY
               </Link>
               <button
                 type="button"
@@ -172,9 +204,15 @@ export function Nav() {
           </div>
 
           {activeMenu ? (
+            <>
+            {/* Invisible hover bridge fills the gap between nav bar and mega menu so the cursor doesn't lose hover */}
+            <div
+              className="absolute left-0 top-full hidden h-4 w-full md:block"
+              onMouseEnter={cancelClose}
+            />
             <div
               className="absolute left-1/2 top-[calc(100%+0.75rem)] hidden min-h-[320px] w-[60vw] -translate-x-1/2 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
-              onMouseEnter={() => setActiveMenu(activeMenu)}
+              onMouseEnter={cancelClose}
             >
               {activeMenu === "custom" ? (
                 <div className="grid gap-3 md:grid-cols-[1.4fr_0.9fr_0.9fr_0.9fr]">
@@ -194,6 +232,7 @@ export function Nav() {
                       Products
                     </p>
                     <div className="grid gap-1">
+                      <MenuLink href="/goods">View All</MenuLink>
                       {products.map((item) => (
                         <div key={item.label} onMouseEnter={() => setHoveredProduct(item.image)}>
                           <MenuLink href={item.href}>{item.label}</MenuLink>
@@ -201,9 +240,17 @@ export function Nav() {
                       ))}
                     </div>
                   </div>
-                  {/* Col 2: Ready Made Services */}
+                  {/* Col 3: How It Works */}
                   <div>
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                      How It Works
+                    </p>
+                    <div className="grid gap-1">
+                      {howItWorksLinks.map((item) => (
+                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
+                      ))}
+                    </div>
+                    <p className="px-3 pb-2 pt-5 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Ready Made Services
                     </p>
                     <div className="grid gap-1">
@@ -227,7 +274,6 @@ export function Nav() {
                       <MenuLink href="/case-studies">Case Studies</MenuLink>
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2">
-                      <Link href="/quiz" className="btn-og-white border border-[#0B32A0]/30 text-[#0B32A0]">Find Your Goods</Link>
                       <Link href={startProjectHref} className="btn-og">Start a Project</Link>
                     </div>
                   </div>
@@ -301,6 +347,7 @@ export function Nav() {
                 </div>
               ) : null}
             </div>
+            </>
           ) : null}
         </div>
       </header>
@@ -332,10 +379,12 @@ export function Nav() {
           </div>
           <nav className="mt-12 grid gap-3">
             {[
-              { label: "CUSTOM", href: "/#paths" },
-              { label: "BUILD ONLINE", href: buildOnlineHref },
+              { label: "GOODS", href: "/#paths" },
+              ...(showBuildOnlineNav ? [{ label: "BUILD ONLINE", href: buildOnlineHref }] : []),
               { label: "DESIGN", href: "/design" },
-              { label: "SHOP", href: "/shop" },
+              { label: "SHOP OG", href: "/shop" },
+              { label: "FRESH PICKS", href: "/fresh-picks" },
+              { label: "GALLERY", href: "/gallery" },
               { label: "ABOUT", href: "/about" },
             ].map((item) => (
               <Link
@@ -352,19 +401,21 @@ export function Nav() {
         </div>
       ) : null}
 
-      <div className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-2 gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden">
+      <div className={`fixed inset-x-0 bottom-0 z-30 grid ${showBuildOnlineNav ? "grid-cols-2" : "grid-cols-1"} gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden`}>
         <Link
           href={startProjectHref}
           className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
         >
           Start a Project
         </Link>
-        <Link
-          href={buildOnlineHref}
-          className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
-        >
-          Build Online
-        </Link>
+        {showBuildOnlineNav ? (
+          <Link
+            href={buildOnlineHref}
+            className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
+          >
+            Build Online
+          </Link>
+        ) : null}
       </div>
     </>
   );

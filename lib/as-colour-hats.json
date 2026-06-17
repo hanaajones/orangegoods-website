@@ -1,0 +1,763 @@
+{
+  "1130": {
+    "colors": {
+      "Cap Atlantic": {
+        "front": "/images/product/hats/as-colour/1130-cap-atlantic-front.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-atlantic-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-atlantic-front.jpg"
+      },
+      "Cap Cypress": {
+        "front": "/images/product/hats/as-colour/1130-cap-cypress-front.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-cypress-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-cypress-front.jpg"
+      },
+      "Cap Midnight Blue": {
+        "front": "/images/product/hats/as-colour/1130-cap-midnight-blue-front.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-midnight-blue-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-midnight-blue-front.jpg"
+      },
+      "Cap Black": {
+        "front": "/images/product/hats/as-colour/1130-cap-black-front.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-black-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-black-front.jpg"
+      },
+      "Cap Hazy Pink": {
+        "front": "/images/product/hats/as-colour/1130-cap-hazy-pink-front.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-hazy-pink-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-hazy-pink-front.jpg"
+      },
+      "Cap Ecru": {
+        "turn": "/images/product/hats/as-colour/1130-cap-ecru-turn.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-ecru-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-ecru-turn.jpg"
+      },
+      "Cap Bone": {
+        "turn": "/images/product/hats/as-colour/1130-cap-bone-turn.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-bone-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-bone-turn.jpg"
+      },
+      "Cap Khaki": {
+        "turn": "/images/product/hats/as-colour/1130-cap-khaki-turn.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-khaki-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-khaki-turn.jpg"
+      },
+      "Cap Walnut": {
+        "turn": "/images/product/hats/as-colour/1130-cap-walnut-turn.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-walnut-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-walnut-turn.jpg"
+      },
+      "Cap Coal": {
+        "turn": "/images/product/hats/as-colour/1130-cap-coal-turn.jpg",
+        "back": "/images/product/hats/as-colour/1130-cap-coal-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1130-cap-coal-turn.jpg"
+      }
+    }
+  },
+  "1134": {
+    "colors": {
+      "Faded Cap Faded Black": {
+        "front": "/images/product/hats/as-colour/1134-faded-cap-faded-black-front.jpg",
+        "back": "/images/product/hats/as-colour/1134-faded-cap-faded-black-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1134-faded-cap-faded-black-front.jpg"
+      },
+      "Faded Cap Faded Bone": {
+        "front": "/images/product/hats/as-colour/1134-faded-cap-faded-bone-front.jpg",
+        "back": "/images/product/hats/as-colour/1134-faded-cap-faded-bone-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1134-faded-cap-faded-bone-front.jpg"
+      },
+      "Faded Cap Faded Grey": {
+        "front": "/images/product/hats/as-colour/1134-faded-cap-faded-grey-front.jpg",
+        "back": "/images/product/hats/as-colour/1134-faded-cap-faded-grey-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1134-faded-cap-faded-grey-front.jpg"
+      },
+      "Faded Cap Faded Midnight": {
+        "front": "/images/product/hats/as-colour/1134-faded-cap-faded-midnight-front.jpg",
+        "back": "/images/product/hats/as-colour/1134-faded-cap-faded-midnight-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1134-faded-cap-faded-midnight-front.jpg"
+      }
+    }
+  },
+  "1114": {
+    "colors": {
+      "Cap Seafoam": {
+        "turn": "/images/product/hats/as-colour/1114-cap-seafoam-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-seafoam-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-seafoam-turn.jpg"
+      },
+      "Cap Bubblegum": {
+        "turn": "/images/product/hats/as-colour/1114-cap-bubblegum-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-bubblegum-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-bubblegum-turn.jpg"
+      },
+      "Cap Lemonade": {
+        "turn": "/images/product/hats/as-colour/1114-cap-lemonade-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-lemonade-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-lemonade-turn.jpg"
+      },
+      "Cap Topaz": {
+        "turn": "/images/product/hats/as-colour/1114-cap-topaz-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-topaz-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-topaz-turn.jpg"
+      },
+      "Cap Charlotte": {
+        "turn": "/images/product/hats/as-colour/1114-cap-charlotte-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-charlotte-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-charlotte-turn.jpg"
+      },
+      "Cap Camel": {
+        "turn": "/images/product/hats/as-colour/1114-cap-camel-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-camel-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-camel-turn.jpg"
+      },
+      "Cap Cypress": {
+        "turn": "/images/product/hats/as-colour/1114-cap-cypress-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-cypress-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-cypress-turn.jpg"
+      },
+      "Cap Sage": {
+        "turn": "/images/product/hats/as-colour/1114-cap-sage-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-sage-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-sage-turn.jpg"
+      },
+      "Cap Violet": {
+        "turn": "/images/product/hats/as-colour/1114-cap-violet-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-violet-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-violet-turn.jpg"
+      },
+      "Cap Atlantic": {
+        "turn": "/images/product/hats/as-colour/1114-cap-atlantic-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-atlantic-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-atlantic-turn.jpg"
+      },
+      "Cap White": {
+        "turn": "/images/product/hats/as-colour/1114-cap-white-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-white-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-white-turn.jpg"
+      },
+      "Cap Butter": {
+        "turn": "/images/product/hats/as-colour/1114-cap-butter-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-butter-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-butter-turn.jpg"
+      },
+      "Cap Bone": {
+        "turn": "/images/product/hats/as-colour/1114-cap-bone-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-bone-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-bone-turn.jpg"
+      },
+      "Cap Lapis": {
+        "turn": "/images/product/hats/as-colour/1114-cap-lapis-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-lapis-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-lapis-turn.jpg"
+      },
+      "Cap Orchid": {
+        "turn": "/images/product/hats/as-colour/1114-cap-orchid-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-orchid-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-orchid-turn.jpg"
+      },
+      "Cap Mineral": {
+        "turn": "/images/product/hats/as-colour/1114-cap-mineral-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-mineral-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-mineral-turn.jpg"
+      },
+      "Cap Grape": {
+        "turn": "/images/product/hats/as-colour/1114-cap-grape-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-grape-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-grape-turn.jpg"
+      },
+      "Cap Charity Pink": {
+        "turn": "/images/product/hats/as-colour/1114-cap-charity-pink-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-charity-pink-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-charity-pink-turn.jpg"
+      },
+      "Cap Petrol Blue": {
+        "turn": "/images/product/hats/as-colour/1114-cap-petrol-blue-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-petrol-blue-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-petrol-blue-turn.jpg"
+      },
+      "Cap Eucalyptus": {
+        "turn": "/images/product/hats/as-colour/1114-cap-eucalyptus-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-eucalyptus-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-eucalyptus-turn.jpg"
+      },
+      "Cap Mint": {
+        "turn": "/images/product/hats/as-colour/1114-cap-mint-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-mint-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-mint-turn.jpg"
+      },
+      "Cap Hazy Pink": {
+        "turn": "/images/product/hats/as-colour/1114-cap-hazy-pink-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-hazy-pink-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-hazy-pink-turn.jpg"
+      },
+      "Cap Midnight Blue": {
+        "turn": "/images/product/hats/as-colour/1114-cap-midnight-blue-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-midnight-blue-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-midnight-blue-turn.jpg"
+      },
+      "Cap Lime": {
+        "turn": "/images/product/hats/as-colour/1114-cap-lime-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-lime-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-lime-turn.jpg"
+      },
+      "Cap Smoke": {
+        "turn": "/images/product/hats/as-colour/1114-cap-smoke-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-smoke-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-smoke-turn.jpg"
+      },
+      "Cap Powder": {
+        "turn": "/images/product/hats/as-colour/1114-cap-powder-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-powder-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-powder-turn.jpg"
+      },
+      "Cap Black": {
+        "turn": "/images/product/hats/as-colour/1114-cap-black-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-black-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-black-turn.jpg"
+      },
+      "Cap Sunset": {
+        "turn": "/images/product/hats/as-colour/1114-cap-sunset-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-sunset-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-sunset-turn.jpg"
+      },
+      "Cap Taupe": {
+        "turn": "/images/product/hats/as-colour/1114-cap-taupe-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-taupe-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-taupe-turn.jpg"
+      },
+      "Cap Ecru": {
+        "turn": "/images/product/hats/as-colour/1114-cap-ecru-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-ecru-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-ecru-turn.jpg"
+      },
+      "Cap Autumn": {
+        "turn": "/images/product/hats/as-colour/1114-cap-autumn-turn.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-autumn-turn.jpg"
+      },
+      "Cap Citrus": {
+        "turn": "/images/product/hats/as-colour/1114-cap-citrus-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-citrus-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-citrus-turn.jpg"
+      },
+      "Cap Clay": {
+        "turn": "/images/product/hats/as-colour/1114-cap-clay-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-clay-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-clay-turn.jpg"
+      },
+      "Cap Red": {
+        "turn": "/images/product/hats/as-colour/1114-cap-red-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-red-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-red-turn.jpg"
+      },
+      "Cap Navy": {
+        "turn": "/images/product/hats/as-colour/1114-cap-navy-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-navy-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-navy-turn.jpg"
+      },
+      "Cap Pale Pink": {
+        "turn": "/images/product/hats/as-colour/1114-cap-pale-pink-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-pale-pink-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-pale-pink-turn.jpg"
+      },
+      "Cap Pistachio": {
+        "turn": "/images/product/hats/as-colour/1114-cap-pistachio-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-pistachio-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-pistachio-turn.jpg"
+      },
+      "Cap Storm": {
+        "turn": "/images/product/hats/as-colour/1114-cap-storm-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-storm-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-storm-turn.jpg"
+      },
+      "Cap Carolina Blue": {
+        "turn": "/images/product/hats/as-colour/1114-cap-carolina-blue-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-carolina-blue-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-carolina-blue-turn.jpg"
+      },
+      "Cap Fire": {
+        "turn": "/images/product/hats/as-colour/1114-cap-fire-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-fire-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-fire-turn.jpg"
+      },
+      "Cap Mustard": {
+        "turn": "/images/product/hats/as-colour/1114-cap-mustard-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-mustard-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-mustard-turn.jpg"
+      },
+      "Cap Slate Blue": {
+        "turn": "/images/product/hats/as-colour/1114-cap-slate-blue-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-slate-blue-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-slate-blue-turn.jpg"
+      },
+      "Cap Chestnut": {
+        "turn": "/images/product/hats/as-colour/1114-cap-chestnut-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-chestnut-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-chestnut-turn.jpg"
+      },
+      "Cap Hydro": {
+        "turn": "/images/product/hats/as-colour/1114-cap-hydro-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-hydro-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-hydro-turn.jpg"
+      },
+      "Cap Burgundy": {
+        "turn": "/images/product/hats/as-colour/1114-cap-burgundy-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-burgundy-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-burgundy-turn.jpg"
+      },
+      "Cap Forest Green": {
+        "turn": "/images/product/hats/as-colour/1114-cap-forest-green-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-forest-green-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-forest-green-turn.jpg"
+      },
+      "Cap Mushroom": {
+        "turn": "/images/product/hats/as-colour/1114-cap-mushroom-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-mushroom-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-mushroom-turn.jpg"
+      },
+      "Cap Khaki": {
+        "turn": "/images/product/hats/as-colour/1114-cap-khaki-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-khaki-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-khaki-turn.jpg"
+      },
+      "Cap Army": {
+        "turn": "/images/product/hats/as-colour/1114-cap-army-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-army-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-army-turn.jpg"
+      },
+      "Cap Walnut": {
+        "turn": "/images/product/hats/as-colour/1114-cap-walnut-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-walnut-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-walnut-turn.jpg"
+      },
+      "Cap Pine Green": {
+        "turn": "/images/product/hats/as-colour/1114-cap-pine-green-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-pine-green-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-pine-green-turn.jpg"
+      },
+      "Cap Bright Royal": {
+        "turn": "/images/product/hats/as-colour/1114-cap-bright-royal-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-bright-royal-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-bright-royal-turn.jpg"
+      },
+      "Cap Cobalt": {
+        "turn": "/images/product/hats/as-colour/1114-cap-cobalt-turn.jpg",
+        "back": "/images/product/hats/as-colour/1114-cap-cobalt-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1114-cap-cobalt-turn.jpg"
+      }
+    }
+  },
+  "1123": {
+    "colors": {
+      "Rope Cap Black White": {
+        "back": "/images/product/hats/as-colour/1123-rope-cap-black-white-back.jpg",
+        "swatch": ""
+      },
+      "Rope Cap Ecru White": {
+        "back": "/images/product/hats/as-colour/1123-rope-cap-ecru-white-back.jpg",
+        "swatch": ""
+      },
+      "Rope Cap Navy White": {
+        "back": "/images/product/hats/as-colour/1123-rope-cap-navy-white-back.jpg",
+        "swatch": ""
+      },
+      "Rope Cap Powder White": {
+        "back": "/images/product/hats/as-colour/1123-rope-cap-powder-white-back.jpg",
+        "swatch": ""
+      },
+      "Rope Cap Fire White": {
+        "turn": "/images/product/hats/as-colour/1123-rope-cap-fire-white-turn.jpg",
+        "back": "/images/product/hats/as-colour/1123-rope-cap-fire-white-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1123-rope-cap-fire-white-turn.jpg"
+      },
+      "Rope Cap Army White": {
+        "turn": "/images/product/hats/as-colour/1123-rope-cap-army-white-turn.jpg",
+        "back": "/images/product/hats/as-colour/1123-rope-cap-army-white-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1123-rope-cap-army-white-turn.jpg"
+      }
+    }
+  },
+  "1154": {
+    "colors": {}
+  },
+  "1164C": {
+    "colors": {
+      "Soft Camo Cap Tree Camo": {
+        "turn": "/images/product/hats/as-colour/1164c-soft-camo-cap-tree-camo-turn.jpg",
+        "back": "/images/product/hats/as-colour/1164c-soft-camo-cap-tree-camo-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1164c-soft-camo-cap-tree-camo-turn.jpg"
+      },
+      "Soft Camo Cap Desert Camo": {
+        "turn": "/images/product/hats/as-colour/1164c-soft-camo-cap-desert-camo-turn.jpg",
+        "back": "/images/product/hats/as-colour/1164c-soft-camo-cap-desert-camo-back.jpg",
+        "swatch": "",
+        "main": "/images/product/hats/as-colour/1164c-soft-camo-cap-desert-camo-turn.jpg"
+      }
+    }
+  },
+  "1153": {
+    "colors": {
+      "Five Panel Cap": {
+        "main": "/images/product/hats/as-colour/1153-five-panel-cap-main.jpg",
+        "front": "/images/product/hats/as-colour/1153-five-panel-cap-front.jpg",
+        "turn": "/images/product/hats/as-colour/1153-five-panel-cap-turn.jpg"
+      },
+      "Five Panel Cap Black": {
+        "front": "/images/product/hats/as-colour/1153-five-panel-cap-black-front.jpg",
+        "back": "/images/product/hats/as-colour/1153-five-panel-cap-black-back.jpg",
+        "main": "/images/product/hats/as-colour/1153-five-panel-cap-black-front.jpg"
+      },
+      "Five Panel Cap Midnight Blue": {
+        "front": "/images/product/hats/as-colour/1153-five-panel-cap-midnight-blue-front.jpg",
+        "back": "/images/product/hats/as-colour/1153-five-panel-cap-midnight-blue-back.jpg",
+        "main": "/images/product/hats/as-colour/1153-five-panel-cap-midnight-blue-front.jpg"
+      },
+      "Five Panel Cap Bone": {
+        "turn": "/images/product/hats/as-colour/1153-five-panel-cap-bone-turn.jpg",
+        "back": "/images/product/hats/as-colour/1153-five-panel-cap-bone-back.jpg",
+        "main": "/images/product/hats/as-colour/1153-five-panel-cap-bone-turn.jpg"
+      },
+      "Five Panel Cap Walnut": {
+        "turn": "/images/product/hats/as-colour/1153-five-panel-cap-walnut-turn.jpg",
+        "back": "/images/product/hats/as-colour/1153-five-panel-cap-walnut-back.jpg",
+        "main": "/images/product/hats/as-colour/1153-five-panel-cap-walnut-turn.jpg"
+      }
+    }
+  },
+  "1156": {
+    "colors": {
+      "Canvas Cap Bone": {
+        "turn": "/images/product/hats/as-colour/1156-canvas-cap-bone-turn.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-bone-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-bone-turn.jpg"
+      },
+      "Canvas Cap Cypress": {
+        "turn": "/images/product/hats/as-colour/1156-canvas-cap-cypress-turn.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-cypress-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-cypress-turn.jpg"
+      },
+      "Canvas Cap Midnight Blue": {
+        "turn": "/images/product/hats/as-colour/1156-canvas-cap-midnight-blue-turn.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-midnight-blue-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-midnight-blue-turn.jpg"
+      },
+      "Canvas Cap Black": {
+        "front": "/images/product/hats/as-colour/1156-canvas-cap-black-front.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-black-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-black-front.jpg"
+      },
+      "Canvas Cap Smoke": {
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-smoke-back.jpg"
+      },
+      "Canvas Cap Khaki": {
+        "turn": "/images/product/hats/as-colour/1156-canvas-cap-khaki-turn.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-khaki-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-khaki-turn.jpg"
+      },
+      "Canvas Cap Walnut": {
+        "turn": "/images/product/hats/as-colour/1156-canvas-cap-walnut-turn.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-walnut-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-walnut-turn.jpg"
+      },
+      "Canvas Cap Coal": {
+        "turn": "/images/product/hats/as-colour/1156-canvas-cap-coal-turn.jpg",
+        "back": "/images/product/hats/as-colour/1156-canvas-cap-coal-back.jpg",
+        "main": "/images/product/hats/as-colour/1156-canvas-cap-coal-turn.jpg"
+      }
+    }
+  },
+  "1110": {
+    "colors": {}
+  },
+  "1161": {
+    "colors": {}
+  },
+  "1141": {
+    "colors": {
+      "Trucker Cap": {
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-main.jpg",
+        "front": "/images/product/hats/as-colour/1141-trucker-cap-front.jpg",
+        "turn": "/images/product/hats/as-colour/1141-trucker-cap-turn.jpg"
+      },
+      "Trucker Cap Womens": {
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-womens-main.jpg"
+      },
+      "Trucker Cap Black": {
+        "front": "/images/product/hats/as-colour/1141-trucker-cap-black-front.jpg",
+        "back": "/images/product/hats/as-colour/1141-trucker-cap-black-back.jpg",
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-black-front.jpg"
+      },
+      "Trucker Cap Bone": {
+        "front": "/images/product/hats/as-colour/1141-trucker-cap-bone-front.jpg",
+        "back": "/images/product/hats/as-colour/1141-trucker-cap-bone-back.jpg",
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-bone-front.jpg"
+      },
+      "Trucker Cap Petrol Blue": {
+        "front": "/images/product/hats/as-colour/1141-trucker-cap-petrol-blue-front.jpg",
+        "back": "/images/product/hats/as-colour/1141-trucker-cap-petrol-blue-back.jpg",
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-petrol-blue-front.jpg"
+      },
+      "Trucker Cap Navy": {
+        "front": "/images/product/hats/as-colour/1141-trucker-cap-navy-front.jpg",
+        "back": "/images/product/hats/as-colour/1141-trucker-cap-navy-back.jpg",
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-navy-front.jpg"
+      },
+      "Trucker Cap Army": {
+        "turn": "/images/product/hats/as-colour/1141-trucker-cap-army-turn.jpg",
+        "back": "/images/product/hats/as-colour/1141-trucker-cap-army-back.jpg",
+        "main": "/images/product/hats/as-colour/1141-trucker-cap-army-turn.jpg"
+      }
+    }
+  },
+  "1157": {
+    "colors": {
+      "Cord Trucker Cap": {
+        "main": "/images/product/hats/as-colour/1157-cord-trucker-cap-main.jpg",
+        "front": "/images/product/hats/as-colour/1157-cord-trucker-cap-front.jpg",
+        "turn": "/images/product/hats/as-colour/1157-cord-trucker-cap-turn.jpg"
+      },
+      "Cord Trucker Cap Black": {
+        "turn": "/images/product/hats/as-colour/1157-cord-trucker-cap-black-turn.jpg",
+        "back": "/images/product/hats/as-colour/1157-cord-trucker-cap-black-back.jpg",
+        "main": "/images/product/hats/as-colour/1157-cord-trucker-cap-black-turn.jpg"
+      },
+      "Cord Trucker Cap Bone": {
+        "turn": "/images/product/hats/as-colour/1157-cord-trucker-cap-bone-turn.jpg",
+        "back": "/images/product/hats/as-colour/1157-cord-trucker-cap-bone-back.jpg",
+        "main": "/images/product/hats/as-colour/1157-cord-trucker-cap-bone-turn.jpg"
+      },
+      "Cord Trucker Cap Midnight Blue": {
+        "turn": "/images/product/hats/as-colour/1157-cord-trucker-cap-midnight-blue-turn.jpg",
+        "back": "/images/product/hats/as-colour/1157-cord-trucker-cap-midnight-blue-back.jpg",
+        "main": "/images/product/hats/as-colour/1157-cord-trucker-cap-midnight-blue-turn.jpg"
+      }
+    }
+  },
+  "1160": {
+    "colors": {
+      "Cap Black": {
+        "turn": "/images/product/hats/as-colour/1160-cap-black-turn.jpg",
+        "back": "/images/product/hats/as-colour/1160-cap-black-back.jpg",
+        "main": "/images/product/hats/as-colour/1160-cap-black-turn.jpg"
+      },
+      "Cap Navy": {
+        "turn": "/images/product/hats/as-colour/1160-cap-navy-turn.jpg",
+        "back": "/images/product/hats/as-colour/1160-cap-navy-back.jpg",
+        "main": "/images/product/hats/as-colour/1160-cap-navy-turn.jpg"
+      },
+      "Cap Bone": {
+        "turn": "/images/product/hats/as-colour/1160-cap-bone-turn.jpg",
+        "back": "/images/product/hats/as-colour/1160-cap-bone-back.jpg",
+        "main": "/images/product/hats/as-colour/1160-cap-bone-turn.jpg"
+      },
+      "Cap Ecru": {
+        "turn": "/images/product/hats/as-colour/1160-cap-ecru-turn.jpg",
+        "back": "/images/product/hats/as-colour/1160-cap-ecru-back.jpg",
+        "main": "/images/product/hats/as-colour/1160-cap-ecru-turn.jpg"
+      },
+      "Cap Storm": {
+        "turn": "/images/product/hats/as-colour/1160-cap-storm-turn.jpg",
+        "back": "/images/product/hats/as-colour/1160-cap-storm-back.jpg",
+        "main": "/images/product/hats/as-colour/1160-cap-storm-turn.jpg"
+      },
+      "Cap Walnut": {
+        "turn": "/images/product/hats/as-colour/1160-cap-walnut-turn.jpg",
+        "back": "/images/product/hats/as-colour/1160-cap-walnut-back.jpg",
+        "main": "/images/product/hats/as-colour/1160-cap-walnut-turn.jpg"
+      }
+    }
+  },
+  "1165": {
+    "colors": {}
+  },
+  "1150": {
+    "colors": {}
+  },
+  "1152": {
+    "colors": {}
+  },
+  "1104": {
+    "colors": {
+      "Nylon Cap Black": {
+        "front": "/images/product/hats/as-colour/1104-nylon-cap-black-front.jpg",
+        "back": "/images/product/hats/as-colour/1104-nylon-cap-black-back.jpg",
+        "main": "/images/product/hats/as-colour/1104-nylon-cap-black-front.jpg"
+      },
+      "Nylon Cap Ecru": {
+        "front": "/images/product/hats/as-colour/1104-nylon-cap-ecru-front.jpg",
+        "back": "/images/product/hats/as-colour/1104-nylon-cap-ecru-back.jpg",
+        "main": "/images/product/hats/as-colour/1104-nylon-cap-ecru-front.jpg"
+      },
+      "Nylon Cap Lapis": {
+        "front": "/images/product/hats/as-colour/1104-nylon-cap-lapis-front.jpg",
+        "back": "/images/product/hats/as-colour/1104-nylon-cap-lapis-back.jpg",
+        "main": "/images/product/hats/as-colour/1104-nylon-cap-lapis-front.jpg"
+      },
+      "Nylon Cap Smoke": {
+        "turn": "/images/product/hats/as-colour/1104-nylon-cap-smoke-turn.jpg",
+        "back": "/images/product/hats/as-colour/1104-nylon-cap-smoke-back.jpg",
+        "main": "/images/product/hats/as-colour/1104-nylon-cap-smoke-turn.jpg"
+      },
+      "Nylon Cap Mint": {
+        "turn": "/images/product/hats/as-colour/1104-nylon-cap-mint-turn.jpg",
+        "back": "/images/product/hats/as-colour/1104-nylon-cap-mint-back.jpg",
+        "main": "/images/product/hats/as-colour/1104-nylon-cap-mint-turn.jpg"
+      }
+    }
+  },
+  "1117": {
+    "colors": {
+      "Hat": {
+        "main": "/images/product/hats/as-colour/1117-hat-main.jpg",
+        "front": "/images/product/hats/as-colour/1117-hat-front.jpg",
+        "turn": "/images/product/hats/as-colour/1117-hat-turn.jpg"
+      },
+      "Hat Hazy Pink": {
+        "back": "/images/product/hats/as-colour/1117-hat-hazy-pink-back.jpg"
+      },
+      "Hat Bone": {
+        "back": "/images/product/hats/as-colour/1117-hat-bone-back.jpg"
+      },
+      "Hat Storm": {
+        "back": "/images/product/hats/as-colour/1117-hat-storm-back.jpg"
+      },
+      "Hat Butter": {
+        "back": "/images/product/hats/as-colour/1117-hat-butter-back.jpg"
+      },
+      "Hat Black": {
+        "back": "/images/product/hats/as-colour/1117-hat-black-back.jpg"
+      },
+      "Hat Navy": {
+        "back": "/images/product/hats/as-colour/1117-hat-navy-back.jpg"
+      },
+      "Hat Ecru": {
+        "back": "/images/product/hats/as-colour/1117-hat-ecru-back.jpg"
+      },
+      "Hat Orchid": {
+        "back": "/images/product/hats/as-colour/1117-hat-orchid-back.jpg"
+      },
+      "Hat Khaki": {
+        "back": "/images/product/hats/as-colour/1117-hat-khaki-back.jpg"
+      },
+      "Hat Army": {
+        "back": "/images/product/hats/as-colour/1117-hat-army-back.jpg"
+      },
+      "Hat Walnut": {
+        "back": "/images/product/hats/as-colour/1117-hat-walnut-back.jpg"
+      }
+    }
+  },
+  "1175": {
+    "colors": {
+      "Bucket Hat": {
+        "main": "/images/product/hats/as-colour/1175-bucket-hat-main.jpg",
+        "front": "/images/product/hats/as-colour/1175-bucket-hat-front.jpg",
+        "turn": "/images/product/hats/as-colour/1175-bucket-hat-turn.jpg"
+      },
+      "Bucket Hat Cypress": {
+        "back": "/images/product/hats/as-colour/1175-bucket-hat-cypress-back.jpg"
+      },
+      "Bucket Hat Navy": {
+        "back": "/images/product/hats/as-colour/1175-bucket-hat-navy-back.jpg"
+      },
+      "Bucket Hat Black": {
+        "back": "/images/product/hats/as-colour/1175-bucket-hat-black-back.jpg"
+      },
+      "Bucket Hat White": {
+        "back": "/images/product/hats/as-colour/1175-bucket-hat-white-back.jpg"
+      },
+      "Bucket Hat Khaki": {
+        "back": "/images/product/hats/as-colour/1175-bucket-hat-khaki-back.jpg"
+      }
+    }
+  },
+  "1176": {
+    "colors": {
+      "Bucket Hat": {
+        "main": "/images/product/hats/as-colour/1176-bucket-hat-main.jpg",
+        "front": "/images/product/hats/as-colour/1176-bucket-hat-front.jpg",
+        "turn": "/images/product/hats/as-colour/1176-bucket-hat-turn.jpg"
+      },
+      "Bucket Hat Black": {
+        "back": "/images/product/hats/as-colour/1176-bucket-hat-black-back.jpg"
+      },
+      "Bucket Hat Bone": {
+        "back": "/images/product/hats/as-colour/1176-bucket-hat-bone-back.jpg"
+      },
+      "Bucket Hat Hazy Pink": {
+        "back": "/images/product/hats/as-colour/1176-bucket-hat-hazy-pink-back.jpg"
+      },
+      "Bucket Hat Walnut": {
+        "back": "/images/product/hats/as-colour/1176-bucket-hat-walnut-back.jpg"
+      }
+    }
+  }
+}

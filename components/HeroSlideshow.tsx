@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const photos = [
@@ -23,11 +24,14 @@ export function HeroSlideshow() {
   return (
     <div className="absolute inset-0 h-full w-full">
       {photos.map((src, i) => (
-        <img
+        <Image
           key={src}
           src={src}
           alt={i === 0 ? "Orange Goods custom merch" : ""}
           aria-hidden={i !== 0}
+          fill
+          priority={i === 0}
+          sizes="(min-width: 1024px) 50vw, 100vw"
           className="absolute inset-0 h-full w-full object-cover object-center"
           style={{
             opacity: i === current ? 1 : 0,

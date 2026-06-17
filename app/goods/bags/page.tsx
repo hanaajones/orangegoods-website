@@ -5,7 +5,7 @@ export default function BagsPage() {
     <ProductCategoryPage
       title="Custom Bags + Totes"
       subhead="Carry goods that show up at markets, conferences, welcome kits, retail counters, and daily commutes."
-      image="https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif"
+      image="/images/product/bags-tote-hero.jpg"
       imageAlt="Orange Goods custom bags and totes"
       products={["Canvas Totes", "Backpacks", "Duffels", "Drawstring Bags", "Cinch Sacks"]}
       services={["Screen Print", "Embroidery", "Patches", "Custom Fabrication"]}

@@ -5,7 +5,7 @@ export default function SocksPage() {
     <ProductCategoryPage
       title="Custom Socks"
       subhead="Wearable brand pieces with full-pattern knit options, label details, and designs people actually keep."
-      image="https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif"
+      image="/images/product/socks-lifestyle.jpg"
       imageAlt="Orange Goods custom socks"
       products={["Crew Socks", "Ankle Socks", "No-Show Socks", "Knee High", "Compression"]}
       services={["Custom Knit (full design)", "Woven Label", "Jacquard Pattern"]}

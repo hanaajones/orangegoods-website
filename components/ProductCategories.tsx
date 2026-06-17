@@ -6,13 +6,13 @@ import { Reveal } from "@/components/Reveal";
 
 const categories = [
   {
-    name: "Custom Headwear",
-    description: "Structured caps, beanies, dad hats, bucket hats — fully custom from brim to button",
+    name: "Headwear",
+    description: "Structured caps, beanies, dad hats, bucket hats — built from brim to button",
     href: "/goods/hats",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
   },
   {
-    name: "Custom Apparel",
+    name: "Apparel",
     description: "Tees, polos, hoodies, flannels, outerwear — built for your brand, not the clearance bin",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
@@ -54,7 +54,7 @@ const categories = [
     image: "https://orangegoods.co/wp-content/uploads/2024/07/OrangeGoods_ABoutUs_5-1.jpg",
   },
   {
-    name: "Custom Labels",
+    name: "Labels",
     description: "Woven labels, heat transfers, hang tags, neck labels — the inside details that matter",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2024/07/Namebrands_2.jpg",
