@@ -174,34 +174,34 @@ function SectionHeader({
 export default function DesignPage() {
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
-      <section className="border-t border-[#081E6F]/10 bg-white px-4 py-14 md:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
-                Custom Designs For Your Brand
-              </p>
-              <h1 className="mt-3 max-w-4xl text-4xl leading-none text-[var(--og-blue)] md:text-5xl">
-                Design made for merch, not just mockups.
-              </h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1C1C1C]/60">
-                In-house artwork, product graphics, packaging, and production-ready files for goods that actually get made.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-              <Link
-                href={designProjectHref}
-                className="inline-flex min-h-11 w-fit items-center justify-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-              >
-                Start design project
-              </Link>
-              <Link
-                href="#pricing"
-                className="inline-flex min-h-11 w-fit items-center justify-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-              >
-                View pricing
-              </Link>
-            </div>
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/gallery/apparel-verve-gd-tee.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: "center 48%" }}
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/32" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
+        <div className="relative mx-auto max-w-6xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+            Custom Designs For Your Brand
+          </p>
+          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+            Design Made For Merch
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+            In-house artwork, product graphics, packaging, and production-ready files for goods that actually get made.
+          </p>
+          <div className="mt-8">
+            <Link
+              href={designProjectHref}
+              className="inline-flex min-h-12 items-center rounded-xl border border-white/30 bg-white px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:-translate-y-0.5 hover:bg-[var(--og-orange)] hover:text-white"
+            >
+              Start Design Project
+            </Link>
           </div>
         </div>
       </section>
