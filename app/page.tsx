@@ -9,14 +9,12 @@ import { MerchTipsCarousel } from "@/components/MerchTipsCarousel";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
 import { SelectedWork } from "@/components/SelectedWork";
-import { Testimonials } from "@/components/Testimonials";
 import { TwoPaths } from "@/components/TwoPaths";
 import { UseCaseCarousel } from "@/components/UseCaseCarousel";
 import {
   homeProcess,
   logos,
   startProjectHref,
-  testimonials,
   twoPaths,
   twoPathsTitle,
 } from "@/lib/content";
@@ -26,92 +24,132 @@ export default function HomePage() {
     <main className="pb-24 md:pb-0">
       <Hero />
 
-      {/* Checkers divider */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/graphics/OrangeGoods_Checkers_Orange.svg" alt="" aria-hidden="true" className="w-full" />
+      {/* Fat Frank divider */}
+      <div className="border-b-[3px] border-[#1C1C1C] bg-[#081E6F] px-4 py-4 text-center md:px-6 md:py-5 lg:px-8">
+        <p
+          className="grid w-full grid-cols-2 items-center gap-x-4 gap-y-1 text-[1.9rem] uppercase leading-none tracking-[0.01em] text-[#FF4200] sm:text-[2.5rem] md:flex md:flex-nowrap md:justify-between md:text-[3.4rem] lg:text-[4.6rem] xl:text-[5.35rem]"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          <span>BRANDED</span>
+          <span>GOODS</span>
+          <span>WORTH</span>
+          <span>KEEPING</span>
+        </p>
+      </div>
 
-      <UseCaseCarousel />
+      <UseCaseCarousel logos={logos} />
 
-      <Reveal className="bg-[#F7F4ED] px-4 py-16 md:px-8 md:py-20 lg:px-12">
-        <section id="why-orange-goods" className="mx-auto max-w-6xl scroll-mt-24">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
-              Why Orange Goods
-            </p>
-            <h2 className="mt-3 max-w-2xl text-4xl leading-[0.95] text-[var(--og-blue)] md:text-5xl">
-              Top 3 reasons brands choose Orange Goods over other merch companies.
-            </h2>
-          </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <Reveal className="relative isolate overflow-hidden px-4 py-16 md:px-8 md:py-20 lg:px-12">
+        <Image
+          src="/images/gallery/goods-hero-misc-dscf4876.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          aria-hidden="true"
+          className="absolute inset-0 -z-30 object-cover object-center"
+        />
+        <div className="absolute inset-0 -z-20 bg-[#1C1C1C]/86" />
+        <div
+          className="absolute inset-0 -z-10 opacity-30 mix-blend-soft-light"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.62'/%3E%3C/svg%3E\")",
+          }}
+          aria-hidden="true"
+        />
+        <section id="why-orange-goods" className="relative z-10 mx-auto max-w-6xl scroll-mt-24">
+          <h2 className="font-accent w-full max-w-none whitespace-nowrap text-center text-xl font-normal normal-case leading-tight tracking-normal text-white sm:text-2xl md:text-3xl">
+            For us, it&apos;s all about the details.
+          </h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
               {
-                number: "01",
-                title: "Higher-end product options",
-                copy: "From better blanks and materials to thoughtful decoration details, we help your goods feel closer to retail than promo.",
-                mark: "/logos/OrangeGoods_Logo_Secondary_FullColor.svg",
-                markClassName: "h-28 w-44 md:h-32 md:w-52",
+                title: "One merch partner",
+                copy: "Skip the vendor juggling. OG connects sourcing, mockups, production, kitting, and delivery with one team.",
+                icon: (
+                  <svg
+                    aria-hidden="true"
+                    className="h-9 w-9"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M4 7h10" />
+                    <path d="m11 4 3 3-3 3" />
+                    <path d="M20 17H10" />
+                    <path d="m13 14-3 3 3 3" />
+                  </svg>
+                ),
               },
               {
-                number: "02",
-                title: "One connected merch partner",
-                copy: "Sourcing, artwork, production, kitting, and delivery stay connected so your team is not managing five different vendors.",
-                mark: "/graphics/OrangeGoods_Checkers_Blue.svg",
-                markClassName: "h-24 w-[24rem] max-w-none md:h-28 md:w-[30rem]",
+                title: "California team",
+                copy: "A real California team you can text, call, or email. No hub, no call center, no getting passed around.",
+                icon: (
+                  <svg
+                    aria-hidden="true"
+                    className="h-9 w-9"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 21s7-5.3 7-11a7 7 0 0 0-14 0c0 5.7 7 11 7 11Z" />
+                    <circle cx="12" cy="10" r="2.5" />
+                  </svg>
+                ),
               },
               {
-                number: "03",
-                title: "Built for modern brands",
-                copy: "We move fast, adapt to changes, and support teams that care about quality, service, and long-term brand equity.",
-                mark: "/logos/OrangeGoods_Logo_Main_Orange.svg",
-                markClassName: "h-24 w-48 md:h-28 md:w-56",
+                title: "Communication done right",
+                copy: "We keep you posted from first mockup to final delivery, so you always know what is moving and what is next.",
+                icon: (
+                  <svg
+                    aria-hidden="true"
+                    className="h-9 w-9"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 12a8 8 0 0 1-8 8H6l-4 3 1.5-5A8 8 0 1 1 21 12Z" />
+                    <path d="M8 11h8" />
+                    <path d="M8 15h5" />
+                  </svg>
+                ),
               },
             ].map((reason) => (
               <article
                 key={reason.title}
-                className="flex min-h-[25rem] flex-col justify-between overflow-hidden rounded-lg bg-[#E5E2DC] p-6 text-[var(--og-blue)] md:min-h-[31rem] md:p-8"
+                className="flex min-h-[17rem] flex-col items-center justify-center rounded-lg border-[3px] border-[#B8AA8E] bg-[var(--og-sand)] p-6 text-center text-[#081E6F] shadow-[5px_5px_0px_#0B32A0] md:min-h-[18rem] md:p-8"
               >
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#FF7F00]">
-                    {reason.number}
-                  </p>
-                  <h3 className="mt-7 text-3xl leading-none md:text-4xl">
-                    {reason.title}
-                  </h3>
-                  <p className="mt-4 max-w-sm text-sm leading-6 text-[#1C1C1C]/64">
-                    {reason.copy}
-                  </p>
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-[#B8AA8E] bg-[#F3EFE7] text-[#FF4200]">
+                  {reason.icon}
                 </div>
-                <div className="mt-12 flex min-h-32 items-center justify-center">
-                  {reason.mark.includes("Checkers") ? (
-                    <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-[#F7F4ED] ring-2 ring-[var(--og-blue)]/12">
-                      <Image
-                        src={reason.mark}
-                        alt=""
-                        width={480}
-                        height={112}
-                        aria-hidden="true"
-                        className={`${reason.markClassName} object-cover`}
-                      />
-                    </div>
-                  ) : (
-                    <Image
-                      src={reason.mark}
-                      alt=""
-                      width={260}
-                      height={150}
-                      aria-hidden="true"
-                      className={`${reason.markClassName} object-contain`}
-                    />
-                  )}
-                </div>
+                <h3 className="font-subtitle-alt mt-6 text-3xl font-medium normal-case leading-none tracking-normal text-[#081E6F] md:text-4xl">
+                  {reason.title}
+                </h3>
+                <p className="font-noir-alt mt-4 max-w-sm text-base font-medium leading-7 text-[#1C1C1C]/70">
+                  {reason.copy}
+                </p>
               </article>
             ))}
           </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href={startProjectHref}
+              className="font-noir-alt inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 text-sm font-bold uppercase tracking-[0.1em] text-[#0B32A0] shadow-[5px_5px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F3EFE7]"
+            >
+              Get in touch
+            </Link>
+          </div>
         </section>
       </Reveal>
-
-      {/* Trust signal */}
-      <Testimonials testimonials={testimonials} logos={logos} />
 
       {/* Product categories — We Handle It All */}
       <ProductCategories />

@@ -72,6 +72,8 @@
 :root {
   --font-display: 'FatFrank', sans-serif;
   --font-body: 'NoirPro', sans-serif;
+  --font-noir-alt: 'tenon', 'NoirPro', sans-serif;
+  --font-subtitle-alt: 'moret', 'Sirenia', Georgia, serif;
   --font-accent: 'JukeboxJohnny', cursive;
   --font-sirenia: 'Sirenia', sans-serif;
 
@@ -139,6 +141,12 @@ img {
 .font-body {
   font-family: var(--font-body);
 }
+.font-noir-alt {
+  font-family: var(--font-noir-alt);
+}
+.font-subtitle-alt {
+  font-family: var(--font-subtitle-alt);
+}
 .font-accent {
   font-family: var(--font-accent);
 }
@@ -181,7 +189,7 @@ h1, h2, h3 {
 }
 
 /* ── Button base ──
-   All CTA buttons share: rounded-xl, FatFrank uppercase, px-6 py-3, text-sm, tracking-wide
+   All CTA buttons share: rounded-xl, Tenon uppercase, px-6 py-3, text-sm, tracking-wide
    Lift animation on hover, no color change
    Color variants: .btn-og (orange), .btn-og-white (white on dark/orange bg)
 */
@@ -193,7 +201,7 @@ h1, h2, h3 {
   border-radius: 0.75rem;
   padding: 0.7rem 1.5rem;
   min-height: 44px;
-  font-family: var(--font-display);
+  font-family: var(--font-noir-alt);
   font-size: 1rem;
   letter-spacing: 0;
   text-transform: uppercase;

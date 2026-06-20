@@ -43,6 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/ogr4tvs.css" />
+      </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-body, 'NoirPro', sans-serif)" }}>
         <div className="relative min-h-screen overflow-x-clip">
           <SiteChrome>{children}</SiteChrome>

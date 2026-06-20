@@ -4,11 +4,15 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const photos = [
-  "https://orangegoods.co/wp-content/uploads/2024/07/OrangeGoods_ABoutUs_5-1.jpg",
-  "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg",
-  "https://orangegoods.co/wp-content/uploads/2024/07/Embroidery_2-271x300.jpg",
-  "https://orangegoods.co/wp-content/uploads/2024/07/Screenprinting-271x300.jpg",
-  "https://orangegoods.co/wp-content/uploads/2025/01/Packaging_Stanford-271x300.jpg",
+  { src: "/images/gallery/267A5393.jpg" },
+  { src: "/images/gallery/DSCF3148.jpg" },
+  { src: "/images/gallery/_MG_0147.jpg", position: "center 82%" },
+  { src: "/images/gallery/mcalister-016_2.jpg" },
+  { src: "/images/gallery/apparel-verve-gd-tee.jpg", position: "center 12%" },
+  { src: "/images/gallery/BGxHJ-6.jpg", position: "center 20%" },
+  { src: "/images/gallery/HighStDeli_Jenjoi_June20240420.jpg", position: "center 28%" },
+  { src: "/images/gallery/DSCF1176.jpg" },
+  { src: "/images/gallery/DSCF3128.jpg" },
 ];
 
 export function HeroSlideshow() {
@@ -23,18 +27,19 @@ export function HeroSlideshow() {
 
   return (
     <div className="absolute inset-0 h-full w-full">
-      {photos.map((src, i) => (
+      {photos.map((photo, i) => (
         <Image
-          key={src}
-          src={src}
-          alt={i === 0 ? "Orange Goods custom merch" : ""}
+          key={photo.src}
+          src={photo.src}
+          alt={i === 0 ? "Custom Apteka towel detail" : ""}
           aria-hidden={i !== 0}
           fill
           priority={i === 0}
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full object-cover"
           style={{
             opacity: i === current ? 1 : 0,
+            objectPosition: photo.position ?? "center",
             transition: "opacity 0.4s ease-in-out",
           }}
         />

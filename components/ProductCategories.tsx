@@ -152,8 +152,7 @@ export function ProductCategories() {
         {/* Header */}
         <div className="mb-10 px-4 text-center md:px-8 lg:px-12">
           <h2
-            className="text-3xl font-extrabold uppercase tracking-tight text-[#FF4200] md:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
+            className="font-noir-alt text-3xl font-semibold normal-case tracking-normal text-[#FF4200] md:text-5xl"
           >
             We handle it all
           </h2>
@@ -207,17 +206,15 @@ export function ProductCategories() {
               {/* Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3
-                  className="text-xl font-extrabold uppercase tracking-tight text-white md:text-2xl"
-                  style={{ fontFamily: "var(--font-display)" }}
+                  className="font-noir-alt text-xl font-semibold normal-case tracking-normal text-white md:text-2xl"
                 >
                   {cat.name}
                 </h3>
                 <p className="mt-1.5 text-sm leading-5 text-white/70">{cat.description}</p>
                 <span
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-[#FF4200] px-4 py-2 text-xs font-semibold text-white transition group-hover:bg-white group-hover:text-[#FF4200]"
-                  style={{ fontFamily: "var(--font-display)" }}
+                  className="font-noir-alt mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/45 bg-white/10 px-3 py-1.5 text-xs font-medium normal-case tracking-normal text-white backdrop-blur-sm transition group-hover:border-white group-hover:bg-white group-hover:text-[#FF4200]"
                 >
-                  EXPLORE
+                  Explore
                 </span>
               </div>
             </Link>
