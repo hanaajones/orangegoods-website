@@ -85,9 +85,9 @@ export function UseCaseCarousel({ logos }: { logos: Logo[] }) {
               />
               <div className="absolute inset-0 bg-[#1C1C1C]/30 transition group-hover:bg-[#1C1C1C]/24" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1C1C1C]/66 via-[#1C1C1C]/24 to-transparent p-4 pt-12">
-                <h3 className="font-subtitle-alt text-lg font-medium normal-case leading-tight tracking-normal text-white md:text-xl">
+                <p className="font-body text-[15px] font-semibold normal-case leading-tight tracking-normal text-white md:text-base">
                   {item.title}
-                </h3>
+                </p>
               </div>
             </div>
           ))}
