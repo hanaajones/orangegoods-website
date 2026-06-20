@@ -66,7 +66,7 @@ const logoFrameClass: Record<string, string> = {
 
 export function UseCaseCarousel({ logos }: { logos: Logo[] }) {
   return (
-    <Reveal className="bg-white px-4 pb-6 pt-[46px] md:px-8 md:pb-10 md:pt-[70px] lg:px-12">
+    <Reveal className="bg-white px-4 pb-0 pt-[46px] md:px-8 md:pb-0 md:pt-[70px] lg:px-12">
       <section className="mx-auto max-w-6xl">
         <div className="grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-6">
           {useCases.map((item, index) => (
@@ -101,7 +101,7 @@ export function UseCaseCarousel({ logos }: { logos: Logo[] }) {
             className="h-12 w-full object-cover md:h-16"
           />
         </div>
-        <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden bg-white py-6 md:mt-14">
+        <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden bg-white pb-2 pt-6 md:mt-14 md:pb-3">
           <div className="animate-marquee flex w-max items-center gap-20 px-8 md:gap-24 md:px-12">
             {[...logos, ...logos, ...logos, ...logos].map((logo, i) => (
               <div
