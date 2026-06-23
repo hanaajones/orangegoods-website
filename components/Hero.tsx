@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <>
       {/* ── HERO: split screen ── */}
-      <section className="flex h-[calc(78vh-64px)] min-h-[460px] w-full overflow-hidden">
+      <section className="relative flex h-[calc(78vh-64px)] min-h-[460px] w-full overflow-hidden">
 
         {/* Left: photo slideshow */}
         <div className="relative w-full lg:w-1/2">
@@ -25,50 +25,31 @@ export function Hero() {
             className="mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Merch worth<br />keeping
+            Merch that<br />doesn&apos;t suck
           </h1>
 
           <p
             className="mt-5 max-w-sm text-lg leading-7 text-[#1C1C1C]/80"
             style={{ fontFamily: "var(--font-body)" }}
           >
-            Custom hats, tees, socks, drinkware, and more — built for brands that give a damn. One team handles everything from design to your door.
+            Built for brands that care what they sell and hand out. OG helps shape your idea, source the right goods, manage production, and make sure it lands right.
           </p>
 
           <div className="mt-8 flex flex-row flex-wrap gap-3">
             <Link
               href="/contact"
               className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
-              style={{ fontFamily: "var(--font-display)" }}
+              style={{ fontFamily: "var(--font-noir-alt)" }}
             >
               START A PROJECT
             </Link>
             <Link
               href="/build"
               className="inline-flex items-center rounded-xl border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
-              style={{ fontFamily: "var(--font-display)" }}
+              style={{ fontFamily: "var(--font-noir-alt)" }}
             >
               BUILD ONLINE
             </Link>
-          </div>
-
-          {/* Stats row */}
-          <div
-            className="mt-12 flex gap-8 border-t border-black/10 pt-8"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">100+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Min. Order</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">2–8 wks</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Turnaround</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#FF4200]">250K+</div>
-              <div className="mt-0.5 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/60">Items Made</div>
-            </div>
           </div>
         </div>
 
@@ -78,23 +59,23 @@ export function Hero() {
             className="text-3xl uppercase leading-tight text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Merch worth keeping
+            Merch that doesn&apos;t suck
           </h1>
           <p className="text-sm leading-5 text-white/80">
-            Built for brands that give a damn. One team, start to finish.
+            For brands that care what they sell and hand out. One team from idea to delivery.
           </p>
           <div className="flex gap-3 pt-1">
             <Link
               href="/contact"
               className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
-              style={{ fontFamily: "var(--font-display)" }}
+              style={{ fontFamily: "var(--font-noir-alt)" }}
             >
               START A PROJECT
             </Link>
             <Link
               href="/build"
               className="inline-flex items-center rounded-xl border border-white/80 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur-sm"
-              style={{ fontFamily: "var(--font-display)" }}
+              style={{ fontFamily: "var(--font-noir-alt)" }}
             >
               BUILD ONLINE
             </Link>
@@ -112,8 +93,7 @@ export function Hero() {
             categories.map((cat) => (
               <span
                 key={`${cat}-${i}`}
-                className="flex-none text-[clamp(18px,3.5vw,28px)] text-[#1C1C1C]"
-                style={{ fontFamily: "var(--font-sirenia)", fontWeight: 600 }}
+                className="font-subtitle-alt flex-none text-[clamp(18px,3.5vw,28px)] font-medium normal-case tracking-normal text-[#1C1C1C]"
               >
                 {cat}
               </span>
