@@ -189,7 +189,7 @@ h1, h2, h3 {
 }
 
 .animate-logo-marquee {
-  animation: marquee 112.5s linear infinite;
+  animation: marquee 50s linear infinite;
 }
 
 /* ── Button base ──
