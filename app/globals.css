@@ -188,6 +188,10 @@ h1, h2, h3 {
   animation: marquee 50s linear infinite;
 }
 
+.animate-logo-marquee {
+  animation: marquee 112.5s linear infinite;
+}
+
 /* ── Button base ──
    All CTA buttons share: rounded-xl, Tenon uppercase, px-6 py-3, text-sm, tracking-wide
    Lift animation on hover, no color change

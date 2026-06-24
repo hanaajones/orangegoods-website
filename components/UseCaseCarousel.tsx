@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { Reveal } from "@/components/Reveal";
 
 type UseCase = {
@@ -57,13 +58,6 @@ const useCases: UseCase[] = [
   },
 ];
 
-const logoFrameClass: Record<string, string> = {
-  Google: "h-10 w-44",
-  "Stanford Medicine": "h-16 w-36",
-  "805 Firestone Walker": "h-16 w-36",
-  "Verve Coffee": "h-12 w-44",
-};
-
 export function UseCaseCarousel({ logos }: { logos: Logo[] }) {
   return (
     <Reveal className="bg-white px-4 pb-0 pt-[46px] md:px-8 md:pb-0 md:pt-[70px] lg:px-12">
@@ -101,24 +95,7 @@ export function UseCaseCarousel({ logos }: { logos: Logo[] }) {
             className="h-12 w-full object-cover md:h-16"
           />
         </div>
-        <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden bg-white pb-2 pt-6 md:mt-14 md:pb-3">
-          <div className="animate-marquee flex w-max items-center gap-20 px-8 md:gap-24 md:px-12">
-            {[...logos, ...logos, ...logos, ...logos].map((logo, i) => (
-              <div
-                key={`${logo.name}-${i}`}
-                className={`relative flex-none opacity-[0.76] grayscale transition hover:opacity-100 hover:grayscale-0 ${logoFrameClass[logo.name] ?? "h-12 w-40"}`}
-              >
-                <Image
-                  src={logo.image}
-                  alt={logo.name}
-                  fill
-                  sizes="176px"
-                  className="object-contain"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+        <ClientLogoMarquee logos={logos} className="mt-12 md:mt-14" />
       </section>
     </Reveal>
   );

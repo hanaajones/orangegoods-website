@@ -30,7 +30,7 @@ export const twoPaths = [
     title: "Talk to Us",
     description:
       "Tell us what you need. We'll figure out the right product, production method, and timeline — and send you a quote. Best for custom projects, large orders, or anything with specific requirements.",
-    details: ["Custom products", "Full-service", "Any complexity"],
+    details: ["Custom idea", "Need guidance", "Full-service"],
     href: startProjectHref,
     label: "Start a Conversation",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
@@ -39,7 +39,7 @@ export const twoPaths = [
     title: "Build Online",
     description:
       "Pick a product, pick a style, upload your logo. We'll send you a quote same day. Best if you know what you want and want to move fast.",
-    details: ["Fast quotes", "Instant start", "Easy process"],
+    details: ["Ready product", "Logo ready", "Fast quote"],
     href: buildOnlineHref,
     label: "Start Building",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
@@ -99,36 +99,152 @@ export const testimonials = [
     quote: "Our go-to for curated event giveaways and team swag",
     name: "Robin D",
     role: "Director, Strategic Initiatives, Stanford Medicine",
-    logo: "https://orangegoods.co/wp-content/uploads/2024/07/SM_Web_vert_LG.png",
+    logo: "/logos/clients/stanford-medicine.png",
   },
   {
-    quote: "Truly happy with the turnout",
-    name: "Sophia P",
-    role: "Marketing Ops Manager, Verve Coffee",
-    logo: "https://orangegoods.co/wp-content/uploads/2025/04/OrangeGoodsClients_Website_2025_VerveCoffee.avif",
+    quote: "Client testimonial placeholder.",
+    name: "First L",
+    role: "Job Title",
+    logo: "/logos/clients/verve-coffee.png",
   },
 ];
 
 export const logos = [
   {
-    name: "Google",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/02/OrangeGoodsClients_Website_2024_Google.png",
-  },
-  {
     name: "Stanford Medicine",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/SM_Web_vert_LG.png",
+    image: "/logos/clients/stanford-medicine.png",
   },
   {
-    name: "805 Firestone Walker",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/10/OrangeGoodsClients_Website_2024-36.png",
+    name: "Red Bull",
+    image: "/logos/clients/red-bull.png",
+  },
+  {
+    name: "Supergoop!",
+    image: "/logos/clients/supergoop.png",
+  },
+  {
+    name: "GT's",
+    image: "/logos/clients/gts.png",
+  },
+  {
+    name: "Capital One",
+    image: "/logos/clients/capital-one.png",
+  },
+  {
+    name: "Pura Vida",
+    image: "/logos/clients/pura-vida.png",
+  },
+  {
+    name: "Google",
+    image: "/logos/clients/google.png",
   },
   {
     name: "Verve Coffee",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/04/OrangeGoodsClients_Website_2025_VerveCoffee.avif",
+    image: "/logos/clients/verve-coffee.png",
+  },
+  {
+    name: "Water Wells for Africa",
+    image: "/logos/clients/wwa.png",
+  },
+  {
+    name: "Vive Organic",
+    image: "/logos/clients/vive-organic.png",
+  },
+  {
+    name: "Hobie",
+    image: "/logos/clients/hobie.png",
+  },
+  {
+    name: "High Street",
+    image: "/logos/clients/high-street.png",
+  },
+  {
+    name: "Tripadvisor",
+    image: "/logos/clients/tripadvisor.png",
+  },
+  {
+    name: "Jarritos",
+    image: "/logos/clients/jarritos.png",
+  },
+  {
+    name: "Channel Islands",
+    image: "/logos/clients/channel-islands.png",
+  },
+  {
+    name: "Eye Glove",
+    image: "/logos/clients/eye-glove.png",
+  },
+  {
+    name: "Health-Ade",
+    image: "/logos/clients/health-ade.png",
+  },
+  {
+    name: "Mountain Valley",
+    image: "/logos/clients/mountain-valley.png",
+  },
+  {
+    name: "Bell",
+    image: "/logos/clients/bell.png",
+  },
+  {
+    name: "Climate Lead",
+    image: "/logos/clients/climate-lead.png",
+  },
+  {
+    name: "Nitro Circus",
+    image: "/logos/clients/nitro-circus.png",
+  },
+  {
+    name: "Field Day Coffee",
+    image: "/logos/clients/field-day.png",
+  },
+  {
+    name: "Fantastic",
+    image: "/logos/clients/fantastic.png",
+  },
+  {
+    name: "iFIT",
+    image: "/logos/clients/ifit.png",
+  },
+  {
+    name: "South Congress Hotel",
+    image: "/logos/clients/south-congress-hotel.png",
+  },
+  {
+    name: "Crooked Hammock",
+    image: "/logos/clients/crooked-hammock.png",
+  },
+  {
+    name: "Thrasher",
+    image: "/logos/clients/thrasher.png",
+  },
+  {
+    name: "New Era",
+    image: "/logos/clients/new-era.png",
+  },
+  {
+    name: "805 Firestone Walker",
+    image: "/logos/clients/firestone-805.png",
+  },
+  {
+    name: "Firestone Walker",
+    image: "/logos/clients/firestone-walker.png",
+  },
+  {
+    name: "Marriott",
+    image: "/logos/clients/marriott.png",
+  },
+  {
+    name: "Outerknown",
+    image: "/logos/clients/outerknown.png",
+  },
+  {
+    name: "Islands",
+    image: "/logos/clients/islands.png",
+  },
+  {
+    name: "Microsoft",
+    image: "/logos/clients/microsoft.png",
   },
 ];
 

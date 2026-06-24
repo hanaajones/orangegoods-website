@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 
 const photos = [
   { src: "/images/gallery/267A5393.jpg" },
+  { src: "/images/homepage/milk-glass-mug-1-exposure-plus-015.jpg", position: "center 42%" },
   { src: "/images/gallery/DSCF3148.jpg" },
   { src: "/images/gallery/_MG_0147.jpg", position: "center 82%" },
   { src: "/images/gallery/mcalister-016_2.jpg" },
   { src: "/images/gallery/apparel-verve-gd-tee.jpg", position: "center 12%" },
-  { src: "/images/gallery/BGxHJ-6.jpg", position: "center 20%" },
+  { src: "/images/gallery/BGxHJ-6.jpg", position: "center 37%" },
   { src: "/images/gallery/HighStDeli_Jenjoi_June20240420.jpg", position: "center 28%" },
   { src: "/images/gallery/DSCF1176.jpg" },
   { src: "/images/gallery/DSCF3128.jpg" },
