@@ -23,29 +23,6 @@ export const homeStats: Stat[] = [
   { value: "15+", label: "Product categories" },
 ];
 
-export const twoPathsTitle = "How do you want to start?";
-
-export const twoPaths = [
-  {
-    title: "Talk to Us",
-    description:
-      "Tell us what you need. We'll figure out the right product, production method, and timeline — and send you a quote. Best for custom projects, large orders, or anything with specific requirements.",
-    details: ["Custom idea", "Need guidance", "Full-service"],
-    href: startProjectHref,
-    label: "Start a Conversation",
-    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-  },
-  {
-    title: "Build Online",
-    description:
-      "Pick a product, pick a style, upload your logo. We'll send you a quote same day. Best if you know what you want and want to move fast.",
-    details: ["Ready product", "Logo ready", "Fast quote"],
-    href: buildOnlineHref,
-    label: "Start Building",
-    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
-  },
-];
-
 export const homeGallery = [
   {
     title: "Factory Direct Headwear",
@@ -99,7 +76,7 @@ export const testimonials = [
     quote: "Our go-to for curated event giveaways and team swag",
     name: "Robin D",
     role: "Director, Strategic Initiatives, Stanford Medicine",
-    logo: "/logos/clients/stanford-medicine.png",
+    logo: "/logos/clients/stanford-medicine.svg",
   },
   {
     quote: "Client testimonial placeholder.",
@@ -112,23 +89,31 @@ export const testimonials = [
 export const logos = [
   {
     name: "Stanford Medicine",
-    image: "/logos/clients/stanford-medicine.png",
+    image: "/logos/clients/stanford-medicine.svg",
   },
   {
     name: "Red Bull",
-    image: "/logos/clients/red-bull.png",
+    image: "/logos/clients/red-bull.svg",
   },
   {
     name: "Supergoop!",
     image: "/logos/clients/supergoop.png",
   },
   {
-    name: "GT's",
-    image: "/logos/clients/gts.png",
+    name: "Synergy Kombucha",
+    image: "/logos/clients/synergy-kombucha.svg",
   },
   {
-    name: "Capital One",
-    image: "/logos/clients/capital-one.png",
+    name: "GoodOnya",
+    image: "/logos/clients/goodonya.svg",
+  },
+  {
+    name: "Islands Restaurant",
+    image: "/logos/clients/islands-restaurant.svg",
+  },
+  {
+    name: "Oak Essentials",
+    image: "/logos/clients/oak-essentials.svg",
   },
   {
     name: "Pura Vida",
@@ -143,8 +128,8 @@ export const logos = [
     image: "/logos/clients/verve-coffee.png",
   },
   {
-    name: "Water Wells for Africa",
-    image: "/logos/clients/wwa.png",
+    name: "Primally Pure",
+    image: "/logos/clients/primally-pure.svg",
   },
   {
     name: "Vive Organic",
@@ -159,10 +144,6 @@ export const logos = [
     image: "/logos/clients/high-street.png",
   },
   {
-    name: "Tripadvisor",
-    image: "/logos/clients/tripadvisor.png",
-  },
-  {
     name: "Jarritos",
     image: "/logos/clients/jarritos.png",
   },
@@ -175,20 +156,8 @@ export const logos = [
     image: "/logos/clients/eye-glove.png",
   },
   {
-    name: "Health-Ade",
-    image: "/logos/clients/health-ade.png",
-  },
-  {
     name: "Mountain Valley",
     image: "/logos/clients/mountain-valley.png",
-  },
-  {
-    name: "Bell",
-    image: "/logos/clients/bell.png",
-  },
-  {
-    name: "Climate Lead",
-    image: "/logos/clients/climate-lead.png",
   },
   {
     name: "Nitro Circus",
@@ -203,10 +172,6 @@ export const logos = [
     image: "/logos/clients/fantastic.png",
   },
   {
-    name: "iFIT",
-    image: "/logos/clients/ifit.png",
-  },
-  {
     name: "South Congress Hotel",
     image: "/logos/clients/south-congress-hotel.png",
   },
@@ -217,10 +182,6 @@ export const logos = [
   {
     name: "Thrasher",
     image: "/logos/clients/thrasher.png",
-  },
-  {
-    name: "New Era",
-    image: "/logos/clients/new-era.png",
   },
   {
     name: "805 Firestone Walker",
@@ -239,10 +200,6 @@ export const logos = [
     image: "/logos/clients/outerknown.png",
   },
   {
-    name: "Islands",
-    image: "/logos/clients/islands.png",
-  },
-  {
     name: "Microsoft",
     image: "/logos/clients/microsoft.png",
   },
@@ -250,16 +207,16 @@ export const logos = [
 
 export const homeProcess = [
   {
-    title: "Tell us what you need",
-    body: "Product, quantity, timeline, budget — that's it. No deck required. We respond same day with a real answer from a real person.",
+    title: "Bring us an idea",
+    body: "Send a logo, a rough direction, or just the goal. If the artwork is not there yet, we can help shape it.",
   },
   {
-    title: "Free mockups, zero guessing",
-    body: "We design it, send mockups, and iterate until it's right. Nothing goes to production without your sign-off. No extra charges for revisions.",
+    title: "Choose the right goods",
+    body: "We narrow the products, quantity, budget, and timeline before anything goes into production.",
   },
   {
-    title: "We build it. You receive it.",
-    body: "Factory-direct production, 6–8 weeks start to finish. Full tracking, free shipping, and one contact from first email to final delivery.",
+    title: "We get it moving",
+    body: "Once the direction is approved, we handle quoting, mockups, production, and delivery.",
   },
 ];
 

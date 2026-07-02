@@ -2,178 +2,67 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const photos = [
+type TestimonialPhoto = {
+  company: string;
+  quote: string;
+  person: string;
+  role: string;
+  logo: string;
+  src: string;
+  alt: string;
+  logoClass?: string;
+  preserveLogoDetail?: boolean;
+};
+
+const photos: TestimonialPhoto[] = [
   {
-    company: "GoodOnya",
-    quote: "They brought our project to life in a new and unique way",
-    person: "Joe K.",
-    role: "Field Marketing Manager",
-    logo:
-      "https://orangegoods.co/wp-content/uploads/2024/06/OrangeGoodsClients_Website_2024-36-3.png",
-    src: "/images/gallery/drinkware-goodoonya1.jpg",
-    alt: "GoodOnya branded drinkware by Orange Goods",
-  },
-  {
-    company: "Synergy Kombucha",
-    quote: "Client testimonial placeholder.",
-    person: "Noah C.",
-    role: "Graphic Designer",
-    logo: "/logos/clients/gts.png",
-    src: "/images/gallery/synergy-kombucha-event-2025.jpg",
-    alt: "Synergy Kombucha team wearing branded apparel by Orange Goods",
-  },
-  {
-    company: "Red Bull",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/red-bull.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
-    alt: "Custom drinkware by Orange Goods",
-  },
-  {
-    company: "Verve Coffee",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/verve-coffee.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
-    alt: "Branded bags by Orange Goods",
-  },
-  {
-    company: "Google",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/google.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
-    alt: "Branded accessories by Orange Goods",
-  },
-  {
-    company: "Water Wells for Africa",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/wwa.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-    alt: "Custom apparel by Orange Goods",
-  },
-  {
-    company: "High Street",
-    quote: "Client testimonial placeholder.",
+    company: "High Street Deli",
+    quote: "The OG team just gets it.",
     person: "Doobie C.",
     role: "Founder, Owner",
     logo: "/logos/clients/high-street.png",
-    src: "/images/gallery/high-st-deli-testimonial-0973-4.jpg",
-    alt: "High St branded merch spread by Orange Goods",
+    src: "/images/testimonials/high-street-deli-rotated-fullwidth.jpg",
+    alt: "High Street Deli branded merch spread by Orange Goods",
+    logoClass: "scale-110 md:scale-125",
   },
   {
-    company: "Tripadvisor",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/tripadvisor.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
-    alt: "Branded bags by Orange Goods",
-  },
-  {
-    company: "Channel Islands",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/channel-islands.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
-    alt: "Branded accessories by Orange Goods",
-  },
-  {
-    company: "Health-Ade",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/health-ade.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-    alt: "Custom apparel by Orange Goods",
-  },
-  {
-    company: "Bell",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/bell.png",
+    company: "Stanford Medicine",
+    quote: "Our go-to for curated event giveaways and team swag",
+    person: "Robin D.",
+    role: "Director, Strategic Initiatives",
+    logo: "/logos/clients/stanford-medicine.svg",
     src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
-    alt: "Custom drinkware by Orange Goods",
+    alt: "Stanford Medicine branded backpacks by Orange Goods",
+    preserveLogoDetail: true,
   },
   {
-    company: "Nitro Circus",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/nitro-circus.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
-    alt: "Branded bags by Orange Goods",
+    company: "Synergy Kombucha",
+    quote: "OG has come through for us for years.",
+    person: "Noah C.",
+    role: "Graphic Designer",
+    logo: "/logos/clients/synergy-kombucha.svg",
+    src: "/images/testimonials/synergy-kombucha-shirt-press-fullwidth.jpg",
+    alt: "Synergy Kombucha branded shirt being pressed by Orange Goods",
+    logoClass: "scale-125 md:scale-[1.35]",
   },
   {
-    company: "Field Day Coffee",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/field-day.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
-    alt: "Branded accessories by Orange Goods",
+    company: "Verve Coffee",
+    quote: "The swag partner that does it all.",
+    person: "Sophia P.",
+    role: "Marketing Ops Manager",
+    logo: "/logos/clients/verve-coffee.png",
+    src: "/images/gallery/drinkware-verve-milk-glass-mug.jpg",
+    alt: "Verve Coffee branded drinkware by Orange Goods",
+    logoClass: "scale-125 md:scale-[1.35]",
   },
   {
-    company: "South Congress Hotel",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/south-congress-hotel.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-    alt: "Custom apparel by Orange Goods",
-  },
-  {
-    company: "Thrasher",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/thrasher.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
-    alt: "Custom drinkware by Orange Goods",
-  },
-  {
-    company: "805 Firestone Walker",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/firestone-805.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
-    alt: "Branded bags by Orange Goods",
-  },
-  {
-    company: "Outerknown",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/outerknown.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
-    alt: "Branded accessories by Orange Goods",
-  },
-  {
-    company: "Islands",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/islands.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-    alt: "Custom apparel by Orange Goods",
-  },
-  {
-    company: "Microsoft",
-    quote: "Client testimonial placeholder.",
-    person: "First L.",
-    role: "Job Title",
-    logo: "/logos/clients/microsoft.png",
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
-    alt: "Custom drinkware by Orange Goods",
+    company: "Red Bull",
+    quote: "OG turned a loose idea into gear our team was excited to wear.",
+    person: "Joe K.",
+    role: "Field Marketing Manager",
+    logo: "/logos/clients/red-bull.svg",
+    src: "/images/testimonials/red-bull-girl-widescreen.jpg",
+    alt: "Red Bull branded jacket by Orange Goods",
   },
 ];
 
@@ -227,11 +116,15 @@ export function PhotoCarousel() {
           <img
             src={photos[current].logo}
             alt={photos[current].company}
-            className="mx-auto h-12 max-w-[12rem] object-contain brightness-0 invert md:h-14 md:max-w-[14rem]"
+            className={`mx-auto h-[5.6rem] max-w-[22.4rem] object-contain md:h-[7rem] md:max-w-[28rem] ${
+              photos[current].preserveLogoDetail
+                ? "drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+                : "brightness-0 invert"
+            } ${photos[current].logoClass ?? ""}`}
           />
           <div className="mt-4 flex h-[7.25rem] items-center justify-center md:mt-5 md:h-[11rem] lg:h-[12.5rem]">
-            <blockquote className="font-display max-w-4xl text-[2rem] font-normal uppercase leading-none tracking-normal text-white md:text-[3.4rem] lg:text-[4.2rem]">
-              {photos[current].quote}
+            <blockquote className="font-display mx-auto max-w-4xl text-center text-[2rem] font-normal uppercase leading-none tracking-normal text-white md:text-[3.4rem] lg:text-[4.2rem]">
+              &ldquo;{photos[current].quote}&rdquo;
             </blockquote>
           </div>
           <div className="mt-3 min-h-[3.75rem] md:mt-4">
@@ -262,14 +155,14 @@ export function PhotoCarousel() {
       {/* Prev / Next arrows */}
       <button
         onClick={() => go((current - 1 + photos.length) % photos.length)}
-        className="absolute left-4 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50"
+        className="absolute left-9 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
         aria-label="Previous photo"
       >
         ‹
       </button>
       <button
         onClick={() => go((current + 1) % photos.length)}
-        className="absolute right-4 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50"
+        className="absolute right-9 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
         aria-label="Next photo"
       >
         ›

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
 
@@ -40,46 +39,6 @@ export function Hero() {
         <div
           className="relative hidden flex-col items-start justify-center overflow-hidden bg-[#F3EFE7] py-16 pl-14 pr-10 lg:flex lg:w-1/2 xl:pl-20"
         >
-          <Image
-            src="/graphics/stickers/orange-goods.svg"
-            alt=""
-            aria-hidden="true"
-            width={136}
-            height={136}
-            className="pointer-events-none absolute left-7 top-8 w-24 -rotate-[8deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] xl:left-10 xl:top-10 xl:w-28"
-          />
-          <Image
-            src="/graphics/stickers/juice-box.svg"
-            alt=""
-            aria-hidden="true"
-            width={136}
-            height={136}
-            className="pointer-events-none absolute left-1/2 top-6 w-20 -translate-x-1/2 rotate-[4deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] xl:top-8 xl:w-24"
-          />
-          <Image
-            src="/graphics/stickers/og-mark.svg"
-            alt=""
-            aria-hidden="true"
-            width={136}
-            height={136}
-            className="pointer-events-none absolute right-6 top-1/2 w-20 -translate-y-1/2 -rotate-[6deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] xl:right-10 xl:w-24"
-          />
-          <Image
-            src="/graphics/stickers/quality-goods.svg"
-            alt=""
-            aria-hidden="true"
-            width={136}
-            height={136}
-            className="pointer-events-none absolute bottom-8 left-7 w-24 -rotate-[10deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] xl:bottom-10 xl:left-10 xl:w-28"
-          />
-          <Image
-            src="/graphics/stickers/goods-by-nature.svg"
-            alt=""
-            aria-hidden="true"
-            width={136}
-            height={136}
-            className="pointer-events-none absolute bottom-12 right-8 w-24 rotate-[12deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] xl:bottom-16 xl:right-12 xl:w-28"
-          />
           <h1
             className="relative z-10 mt-4 text-5xl uppercase leading-[1.0] tracking-tight text-[#FF4200] xl:text-6xl"
             style={{ fontFamily: "var(--font-display)" }}

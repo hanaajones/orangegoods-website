@@ -13,6 +13,23 @@ const CATEGORIES = [
   { key: "socks",      label: "Socks" },
 ] as const;
 
+function buildGalleryEmailHref(item: GalleryItem) {
+  const subject = encodeURIComponent(`I like this ${item.product}`);
+  const body = encodeURIComponent(
+    [
+      "Hi Orange Goods,",
+      "",
+      `I like this piece from your gallery and want to make something similar: ${item.product}.`,
+      `Client/brand reference: ${item.client}.`,
+      `Category: ${item.category}.`,
+      "",
+      "Can you help me put together something along these lines?",
+    ].join("\n"),
+  );
+
+  return `mailto:hello@orangegoods.co?subject=${subject}&body=${body}`;
+}
+
 export function GalleryBoard({ items }: { items: GalleryItem[] }) {
   const [active, setActive] = useState<"all" | GalleryItem["category"]>("all");
   const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
@@ -109,6 +126,17 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
               <p className="mt-1 text-base font-semibold text-white">
                 {lightbox.product}
               </p>
+              <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="max-w-xl text-sm leading-6 text-white/70">
+                  Like this one? Email us and we&apos;ll help you make something similar.
+                </p>
+                <a
+                  href={buildGalleryEmailHref(lightbox)}
+                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#ff8f1f]"
+                >
+                  Email Us About This Piece
+                </a>
+              </div>
             </div>
           </div>
         </div>

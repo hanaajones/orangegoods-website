@@ -3,18 +3,16 @@ import Link from "next/link";
 import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { PhotoCarousel } from "@/components/PhotoCarousel";
 import { CTASection } from "@/components/CTASection";
+import { FeaturedPhotoCarousel } from "@/components/FeaturedPhotoCarousel";
 import { Hero } from "@/components/Hero";
 import { HomepageGoodsSlideshow } from "@/components/HomepageGoodsSlideshow";
 import { MerchTipsCarousel } from "@/components/MerchTipsCarousel";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
-import { TwoPaths } from "@/components/TwoPaths";
 import {
   homeProcess,
   logos,
   startProjectHref,
-  twoPaths,
-  twoPathsTitle,
 } from "@/lib/content";
 
 const homepageGoodsCategories = [
@@ -92,6 +90,29 @@ const homepageGoodsCategories = [
   },
 ];
 
+const fullCustomSlides = [
+  {
+    src: "/images/gallery/packaging-stanford-medicine-thinkhealth-craft-1.jpg",
+    position: "center 46%",
+  },
+  {
+    src: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",
+    position: "left 52%",
+  },
+  {
+    src: "/images/gallery/houseware-oak-essentials-travertine-tray.jpg",
+    position: "center 44%",
+  },
+  {
+    src: "/images/gallery/outerwear-high-st-deli-puffer-mg-2257.jpg",
+    position: "left 46%",
+  },
+  {
+    src: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
+    position: "center 44%",
+  },
+];
+
 export default function HomePage() {
   return (
     <main className="pb-24 md:pb-0">
@@ -110,7 +131,15 @@ export default function HomePage() {
         </p>
       </div>
 
-      <Reveal className="bg-white px-4 py-14 md:px-8 md:py-20 lg:px-12">
+      <Reveal className="relative overflow-hidden bg-white px-4 pb-0 pt-14 md:px-8 md:pb-[20px] md:pt-20 lg:px-12">
+        <Image
+          src="/graphics/stickers/orange-goods.svg"
+          alt=""
+          aria-hidden="true"
+          width={136}
+          height={136}
+          className="pointer-events-none absolute right-5 top-10 z-10 hidden w-24 rotate-[8deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] md:block lg:right-10 lg:top-14 lg:w-28"
+        />
         <section className="mx-auto max-w-6xl">
           <div className="relative left-1/2 mb-6 flex w-screen -translate-x-1/2 items-center justify-center gap-4 md:mb-8 md:gap-6">
             <div
@@ -217,7 +246,7 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
-          <ClientLogoMarquee logos={logos} className="mt-8 pt-[39px] md:mt-10 md:pt-[39px]" />
+          <ClientLogoMarquee logos={logos} className="mt-8 pt-[9px] md:mt-10 md:pt-[9px]" />
         </section>
       </Reveal>
 
@@ -245,16 +274,23 @@ export default function HomePage() {
         />
         <section id="why-orange-goods" className="relative z-10 mx-auto max-w-6xl scroll-mt-24">
           <h2
-            className="mb-8 text-center text-4xl uppercase leading-none tracking-[0.01em] text-white md:mb-10 md:text-6xl lg:text-7xl"
+            className="mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-4xl uppercase leading-none tracking-[0.01em] text-white md:mb-10 md:gap-x-4 md:text-6xl lg:text-7xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Why brands choose OG
+            <span>Why brands choose</span>
+            <Image
+              src="/graphics/stickers/og-mark.svg"
+              alt="OG"
+              width={136}
+              height={136}
+              className="h-[1.45em] w-[1.45em] object-contain"
+            />
           </h2>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                title: "All-in-One Merch House",
-                copy: "No vendor juggling. We handle the goods, sourcing, decoration, packaging, kitting, and delivery in one place.",
+                title: "Full Service Partner",
+                copy: "No vendor juggling. We handle the goods, sourcing, decoration, packaging, kitting, and delivery in one place, so the whole project stays under one roof from start to finish.",
                 icon: (
                   <svg
                     aria-hidden="true"
@@ -274,8 +310,8 @@ export default function HomePage() {
                 ),
               },
               {
-                title: "California Team",
-                copy: "A real California team you can text, call, or email. No hub, no call center, no getting passed around.",
+                title: "True Design Support",
+                copy: "We're designers by nature, not just logo placers. We can shape the concept, guide the design direction, and support the goods-making process through the whole project.",
                 icon: (
                   <svg
                     aria-hidden="true"
@@ -287,14 +323,16 @@ export default function HomePage() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <path d="M12 21s7-5.3 7-11a7 7 0 0 0-14 0c0 5.7 7 11 7 11Z" />
-                    <circle cx="12" cy="10" r="2.5" />
+                    <path d="M4 20h4" />
+                    <path d="M14.5 4.5 19.5 9.5" />
+                    <path d="M12 7 5 14v5h5l7-7" />
+                    <path d="M16 3l5 5" />
                   </svg>
                 ),
               },
               {
                 title: "Easy Communication",
-                copy: "We keep you posted from first mockup to final delivery, so you always know what is moving and what is next.",
+                copy: "You can text, call, or email us directly, and we keep you posted from first mockup to final delivery so you always know what is moving and what is next.",
                 icon: (
                   <svg
                     aria-hidden="true"
@@ -315,12 +353,12 @@ export default function HomePage() {
             ].map((reason) => (
               <article
                 key={reason.title}
-                className="flex min-h-[17rem] flex-col items-center justify-center rounded-lg border-[3px] border-[#B8AA8E] bg-[var(--og-sand)] p-6 text-center text-[#081E6F] shadow-[5px_5px_0px_#0B32A0] md:min-h-[18rem] md:p-8"
+                className="flex min-h-[17rem] flex-col items-center justify-start rounded-[2rem] border-[3px] border-[#B8AA8E] bg-[#F7F4ED] p-6 pt-8 text-center text-[#081E6F] shadow-[5px_5px_0px_#0B32A0] md:min-h-[18rem] md:p-8 md:pt-10"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border-[3px] border-[#B8AA8E] bg-[#F3EFE7] text-[#FF4200]">
+                <div className="flex h-12 w-12 items-center justify-center text-[#FF4200]">
                   {reason.icon}
                 </div>
-                <h3 className="font-display mt-6 max-w-full text-[1.75rem] font-normal normal-case leading-none tracking-normal text-[#0B32A0] md:text-[1.9rem] lg:text-[2.1rem]">
+                <h3 className="font-display mt-6 flex min-h-[4.2rem] max-w-full items-center justify-center text-[1.75rem] font-normal normal-case leading-none tracking-normal text-[#0B32A0] md:min-h-[4.7rem] md:text-[1.9rem] lg:text-[2.1rem]">
                   {reason.title}
                 </h3>
                 <p className="font-noir-alt mt-4 max-w-sm text-base font-medium leading-7 text-[#1C1C1C]/70">
@@ -332,93 +370,117 @@ export default function HomePage() {
           <div className="mt-8 flex justify-center">
             <Link
               href={startProjectHref}
-              className="font-noir-alt inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 text-sm font-bold uppercase tracking-[0.1em] text-[#0B32A0] shadow-[5px_5px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F3EFE7]"
+              className="font-noir-alt inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 text-sm font-bold uppercase tracking-[0.1em] text-[#0B32A0] shadow-[5px_5px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
             >
-              Get in touch
+              Connect with our team
             </Link>
           </div>
         </section>
       </Reveal>
 
-      {/* Two ways to start */}
-      <TwoPaths items={twoPaths} title={twoPathsTitle} />
+      <div className="relative overflow-hidden">
+        <FeaturedPhotoCarousel />
+      </div>
 
-      {/* Full-width testimonial carousel */}
-      <PhotoCarousel />
-
-      <MerchTipsCarousel />
-
-      <div style={{ height: "30px" }} />
-
-      <ProcessSteps
-        eyebrow="How It Works"
-        title="Transparent process. No surprises."
-        description="We tell you exactly what happens, when, and who's responsible. Unlike the big guys, you talk to one person from first email to final delivery."
-        steps={homeProcess}
-      />
-
-      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-        <section
-          id="about"
-          className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.88)] p-6 backdrop-blur md:grid-cols-[1fr_1.05fr] md:p-8"
-        >
-          <div className="relative min-h-[20rem] overflow-hidden rounded-[1.75rem] bg-[#d6bea7]">
-            <Image
-              src="/images/product/apparel-tshirt-hero.jpg"
-              alt="Orange Goods founders"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="flex flex-col justify-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-              Southern California
+      <Reveal className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
+        <section className="mx-auto grid max-w-6xl gap-6 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F7F4ED] p-5 text-[#1C1C1C] md:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+          <div className="max-w-xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]">
+              Full custom
             </p>
-            <h2 className="mt-4 text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
-              A real partner,<br />not a platform
+            <h2
+              className="mt-3 text-[2.35rem] uppercase leading-[0.92] text-[#081E6F] md:text-[4.2rem]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Don&apos;t go stock.
+              <br />
+              Go full custom.
             </h2>
-            <p className="mt-5 text-base leading-7 text-[var(--og-muted)] md:text-lg">
-              We&apos;re a small, focused team based in Southern California. Not a fulfillment warehouse, not an overseas call center. You get one person who knows your project, handles every step, and is reachable by text.
+            <p className="mt-5 max-w-lg text-base leading-7 text-[#1C1C1C]/72 md:text-lg">
+              Everybody uses the same blank. Let&apos;s build something completely unique with
+              the right details in the right places, from materials and fit to labels,
+              trims, packaging, and finishing touches that make it feel premium.
             </p>
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              {[
-                { label: "Free mockups", detail: "Every project includes mockups and revisions at no charge" },
-                { label: "One contact", detail: "Same person from your first email to the box at your door" },
-                { label: "Transparent pricing", detail: "No hidden setup fees, no surprise charges at the end" },
-                { label: "Real lead times", detail: "We tell you exactly when it ships — and we hit it" },
-              ].map(({ label, detail }) => (
-                <div key={label} className="rounded-2xl border border-[var(--og-sand)] bg-white p-4">
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FF4200]" style={{ fontFamily: "var(--font-display)" }}>{label}</p>
-                  <p className="mt-1 text-sm leading-5 text-[#1C1C1C]/60">{detail}</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {["Custom labels", "Thoughtful details", "Premium materials", "Built to last"].map(
+                (item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center rounded-full border border-[#0B32A0]/16 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#081E6F]/86"
+                  >
+                    {item}
+                  </span>
+                ),
+              )}
+            </div>
+            <div className="mt-8">
+              <Link href={startProjectHref} className="btn-og inline-flex">
+                START A CUSTOM PROJECT
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative min-h-[20rem] overflow-hidden rounded-[1.6rem] border-[3px] border-[#0B32A0] bg-white md:min-h-[24rem] lg:min-h-[28rem]">
+            <HomepageGoodsSlideshow slides={fullCustomSlides} />
+            <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4">
+              <div className="max-w-md">
+                <div className="rounded-[1.25rem] bg-white/92 px-4 py-3 shadow-[0_10px_28px_rgba(28,28,28,0.12)] backdrop-blur-[2px]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#FF7F00]">
+                    Not off the shelf
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-[#1C1C1C]/78 md:text-base">
+                    Labels, patches, materials, trims, shape, packaging, and all the small
+                    decisions that make it yours.
+                  </p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </section>
       </Reveal>
+
+      {/* Full-width testimonial carousel */}
+      <PhotoCarousel />
+
+      <ProcessSteps
+        eyebrow="How It Works"
+        title="Simple process. Real people."
+        steps={homeProcess}
+      />
+
+      <MerchTipsCarousel />
+
       {/* Quiz callout — bottom of page */}
-      <div className="bg-[#F3EFE7] px-4 py-20 text-center md:px-8 md:py-24">
-        <p className="text-base text-[#1C1C1C]/60">Not sure what to order?</p>
-        <h3
-          className="mt-1 text-2xl uppercase text-[#FF4200] md:text-3xl"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Take our 60-second quiz
-        </h3>
-        <p className="mx-auto mt-2 max-w-sm text-sm text-[#1C1C1C]/50">
-          Answer a few questions and we&apos;ll recommend the right products for your brand
-        </p>
-        <Link href="/quiz" className="btn-og mt-6 inline-flex">
-          FIND MY GOODS
-        </Link>
-      </div>
+      <section className="relative overflow-hidden bg-[#F3EFE7] px-4 py-16 md:px-8 md:py-20">
+        <div className="mx-auto max-w-6xl rounded-[2rem] border-2 border-[#081E6F] bg-white px-6 py-8 text-[#1C1C1C] md:px-10 md:py-9">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-sm uppercase tracking-[0.28em] text-[#FF4200]">
+                Not sure where to start?
+              </p>
+              <h3
+                className="mt-2 text-[1.7rem] uppercase leading-[0.94] text-[#081E6F] md:text-[2.35rem]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Take our 60-second quiz
+              </h3>
+            </div>
+            <div className="flex items-start md:items-center">
+              <Link href="/quiz" className="btn-og inline-flex">
+                GET PRODUCT IDEAS
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <CTASection
         title="Ready to make something worth keeping?"
         description="Tell us what you're making, how many you need, and when it has to land"
         buttonLabel="Start a Project"
         buttonHref={startProjectHref}
+        backgroundImage="/images/gallery/goods-hero-misc-dscf4876.jpg"
+        backgroundImagePosition="center 58%"
       />
     </main>
   );
