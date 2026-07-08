@@ -57,7 +57,7 @@ const photos: TestimonialPhoto[] = [
   },
   {
     company: "Red Bull",
-    quote: "OG turned a loose idea into gear our team was excited to wear.",
+    quote: "They turned a loose idea into gear our team was excited to wear.",
     person: "Joe K.",
     role: "Field Marketing Manager",
     logo: "/logos/clients/red-bull.svg",

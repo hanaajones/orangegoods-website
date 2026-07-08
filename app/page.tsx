@@ -90,29 +90,6 @@ const homepageGoodsCategories = [
   },
 ];
 
-const fullCustomSlides = [
-  {
-    src: "/images/gallery/packaging-stanford-medicine-thinkhealth-craft-1.jpg",
-    position: "center 46%",
-  },
-  {
-    src: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",
-    position: "left 52%",
-  },
-  {
-    src: "/images/gallery/houseware-oak-essentials-travertine-tray.jpg",
-    position: "center 44%",
-  },
-  {
-    src: "/images/gallery/outerwear-high-st-deli-puffer-mg-2257.jpg",
-    position: "left 46%",
-  },
-  {
-    src: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
-    position: "center 44%",
-  },
-];
-
 export default function HomePage() {
   return (
     <main className="pb-24 md:pb-0">
@@ -132,14 +109,6 @@ export default function HomePage() {
       </div>
 
       <Reveal className="relative overflow-hidden bg-white px-4 pb-0 pt-14 md:px-8 md:pb-[20px] md:pt-20 lg:px-12">
-        <Image
-          src="/graphics/stickers/orange-goods.svg"
-          alt=""
-          aria-hidden="true"
-          width={136}
-          height={136}
-          className="pointer-events-none absolute right-5 top-10 z-10 hidden w-24 rotate-[8deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] md:block lg:right-10 lg:top-14 lg:w-28"
-        />
         <section className="mx-auto max-w-6xl">
           <div className="relative left-1/2 mb-6 flex w-screen -translate-x-1/2 items-center justify-center gap-4 md:mb-8 md:gap-6">
             <div
@@ -382,37 +351,33 @@ export default function HomePage() {
         <FeaturedPhotoCarousel />
       </div>
 
+      <div className="border-y-[3px] border-[#1C1C1C] bg-[#081E6F] px-4 py-4 text-center md:px-6 md:py-5 lg:px-8">
+        <p
+          className="mx-auto max-w-[76rem] text-[1.55rem] uppercase leading-none tracking-[0.01em] text-[#FF4200] sm:text-[2rem] md:text-[2.8rem] lg:text-[3.8rem] xl:text-[4.45rem]"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          A true merch partner
+        </p>
+      </div>
+
       <Reveal className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
         <section className="mx-auto grid max-w-6xl gap-6 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F7F4ED] p-5 text-[#1C1C1C] md:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
           <div className="max-w-xl">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]">
-              Full custom
+              Fully custom. Fully yours.
             </p>
             <h2
               className="mt-3 text-[2.35rem] uppercase leading-[0.92] text-[#081E6F] md:text-[4.2rem]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Don&apos;t go stock.
+              Built custom
               <br />
-              Go full custom.
+              for your brand.
             </h2>
             <p className="mt-5 max-w-lg text-base leading-7 text-[#1C1C1C]/72 md:text-lg">
-              Everybody uses the same blank. Let&apos;s build something completely unique with
-              the right details in the right places, from materials and fit to labels,
-              trims, packaging, and finishing touches that make it feel premium.
+              Everybody uses the same blank. We&apos;d rather build the version that actually
+              feels like your brand, from materials and fit to trims, labels, and packaging.
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {["Custom labels", "Thoughtful details", "Premium materials", "Built to last"].map(
-                (item) => (
-                  <span
-                    key={item}
-                    className="inline-flex items-center rounded-full border border-[#0B32A0]/16 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#081E6F]/86"
-                  >
-                    {item}
-                  </span>
-                ),
-              )}
-            </div>
             <div className="mt-8">
               <Link href={startProjectHref} className="btn-og inline-flex">
                 START A CUSTOM PROJECT
@@ -421,20 +386,14 @@ export default function HomePage() {
           </div>
 
           <div className="relative min-h-[20rem] overflow-hidden rounded-[1.6rem] border-[3px] border-[#0B32A0] bg-white md:min-h-[24rem] lg:min-h-[28rem]">
-            <HomepageGoodsSlideshow slides={fullCustomSlides} />
-            <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4">
-              <div className="max-w-md">
-                <div className="rounded-[1.25rem] bg-white/92 px-4 py-3 shadow-[0_10px_28px_rgba(28,28,28,0.12)] backdrop-blur-[2px]">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#FF7F00]">
-                    Not off the shelf
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-[#1C1C1C]/78 md:text-base">
-                    Labels, patches, materials, trims, shape, packaging, and all the small
-                    decisions that make it yours.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <Image
+              src="/images/gallery/full-custom-materials-mg-9406.jpg"
+              alt="Custom branded patches and materials by Orange Goods"
+              fill
+              sizes="(min-width: 1024px) 62vw, 100vw"
+              className="object-cover"
+              style={{ objectPosition: "center 48%" }}
+            />
           </div>
         </section>
       </Reveal>
@@ -444,25 +403,35 @@ export default function HomePage() {
 
       <ProcessSteps
         eyebrow="How It Works"
-        title="Simple process. Real people."
+        title="Real team. Simple process."
         steps={homeProcess}
       />
 
-      <MerchTipsCarousel />
-
       {/* Quiz callout — bottom of page */}
-      <section className="relative overflow-hidden bg-[#F3EFE7] px-4 py-16 md:px-8 md:py-20">
-        <div className="mx-auto max-w-6xl rounded-[2rem] border-2 border-[#081E6F] bg-white px-6 py-8 text-[#1C1C1C] md:px-10 md:py-9">
+      <section className="relative isolate overflow-hidden px-4 py-16 md:px-8 md:py-20">
+        <Image
+          src="/images/gallery/apparel-upgrade-the-handfeel-img-1172.jpg"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          style={{ objectPosition: "center 52%" }}
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/28" aria-hidden="true" />
+        <div className="relative z-10 mx-auto max-w-6xl rounded-[2rem] border-2 border-[#081E6F] bg-white/90 px-6 py-8 text-[#1C1C1C] md:px-10 md:py-9">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl">
-              <p className="text-sm uppercase tracking-[0.28em] text-[#FF4200]">
+              <p
+                className="font-accent text-sm font-normal uppercase tracking-[0.2em] text-[#FF4200]"
+              >
                 Not sure where to start?
               </p>
               <h3
                 className="mt-2 text-[1.7rem] uppercase leading-[0.94] text-[#081E6F] md:text-[2.35rem]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Take our 60-second quiz
+                Take our 30-second quiz
               </h3>
             </div>
             <div className="flex items-start md:items-center">
@@ -474,13 +443,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      <MerchTipsCarousel />
+
       <CTASection
-        title="Ready to make something worth keeping?"
-        description="Tell us what you're making, how many you need, and when it has to land"
+        title="Ready to bring your idea to life?"
         buttonLabel="Start a Project"
         buttonHref={startProjectHref}
         backgroundImage="/images/gallery/goods-hero-misc-dscf4876.jpg"
         backgroundImagePosition="center 58%"
+        showImageOverlay={false}
+        eyebrow=""
+        wrapperClassName="border-t border-[#0B32A0]/15"
       />
     </main>
   );

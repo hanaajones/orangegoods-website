@@ -8,16 +8,24 @@ type HomepageGoodsSlide = {
   position?: string;
 };
 
-export function HomepageGoodsSlideshow({ slides }: { slides: HomepageGoodsSlide[] }) {
+export function HomepageGoodsSlideshow({
+  slides,
+  intervalMs = 2000,
+  transitionMs = 400,
+}: {
+  slides: HomepageGoodsSlide[];
+  intervalMs?: number;
+  transitionMs?: number;
+}) {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 2000);
+    }, intervalMs);
 
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, [intervalMs, slides.length]);
 
   return (
     <div className="absolute inset-0 h-full w-full">
@@ -33,7 +41,7 @@ export function HomepageGoodsSlideshow({ slides }: { slides: HomepageGoodsSlide[
           style={{
             opacity: index === current ? 1 : 0,
             objectPosition: slide.position ?? "center",
-            transition: "opacity 0.4s ease-in-out",
+            transition: `opacity ${transitionMs}ms ease-in-out`,
           }}
         />
       ))}

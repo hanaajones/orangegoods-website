@@ -1,8 +1,9 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 
 const inputClass =
@@ -11,10 +12,280 @@ const inputClass =
 const labelClass =
   "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
 
+function RequiredLabel({
+  label,
+  required = false,
+}: {
+  label: string;
+  required?: boolean;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span>{label}</span>
+      {required ? <span className="text-[var(--og-orange)]">*</span> : null}
+    </span>
+  );
+}
+
+const selectArrowSvg = encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M3 5.25L7 9.25L11 5.25" stroke="#0B32A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+`);
+
+const selectOptions = {
+  designHelp: ["Yes", "No", "I'm not sure"],
+  quantity: ["100-250", "250-500", "500-1,000", "1,000-2,000", "2,000-5,000", "5,000+"],
+  timeline: ["ASAP", "2-4 weeks", "1-2 months", "2+ months", "Not sure"],
+  budget: ["<$2,500", "$2,500-$5,000", "$5,000-$10,000", "$10,000+", "Not sure"],
+};
+
+const contactTestimonials = [
+  {
+    company: "Red Bull",
+    quote: "They turned a loose idea into gear our team was excited to wear.",
+    person: "Joe K.",
+    role: "Field Marketing Manager, Red Bull",
+    src: "/images/testimonials/red-bull-girl-widescreen.jpg",
+    alt: "Red Bull branded jacket by Orange Goods",
+  },
+  {
+    company: "High Street Deli",
+    quote: "The OG team just gets it.",
+    person: "Doobie C.",
+    role: "Founder, High Street Deli",
+    src: "/images/testimonials/high-street-deli-rotated-fullwidth.jpg",
+    alt: "High Street Deli branded merch spread by Orange Goods",
+  },
+  {
+    company: "Stanford Medicine",
+    quote: "Our go-to for curated event giveaways and team swag.",
+    person: "Robin D.",
+    role: "Director, Strategic Initiatives, Stanford Medicine",
+    src: "/images/gallery/apparel-stanford-laptop-sleeve.jpg",
+    alt: "Stanford Medicine branded laptop sleeves by Orange Goods",
+  },
+];
+
+function ContactForm({
+  submitted,
+  submitting,
+  onSubmit,
+  variant = "standard",
+}: {
+  submitted: boolean;
+  submitting: boolean;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  variant?: "standard" | "rounded";
+}) {
+  const isRounded = variant === "rounded";
+  const formClass = isRounded
+    ? "grid gap-5 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#FFFDF8] p-6 shadow-[0_22px_60px_rgba(11,50,160,0.08)] md:p-8"
+    : "grid gap-5 border border-[#0B32A0]/20 bg-white/80 p-6 md:p-8";
+  const variantInputClass = isRounded
+    ? "min-h-12 rounded-2xl border border-[#0B32A0]/16 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
+    : inputClass;
+  const selectClass = `${variantInputClass} appearance-none bg-[length:14px_14px] bg-[right_1.25rem_center] bg-no-repeat pr-14`;
+  const textareaClass = isRounded
+    ? "rounded-2xl border border-[#0B32A0]/16 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] placeholder:text-[#1C1C1C]/42 outline-none transition focus:border-[var(--og-orange)]"
+    : "border border-[#0B32A0]/20 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] placeholder:text-[#1C1C1C]/42 outline-none transition focus:border-[var(--og-orange)]";
+
+  return (
+    <form onSubmit={onSubmit} className={formClass}>
+      {submitted ? (
+        <div className="border border-[var(--og-orange)] bg-[var(--og-orange)] p-5 text-white">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em]">Message Sent</p>
+          <p className="mt-2 text-lg leading-7">Thanks. We will be in touch within 1 business day</p>
+        </div>
+      ) : null}
+
+      {isRounded ? (
+        <div className="rounded-[1.5rem] border border-[#FF4200]/18 bg-white/70 p-5">
+          <p className="font-accent text-sm font-normal uppercase tracking-[0.2em] text-[#FF4200]">
+            Let&apos;s get started
+          </p>
+          <h2 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-4xl">
+            Tell us what you&apos;re making.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1C1C1C]/68 md:text-base">
+            Share the basics and we&apos;ll guide you toward the right product and next steps.
+          </p>
+        </div>
+      ) : null}
+
+      <div className="grid gap-5 md:grid-cols-2">
+        <label className={labelClass}>
+          <RequiredLabel label="Name" required />
+          <input name="name" required className={variantInputClass} />
+        </label>
+        <label className={labelClass}>
+          <RequiredLabel label="Company" required />
+          <input name="company" required className={variantInputClass} />
+        </label>
+      </div>
+
+      <div className="grid gap-5 md:grid-cols-2">
+        <label className={labelClass}>
+          <RequiredLabel label="Email" required />
+          <input name="email" type="email" required className={variantInputClass} />
+        </label>
+        <label className={labelClass}>
+          <RequiredLabel label="Phone" />
+          <input name="phone" type="tel" className={variantInputClass} />
+        </label>
+      </div>
+
+      <label className={labelClass}>
+        <RequiredLabel label="What are you making?" required />
+        <textarea
+          name="project"
+          rows={6}
+          required
+          placeholder="Please share as much information as possible about the style, design, and products you're looking for. Feel free to include any references."
+          className={textareaClass}
+        />
+      </label>
+
+      <div className="grid gap-5 md:grid-cols-3">
+        <label className={labelClass}>
+          <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
+            <RequiredLabel label="Quantity" required />
+            <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#1C1C1C]/52">
+              Minimum order 100 pieces
+            </span>
+          </span>
+          <select
+            name="quantity"
+            required
+            defaultValue=""
+            className={selectClass}
+            style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+          >
+            <option value="" disabled>
+              Select
+            </option>
+            {selectOptions.quantity.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+        </label>
+        <label className={labelClass}>
+          <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
+            <RequiredLabel label="Timeline" required />
+            <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-transparent">
+              Minimum order 100 pieces
+            </span>
+          </span>
+          <select
+            name="timeline"
+            required
+            defaultValue=""
+            className={selectClass}
+            style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+          >
+            <option value="" disabled>
+              Select
+            </option>
+            {selectOptions.timeline.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+        </label>
+        <label className={labelClass}>
+          <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
+            <RequiredLabel label="Budget Range" />
+            <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-transparent">
+              Minimum order 100 pieces
+            </span>
+          </span>
+          <select
+            name="budget"
+            defaultValue=""
+            className={selectClass}
+            style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+          >
+            <option value="" disabled>
+              Select
+            </option>
+            {selectOptions.budget.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <label className={labelClass}>
+        <RequiredLabel label="Need design help?" required />
+        <select
+          name="designHelp"
+          required
+          defaultValue=""
+          className={selectClass}
+          style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+        >
+          <option value="" disabled>
+            Select
+          </option>
+          {selectOptions.designHelp.map((option) => (
+            <option key={option}>{option}</option>
+          ))}
+        </select>
+      </label>
+
+      <div className="space-y-2">
+        <label className="block">
+          <span className="text-sm font-medium text-[#1C1C1C]">
+            Upload artwork or files{" "}
+            <span className="font-normal text-[#1C1C1C]/50">(optional)</span>
+          </span>
+          <input
+            type="file"
+            name="artwork"
+            multiple
+            accept=".ai,.eps,.pdf,.svg,.png,.jpg,.jpeg,.zip"
+            className={`mt-2 block w-full cursor-pointer px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:border file:border-[#0B32A0]/18 file:bg-[var(--og-warm-grey)] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)] ${
+              isRounded
+                ? "rounded-2xl border border-[#0B32A0]/16 bg-white file:rounded-xl"
+                : "rounded-xl border border-[#0B32A0]/20 bg-[#F3EFE7] file:rounded-lg"
+            }`}
+          />
+        </label>
+        <p className="text-xs text-[#1C1C1C]/45">
+          Vector files preferred — AI, EPS, PDF, SVG. Have larger files? Share a Dropbox or
+          WeTransfer link in your message.
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        disabled={submitting}
+        className={`inline-flex w-full justify-center ${
+          isRounded ? "btn-og rounded-full md:min-w-[16rem] md:w-auto" : "btn-og md:min-w-[16rem] md:w-auto"
+        }`}
+      >
+        {submitting ? "Sending…" : "Get Started"}
+      </button>
+
+      <p className="text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/48">
+        <span className="text-[var(--og-orange)]">*</span> Required fields
+      </p>
+    </form>
+  );
+}
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
   const router = useRouter();
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTestimonial((current) => (current + 1) % contactTestimonials.length);
+    }, 4200);
+
+    return () => clearInterval(timer);
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,152 +308,250 @@ export default function ContactPage() {
 
   return (
     <main className="bg-[var(--og-warm-grey)] pb-24 md:pb-0">
-      <section className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <h1 className="text-4xl leading-none text-[var(--og-orange)] sm:text-5xl md:text-6xl lg:text-7xl">
-            GET IN TOUCH
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+        <ParallaxHeroBackground
+          image="/images/gallery/full-custom-materials-mg-9406.jpg"
+          position="center 48%"
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/34" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/44 to-[#1C1C1C]/18" />
+        <div className="relative mx-auto max-w-6xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+            Start a project
+          </p>
+          <h1 className="mt-5 text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+            Get in
+            <br />
+            Touch
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--og-muted)] md:text-xl">
-            What do you want to create? We&apos;ll respond within one business day.
-          </p>
-          <p className="mt-4 text-sm text-[#1C1C1C]/50">
-            Not sure what you need?{" "}
-            <Link href="/quiz" className="font-semibold text-[#FF4200] hover:underline">
-              Take the quiz →
-            </Link>
-          </p>
         </div>
       </section>
 
       <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
-        <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-          <div className="space-y-8">
-            {[
-              ["Email", "hello@orangegoods.co", "mailto:hello@orangegoods.co"],
-              ["Text", "(213) 376-4663", "sms:+12133764663"],
-              ["Instagram", "@orangegoods", "https://www.instagram.com/orangegoods"],
-            ].map(([label, value, href]) => (
-              <div key={label}>
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                  {label}
-                </p>
-                <a
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-                >
-                  {value}
-                </a>
-              </div>
-            ))}
-            <p className="text-lg leading-8 text-[var(--og-muted)]">
-              Based in South Bay, California
-            </p>
-          </div>
-
-          <form
+        <section
+          id="contact-form"
+          className="mx-auto grid max-w-6xl gap-10 pt-12 md:pt-14 lg:grid-cols-[1.16fr_0.84fr] lg:items-stretch lg:pt-16"
+        >
+          <ContactForm
+            submitted={submitted}
+            submitting={submitting}
             onSubmit={handleSubmit}
-            className="grid gap-5 border border-[#0B32A0]/20 bg-white/80 p-6 md:p-8"
-          >
-            {submitted ? (
-              <div className="border border-[var(--og-orange)] bg-[var(--og-orange)] p-5 text-white">
-                <p className="text-sm font-semibold uppercase tracking-[0.22em]">
-                  Message Sent
-                </p>
-                <p className="mt-2 text-lg leading-7">
-                  Thanks. We will be in touch within 1 business day
-                </p>
+            variant="rounded"
+          />
+
+          <div className="flex h-full flex-col gap-6">
+            <div className="rounded-[2rem] border border-[#0B32A0]/10 bg-white/90 p-6 shadow-[0_18px_40px_rgba(11,50,160,0.06)]">
+              <div className="space-y-6">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                    Email
+                  </p>
+                  <a
+                    href="mailto:hello@orangegoods.co"
+                    className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                  >
+                    hello@orangegoods.co
+                  </a>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                    Text
+                  </p>
+                  <a
+                    href="sms:+12133764663"
+                    className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-6 py-[0.7rem] font-[var(--font-noir-alt)] text-base font-bold uppercase tracking-normal text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
+                  >
+                    Text us
+                  </a>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                    Instagram
+                  </p>
+                  <a
+                    href="https://www.instagram.com/orangegoods"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+                  >
+                    @orangegoods
+                  </a>
+                </div>
               </div>
-            ) : null}
-
-            <div className="grid gap-5 md:grid-cols-2">
-              <label className={labelClass}>
-                Name
-                <input name="name" required className={inputClass} />
-              </label>
-              <label className={labelClass}>
-                Company
-                <input name="company" className={inputClass} />
-              </label>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2">
-              <label className={labelClass}>
-                Email
-                <input name="email" type="email" required className={inputClass} />
-              </label>
-              <label className={labelClass}>
-                Phone
-                <input name="phone" type="tel" className={inputClass} />
-              </label>
-            </div>
-
-            <label className={labelClass}>
-              What are you making?
-              <textarea
-                name="project"
-                rows={6}
-                required
-                className="border border-[#0B32A0]/20 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
-              />
-            </label>
-
-            <div className="grid gap-5 md:grid-cols-3">
-              <label className={labelClass}>
-                Quantity
-                <select name="quantity" required defaultValue="" className={inputClass}>
-                  <option value="" disabled>Select</option>
-                  {["100-250", "250-500", "500-1,000", "1,000-2,000", "2,000-5,000", "5,000+"].map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </label>
-              <label className={labelClass}>
-                Timeline
-                <select name="timeline" required defaultValue="" className={inputClass}>
-                  <option value="" disabled>Select</option>
-                  {["ASAP", "2-4 weeks", "1-2 months", "2+ months", "Not sure"].map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </label>
-              <label className={labelClass}>
-                Budget Range
-                <select name="budget" defaultValue="" className={inputClass}>
-                  <option value="" disabled>Select</option>
-                  {["<$2,500", "$2,500-$5,000", "$5,000-$10,000", "$10,000+", "Not sure"].map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </label>
-            </div>
-
-            {/* File upload */}
-            <div className="space-y-2">
-              <label className="block">
-                <span className="text-sm font-medium text-[#1C1C1C]">Upload artwork or files <span className="font-normal text-[#1C1C1C]/50">(optional)</span></span>
-                <input
-                  type="file"
-                  name="artwork"
-                  multiple
-                  accept=".ai,.eps,.pdf,.svg,.png,.jpg,.jpeg,.zip"
-                  className="mt-2 block w-full cursor-pointer rounded-xl border border-[#0B32A0]/20 bg-[#F3EFE7] px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:rounded-lg file:border-0 file:bg-[#0B32A0] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-white file:transition hover:file:bg-[#081E6F]"
-                />
-              </label>
-              <p className="text-xs text-[#1C1C1C]/45">
-                Vector files preferred — AI, EPS, PDF, SVG. Have larger files? Share a Dropbox or WeTransfer link in your message.
+            <div className="flex flex-1 flex-col rounded-[2rem] border-[3px] border-[#0B32A0]/10 bg-white p-6 shadow-[0_18px_40px_rgba(11,50,160,0.08)] md:p-8">
+              <p className="text-lg leading-8 text-[var(--og-muted)]">
+                Based in South Bay, California
               </p>
-            </div>
+              <div className="mt-6 rounded-[1.5rem] border border-[#0B32A0]/10 bg-[var(--og-warm-grey)] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  Why Orange Goods
+                </p>
+                <div className="mt-4 space-y-3">
+                  {[
+                    "Real people, not a call center.",
+                    "Thoughtful guidance on product, decoration, and next steps.",
+                    "In-house design help when you need it.",
+                    "Fast replies within one business day.",
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#FF4200]/30 bg-white text-[#FF4200] shadow-[0_4px_10px_rgba(255,66,0,0.08)]">
+                        <svg
+                          viewBox="0 0 16 16"
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5"
+                          fill="none"
+                        >
+                          <path
+                            d="M3.5 8.25L6.5 11.25L12.5 5.25"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <p className="text-base leading-7 text-[#1C1C1C] md:text-lg">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="btn-og inline-flex w-full justify-center md:w-fit"
-            >
-              {submitting ? "Sending…" : "Get Started"}
-            </button>
-          </form>
+              <div className="mt-6 rounded-[1.5rem] border border-[#0B32A0]/10 bg-white p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  FAQ
+                </p>
+                <div className="mt-4 space-y-4">
+                  {[
+                    [
+                      "What's the minimum order?",
+                      "Most custom programs start at 100 pieces.",
+                    ],
+                    [
+                      "How does the process work?",
+                      "You send the basics, we guide the next steps, and then we build the right path from there.",
+                    ],
+                    [
+                      "Can you help us choose the right product?",
+                      "Yes. If you're not sure what makes the most sense yet, we can help narrow it down.",
+                    ],
+                  ].map(([question, answer]) => (
+                    <div key={question} className="border-t border-[#0B32A0]/10 pt-4 first:border-t-0 first:pt-0">
+                      <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]">
+                        {question}
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[#1C1C1C]/72">{answer}</p>
+                    </div>
+                  ))}
+                </div>
+                <Link
+                  href="/faq"
+                  className="mt-5 inline-flex text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-tangerine)] transition hover:text-[var(--og-orange)]"
+                >
+                  View full FAQ
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 pb-20 md:px-8 md:pb-24 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <div className="overflow-hidden rounded-[2rem] border border-[#0B32A0]/12 bg-white shadow-[0_18px_40px_rgba(11,50,160,0.06)]">
+            <div className="grid gap-0 lg:min-h-[30rem] lg:grid-cols-[0.74fr_1.26fr]">
+              <div className="flex flex-col justify-between border-b border-[#0B32A0]/10 bg-[var(--og-warm-grey)] p-7 lg:border-b-0 lg:border-r lg:p-10">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                    Client Feedback
+                  </p>
+                  <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-4xl">
+                    What it&apos;s like to work with us.
+                  </h2>
+                  <p className="mt-3 max-w-md text-sm leading-6 text-[#1C1C1C]/68 md:text-base">
+                    A little reassurance before you hit send.
+                  </p>
+                </div>
+
+                <div className="mt-8">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1C1C1C]/48">
+                    Selected brands
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {contactTestimonials.map((item, index) => (
+                      <button
+                        key={item.company}
+                        type="button"
+                        onClick={() => setActiveTestimonial(index)}
+                        className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition ${
+                          index === activeTestimonial
+                            ? "border-[#0B32A0] bg-[#0B32A0] text-white"
+                            : "border-[#0B32A0]/12 bg-white text-[#0B32A0] hover:border-[#0B32A0]/28 hover:bg-white/70"
+                        }`}
+                      >
+                        {item.company}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative min-h-[20rem] overflow-hidden bg-[#E8E1D2] md:min-h-[24rem] lg:min-h-[30rem]">
+                {contactTestimonials.map((item, index) => (
+                  <div
+                    key={item.company}
+                    className="absolute inset-0 transition-opacity duration-700"
+                    style={{ opacity: index === activeTestimonial ? 1 : 0 }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-[#1C1C1C]/26" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/72 via-[#1C1C1C]/18 to-transparent" />
+                  </div>
+                ))}
+
+                <div className="absolute inset-0 z-10 flex flex-col justify-end p-7 text-white md:p-9 lg:p-10">
+                  <p className="text-xs font-semibold uppercase tracking-[0.26em] text-white/72">
+                    {contactTestimonials[activeTestimonial].company}
+                  </p>
+                  <blockquote className="font-display mt-4 min-h-[7.5rem] max-w-4xl text-[2rem] font-normal uppercase leading-none tracking-normal text-white md:min-h-[9.5rem] md:text-[3rem] lg:min-h-[10.75rem] lg:text-[3.6rem]">
+                    &ldquo;{contactTestimonials[activeTestimonial].quote}&rdquo;
+                  </blockquote>
+                  <div className="mt-5">
+                    <p className="font-noir-alt text-sm font-bold uppercase tracking-[0.14em] text-white md:text-base">
+                      {contactTestimonials[activeTestimonial].person}
+                    </p>
+                    <p className="mt-1 text-sm text-white/72 md:text-base">
+                      {contactTestimonials[activeTestimonial].role}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 flex gap-2">
+                    {contactTestimonials.map((item, index) => (
+                      <button
+                        key={`${item.person}-dot`}
+                        type="button"
+                        onClick={() => setActiveTestimonial(index)}
+                        aria-label={`Show testimonial ${index + 1}`}
+                        className={`h-2.5 rounded-full transition-all ${
+                          index === activeTestimonial
+                            ? "w-8 bg-white"
+                            : "w-2.5 bg-white/35 hover:bg-white/55"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </Reveal>
     </main>

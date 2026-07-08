@@ -18,6 +18,14 @@ type FeaturedPhoto = {
 
 const featuredPhotos: FeaturedPhoto[] = [
   {
+    title: "Upcycled Blankets",
+    detail: "Jarritos",
+    src: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
+    alt: "Jarritos upcycled blanket by Orange Goods",
+    position: "center 44%",
+    activePosition: "center 44%",
+  },
+  {
     title: "Event Kits",
     detail: "Stanford Medicine",
     src: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",

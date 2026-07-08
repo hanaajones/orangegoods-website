@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -70,10 +71,12 @@ function MenuLink({
 }
 
 export function Nav() {
+  const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
   const [hoveredProduct, setHoveredProduct] = useState(products[0].image);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
+  const hideMobileBottomCtas = pathname === "/quiz" || pathname.startsWith("/quiz/");
 
   const scheduleClose = () => {
     if (closeTimer[0]) clearTimeout(closeTimer[0]);
@@ -401,22 +404,24 @@ export function Nav() {
         </div>
       ) : null}
 
-      <div className={`fixed inset-x-0 bottom-0 z-30 grid ${showBuildOnlineNav ? "grid-cols-2" : "grid-cols-1"} gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden`}>
-        <Link
-          href={startProjectHref}
-          className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
-        >
-          Start a Project
-        </Link>
-        {showBuildOnlineNav ? (
+      {!hideMobileBottomCtas ? (
+        <div className={`fixed inset-x-0 bottom-0 z-30 grid ${showBuildOnlineNav ? "grid-cols-2" : "grid-cols-1"} gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden`}>
           <Link
-            href={buildOnlineHref}
-            className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
+            href={startProjectHref}
+            className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
           >
-            Build Online
+            Start a Project
           </Link>
-        ) : null}
-      </div>
+          {showBuildOnlineNav ? (
+            <Link
+              href={buildOnlineHref}
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
+            >
+              Build Online
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
     </>
   );
 }

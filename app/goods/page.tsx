@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { GoodsCatalogGrid } from "@/components/GoodsCatalogGrid";
+import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { GoodsUseCaseRotator } from "@/components/GoodsUseCaseRotator";
 import {
   CATALOG_PRODUCTS,
   CATEGORY_LABELS,
+  CATEGORY_ORDER,
   calcPrice,
 } from "@/data/catalog";
 
@@ -35,7 +39,18 @@ const catalogProductImages: Record<string, string> = {
   "as-colour-5522": "/images/gallery/apparel-686-hoodie-detail.jpg",
 };
 
-const categories = [
+type CategoryCard = {
+  name: string;
+  description: string;
+  href: string;
+  image: string;
+  className: string;
+  imagePosition: string;
+  imageClassName?: string;
+  imageFitClassName?: string;
+};
+
+const categories: CategoryCard[] = [
   {
     name: "Headwear",
     description: "Ready-made blanks, OG Crafted hats, beanies, buckets, rope caps, and more.",
@@ -80,7 +95,7 @@ const categories = [
   },
   {
     name: "Blankets",
-    description: "Picnic blankets, fleece throws, camp blankets, and gifting pieces.",
+    description: "Upcycled Mexican blankets, plush throws, jacquard blankets, and anything ready to get kept.",
     href: "#catalog",
     image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
     className: "lg:col-span-2 lg:min-h-[20rem]",
@@ -111,12 +126,12 @@ const categories = [
     imagePosition: "center 52%",
   },
   {
-    name: "Houseware",
-    description: "Useful home goods: trays, candles, mugs, kitchen pieces, and custom gifts.",
+    name: "Patches",
+    description: "Woven, embroidered, chenille, felt, PVC, leather, and printed patches.",
     href: "#catalog",
-    image: "/images/gallery/houseware-oak-essentials-travertine-tray.jpg",
+    image: "/images/gallery/patches-og-oval-quality-logo-dscf2869.jpg",
     className: "lg:col-span-2 lg:min-h-[17rem]",
-    imagePosition: "center 50%",
+    imagePosition: "center 56%",
   },
   {
     name: "Board Shorts",
@@ -133,8 +148,8 @@ const categories = [
     href: "#catalog",
     image: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",
     className: "lg:min-h-[19rem]",
-    imagePosition: "left 52%",
-    imageClassName: "-translate-x-[54px] scale-[1.16] group-hover:-translate-x-[60px] group-hover:scale-[1.22]",
+    imagePosition: "center 52%",
+    imageClassName: "group-hover:scale-105",
   },
   {
     name: "Outerwear",
@@ -144,22 +159,6 @@ const categories = [
     className: "lg:col-span-2 lg:min-h-[21rem]",
     imagePosition: "left 46%",
     imageClassName: "scale-[1.84] group-hover:scale-[1.92]",
-  },
-  {
-    name: "Patches",
-    description: "Woven, embroidered, chenille, felt, PVC, leather, and printed patches.",
-    href: "#catalog",
-    image: "/images/gallery/patches-og-oval-quality-logo-dscf2869.jpg",
-    className: "lg:col-span-2 lg:min-h-[17rem]",
-    imagePosition: "center 56%",
-  },
-  {
-    name: "Packaging + Kits",
-    description: "Boxes, tissue, tags, mailers, inserts, kitting, and unboxing details.",
-    href: "/goods/packaging",
-    image: "/images/gallery/packaging-stanford-medicine-thinkhealth-craft-1.jpg",
-    className: "lg:col-span-2 lg:min-h-[19rem]",
-    imagePosition: "center 46%",
   },
 ];
 
@@ -179,39 +178,31 @@ function getCatalogProductImage(slug: string) {
 }
 
 export default function GoodsPage() {
+  const catalogFilters = [
+    { key: "all", label: "All" },
+    ...CATEGORY_ORDER.map((category) => ({
+      key: category,
+      label: CATEGORY_LABELS[category],
+    })),
+  ];
+
+  const catalogItems = featuredCatalogProducts.map((product) => ({
+    slug: product.slug,
+    href: `/catalog/${product.slug}`,
+    category: product.category,
+    categoryLabel: CATEGORY_LABELS[product.category],
+    name: product.name,
+    description: product.description,
+    image: getCatalogProductImage(product.slug),
+    fromPrice: calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
+  }));
+
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
-      <style>
-        {`
-          @keyframes goodsUseCaseCycle {
-            0%, 12% { transform: translateY(0); }
-            16%, 28% { transform: translateY(-16.666%); }
-            32%, 44% { transform: translateY(-33.333%); }
-            48%, 60% { transform: translateY(-50%); }
-            64%, 76% { transform: translateY(-66.666%); }
-            80%, 92% { transform: translateY(-83.333%); }
-            100% { transform: translateY(0); }
-          }
-
-          .goods-use-case-rotator {
-            animation: goodsUseCaseCycle 12s cubic-bezier(0.83, 0, 0.17, 1) infinite;
-          }
-
-          @media (prefers-reduced-motion: reduce) {
-            .goods-use-case-rotator {
-              animation: none;
-            }
-          }
-        `}
-      </style>
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/gallery/goods-hero-misc-dscf4876.jpg"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: "center 48%" }}
+        <ParallaxHeroBackground
+          image="/images/gallery/goods-hero-misc-dscf4876.jpg"
+          position="center 48%"
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/32" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
@@ -225,10 +216,13 @@ export default function GoodsPage() {
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
             Everything your brand wears, carries, drinks from, gifts, ships, and remembers, made with better taste and tighter guidance.
           </p>
+          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
+            Most custom programs start at 100 pieces.
+          </p>
           <div className="mt-8">
             <Link
               href="#catalog"
-              className="inline-flex min-h-12 items-center rounded-xl border border-white/30 bg-white px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:-translate-y-0.5 hover:bg-[var(--og-orange)] hover:text-white"
+              className="btn-og-white inline-flex"
             >
               View Entire Catalog
             </Link>
@@ -240,20 +234,9 @@ export default function GoodsPage() {
         <section className="mx-auto max-w-6xl">
           <div className="mb-7 max-w-3xl">
             <div>
-              <h2 className="flex flex-col text-4xl leading-none text-[var(--og-blue)] md:flex-row md:flex-nowrap md:items-baseline md:gap-3 md:text-5xl">
-                We&apos;ll make it for you:
-                <span className="block h-[1.05em] w-[12ch] overflow-hidden text-[#FF7F00] md:inline-flex">
-                  <span className="goods-use-case-rotator flex flex-col">
-                    {useCaseWords.map((word) => (
-                      <span
-                        key={word}
-                        className="h-[1.05em] whitespace-nowrap leading-none"
-                      >
-                        {word}
-                      </span>
-                    ))}
-                  </span>
-                </span>
+              <h2 className="flex flex-col text-4xl leading-none text-[var(--og-blue)] md:flex-row md:flex-nowrap md:items-center md:gap-1.5 md:text-5xl">
+                We create merch for
+                <GoodsUseCaseRotator words={useCaseWords} />
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-[#1C1C1C]/60">
                 From concept to delivery. We&apos;ll source the highest quality product at the best price.
@@ -271,7 +254,7 @@ export default function GoodsPage() {
                 <img
                   src={category.image}
                   alt={category.name}
-                  className={`absolute inset-0 h-full w-full object-cover transition duration-500 ${
+                  className={`absolute inset-0 h-full w-full ${category.imageFitClassName || "object-cover"} transition duration-500 ${
                     category.imageClassName || "group-hover:scale-105"
                   }`}
                   style={{ objectPosition: category.imagePosition }}
@@ -292,89 +275,85 @@ export default function GoodsPage() {
               </Link>
             ))}
           </div>
-          <div className="mt-8 flex flex-col gap-3 border-t border-[#081E6F]/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="max-w-2xl text-xs leading-5 text-[#1C1C1C]/55 md:text-sm">
-              Don&apos;t see what you&apos;re looking for or don&apos;t know where to start?
-            </p>
+          <div className="mt-8 flex flex-col gap-5 rounded-[1.5rem] border border-[#d4c5ae] bg-white px-5 py-5 md:px-6 md:py-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF4200]">
+                This is just a taste
+              </p>
+              <p className="mt-2 text-xs leading-5 text-[#1C1C1C]/62 md:text-sm md:leading-6">
+                We make far more than what you see here.
+              </p>
+            </div>
             <Link
               href="/contact"
-              className="inline-flex min-h-11 w-fit items-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
+              className="btn-og inline-flex min-h-12 w-fit shrink-0 items-center justify-center"
             >
-              Contact us
+              Start a custom project
             </Link>
           </div>
         </section>
       </Reveal>
 
-      <section id="catalog" className="scroll-mt-24 border-t border-[#081E6F]/10 bg-white px-4 py-14 md:scroll-mt-28 md:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
-                Full catalog
-              </p>
-              <h2 className="mt-3 text-4xl leading-none text-[var(--og-blue)] md:text-5xl">
-                Keep scrolling into the product library.
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-[#1C1C1C]/60">
-                {featuredCatalogProducts.length} starter blanks with live configured pricing paths.
-              </p>
+      <section className="px-4 pb-14 md:px-8 md:pb-20 lg:px-12">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem]">
+          <div className="relative min-h-[25rem] md:min-h-[29rem]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/gallery/bags-boatsetter-dscf3242.jpg"
+              alt="Custom tote bags and branded goods laid out together"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 44%" }}
+            />
+            <div className="absolute inset-0 bg-[#1C1C1C]/38" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/76 via-[#1C1C1C]/44 to-[#1C1C1C]/16" />
+            <div className="relative flex min-h-[25rem] items-end p-6 md:min-h-[29rem] md:p-10 lg:p-12">
+              <div className="max-w-2xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF4200]">
+                  Why Orange Goods
+                </p>
+                <h2 className="mt-3 text-4xl leading-none text-white md:text-5xl lg:text-6xl">
+                  Better Guidance.
+                  <br />
+                  Better Goods.
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/82 md:text-base md:leading-7">
+                  We help you choose the right product, decoration, materials, and finish from the
+                  start, so what you make feels intentional, holds up in real life, and actually
+                  gets kept.
+                </p>
+              </div>
             </div>
-            <Link
-              href="/catalog"
-              className="inline-flex min-h-11 w-fit items-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-            >
-              View catalog page
-            </Link>
           </div>
+        </div>
+      </section>
 
-          <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {featuredCatalogProducts.map((product) => {
-              const fromPrice = calcPrice(
-                product.blank,
-                product.blankMarkup,
-                product.printCat,
-                100
-              );
-
-              return (
-                <Link
-                  key={product.slug}
-                  href={`/catalog/${product.slug}`}
-                  className="group flex min-h-full flex-col overflow-hidden rounded-lg border border-[#081E6F]/12 bg-[#F7F4ED] transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(8,30,111,0.12)]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={getCatalogProductImage(product.slug)}
-                    alt={product.name}
-                    className="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="flex flex-1 flex-col p-4">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#FF7F00]">
-                      {CATEGORY_LABELS[product.category]}
-                    </p>
-                    <h3 className="mt-2 text-lg leading-none text-[var(--og-blue)]">
-                      {product.name}
-                    </h3>
-                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#1C1C1C]/55">
-                      {product.description}
-                    </p>
-                    <div className="mt-auto flex items-end justify-between gap-2 pt-4">
-                      <p className="text-sm font-semibold text-[var(--og-orange)]">
-                        ${fromPrice.toFixed(2)}
-                        <span className="ml-1 text-[10px] font-normal text-[#1C1C1C]/45">
-                          /ea at 100
-                        </span>
-                      </p>
-                      <span className="rounded-full bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition group-hover:bg-[#FF7F00] group-hover:text-white">
-                        Configure
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+      <section id="catalog" className="scroll-mt-24 relative overflow-hidden bg-[#1C1C1C] text-white md:scroll-mt-28">
+        <div className="relative min-h-[24rem] md:min-h-[29rem]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg"
+            alt="High Street Deli branded goods displayed together on shelves"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "center 48%" }}
+          />
+          <div className="absolute inset-0 bg-[#1C1C1C]/32" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
+          <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24 lg:px-12">
+            <h2 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+              Explore the Catalog
+            </h2>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+              A closer look at the goods we recommend most, with guidance on product,
+              decoration, materials, and finish.
+            </p>
           </div>
+        </div>
+
+        <div className="bg-white px-4 py-14 md:px-8 md:py-20 lg:px-12">
+          <GoodsCatalogGrid
+            filters={catalogFilters}
+            items={catalogItems}
+          />
         </div>
       </section>
     </main>

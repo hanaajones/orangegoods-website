@@ -96,8 +96,8 @@ export function MerchTipsCarousel() {
   }
 
   return (
-    <Reveal className="px-4 pb-16 pt-6 md:px-8 md:pb-20 md:pt-8 lg:px-12">
-      <section className="mx-auto max-w-6xl rounded-[1.8rem] border-[2px] border-[#0B32A0] bg-[#F7F4ED] p-5 md:p-8">
+    <Reveal className="bg-[#F7F4ED] px-4 pb-16 pt-16 md:px-8 md:pb-20 md:pt-20 lg:px-12">
+      <section className="mx-auto max-w-6xl rounded-[1.8rem] border-[2px] border-[#0B32A0] bg-white p-5 md:p-8">
         <div className="flex items-end justify-between gap-4">
           <div className="max-w-3xl">
             <p
