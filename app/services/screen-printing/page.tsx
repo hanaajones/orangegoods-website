@@ -579,6 +579,57 @@ export default function ScreenPrintingPage() {
         </section>
       </Reveal>
 
+      <Reveal className="px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto max-w-6xl overflow-hidden rounded-[1.9rem] border border-[#0B32A0]/14 bg-[rgba(255,248,241,0.9)] shadow-[0_18px_50px_rgba(8,30,111,0.08)]">
+          <div className="grid gap-0 md:grid-cols-[1.05fr_0.95fr] md:items-stretch">
+            <div className="p-7 md:p-10">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
+                Another route
+              </p>
+              <h3
+                className="mt-4 text-[2.35rem] uppercase leading-[0.94] text-[var(--og-blue)] md:text-[3.5rem]"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Need embroidery?
+                <br />
+                We do that too.
+              </h3>
+              <p className="mt-4 max-w-xl text-base leading-7 text-[#676767] md:text-lg">
+                Same ready-made idea. Different decoration path. If the project wants a more
+                premium stitched finish instead of a larger print, head to embroidery.
+              </p>
+              <Link href="/services/embroidery" className="btn-og mt-7 inline-flex">
+                View Embroidery
+              </Link>
+            </div>
+
+            <Link
+              href="/services/embroidery"
+              className="group relative block min-h-[18rem] overflow-hidden bg-[#D5BBA2]"
+              aria-label="View the Orange Goods ready made embroidery page"
+            >
+              <Image
+                src="/images/gallery/headwear-verve-roasters-dscf3088.jpg"
+                alt="Orange Goods embroidery detail"
+                fill
+                sizes="(max-width: 768px) 100vw, 45vw"
+                className="object-cover transition duration-500 group-hover:scale-[1.03]"
+                style={{ objectPosition: "center 40%" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/54 via-[#1C1C1C]/8 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-5 text-white md:p-6">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#FF7F00]">
+                  Ready Made Embroidery
+                </p>
+                <p className="mt-2 text-sm font-medium text-white/88">
+                  Premium blanks. Stitched locally. Same fast path.
+                </p>
+              </div>
+            </Link>
+          </div>
+        </section>
+      </Reveal>
+
       <CTASection
         title="Ready to start a screen print run?"
         description="Send the quantity, product, artwork, and timing. We will guide the rest from there."
