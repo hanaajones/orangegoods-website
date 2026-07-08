@@ -83,6 +83,29 @@ const productCards = [
   },
 ];
 
+const specialtyPrintStyles = [
+  {
+    name: "Puff print",
+    description:
+      "Raised ink for simpler graphics, bold type, and logo hits that want more texture.",
+  },
+  {
+    name: "Foil print",
+    description:
+      "A brighter reflective finish when the piece needs a stronger fashion or promo moment.",
+  },
+  {
+    name: "Water-based print",
+    description:
+      "A softer handfeel that works well when you want the graphic to feel more worn-in.",
+  },
+  {
+    name: "Plastisol print",
+    description:
+      "The clean, punchy standard for stronger opacity, bolder color, and dependable coverage.",
+  },
+];
+
 const galleryImages = [
   {
     title: "Verve tee",
@@ -406,6 +429,70 @@ export default function ScreenPrintingPage() {
                 </div>
               </Link>
             ))}
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="bg-white px-4 py-14 md:px-8 md:py-18 lg:px-12">
+        <section className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+          <article className="relative overflow-hidden rounded-[1.9rem] border-[3px] border-white bg-[#D5BBA2] shadow-[7px_7px_0px_#0B32A0]">
+            <div className="relative min-h-[24rem] md:min-h-[30rem]">
+              <Image
+                src="/images/gallery/apparel-686-hoodie-detail.jpg"
+                alt="Close-up specialty screen printing detail"
+                fill
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="object-cover"
+                style={{ objectPosition: "center 38%" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/76 via-[#1C1C1C]/18 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
+                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#FF7F00]">
+                  Specialty styles
+                </p>
+                <h3
+                  className="mt-2 text-[2.2rem] uppercase leading-[0.92] md:text-[3.35rem]"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  More than
+                  <br />
+                  standard ink
+                </h3>
+                <p className="mt-3 max-w-md text-sm leading-6 text-white/82 md:text-base">
+                  When the job wants more texture, shine, softness, or punch, we can steer the
+                  print in a stronger direction.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <div className="rounded-[1.9rem] border border-[#0B32A0]/14 bg-[#F7F4ED] p-6 md:p-8">
+            <SectionHeader
+              eyebrow="Print styles"
+              title="Special print styles we do"
+              description="Not every run needs this, but when the artwork wants a more specific finish, these are some of the strongest options."
+            />
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {specialtyPrintStyles.map((style) => (
+                <article
+                  key={style.name}
+                  className="rounded-[1.45rem] border border-[#0B32A0]/12 bg-white p-5"
+                >
+                  <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#FF7F00]">
+                    Screen print option
+                  </p>
+                  <h3
+                    className="mt-3 text-[1.85rem] uppercase leading-[0.95] text-[var(--og-blue)]"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {style.name}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-[#676767] md:text-base">
+                    {style.description}
+                  </p>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
       </Reveal>
