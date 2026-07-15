@@ -230,9 +230,10 @@ export const hatAnchorLinks = [
   { label: "Overview", href: "#overview" },
   { label: "Pricing", href: "#pricing" },
   { label: "Styles", href: "#styles" },
-  { label: "Materials", href: "#materials" },
-  { label: "Decoration", href: "#decoration" },
-  { label: "Gallery", href: "#gallery" },
+  { label: "Decoration", href: "#decoration-methods" },
+  { label: "Fabric", href: "#fabric" },
+  { label: "Closure", href: "#closure" },
+  { label: "Add-ons", href: "#addons" },
   { label: "Process", href: "#process" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -353,37 +354,5 @@ export const hatFaqs = [
   {
     question: "What does pricing include?",
     answer: "Sampling, production, and standard shipping to one US address",
-  },
-];
-
-export const hatGallery = [
-  {
-    title: "Factory Direct Headwear",
-    image: hatImage,
-  },
-  {
-    title: "Graphic Design",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/GraphicDesign-271x300.jpg",
-  },
-  {
-    title: "Embroidery",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/Embroidery_2-271x300.jpg",
-  },
-  {
-    title: "Packaging",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/01/Packaging_Stanford-271x300.jpg",
-  },
-  {
-    title: "Drinkware",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/Drinkware-1-271x300.jpg",
-  },
-  {
-    title: "Retail Finishing",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/HangTag-271x300.jpg",
   },
 ];

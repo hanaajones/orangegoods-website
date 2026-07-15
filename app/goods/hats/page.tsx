@@ -1,143 +1,251 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
-import { Gallery } from "@/components/Gallery";
 import { HatBuildAccordion } from "@/components/HatBuildAccordion";
+import { HatPricingSlider } from "@/components/HatPricingSlider";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 import {
+  addOnOptions,
+  closureOptions,
+  decorationOptions,
+  fabricOptions,
+} from "./options-data";
+import { featuredHatStyles } from "./style-data";
+import {
   hatAnchorLinks,
   hatFaqs,
-  hatGallery,
   hatProcess,
 } from "@/lib/content";
 
 const startHatsHref = "/contact";
 
-const pricingPlans = [
-  {
-    name: "Full custom hat",
-    price: "From $13 / hat",
-    description:
-      "A clean starting package with the custom shape, fabric direction, and one strong front decoration already baked in.",
-    features: [
-      "Custom shape and structure",
-      "Custom fabric and color",
-      "One front decoration included",
-      "Sweatband woven label",
-      "Free mockups and shipping",
-    ],
-  },
-  {
-    name: "Add-ons",
-    price: "+$1.75 each",
-    description:
-      "Once the base hat is set, use add-ons to build it out with the extra details that make it feel more retail and more finished.",
-    features: [
-      "Back or side embroidery",
-      "Interior label or taping upgrades",
-      "Rope, closure, or flag-label details",
-      "Patch or texture-driven finishing moves",
-      "We help guide which extras are actually worth it",
-    ],
-  },
-];
-
 const quantityTiers = [
-  { label: "100 - 249", base: "$13.00" },
-  { label: "250 - 499", base: "$12.50" },
-  { label: "500 - 999", base: "$11.50" },
-  { label: "1,000+", base: "$10.50" },
-];
-
-const styleCards = [
   {
-    title: "Dad + coast caps",
-    model: "OG100 / OG120",
-    description:
-      "Relaxed, lower-profile shapes for everyday wear, hospitality, retail, and brands that want the hat to feel easy.",
-    image: "/images/product/hats/og100-dad-front.jpg",
-    imagePosition: "center 44%",
+    label: "100",
+    base: "$13.00",
+    note: "Best place to start",
+    href: "/contact?product=hats&program=og-crafted&quantity=100",
   },
   {
-    title: "Structured caps",
-    model: "OG130 / OG190",
-    description:
-      "Cleaner, more statement-driven crowns that hold shape well and give patches or bigger front logos more presence.",
-    image: "/images/product/hats/feb-highline-navy-front.jpg",
-    imagePosition: "center 46%",
+    label: "250",
+    base: "$12.50",
+    note: "A little more breathing room",
+    href: "/contact?product=hats&program=og-crafted&quantity=250",
   },
   {
-    title: "Truckers",
-    model: "OG140 / OG150 / OG160",
-    description:
-      "Mesh-back silhouettes that work well for outdoor brands, event drops, beverage programs, and lifestyle merch.",
-    image: "/images/gallery/hat-client-trucker-patch.jpg",
-    imagePosition: "center 42%",
+    label: "500",
+    base: "$11.50",
+    badge: "Great value",
+    note: "The sweet spot for price",
+    href: "/contact?product=hats&program=og-crafted&quantity=500",
   },
   {
-    title: "Buckets + specialty",
-    model: "OG170 / OG180 / OG210",
-    description:
-      "Buckets, foam truckers, campers, and niche silhouettes for summer drops, surf, music, and stronger brand character.",
-    image: "/images/gallery/hat-client-bucket-brown.jpg",
-    imagePosition: "center 48%",
+    label: "1,000",
+    base: "$10.50",
+    note: "Best public volume tier",
+    href: "/contact?product=hats&program=og-crafted&quantity=1000",
   },
 ];
 
-const materialCards = [
+const flowCards = [
   {
-    title: "Soft + washed",
-    description:
-      "Cotton twill, washed denim, and broken-in finishes for hats that need to feel lived-in from day one.",
-    image: "/images/gallery/headwear-leaver-her-wilder-img-7385-edit.jpg",
-    imagePosition: "center 46%",
-    details: ["Cotton twill", "Washed denim", "Canvas", "Corduroy"],
+    title: "Send the direction",
+    body: "Send the brand, quantity, and timeline.",
   },
   {
-    title: "Outdoor + technical",
-    description:
-      "Nylon, ripstop, performance poly, and lighter builds for active brands, utility, and warmer-weather use.",
-    image: "/images/gallery/hat-feb-img_7550.jpg",
-    imagePosition: "center 42%",
-    details: ["Nylon", "Ripstop", "Performance poly", "Mesh"],
+    title: "Approve the build",
+    body: "We dial in style, fabric, and decoration.",
   },
   {
-    title: "Texture + personality",
-    description:
-      "Camo, suede-feel fabrics, heavier textures, and finish options that push the hat further into retail territory.",
-    image: "/images/gallery/hat-og-patch-studio.jpg",
-    imagePosition: "center 50%",
-    details: ["Camo", "Faux suede", "Terry", "Fleece"],
+    title: "We run the project",
+    body: "One team handles production and delivery.",
   },
 ];
 
-const decorationCards = [
+const decorationPreviewOptions = [
   {
+    ...decorationOptions.find((option) => option.title === "Flat embroidery")!,
     title: "Embroidery",
-    description:
-      "The cleanest starting point for front logos, side hits, tonal builds, and everyday branded hats.",
-    image: "/images/gallery/hat-feb-img_7549.jpg",
-    imagePosition: "center 42%",
-    details: ["Flat embroidery", "3D puff", "Chain stitch"],
-  },
-  {
-    title: "Patches",
-    description:
-      "When the hat needs more texture, more contrast, or more retail character than direct embroidery alone.",
-    image: "/images/gallery/hat-og-patch-lifestyle.jpg",
-    imagePosition: "center 52%",
-    details: ["Woven", "Embroidered", "Leather", "PVC", "Chenille"],
-  },
-  {
-    title: "Finishing details",
-    description:
-      "The small branded touches that make the hat feel complete, not just decorated.",
-    image: "/images/gallery/hat-og-patch-_mg_5840.jpg",
     imagePosition: "center 48%",
-    details: ["Interior label", "Interior taping", "Back embroidery", "Side embroidery", "Rope", "Closure options"],
+  },
+  {
+    ...decorationOptions.find((option) => option.title === "Patch")!,
+    imagePosition: "center 48%",
+  },
+  {
+    title: "Printed",
+    description: "Printed decoration options.",
+    image: "/images/gallery/headwear-printed-mg-6778.jpg",
+    imagePosition: "center 48%",
+    details: [],
   },
 ];
+
+function OptionPathCard({
+  id,
+  eyebrow,
+  title,
+  description,
+  href,
+  cta,
+  options,
+  horizontal,
+  fullBleed,
+  previewCount,
+}: {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+  options: typeof fabricOptions;
+  horizontal?: boolean;
+  fullBleed?: boolean;
+  previewCount?: number;
+}) {
+  const visibleOptions = previewCount ? options.slice(0, previewCount) : options;
+
+  return (
+    <section id={id} className={fullBleed ? "" : "mx-auto max-w-6xl"}>
+      <div className="mx-auto max-w-4xl text-center">
+        {eyebrow ? (
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+            {eyebrow}
+          </p>
+        ) : null}
+        <h2
+          className={`text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl ${
+            eyebrow ? "mt-3" : "mt-0"
+          }`}
+        >
+          {title}
+        </h2>
+        <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-[var(--og-muted)] md:text-base">
+          {description}
+        </p>
+      </div>
+
+      {horizontal && previewCount ? (
+        <div className="mx-auto mt-8 max-w-6xl">
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {visibleOptions.map((option) => (
+              <Link key={option.title} href={href} className="group block">
+                {(() => {
+                  const isDecorationPreview =
+                    id === "decoration" &&
+                    (option.title === "Embroidery" ||
+                      option.title === "Patch" ||
+                      option.title === "Printed");
+                  const imageScaleClass = isDecorationPreview
+                    ? "scale-[1.43] group-hover:scale-[1.46]"
+                    : "scale-[1.08] group-hover:scale-[1.11]";
+
+                  return (
+                <article className="overflow-hidden rounded-[1.35rem] border-[3px] border-[#0B32A0] bg-white transition group-hover:-translate-y-[2px] group-hover:border-[var(--og-orange)]">
+                  <div className="relative aspect-[5/4] bg-[#d8c3aa]">
+                    <Image
+                      src={option.image}
+                      alt={option.title}
+                      fill
+                      sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
+                      className={`object-cover transition duration-300 ${imageScaleClass}`}
+                      style={{ objectPosition: option.imagePosition }}
+                    />
+                  </div>
+                  <div className="flex min-h-[84px] items-center justify-center px-4 py-4 text-center">
+                    <h3 className="font-noir-alt text-[15px] font-bold uppercase leading-tight tracking-[0.12em] text-[#0B32A0]">
+                      {option.title}
+                    </h3>
+                  </div>
+                </article>
+                  );
+                })()}
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : horizontal ? (
+        <div
+          className={`hide-scrollbar mt-8 overflow-x-auto pt-3 pb-1 ${
+            fullBleed
+              ? "relative left-1/2 right-1/2 w-screen -translate-x-1/2 px-4 md:px-8 lg:px-12"
+              : "-mx-4 px-4 md:mx-0 md:px-0"
+          }`}
+        >
+          <div className="flex w-max snap-x snap-mandatory gap-4">
+            {visibleOptions.map((option) => (
+              <Link
+                key={option.title}
+                href={href}
+                className="group block w-[23rem] shrink-0 snap-start md:w-[25rem] lg:w-[26rem]"
+              >
+                <article className="overflow-hidden rounded-[1.35rem] border-[3px] border-[#0B32A0] bg-white transition group-hover:-translate-y-[2px] group-hover:border-[var(--og-orange)]">
+                  <div className="relative aspect-[5/4] bg-[#d8c3aa]">
+                    <Image
+                      src={option.image}
+                      alt={option.title}
+                      fill
+                      sizes="(min-width: 1024px) 416px, (min-width: 768px) 400px, 368px"
+                      className="object-cover scale-[1.08] transition duration-300 group-hover:scale-[1.11]"
+                      style={{ objectPosition: option.imagePosition }}
+                    />
+                  </div>
+                  <div className="px-4 pb-5 pt-4 text-center">
+                    <h3 className="font-noir-alt text-[15px] font-bold uppercase leading-tight tracking-[0.12em] text-[#0B32A0]">
+                      {option.title}
+                    </h3>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {visibleOptions.map((option) => (
+            <Link
+              key={option.title}
+              href={href}
+              className="group block"
+            >
+              <article className="overflow-hidden rounded-[1.35rem] bg-transparent transition group-hover:-translate-y-[2px]">
+                <div className="relative aspect-[1/1] bg-[#d8c3aa]">
+                  <Image
+                    src={option.image}
+                    alt={option.title}
+                    fill
+                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                    className="object-cover scale-[1.08] transition duration-300 group-hover:scale-[1.11]"
+                    style={{ objectPosition: option.imagePosition }}
+                  />
+                </div>
+                <div className="px-2 pb-1 pt-4 text-center">
+                  <h3 className="text-lg font-semibold uppercase leading-tight tracking-[0.04em] text-[#1C1C1C] md:text-[1.38rem]">
+                    {option.title}
+                  </h3>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      <div className="mt-6 flex justify-center">
+        <Link
+          href={href}
+          className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[#1C1C1C] transition hover:text-[var(--og-orange)]"
+        >
+          {cta}
+          <span aria-hidden="true" className="text-[var(--og-orange)]">
+            →
+          </span>
+        </Link>
+      </div>
+    </section>
+  );
+}
 
 function SectionHeader({
   eyebrow,
@@ -170,11 +278,12 @@ function SectionHeader({
 export default function HatsPage() {
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
-      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-12 text-white md:px-8 md:py-[4.5rem] lg:px-12">
         <ParallaxHeroBackground
           image="/images/gallery/headwear-patch-layout-mg-9412.jpg"
-          inset="-1.5%"
-          position="center 42%"
+          inset="-0.75%"
+          position="center 40%"
+          speed={0.1}
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/34" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/42 to-[#1C1C1C]/16" />
@@ -186,8 +295,8 @@ export default function HatsPage() {
             Custom Hats
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-            Fully custom headwear with better taste, better finishing, and one team guiding the
-            whole thing from first direction to final delivery.
+            Fully custom hats built around your brand, down to the fabric, patch, label, rope,
+            and closure.
           </p>
           <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
             100+ hats per style. 6-8 week lead time.
@@ -211,7 +320,7 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-10 md:px-8 lg:px-12">
         <section id="overview" className="mx-auto max-w-6xl">
-          <article className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] text-white shadow-[8px_8px_0px_#0B32A0]">
+          <article className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] text-white">
             <div className="absolute inset-0">
               <Image
                 src="/images/gallery/headwear-reel-life-gear-boat-2.jpg"
@@ -222,17 +331,18 @@ export default function HatsPage() {
                 style={{ objectPosition: "center 42%" }}
               />
             </div>
-            <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(11,50,160,0.72),rgba(28,28,28,0.48))]" />
-            <div className="relative grid gap-8 p-8 md:grid-cols-[1.1fr_0.9fr] md:p-10">
+            <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(72,72,72,0.72),rgba(28,28,28,0.52))]" />
+            <div className="relative p-8 md:p-10">
               <div>
                 <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
                   OG Crafted
                 </span>
                 <h3 className="mt-4 text-4xl font-semibold leading-none md:text-5xl">
-                  Built from scratch, your way.
+                  Customize every detail
                 </h3>
                 <p className="mt-4 max-w-2xl text-lg leading-7 text-white/82">
-                  This is where the hat gets specific. Shape, structure, fabric, decoration, and finishing details are all built around the brand instead of pulled from a blank shelf.
+                  Shape, structure, fabric, decoration, and finishing all get built around the
+                  brand.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Link href="#pricing" className="btn-og inline-flex">
@@ -242,22 +352,6 @@ export default function HatsPage() {
                     View styles
                   </Link>
                 </div>
-              </div>
-
-              <div className="grid gap-3 self-end sm:grid-cols-2">
-                {[
-                  "12 silhouettes to start from",
-                  "Custom fabrics and color direction",
-                  "Embroidery, patches, labels, and finishing",
-                  "One team guiding art, production, and delivery",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-[1.25rem] border border-white/18 bg-white/10 p-4 text-sm leading-6 text-white/85 backdrop-blur-sm"
-                  >
-                    {item}
-                  </div>
-                ))}
               </div>
             </div>
           </article>
@@ -277,14 +371,14 @@ export default function HatsPage() {
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
                 Need it sooner?
               </p>
-              <h3 className="mt-3 text-3xl font-semibold leading-tight text-[var(--og-blue)]">
-                Ready-made hats move faster.
+              <h3 className="mt-3 text-3xl font-semibold leading-tight text-[#1C1C1C]">
+                Start with a premium blank.
               </h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 {[
-                  "Premium blanks with your embroidery or patch",
-                  "2-3 week turn for the right program",
-                  "Less customization, less development time",
+                  "Premium blanks with your decoration",
+                  "2-3 week turnaround",
+                  "Less customization",
                 ].map((item) => (
                   <div
                     key={item}
@@ -296,7 +390,7 @@ export default function HatsPage() {
               </div>
               <Link
                 href="/goods/hats/ready-made"
-                className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
+                className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1C1C1C] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See ready-made hats
               </Link>
@@ -309,87 +403,47 @@ export default function HatsPage() {
         <section id="pricing" className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Pricing"
-            title="Clear pricing. Then build the details."
-            description="Keep the pricing simple first: start with the full custom hat price, then layer on the extra details that matter instead of forcing every project into a complicated package system."
+            title="Choose your hat quantity"
           />
 
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            {pricingPlans.map((plan, index) => (
-              <article
-                key={plan.name}
-                className={`rounded-[1.9rem] border-[3px] p-6 md:p-7 ${
-                  index === 0
-                    ? "border-[#0B32A0] bg-white shadow-[8px_8px_0px_#0B32A0]"
-                    : "border-[#FF4200] bg-[#0B32A0] text-white shadow-[8px_8px_0px_#FF4200]"
-                }`}
-              >
-                <p
-                  className={`text-xs font-semibold uppercase tracking-[0.22em] ${
-                    index === 0 ? "text-[var(--og-orange)]" : "text-[#FFB07A]"
-                  }`}
-                >
-                  {plan.name}
-                </p>
-                <h3 className="mt-3 text-4xl font-semibold leading-none">{plan.price}</h3>
-                <p className={`mt-4 text-sm leading-7 ${index === 0 ? "text-[var(--og-muted)]" : "text-white/78"}`}>
-                  {plan.description}
-                </p>
-                <ul className="mt-6 grid gap-2">
-                  {plan.features.map((feature) => (
-                    <li
-                      key={feature}
-                      className={`flex items-start gap-2 text-sm ${
-                        index === 0 ? "text-[var(--og-muted)]" : "text-white/84"
-                      }`}
-                    >
-                      <span className={index === 0 ? "text-[var(--og-orange)]" : "text-[#FFB07A]"}>+</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
+          <HatPricingSlider tiers={quantityTiers} />
 
-          <div className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-[rgba(255,248,241,0.88)] p-6 md:p-7">
+          <HatBuildAccordion />
+
+          <div className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
             <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]">
-                  Quantity breaks
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                  How it moves
                 </p>
-                <h3 className="mt-2 text-3xl font-semibold leading-none text-[var(--og-blue)]">
-                  Base pricing gets better with volume.
+                <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
+                  Keep it simple.
                 </h3>
               </div>
-              <p className="text-sm leading-6 text-[var(--og-muted)]">
-                100 hats minimum per style. Most finishing details can be added for about $1.75 each once the base hat is locked.
+              <p className="max-w-xl text-sm leading-6 text-[var(--og-muted)]">
+                We help narrow the choices and run the project.
               </p>
             </div>
 
-            <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-              {quantityTiers.map((tier) => (
-                <div
-                  key={tier.label}
-                  className="rounded-[1.25rem] border border-[#0B32A0]/12 bg-white p-5"
+            <div className="mt-6 grid gap-3 lg:grid-cols-3">
+              {flowCards.map((card, index) => (
+                <article
+                  key={card.title}
+                  className="rounded-[1.35rem] border border-[#0B32A0]/12 bg-[rgba(255,248,241,0.72)] p-5"
                 >
-                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--og-blue)]">
-                    {tier.label}
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                    {String(index + 1).padStart(2, "0")}
                   </p>
-                  <div className="mt-4">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--og-orange)]">
-                      Full custom hat
-                    </p>
-                    <p className="mt-1 text-2xl font-semibold text-[var(--og-blue)]">{tier.base}</p>
-                    <p className="mt-3 text-xs leading-5 text-[var(--og-muted)]">
-                      Add most extra details for about $1.75 each.
-                    </p>
-                  </div>
-                </div>
+                  <h4 className="mt-3 text-2xl font-semibold leading-tight text-[#1C1C1C]">
+                    {card.title}
+                  </h4>
+                  <p className="mt-3 text-sm leading-6 text-[var(--og-muted)]">
+                    {card.body}
+                  </p>
+                </article>
               ))}
             </div>
           </div>
-
-          <HatBuildAccordion />
         </section>
       </Reveal>
 
@@ -397,154 +451,120 @@ export default function HatsPage() {
         <section id="styles" className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Styles"
-            title="Start with the shape."
-            description="Most hat projects get easier once the silhouette is right. These are the lanes most brands start in before we fine-tune fabric, brim, closure, and decoration."
+            title="Start with the shape"
+            description="Pick the silhouette first."
           />
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {styleCards.map((card) => (
-              <article
-                key={card.title}
-                className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition hover:border-[#0B32A0]"
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {featuredHatStyles.map((card) => (
+              <Link
+                key={card.slug}
+                href={`/goods/hats/styles/${card.slug}`}
+                className="group block"
               >
-                <div className="relative aspect-[16/10] bg-[#d9c5ae]">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    sizes="(min-width: 768px) 50vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: card.imagePosition }}
-                  />
-                </div>
-                <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                    {card.model}
-                  </p>
-                  <h3 className="mt-2 text-3xl font-semibold leading-none text-[var(--og-blue)]">
-                    {card.title}
-                  </h3>
-                  <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                    {card.description}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      </Reveal>
-
-      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-        <section id="materials" className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Materials"
-            title="Then dial in the feel."
-            description="This is the part that makes the hat feel coastal, premium, technical, washed-in, or retail-forward. The right fabric changes the whole read."
-          />
-
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {materialCards.map((card) => (
-              <article
-                key={card.title}
-                className="overflow-hidden rounded-[1.9rem] border border-[#0B32A0]/15 bg-white"
-              >
-                <div className="relative aspect-[4/5] bg-[#d8c3aa]">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    sizes="(min-width: 1024px) 30vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: card.imagePosition }}
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-3xl font-semibold leading-none text-[var(--og-blue)]">
-                    {card.title}
-                  </h3>
-                  <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                    {card.description}
-                  </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {card.details.map((detail) => (
-                      <span
-                        key={detail}
-                        className="rounded-full border border-[#0B32A0]/12 bg-[rgba(255,248,241,0.88)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
-                      >
-                        {detail}
-                      </span>
-                    ))}
+                <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
+                  <div className="relative aspect-[16/10] bg-[#d9c5ae]">
+                    <Image
+                      src={card.image}
+                      alt={card.title}
+                      fill
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                      className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                      style={{ objectPosition: card.imagePosition }}
+                    />
                   </div>
-                </div>
-              </article>
+                  <div className="p-6">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                      {card.model}
+                    </p>
+                    <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
+                      {card.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
+                      {card.description}
+                    </p>
+                    <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
+                      Order this style →
+                    </p>
+                  </div>
+                </article>
+              </Link>
             ))}
+          </div>
+
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/goods/hats/styles"
+              className="inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1C1C1C] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
+            >
+              See all styles
+            </Link>
           </div>
         </section>
       </Reveal>
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-        <section id="decoration" className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Decoration"
-            title="Brand it like it belongs there."
-            description="This is where the hat stops feeling generic. Decoration and finishing details should make the piece feel intentional, not just logo-applied."
-          />
-
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {decorationCards.map((card) => (
-              <article
-                key={card.title}
-                className="overflow-hidden rounded-[1.9rem] border border-[#0B32A0]/15 bg-white"
-              >
-                <div className="relative aspect-[4/5] bg-[#d8c3aa]">
-                  <Image
-                    src={card.image}
-                    alt={card.title}
-                    fill
-                    sizes="(min-width: 1024px) 30vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: card.imagePosition }}
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-3xl font-semibold leading-none text-[var(--og-blue)]">
-                    {card.title}
-                  </h3>
-                  <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                    {card.description}
-                  </p>
-                  <ul className="mt-5 grid gap-2">
-                    {card.details.map((detail) => (
-                      <li
-                        key={detail}
-                        className="flex items-start gap-2 text-sm text-[var(--og-muted)]"
-                      >
-                        <span className="text-[var(--og-orange)]">+</span>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+        <OptionPathCard
+          id="decoration-methods"
+          title="Choose your decoration"
+          description="See the branding methods in one place, then click through to the full page."
+          href="/goods/hats/decoration"
+          cta="See all decoration methods"
+          options={decorationPreviewOptions}
+          horizontal
+          fullBleed
+          previewCount={3}
+        />
       </Reveal>
 
-      <Gallery
-        id="gallery"
-        eyebrow="From the shop"
-        title="How the work actually looks."
-        description="Recent hat builds, branded details, finishing moments, and the kind of execution clients are really buying."
-        items={hatGallery}
-      />
+      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+        <OptionPathCard
+          id="fabric"
+          title="Choose your fabric"
+          description="Fabric changes the feel fast. Click through to see the options grouped more clearly."
+          href="/goods/hats/fabric"
+          cta="See all fabric options"
+          options={fabricOptions}
+          horizontal
+          fullBleed
+          previewCount={3}
+        />
+      </Reveal>
+
+      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+        <OptionPathCard
+          id="closure"
+          title="Choose your closure"
+          description="Back closures change the feel too. See the main options, then click through for the full set."
+          href="/goods/hats/closure"
+          cta="See all closure options"
+          options={closureOptions}
+          horizontal
+          fullBleed
+          previewCount={3}
+        />
+      </Reveal>
+
+      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+        <OptionPathCard
+          id="addons"
+          title="Choose your add-ons"
+          description="Interior hits, extra embroidery, and finishing details live on their own page too."
+          href="/goods/hats/add-ons"
+          cta="See all add-ons"
+          options={addOnOptions}
+          horizontal
+          fullBleed
+          previewCount={3}
+        />
+      </Reveal>
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="process" className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Process"
-            title="How OG Crafted moves."
-            description="The process should feel guided the whole way through, not like you got dropped into factory details on your own."
+            title="How it works."
+            description="A simple path from idea to delivery."
           />
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {hatProcess.map((step, index) => (
@@ -559,7 +579,7 @@ export default function HatsPage() {
                 >
                   {String(index + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-4 text-2xl font-semibold text-[var(--og-blue)]">
+                <h3 className="mt-4 text-2xl font-semibold text-[#1C1C1C]">
                   {step.title}
                 </h3>
                 <p className="mt-4 text-base leading-7 text-[var(--og-muted)]">
@@ -583,7 +603,7 @@ export default function HatsPage() {
                 key={faq.question}
                 className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
               >
-                <summary className="cursor-pointer text-lg font-semibold text-[var(--og-blue)]">
+                <summary className="cursor-pointer text-lg font-semibold text-[#1C1C1C]">
                   {faq.question}
                 </summary>
                 <p className="mt-3 text-base leading-7 text-[var(--og-muted)]">
@@ -597,7 +617,7 @@ export default function HatsPage() {
 
       <CTASection
         title="Ready to start your hat project?"
-        description="Send the style direction, quantity, timeline, and any artwork or references you have. We will shape the build from there."
+        description="Send the style, quantity, and timeline. We will take it from there."
         buttonLabel="Start a Project"
         buttonHref={startHatsHref}
       />

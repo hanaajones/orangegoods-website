@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
@@ -88,11 +88,15 @@ function ContactForm({
   submitting,
   onSubmit,
   variant = "standard",
+  projectDefault = "",
+  hiddenFields = {},
 }: {
   submitted: boolean;
   submitting: boolean;
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   variant?: "standard" | "rounded";
+  projectDefault?: string;
+  hiddenFields?: Record<string, string>;
 }) {
   const isRounded = variant === "rounded";
   const formClass = isRounded
@@ -108,6 +112,10 @@ function ContactForm({
 
   return (
     <form onSubmit={onSubmit} className={formClass}>
+      {Object.entries(hiddenFields).map(([name, value]) => (
+        <input key={name} type="hidden" name={name} value={value} />
+      ))}
+
       {submitted ? (
         <div className="border border-[var(--og-orange)] bg-[var(--og-orange)] p-5 text-white">
           <p className="text-sm font-semibold uppercase tracking-[0.22em]">Message Sent</p>
@@ -154,6 +162,7 @@ function ContactForm({
           name="project"
           rows={6}
           required
+          defaultValue={projectDefault}
           placeholder="Please share as much information as possible about the style, design, and products you're looking for. Feel free to include any references."
           className={textareaClass}
         />
@@ -291,6 +300,23 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const product = searchParams.get("product") ?? "";
+  const program = searchParams.get("program") ?? "";
+  const style = searchParams.get("style") ?? "";
+  const styleName = searchParams.get("styleName") ?? "";
+  const quantity = searchParams.get("quantity") ?? "";
+
+  const projectDefault = [
+    product ? `Product: ${product}` : "",
+    program ? `Program: ${program}` : "",
+    style ? `Style: ${style}${styleName ? ` - ${styleName}` : ""}` : "",
+    quantity ? `Quantity: ${quantity}` : "",
+    "",
+  ]
+    .filter(Boolean)
+    .join("\n");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -350,6 +376,14 @@ export default function ContactPage() {
             submitting={submitting}
             onSubmit={handleSubmit}
             variant="rounded"
+            projectDefault={projectDefault}
+            hiddenFields={{
+              ...(product ? { product } : {}),
+              ...(program ? { program } : {}),
+              ...(style ? { style } : {}),
+              ...(styleName ? { styleName } : {}),
+              ...(quantity ? { quantity } : {}),
+            }}
           />
         </section>
       </Reveal>

@@ -8,51 +8,44 @@ type HatBuildItem = {
   description: string;
   image: string;
   imagePosition: string;
-  details: string[];
-  optional?: boolean;
+  badge?: string;
 };
 
 const hatBuildItems: HatBuildItem[] = [
   {
     title: "Full custom hat",
-    description:
-      "Start with the silhouette, crown shape, brim, closure, and overall feel. This is the base that makes the hat yours.",
-    image: "/images/gallery/headwear-reel-life-gear-boat-2.jpg",
-    imagePosition: "center 42%",
-    details: ["Choose the shape", "Choose the structure", "Choose the closure"],
+    description: "Choose the shape, fabric, color, and core brand details.",
+    image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
+    imagePosition: "center 44%",
+    badge: "Included",
   },
   {
-    title: "Choose your front decoration",
-    description:
-      "Front branding sets the tone. Keep it clean with embroidery or add more texture with a patch.",
-    image: "/images/gallery/hat-feb-img_7549.jpg",
-    imagePosition: "center 42%",
-    details: ["Flat embroidery", "3D puff", "Woven or leather patch"],
+    title: "Front decoration",
+    description: "Pick the main hit up front, from embroidery to patches or labels.",
+    image: "/images/gallery/headwear-front-decoration-feeling-shell-labbet.jpg",
+    imagePosition: "center 56%",
+    badge: "Included",
   },
   {
-    title: "Choose your fabric",
-    description:
-      "Fabric changes the whole read of the hat, from washed and broken-in to cleaner and more technical.",
-    image: "/images/gallery/headwear-leaver-her-wilder-img-7385-edit.jpg",
-    imagePosition: "center 46%",
-    details: ["Cotton twill", "Washed denim", "Nylon or ripstop"],
+    title: "Fabric + color",
+    description: "Pick the material, color direction, and overall feel.",
+    image: "/images/gallery/headwear-fabric-color-mg-9423.jpg",
+    imagePosition: "center 50%",
+    badge: "Included",
   },
   {
-    title: "Interior label + finishing",
-    description:
-      "These are the details that make the hat feel finished once someone picks it up.",
-    image: "/images/gallery/hat-og-patch-_mg_5840.jpg",
-    imagePosition: "center 48%",
-    details: ["Interior label", "Interior taping", "Side or back hit"],
+    title: "Interior label",
+    description: "Add the inside label and finishing details.",
+    image: "/images/gallery/headwear-interior-woven-label-img-7684.jpg",
+    imagePosition: "center 60%",
+    badge: "Included",
   },
   {
-    title: "Choose your add-ons",
-    description:
-      "Optional extras that push the hat further once the base, fabric, and front hit are locked.",
-    image: "/images/gallery/hat-og-patch-lifestyle.jpg",
-    imagePosition: "center 52%",
-    details: ["Rope detail", "Side embroidery", "Back hit", "Flag label"],
-    optional: true,
+    title: "Choose add-ons",
+    description: "Optional paid upgrades like interior taping, back or side embroidery, rope, closure labels, or contrast fabric.",
+    image: "/images/gallery/headwear-verve-roasters-dscf3088.jpg",
+    imagePosition: "center 54%",
+    badge: "Add-on charge",
   },
 ];
 
@@ -61,12 +54,13 @@ export function HatBuildAccordion() {
   const activeItem = hatBuildItems[activeIndex];
 
   return (
-    <div className="mt-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-      <div className="rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-white p-5 shadow-[8px_8px_0px_#0B32A0] md:p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-          What&apos;s included
-        </p>
-        <div className="mt-5 grid gap-2.5">
+    <div className="mt-8 grid gap-6 lg:h-[38rem] lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+      <div className="rounded-[1.9rem] border border-[#0B32A0]/15 bg-white px-5 py-5 md:px-6 md:py-6 lg:h-full">
+        <h3 className="text-3xl font-semibold leading-none text-[var(--og-blue)]">
+          Included in every hat
+        </h3>
+
+        <div className="mt-6 border-t border-[#0B32A0]/12">
           {hatBuildItems.map((item, index) => {
             const active = index === activeIndex;
             return (
@@ -74,62 +68,62 @@ export function HatBuildAccordion() {
                 key={item.title}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`rounded-[1.35rem] border px-4 py-4 text-left transition md:px-5 ${
-                  active
-                    ? "border-[#0B32A0] bg-[rgba(255,248,241,0.88)] text-[var(--og-blue)]"
-                    : "border-[#0B32A0]/12 bg-white text-[var(--og-blue)] hover:border-[#FF4200]"
-                }`}
+                className="w-full border-b border-[#0B32A0]/12 text-left transition last:border-b-0"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
+                <div
+                  className={`flex gap-4 transition-all ${
+                    active ? "min-h-[7.5rem] items-start py-5" : "min-h-[6.15rem] items-center py-4"
+                  }`}
+                >
+                  <span
+                    className={`h-10 w-1 shrink-0 rounded-full transition ${
+                      active ? "bg-[var(--og-orange)]" : "bg-transparent"
+                    }`}
+                  />
+
+                  <div className="min-w-0 flex-1 self-center">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-lg font-semibold leading-tight md:text-xl">{item.title}</p>
-                      {item.optional ? (
-                        <span className="rounded-full border border-[#FF4200]/20 bg-[#FFF1E9] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--og-orange)]">
-                          Optional
+                      <p
+                        className={`text-lg font-semibold leading-tight transition md:text-xl ${
+                          active ? "text-[var(--og-orange)]" : "text-[var(--og-blue)]"
+                        }`}
+                      >
+                        {item.title}
+                      </p>
+                      {item.badge ? (
+                        <span
+                          className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                            item.badge === "Included"
+                              ? "border border-[#0B32A0]/18 bg-[#EEF3FF] text-[var(--og-blue)]"
+                              : "border border-[#FF4200]/20 bg-[#FFF1E9] text-[var(--og-orange)]"
+                          }`}
+                        >
+                          {item.badge}
                         </span>
                       ) : null}
                     </div>
-                    <p
-                      className="mt-3 text-sm leading-6 text-[var(--og-muted)]"
-                    >
-                      {item.description}
-                    </p>
+                    {active ? (
+                      <p className="mt-2 max-w-[34rem] text-sm leading-6 text-[var(--og-muted)] md:text-[15px]">
+                        {item.description}
+                      </p>
+                    ) : null}
                   </div>
-                  <span
-                    className={`mt-1 text-xl font-semibold ${active ? "text-[var(--og-blue)]" : "text-[var(--og-orange)]"}`}
-                  >
-                    {active ? "−" : "+"}
-                  </span>
                 </div>
-
-                {active ? (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {item.details.map((detail) => (
-                      <span
-                        key={detail}
-                        className="rounded-full border border-[#0B32A0]/10 bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
-                      >
-                        {detail}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
               </button>
             );
           })}
         </div>
       </div>
 
-      <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-white shadow-[8px_8px_0px_#0B32A0]">
-        <div className="relative aspect-[4/3] bg-[#d9c5ae]">
+      <article className="overflow-hidden rounded-[1.9rem] border border-[#0B32A0]/15 bg-white min-h-[22rem] lg:h-full">
+        <div className="relative h-full min-h-[22rem] bg-[#d9c5ae]">
           <Image
             key={activeItem.image}
             src={activeItem.image}
             alt={activeItem.title}
             fill
             sizes="(min-width: 1024px) 48vw, 100vw"
-            className="object-cover"
+            className="object-cover scale-[1.1]"
             style={{ objectPosition: activeItem.imagePosition }}
           />
         </div>
