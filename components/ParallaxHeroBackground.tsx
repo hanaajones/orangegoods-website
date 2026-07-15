@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 
 export function ParallaxHeroBackground({
   image,
+  inset = "-8%",
   position = "center",
   speed = 0.18,
 }: {
   image: string;
+  inset?: string;
   position?: string;
   speed?: number;
 }) {
@@ -37,8 +39,9 @@ export function ParallaxHeroBackground({
 
   return (
     <div
-      className="absolute inset-[-8%] will-change-transform"
+      className="absolute will-change-transform"
       style={{
+        inset,
         backgroundImage: `url('${image}')`,
         backgroundPosition: position,
         backgroundRepeat: "no-repeat",

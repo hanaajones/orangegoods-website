@@ -627,7 +627,7 @@ export default function QuizPage() {
                 className="mt-5 text-[2.8rem] uppercase leading-[0.9] text-[var(--og-blue)] md:text-[5.1rem]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Here's where
+                Here&apos;s where
                 <br />
                 we would start.
               </h1>
@@ -680,7 +680,7 @@ export default function QuizPage() {
                     className="mt-3 text-[2.2rem] uppercase leading-[0.92] text-[var(--og-blue)] md:text-[3.6rem]"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
-                    Let's narrow it down for you.
+                    Let&apos;s narrow it down for you.
                   </h2>
                   <p className="mt-4 max-w-xl text-base leading-7 text-[#1C1C1C]/68 md:text-lg">
                     If the shortlist is close but not quite there, reach out and we will help you

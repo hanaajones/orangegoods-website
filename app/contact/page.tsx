@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 
@@ -62,9 +63,24 @@ const contactTestimonials = [
     quote: "Our go-to for curated event giveaways and team swag.",
     person: "Robin D.",
     role: "Director, Strategic Initiatives, Stanford Medicine",
-    src: "/images/gallery/apparel-stanford-laptop-sleeve.jpg",
+    src: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",
     alt: "Stanford Medicine branded laptop sleeves by Orange Goods",
   },
+];
+
+const contactFaqs = [
+  [
+    "What's the minimum order?",
+    "Most custom programs start at 100 pieces.",
+  ],
+  [
+    "How does the process work?",
+    "You send the basics, we guide the next steps, and then we build the right path from there.",
+  ],
+  [
+    "Can you help us choose the right product?",
+    "Yes. If you're not sure what makes the most sense yet, we can help narrow it down.",
+  ],
 ];
 
 function ContactForm({
@@ -105,11 +121,8 @@ function ContactForm({
             Let&apos;s get started
           </p>
           <h2 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-4xl">
-            Tell us what you&apos;re making.
+            Start with the basics.
           </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-[#1C1C1C]/68 md:text-base">
-            Share the basics and we&apos;ll guide you toward the right product and next steps.
-          </p>
         </div>
       ) : null}
 
@@ -330,7 +343,7 @@ export default function ContactPage() {
       <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
         <section
           id="contact-form"
-          className="mx-auto grid max-w-6xl gap-10 pt-12 md:pt-14 lg:grid-cols-[1.16fr_0.84fr] lg:items-stretch lg:pt-16"
+          className="mx-auto grid max-w-5xl gap-8 pt-12 md:pt-14 lg:pt-16"
         >
           <ContactForm
             submitted={submitted}
@@ -338,122 +351,182 @@ export default function ContactPage() {
             onSubmit={handleSubmit}
             variant="rounded"
           />
+        </section>
+      </Reveal>
 
-          <div className="flex h-full flex-col gap-6">
-            <div className="rounded-[2rem] border border-[#0B32A0]/10 bg-white/90 p-6 shadow-[0_18px_40px_rgba(11,50,160,0.06)]">
-              <div className="space-y-6">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                    Email
-                  </p>
-                  <a
-                    href="mailto:hello@orangegoods.co"
-                    className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-                  >
-                    hello@orangegoods.co
-                  </a>
-                </div>
+      <Reveal className="pb-16 md:pb-20">
+        <section className="relative isolate overflow-hidden px-4 py-16 md:px-8 md:py-20">
+          <Image
+            src="/images/gallery/contact-socks-mg-2443.jpg"
+            alt=""
+            aria-hidden="true"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectPosition: "center 44%" }}
+          />
+          <div className="absolute inset-0 bg-[#1C1C1C]/28" aria-hidden="true" />
+          <div className="relative z-10 mx-auto max-w-6xl rounded-[2rem] border-[3px] border-[#081E6F] bg-white/90 px-6 py-8 text-[#1C1C1C] md:px-10 md:py-9">
+            <div className="grid gap-5 md:grid-cols-[1.15fr_0.85fr_1fr] md:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  Email
+                </p>
+                <a
+                  href="mailto:hello@orangegoods.co"
+                  className="mt-2 block text-lg font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)] md:text-xl"
+                >
+                  hello@orangegoods.co
+                </a>
+              </div>
 
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                    Text
-                  </p>
-                  <a
-                    href="sms:+12133764663"
-                    className="mt-2 inline-flex min-h-[44px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-6 py-[0.7rem] font-[var(--font-noir-alt)] text-base font-bold uppercase tracking-normal text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
-                  >
-                    Text us
-                  </a>
-                </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  Phone
+                </p>
+                <a
+                  href="sms:+12133764663"
+                  className="mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] font-[var(--font-noir-alt)] text-sm font-bold uppercase tracking-normal text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
+                >
+                  Text us
+                </a>
+              </div>
 
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                    Instagram
-                  </p>
-                  <a
-                    href="https://www.instagram.com/orangegoods"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 block text-2xl font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
-                  >
-                    @orangegoods
-                  </a>
-                </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  Instagram
+                </p>
+                <a
+                  href="https://www.instagram.com/orangegoods"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 block text-lg font-semibold text-[var(--og-blue)] transition hover:text-[var(--og-orange)] md:text-xl"
+                >
+                  @orangegoods
+                </a>
               </div>
             </div>
+          </div>
+        </section>
+      </Reveal>
 
-            <div className="flex flex-1 flex-col rounded-[2rem] border-[3px] border-[#0B32A0]/10 bg-white p-6 shadow-[0_18px_40px_rgba(11,50,160,0.08)] md:p-8">
-              <p className="text-lg leading-8 text-[var(--og-muted)]">
-                Based in South Bay, California
+      <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
+        <section className="mx-auto grid max-w-5xl gap-8">
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Link
+              href="/goods"
+              className="group rounded-[2rem] border-[3px] border-[#0B32A0] bg-white px-6 py-6 transition hover:-translate-y-[3px]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                Browse first
               </p>
+              <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-[2.15rem]">
+                View the goods
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
+                See the categories, materials, and product directions before you fill anything out.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-orange)] transition group-hover:text-[var(--og-blue)]">
+                Browse goods
+                <span aria-hidden="true">+</span>
+              </span>
+            </Link>
+
+            <Link
+              href="/design"
+              className="group rounded-[2rem] border-[3px] border-[#FF4200] bg-[#FFF6EE] px-6 py-6 transition hover:-translate-y-[3px]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-blue)]">
+                Need creative?
+              </p>
+              <h2 className="mt-3 text-3xl leading-none text-[var(--og-orange)] md:text-[2.15rem]">
+                Need design help?
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
+                If you need help with graphics, product direction, or mockups, start there first.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
+                Explore design
+                <span aria-hidden="true">+</span>
+              </span>
+            </Link>
+          </div>
+
+          <div className="flex flex-1 flex-col rounded-[2rem] border border-[#0B32A0]/10 bg-white/92 p-6 md:p-8">
+              <div className="grid gap-6 rounded-[1.75rem] border border-[#0B32A0]/12 bg-[linear-gradient(135deg,#0B2A73_0%,#163E8F_52%,#1C4AA3_100%)] p-5 text-white md:grid-cols-[1.08fr_0.92fr] md:items-center md:p-6">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#FF9A63]">
+                    Based in South Bay, California
+                  </p>
+                  <h2 className="mt-3 text-3xl leading-none text-white md:text-4xl">
+                    Hands-on process.
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-white/78 md:text-lg">
+                    Orange Goods is a Southern California merch studio that likes being close to
+                    the build. Smaller-batch thinking, sharper product taste, and real involvement
+                    in the process are still a big part of how the team works.
+                  </p>
+                </div>
+
+                <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] border-[3px] border-white/18 bg-[#D9D0C1] md:min-h-[17rem]">
+                  <Image
+                    src="/images/gallery/design-hero-ocean-ocean-hoodie.jpg"
+                    alt="Orange Goods coastal California product photo"
+                    fill
+                    sizes="(min-width: 768px) 32vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
               <div className="mt-6 rounded-[1.5rem] border border-[#0B32A0]/10 bg-[var(--og-warm-grey)] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
                   Why Orange Goods
                 </p>
-                <div className="mt-4 space-y-3">
-                  {[
-                    "Real people, not a call center.",
-                    "Thoughtful guidance on product, decoration, and next steps.",
-                    "In-house design help when you need it.",
-                    "Fast replies within one business day.",
-                  ].map((item) => (
-                    <div key={item} className="flex items-start gap-3">
-                      <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#FF4200]/30 bg-white text-[#FF4200] shadow-[0_4px_10px_rgba(255,66,0,0.08)]">
-                        <svg
-                          viewBox="0 0 16 16"
-                          aria-hidden="true"
-                          className="h-3.5 w-3.5"
-                          fill="none"
-                        >
-                          <path
-                            d="M3.5 8.25L6.5 11.25L12.5 5.25"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
-                      <p className="text-base leading-7 text-[#1C1C1C] md:text-lg">{item}</p>
-                    </div>
-                  ))}
-                </div>
+                <h3 className="mt-3 text-2xl leading-none text-[var(--og-blue)] md:text-[2rem]">
+                  One team. Less vendor juggling.
+                </h3>
+                <p className="mt-4 max-w-2xl text-base leading-7 text-[#1C1C1C] md:text-lg">
+                  Product guidance, decoration, and clear follow-through all stay in one place.
+                </p>
               </div>
 
-              <div className="mt-6 rounded-[1.5rem] border border-[#0B32A0]/10 bg-white p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                  FAQ
-                </p>
-                <div className="mt-4 space-y-4">
-                  {[
-                    [
-                      "What's the minimum order?",
-                      "Most custom programs start at 100 pieces.",
-                    ],
-                    [
-                      "How does the process work?",
-                      "You send the basics, we guide the next steps, and then we build the right path from there.",
-                    ],
-                    [
-                      "Can you help us choose the right product?",
-                      "Yes. If you're not sure what makes the most sense yet, we can help narrow it down.",
-                    ],
-                  ].map(([question, answer]) => (
-                    <div key={question} className="border-t border-[#0B32A0]/10 pt-4 first:border-t-0 first:pt-0">
-                      <p className="text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]">
-                        {question}
-                      </p>
-                      <p className="mt-2 text-sm leading-6 text-[#1C1C1C]/72">{answer}</p>
-                    </div>
-                  ))}
-                </div>
-                <Link
-                  href="/faq"
-                  className="mt-5 inline-flex text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-tangerine)] transition hover:text-[var(--og-orange)]"
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 pb-20 md:px-8 md:pb-24 lg:px-12">
+        <section className="mx-auto max-w-4xl">
+          <div>
+            <h2 className="text-4xl uppercase leading-none text-[var(--og-orange)] md:text-5xl">
+              FAQ
+            </h2>
+            <div className="mt-5 grid gap-3">
+              {contactFaqs.map(([question, answer]) => (
+                <details
+                  key={question}
+                  className="group rounded-[1.25rem] border border-[#0B32A0]/14 bg-white px-5 py-5 transition open:border-[#FF4200]/45"
                 >
-                  View full FAQ
-                </Link>
-              </div>
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-base font-semibold leading-7 text-[#0B32A0] marker:hidden md:text-[1.05rem]">
+                    <span>{question}</span>
+                    <span className="mt-0.5 text-2xl leading-none text-[var(--og-orange)] transition group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-4 border-t border-[#0B32A0]/10 pt-4 text-[0.98rem] leading-7 text-[var(--og-muted)]">
+                    {answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+            <div className="mt-5 flex justify-end">
+              <Link
+                href="/faq"
+                className="inline-flex text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-tangerine)] transition hover:text-[var(--og-orange)]"
+              >
+                View full FAQ
+              </Link>
             </div>
           </div>
         </section>
@@ -461,7 +534,7 @@ export default function ContactPage() {
 
       <Reveal className="px-4 pb-20 md:px-8 md:pb-24 lg:px-12">
         <section className="mx-auto max-w-6xl">
-          <div className="overflow-hidden rounded-[2rem] border border-[#0B32A0]/12 bg-white shadow-[0_18px_40px_rgba(11,50,160,0.06)]">
+          <div className="overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] bg-white shadow-[0_18px_40px_rgba(11,50,160,0.06)]">
             <div className="grid gap-0 lg:min-h-[30rem] lg:grid-cols-[0.74fr_1.26fr]">
               <div className="flex flex-col justify-between border-b border-[#0B32A0]/10 bg-[var(--og-warm-grey)] p-7 lg:border-b-0 lg:border-r lg:p-10">
                 <div>
@@ -472,13 +545,14 @@ export default function ContactPage() {
                     What it&apos;s like to work with us.
                   </h2>
                   <p className="mt-3 max-w-md text-sm leading-6 text-[#1C1C1C]/68 md:text-base">
-                    A little reassurance before you hit send.
+                    Real notes from clients on the product, the communication, and how the whole
+                    process feels from start to finish.
                   </p>
                 </div>
 
                 <div className="mt-8">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1C1C1C]/48">
-                    Selected brands
+                    What our clients say
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {contactTestimonials.map((item, index) => (

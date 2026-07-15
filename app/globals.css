@@ -164,6 +164,37 @@ img {
   color: var(--og-blue);
 }
 
+.insight-content--noir-sample h2 {
+  margin-top: 2.5rem;
+  font-family: var(--font-noir-alt);
+  font-size: clamp(1.3rem, 1.95vw, 1.72rem);
+  font-weight: 600;
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--og-blue);
+}
+
+.insight-content--noir-sample h3 {
+  margin-top: 2rem;
+  font-family: var(--font-noir-alt);
+  font-size: clamp(0.98rem, 1.35vw, 1.18rem);
+  font-weight: 600;
+  line-height: 1.12;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--og-blue);
+}
+
+.insight-content--noir-sample figcaption {
+  margin-top: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(28, 28, 28, 0.48);
+}
+
 .insight-content p {
   font-family: var(--font-body);
 }

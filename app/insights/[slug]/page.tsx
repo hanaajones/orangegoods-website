@@ -39,8 +39,7 @@ export default async function InsightPostPage({
 
   return (
     <main className="pb-24 md:pb-0">
-      {/* Hero — photo replaces blue header */}
-      <section className="relative h-[480px] w-full overflow-hidden md:h-[560px]">
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         {post.image && (
           <Image
             src={post.image}
@@ -53,12 +52,13 @@ export default async function InsightPostPage({
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-12 md:px-12 md:pb-16">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+        <div className="absolute inset-0 bg-[#1C1C1C]/36" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/62 via-[#1C1C1C]/42 to-[#1C1C1C]/18" />
+        <div className="relative mx-auto max-w-6xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
             {post.category}
           </p>
-          <h1 className="mt-4 text-5xl leading-none text-white md:text-7xl lg:text-8xl">
+          <h1 className="mt-5 max-w-4xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
             {post.title}
           </h1>
         </div>
@@ -73,7 +73,7 @@ export default async function InsightPostPage({
           </div>
 
           <div
-            className="insight-content mt-10 text-lg leading-8 text-[var(--og-off-black)]"
+            className="mt-10 text-lg leading-8 text-[var(--og-off-black)] insight-content insight-content--noir-sample"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>
@@ -84,28 +84,30 @@ export default async function InsightPostPage({
         const others = posts.filter(p => p.slug !== post.slug);
         return others.length > 0 ? (
           <section className="border-t border-[#1C1C1C]/8 bg-white px-4 py-12 md:px-8 lg:px-12">
-            <h2 className="mb-6 text-center text-xs font-normal uppercase tracking-[0.2em] text-[#1C1C1C]/40">Explore More</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2">
+            <h2 className="font-noir-alt mb-6 text-center text-sm font-semibold uppercase tracking-[0.18em] text-[#1C1C1C]/48">
+              Explore More
+            </h2>
+            <div className="flex gap-5 overflow-x-auto overflow-y-visible pb-2 pt-3">
               {others.map(p => (
                 <Link
                   key={p.slug}
                   href={`/insights/${p.slug}`}
-                  className="group w-72 shrink-0 flex flex-col overflow-hidden rounded-[1.5rem] border border-[#1C1C1C]/8 bg-[#F5F0E8] transition hover:border-[#0B32A0]"
+                  className="group w-80 shrink-0 flex flex-col overflow-hidden rounded-[1.65rem] border-[3px] border-[#0B32A0] bg-white transition hover:-translate-y-0.5 hover:shadow-[7px_7px_0px_#0B32A0] md:w-[24rem]"
                 >
                   {p.image && (
-                    <div className="relative aspect-[16/9] w-full overflow-hidden">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden">
                       <Image
                         src={p.image}
                         alt={p.title}
                         fill
-                        sizes="288px"
+                        sizes="(max-width: 768px) 320px, 384px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                   )}
-                  <div className="flex flex-col gap-1.5 p-4">
+                  <div className="flex flex-col gap-2 p-5">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">{p.category}</p>
-                    <p className="text-sm font-semibold text-[#1C1C1C] leading-5">{p.title}</p>
+                    <p className="text-base font-semibold text-[#1C1C1C] leading-6">{p.title}</p>
                     <p className="text-xs text-[#1C1C1C]/40">{p.readTime}</p>
                   </div>
                 </Link>
@@ -118,10 +120,10 @@ export default async function InsightPostPage({
       <section className="bg-[var(--og-orange)] px-4 py-14 text-white md:px-8 lg:px-12">
         <div className="mx-auto flex max-w-5xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <h2 className="text-4xl leading-none text-white md:text-6xl">
-            READY TO MAKE SOMETHING?
+            READY TO START A CUSTOM ORDER?
           </h2>
           <Link href="/contact" className="btn-og-white">
-            Start a Project
+            Start a Custom Order
           </Link>
         </div>
       </section>
