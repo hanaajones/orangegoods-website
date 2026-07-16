@@ -461,6 +461,78 @@ const featuredCaseStudies = [
       "Kept the work useful as both Orange Goods merch and a reference for client headwear decisions.",
     ],
   },
+  {
+    slug: "aether-films-embroidered-cap",
+    client: "Aether Films",
+    category: "Embroidered headwear",
+    headline: "A film-brand cap with a sharp, technical read.",
+    summary:
+      "Aether Films needed the mark to stay crisp on a dark navy cap without turning the product into a loud giveaway. The finished direction keeps the embroidery clean, the blank structured, and the palette restrained enough to feel like production-crew merch people would keep wearing.",
+    image: "/images/gallery/hat-feb-img_7674.jpg",
+    secondaryImage: "/images/gallery/hat-feb-img_7672.jpg",
+    imagePosition: "center 48%",
+    secondaryPosition: "center 44%",
+    stats: ["Navy cap", "Front embroidery", "Clean contrast"],
+    details: [
+      "Used white embroidery against a dark cap so the wordmark stays legible without adding extra color.",
+      "Kept the decoration centered and compact so the product reads polished from normal wearing distance.",
+      "Let close product photography show stitch quality, fabric texture, and crown shape clearly.",
+    ],
+  },
+  {
+    slug: "lightcraft-woven-label-cap",
+    client: "Lightcraft",
+    category: "Woven-label headwear",
+    headline: "A black cap made more finished through the label.",
+    summary:
+      "Lightcraft's cap shows how a small woven label can give a simple black blank more perceived value. The white label keeps the brand readable, while the stitched border and clean placement make the product feel more like a finished retail piece than a basic promo hat.",
+    image: "/images/gallery/hat-feb-img_7680.jpg",
+    secondaryImage: "/images/gallery/hat-feb-img_7681.jpg",
+    imagePosition: "center 48%",
+    secondaryPosition: "center 48%",
+    stats: ["Woven label", "Black cap", "Retail detail"],
+    details: [
+      "Used a woven-label application where a flat embroidery hit would have felt less dimensional.",
+      "Kept the black-and-white system tight so the label has contrast without making the cap busy.",
+      "Showed both exterior and interior detail so buyers can judge construction, label scale, and finish.",
+    ],
+  },
+  {
+    slug: "fillday-pink-dad-hat",
+    client: "Fillday",
+    category: "Dad hats",
+    headline: "A small embroidered mark carried by color.",
+    summary:
+      "Fillday's pink cap works because the blank color does most of the personality work. The embroidery stays intentionally light, which lets the hat feel casual, wearable, and brand-specific without needing a bigger graphic.",
+    image: "/images/gallery/hat-feb-img_7689.jpg",
+    secondaryImage: "/images/gallery/hat-feb-img_7687.jpg",
+    imagePosition: "center 48%",
+    secondaryPosition: "center 48%",
+    stats: ["Dad hat", "Tone-led blank", "Small embroidery"],
+    details: [
+      "Used a washed pink blank to give the product a point of view before decoration.",
+      "Kept the embroidery small and airy so it feels like apparel branding, not a badge.",
+      "Relied on simple product angles to show color, shape, and logo scale without overexplaining.",
+    ],
+  },
+  {
+    slug: "orange-goods-rope-trucker-sample",
+    client: "Orange Goods Rope Sample",
+    category: "Custom trucker hats",
+    headline: "A sample cap that stacks patch, rope, and trim details.",
+    summary:
+      "This Orange Goods sample is useful because it shows how a hat can hold multiple custom decisions without losing the product. The patch, rope, side mark, mesh, contrast bands, and fabric choice all work together as a reference for more built-out headwear programs.",
+    image: "/images/gallery/hat-feb-img_7728.jpg",
+    secondaryImage: "/images/gallery/hat-feb-img_7709.jpg",
+    imagePosition: "center 50%",
+    secondaryPosition: "center 50%",
+    stats: ["Rope detail", "Patch front", "Mesh trucker"],
+    details: [
+      "Layered multiple custom details while keeping the cap family readable as one product direction.",
+      "Used the rope and trim as color accents instead of making every panel compete for attention.",
+      "Included front, side, back, and interior proof so the sample can guide client headwear decisions.",
+    ],
+  },
 ];
 
 const proofCards = [
@@ -665,6 +737,38 @@ const projectSnapshots = [
     image: "/images/gallery/hat-og-big-bear-dscf7571.jpg",
     position: "center 48%",
   },
+  {
+    client: "Aether Films",
+    category: "Embroidered caps",
+    title: "A technical wordmark made crisp on navy headwear.",
+    body: "The product stays restrained: dark blank, white embroidery, clean scale, and enough close-up proof to judge stitch quality.",
+    image: "/images/gallery/hat-feb-img_7674.jpg",
+    position: "center 48%",
+  },
+  {
+    client: "Lightcraft",
+    category: "Woven-label caps",
+    title: "A black cap finished with a clean label detail.",
+    body: "A small woven label gives the hat more structure and perceived value than a flat logo placement alone.",
+    image: "/images/gallery/hat-feb-img_7680.jpg",
+    position: "center 48%",
+  },
+  {
+    client: "Fillday",
+    category: "Dad hats",
+    title: "A color-led cap where the mark stays intentionally quiet.",
+    body: "The washed pink blank carries the personality while the embroidery stays small, simple, and wearable.",
+    image: "/images/gallery/hat-feb-img_7689.jpg",
+    position: "center 48%",
+  },
+  {
+    client: "Orange Goods Rope Sample",
+    category: "Custom truckers",
+    title: "A built-out sample cap with patch, rope, and trim details.",
+    body: "The sample shows how multiple custom headwear decisions can stack together without making the finished hat feel overworked.",
+    image: "/images/gallery/hat-feb-img_7728.jpg",
+    position: "center 50%",
+  },
 ];
 
 function SectionHeader({
@@ -757,7 +861,7 @@ export default function CaseStudiesPage() {
           <div className="mt-9 grid gap-7">
             {featuredCaseStudies.map((study, index) => (
               <article
-                key={study.client}
+                key={study.slug}
                 className="grid overflow-hidden rounded-[2rem] border border-[#0B32A0]/14 bg-white shadow-[0_24px_70px_rgba(8,30,111,0.08)] lg:grid-cols-[1.05fr_0.95fr]"
               >
                 <div

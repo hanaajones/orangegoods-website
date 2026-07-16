@@ -1143,6 +1143,212 @@ const caseStudies: CaseStudy[] = [
       },
     ],
   },
+  {
+    slug: "aether-films-embroidered-cap",
+    client: "Aether Films",
+    category: "Embroidered headwear",
+    headline: "A film-brand cap with a sharp, technical read.",
+    deck:
+      "Aether Films is a clean headwear proof point: dark navy blank, bright front embroidery, and a wordmark that has to stay crisp at small scale.",
+    heroImage: "/images/gallery/hat-feb-img_7674.jpg",
+    heroPosition: "center 48%",
+    accentImage: "/images/gallery/hat-feb-img_7672.jpg",
+    accentPosition: "center 44%",
+    stats: ["Navy cap", "Front embroidery", "Structured shape", "Clean contrast"],
+    overview:
+      "The strongest move is restraint. The cap does not need extra colors or oversized artwork because the contrast between the navy blank and white embroidery already gives the brand a precise, production-ready read.",
+    focus: [
+      {
+        title: "Logo legibility",
+        body: "A technical wordmark needs enough stitch clarity and contrast to hold up without becoming thick or fuzzy.",
+      },
+      {
+        title: "Blank discipline",
+        body: "The structured navy cap keeps the product polished and lets the embroidery stay the hero.",
+      },
+      {
+        title: "Close proof",
+        body: "Tight photography makes fabric texture, stitch density, and crown shape easier to judge before a reorder.",
+      },
+    ],
+    gallery: [
+      {
+        image: "/images/gallery/hat-feb-img_7674.jpg",
+        title: "Front embroidery",
+        detail: "Logo scale",
+        position: "center 48%",
+        className: "md:col-span-2",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7672.jpg",
+        title: "Cap profile",
+        detail: "Structured blank",
+        position: "center 44%",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7676.jpg",
+        title: "Side angle",
+        detail: "Product shape",
+        position: "center 48%",
+      },
+    ],
+  },
+  {
+    slug: "lightcraft-woven-label-cap",
+    client: "Lightcraft",
+    category: "Woven-label headwear",
+    headline: "A black cap made more finished through the label.",
+    deck:
+      "Lightcraft's cap shows how a woven label can turn a simple black blank into something with more material presence and retail polish.",
+    heroImage: "/images/gallery/hat-feb-img_7680.jpg",
+    heroPosition: "center 48%",
+    accentImage: "/images/gallery/hat-feb-img_7681.jpg",
+    accentPosition: "center 48%",
+    stats: ["Woven label", "Black cap", "Label border", "Interior proof"],
+    overview:
+      "The label is the product decision. It adds dimension, a clean white contrast field, and a stitched edge that makes the cap feel more finished than a basic flat logo treatment.",
+    focus: [
+      {
+        title: "Label over flat print",
+        body: "The woven label gives the mark structure and a more tactile finish than a simple direct decoration would.",
+      },
+      {
+        title: "Simple palette",
+        body: "Black and white keeps the cap sharp while letting the label carry all of the brand read.",
+      },
+      {
+        title: "Construction proof",
+        body: "Interior and angle photos show the cap as a finished product, not just a front-facing logo crop.",
+      },
+    ],
+    gallery: [
+      {
+        image: "/images/gallery/hat-feb-img_7680.jpg",
+        title: "Woven label",
+        detail: "Front detail",
+        position: "center 48%",
+        className: "md:col-span-2",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7679.jpg",
+        title: "Full cap",
+        detail: "Black blank",
+        position: "center 48%",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7681.jpg",
+        title: "Interior detail",
+        detail: "Finished construction",
+        position: "center 48%",
+      },
+    ],
+  },
+  {
+    slug: "fillday-pink-dad-hat",
+    client: "Fillday",
+    category: "Dad hats",
+    headline: "A small embroidered mark carried by color.",
+    deck:
+      "Fillday's dad hat is a useful reminder that the blank color can do the heavy lifting when the brand mark is meant to stay quiet.",
+    heroImage: "/images/gallery/hat-feb-img_7689.jpg",
+    heroPosition: "center 48%",
+    accentImage: "/images/gallery/hat-feb-img_7687.jpg",
+    accentPosition: "center 48%",
+    stats: ["Dad hat", "Washed pink blank", "Small embroidery", "Casual fit"],
+    overview:
+      "The product works because it does not overdecorate. A bright, lived-in cap color creates the emotional read, while the small white embroidery keeps the brand present without making the hat feel like a giveaway.",
+    focus: [
+      {
+        title: "Color as the concept",
+        body: "The washed pink blank gives the cap its point of view before the logo has to do anything.",
+      },
+      {
+        title: "Quiet brand mark",
+        body: "The embroidery stays small and airy so the hat feels wearable in everyday rotation.",
+      },
+      {
+        title: "Simple product proof",
+        body: "The photos make color, curve, and logo scale easy to understand without needing lifestyle context.",
+      },
+    ],
+    gallery: [
+      {
+        image: "/images/gallery/hat-feb-img_7689.jpg",
+        title: "Dad hat front",
+        detail: "Small embroidery",
+        position: "center 48%",
+        className: "md:col-span-2",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7687.jpg",
+        title: "Product angle",
+        detail: "Washed color",
+        position: "center 48%",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7688.jpg",
+        title: "Side read",
+        detail: "Casual blank",
+        position: "center 48%",
+      },
+    ],
+  },
+  {
+    slug: "orange-goods-rope-trucker-sample",
+    client: "Orange Goods Rope Sample",
+    category: "Custom trucker hats",
+    headline: "A sample cap that stacks patch, rope, and trim details.",
+    deck:
+      "This Orange Goods sample gives clients a concrete reference for a more built-out custom trucker: patch, rope, trim, mesh, contrast hits, and interior finishing.",
+    heroImage: "/images/gallery/hat-feb-img_7728.jpg",
+    heroPosition: "center 50%",
+    accentImage: "/images/gallery/hat-feb-img_7709.jpg",
+    accentPosition: "center 50%",
+    stats: ["Patch front", "Rope detail", "Mesh trucker", "Interior finishing"],
+    overview:
+      "The sample works because the custom details are layered with discipline. The front patch gives the main read, while the rope, trim, mesh, side mark, and interior details support the product instead of fighting it.",
+    focus: [
+      {
+        title: "Layered customization",
+        body: "The cap shows how several upgrades can work together when the color system and hierarchy stay controlled.",
+      },
+      {
+        title: "Rope and trim as accents",
+        body: "Blue and white details add movement without turning every panel into a separate design moment.",
+      },
+      {
+        title: "Reference value",
+        body: "Front, side, back, and interior photos make the sample useful for client conversations about headwear options.",
+      },
+    ],
+    gallery: [
+      {
+        image: "/images/gallery/hat-feb-img_7728.jpg",
+        title: "Rope trucker",
+        detail: "Patch front",
+        position: "center 50%",
+        className: "md:col-span-2",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7693.jpg",
+        title: "Patch and rope",
+        detail: "Front detail",
+        position: "center 48%",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7709.jpg",
+        title: "Back trim",
+        detail: "Mesh detail",
+        position: "center 50%",
+      },
+      {
+        image: "/images/gallery/hat-feb-img_7719.jpg",
+        title: "Interior finishing",
+        detail: "Inside tape",
+        position: "center 50%",
+      },
+    ],
+  },
 ];
 
 function getCaseStudy(slug: string) {

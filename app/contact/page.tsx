@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -295,7 +295,7 @@ function ContactForm({
   );
 }
 
-export default function ContactPage() {
+function ContactPageContent() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
@@ -663,5 +663,13 @@ export default function ContactPage() {
         </section>
       </Reveal>
     </main>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense>
+      <ContactPageContent />
+    </Suspense>
   );
 }

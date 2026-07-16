@@ -12,6 +12,318 @@ export type InsightPost = {
 
 export const posts: InsightPost[] = [
   {
+    slug: "custom-hat-decoration-methods-guide",
+    title: "Custom Hat Decoration Methods: Embroidery, Patches, Labels, and Print",
+    excerpt:
+      "The decoration method changes how a custom hat feels, photographs, wears, and reorders. Here is how to choose the right one.",
+    date: "July 15, 2026",
+    category: "Headwear",
+    readTime: "8 min read",
+    image: "/images/gallery/headwear-flat-embroidery-mg-6827.jpg",
+    cropPosition: "center 52%",
+    content: `
+      <p>The decoration method is one of the biggest decisions in a custom hat project. The same logo can feel completely different as flat embroidery, 3D embroidery, a woven patch, a leather patch, a printed patch, a chain stitch mark, or a small woven label. The method affects texture, cost, minimums, artwork limits, durability, and the way the hat photographs.</p>
+      <p>A good decoration choice starts with the hat, the artwork, and the role the product needs to play.</p>
+
+      <figure>
+        <img src="/images/gallery/headwear-woven-patch-mg-6859.jpg" alt="Custom hat with a woven patch decoration" />
+        <figcaption>Patches can give artwork a clean frame and make the front of the hat feel more finished.</figcaption>
+      </figure>
+      <h2>Use embroidery when the mark should feel built in</h2>
+      <p>Flat embroidery is the workhorse for custom hats. It feels integrated, durable, and familiar. It works well for wordmarks, simple icons, small front marks, side hits, back embroidery, and tonal details. The limitation is detail. Tiny type, thin lines, and gradients can get lost once they become thread.</p>
+      <p>3D embroidery adds height and impact, but it needs bold shapes. It is better for shorter marks and simple logos than delicate artwork.</p>
+
+      <h2>Use patches when the artwork needs structure</h2>
+      <p>Woven, embroidered, printed, felt, leather, chenille, and PVC patches all create a more defined badge. A patch can hold more detail than direct embroidery, create contrast against the cap fabric, and make a simple blank feel more like a product.</p>
+      <p>The patch type should match the brand. Woven patches feel clean and detailed. Felt and chenille can feel collegiate or nostalgic. Leather can feel more restrained. PVC can feel durable and outdoor-ready.</p>
+
+      <h2>Use labels and small hits to finish the hat</h2>
+      <p>Woven labels, closure labels, interior labels, side embroidery, back embroidery, brim embroidery, and branded taping can turn a simple front-logo hat into a full custom product. These details do not need to be loud. They work because they make the hat feel considered from more than one angle.</p>
+
+      <h2>The takeaway</h2>
+      <p>The best hat decoration method is the one that makes the artwork, blank, and use case feel aligned. Orange Goods helps teams compare embroidery, patches, labels, print, and add-ons so the finished hat looks intentional instead of default.</p>
+    `,
+  },
+  {
+    slug: "custom-hat-add-ons-that-make-a-run-feel-premium",
+    title: "Custom Hat Add-Ons That Make a Run Feel Premium",
+    excerpt:
+      "Interior taping, side hits, back embroidery, brim rope, closure labels, and contrast fabric can make a hat feel like a real product.",
+    date: "July 15, 2026",
+    category: "Headwear",
+    readTime: "7 min read",
+    image: "/images/gallery/headwear-seam-tape-img-7639.jpg",
+    cropPosition: "center 50%",
+    content: `
+      <p>Most people judge a custom hat from the front first, but the details around the sides, back, brim, closure, and inside can be what makes the final piece feel premium. Add-ons are not about adding noise. They are about choosing the right few details to support the brand and make the hat feel finished.</p>
+      <p>The strongest custom hats usually have one clear front treatment and one or two supporting details.</p>
+
+      <figure>
+        <img src="/images/gallery/headwear-brim-rope-img-7693.jpg" alt="Custom hat with a brim rope add-on" />
+        <figcaption>A small add-on can change the whole read of the hat when it fits the silhouette.</figcaption>
+      </figure>
+      <h2>Interior details create a private brand moment</h2>
+      <p>Branded taping and interior woven labels are useful when a brand wants the hat to feel custom beyond the front logo. The wearer sees those details every time they pick up the hat, and product photos can show that the piece was built with more care than a stock imprint.</p>
+
+      <h2>Side and back hits help the hat photograph from more angles</h2>
+      <p>Side embroidery, back embroidery, and closure labels give the hat more story in photos. That matters for ecommerce pages, launch posts, retail displays, and case studies. If the front is clean, a small side or back detail can add depth without making the hat feel overbranded.</p>
+
+      <h2>Rope, brim, and contrast fabric change the silhouette</h2>
+      <p>A brim rope can make a cap feel more coastal, golf, outdoor, or vintage depending on color and shape. Brim embroidery can add a strong detail when used carefully. Contrast fabric can help a collection feel custom before decoration is even applied.</p>
+
+      <h2>The takeaway</h2>
+      <p>Add-ons work best when they are chosen with restraint. Orange Goods helps brands decide which hat details are worth adding, which ones to skip, and how to keep the final product clean enough to wear often.</p>
+    `,
+  },
+  {
+    slug: "full-custom-hats-vs-ready-made-hats",
+    title: "Full Custom Hats vs Ready-Made Hats: Which Path Fits the Project?",
+    excerpt:
+      "Full custom hats and ready-made hats both have a place. The right choice depends on timing, quantity, budget, and how specific the final product needs to be.",
+    date: "July 15, 2026",
+    category: "Headwear",
+    readTime: "7 min read",
+    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+    cropPosition: "center 50%",
+    content: `
+      <p>Not every hat project needs the same production path. Some teams need a polished run quickly using a strong ready-made blank. Others need a full custom hat with specific fabric, color, decoration, closure, interior label, and add-ons. Both paths can work when the expectations are clear.</p>
+      <p>The important part is choosing the path that matches the project, not forcing every hat into the same process.</p>
+
+      <figure>
+        <img src="/images/gallery/headwear-fabric-color-mg-9423.jpg" alt="Fabric and color materials for a full custom hat project" />
+        <figcaption>Full custom gives more control over materials, color, and construction details.</figcaption>
+      </figure>
+      <h2>Choose ready-made when speed and simplicity matter</h2>
+      <p>Ready-made hats are best when the blank already fits the brand. A strong dad hat, trucker, bucket, rope cap, or performance cap can move faster and keep the project simpler. The main decisions become blank, color, decoration method, placement, and quantity.</p>
+
+      <h2>Choose full custom when the details need control</h2>
+      <p>Full custom hats make sense when the brand needs a specific silhouette, fabric, color, panel setup, closure, taping, label, brim rope, or decoration combination. This path is strongest for retail, launch collections, hospitality programs, and brands that want the hat to feel like their own product from the start.</p>
+
+      <h2>Use the launch date as a filter</h2>
+      <p>If the goods need to support an event, retail drop, or campaign, timing should guide the decision early. A ready-made path may be smarter for a near-term deadline. A full custom path may be worth planning further out if the product needs to carry more of the brand story.</p>
+
+      <h2>The takeaway</h2>
+      <p>Ready-made hats solve speed and simplicity. Full custom hats solve specificity. Orange Goods helps teams compare both paths honestly so the final hat fits the schedule, budget, and launch plan.</p>
+    `,
+  },
+  {
+    slug: "custom-tote-bags-for-events-retail-and-travel",
+    title: "Custom Tote Bags for Events, Retail, and Travel",
+    excerpt:
+      "A good tote is more than a logo carrier. It can organize the handoff, support a merch kit, and keep working after the event.",
+    date: "July 15, 2026",
+    category: "Bags",
+    readTime: "7 min read",
+    image: "/images/gallery/bags-boatsetter-dscf3148.jpg",
+    cropPosition: "center 48%",
+    content: `
+      <p>Custom tote bags are popular because they are useful, but usefulness alone does not make a tote good. The size, fabric, handle length, print placement, color, and role inside the merch program all matter. A tote can be a retail product, an event bag, a beach carryall, a gift kit, or the piece that holds the rest of the assortment together.</p>
+      <p>The best tote starts with what it needs to carry.</p>
+
+      <figure>
+        <img src="/images/gallery/bags-boatsetter-dscf3238.jpg" alt="Custom tote bag detail for a coastal merch program" />
+        <figcaption>Totes work best when the format matches the real use case.</figcaption>
+      </figure>
+      <h2>Choose the structure around the job</h2>
+      <p>A light cotton tote can work for simple giveaways. A heavier canvas tote feels more retail-ready. A gusseted tote holds more and stands better. A zipper, pocket, lining, or special handle can make sense when the bag needs to travel or carry higher-value goods.</p>
+
+      <h2>Make the decoration fit the bag</h2>
+      <p>Large prints can look great on totes because the surface area is generous. Smaller woven labels or restrained marks can feel more premium. If the tote is part of a kit, the decoration should work with the other items instead of competing with every product inside.</p>
+
+      <h2>Plan the packing moment</h2>
+      <p>For events, a tote often becomes the first container the recipient touches. It can hold a towel, hat, bottle, insert card, apparel, or smaller accessories. That means the tote is also part of operations: packing, staging, table setup, and leftover management.</p>
+
+      <h2>The takeaway</h2>
+      <p>Custom totes work when they have a clear job. Orange Goods helps brands choose the right tote body, decoration, and packing plan so the bag feels useful on day one and keeps moving after the launch.</p>
+    `,
+  },
+  {
+    slug: "custom-apparel-blanks-people-would-actually-buy",
+    title: "Custom Apparel Blanks People Would Actually Buy",
+    excerpt:
+      "The blank sets the ceiling for a custom apparel project. Fit, handfeel, color, and weight need to be right before decoration can do its job.",
+    date: "July 15, 2026",
+    category: "Apparel",
+    readTime: "8 min read",
+    image: "/images/gallery/apparel-blank-people-would-buy-dscf4886.jpg",
+    cropPosition: "center 48%",
+    content: `
+      <p>Custom apparel often fails before the artwork is added. If the blank feels cheap, fits poorly, or uses a color nobody wants to wear, the decoration has to work too hard. A strong tee, hoodie, crewneck, jacket, or fleece should feel like something the audience would buy without the logo.</p>
+      <p>The blank is not a background decision. It is the product.</p>
+
+      <figure>
+        <img src="/images/gallery/apparel-upgrade-the-handfeel-img-1172.jpg" alt="Close-up of apparel fabric and handfeel" />
+        <figcaption>Handfeel changes how the recipient values the piece before they even read the graphic.</figcaption>
+      </figure>
+      <h2>Start with fit and audience</h2>
+      <p>A boxy retail tee, heavyweight hoodie, cropped fleece, relaxed crewneck, performance layer, and standard promo tee all say different things. The right blank depends on who will wear it and where. Employee uniforms, retail drops, event giveaways, and VIP gifts should not all use the same body by default.</p>
+
+      <h2>Use color to make the piece wearable</h2>
+      <p>Brand colors can be useful, but the garment color should still make sense in a closet. Washed neutrals, deep colors, natural tones, and carefully chosen accents often sell better than forcing the main brand color across the entire piece.</p>
+
+      <h2>Match decoration to the fabric</h2>
+      <p>Screen print, embroidery, applique, woven labels, puff print, and transfers all behave differently on different fabric weights and surfaces. A heavy hoodie can carry a bigger print or patch. A lighter tee may need a softer print. A jacket may call for embroidery or a label instead of a large graphic.</p>
+
+      <h2>The takeaway</h2>
+      <p>Better apparel starts with a better blank. Orange Goods helps brands choose garments with the right fit, handfeel, color, and decoration method so the final piece has a real chance of being worn.</p>
+    `,
+  },
+  {
+    slug: "custom-drinkware-for-launches-retail-and-gifting",
+    title: "Custom Drinkware for Launches, Retail, and Gifting",
+    excerpt:
+      "Mugs, bottles, tumblers, and glassware work best when the shape, decoration, packaging, and daily use all line up.",
+    date: "July 15, 2026",
+    category: "Drinkware",
+    readTime: "7 min read",
+    image: "/images/gallery/drinkware-verve-grateful-dead-mug-034.jpg",
+    cropPosition: "center 48%",
+    content: `
+      <p>Custom drinkware can feel like a default merch item, but the good projects are more specific. A mug for a coffee roaster, a bottle for a wellness brand, a glass for a restaurant, or a tumbler for an event all need different product decisions. Shape, capacity, material, decoration, packaging, and shipping risk all affect the final result.</p>
+      <p>The strongest drinkware feels connected to a real daily routine.</p>
+
+      <figure>
+        <img src="/images/gallery/drinkware-goodoonya1.jpg" alt="Custom branded bottle used for a merch program" />
+        <figcaption>Drinkware should match the way the recipient will actually use it.</figcaption>
+      </figure>
+      <h2>Pick the form around the moment</h2>
+      <p>A ceramic mug supports coffee, retail shelves, office gifts, and cafe routines. A glass bottle can feel clean and premium for wellness or food brands. A tumbler works for travel and events. A camp mug, stadium cup, or specialty glass can make sense when the setting gives it a reason.</p>
+
+      <h2>Respect the decoration limits</h2>
+      <p>Drinkware is curved, handled, washed, packed, and shipped. Print area, wrap limits, color behavior, dishwasher guidance, and decoration durability should be confirmed before the artwork is approved. A beautiful flat layout still has to work on the actual vessel.</p>
+
+      <h2>Plan packaging before production wraps</h2>
+      <p>Drinkware often needs protective packaging, retail boxes, inserts, dividers, or carton labeling. If the goods are shipping to homes, creators, event venues, or multiple offices, the packout needs to be planned early enough to avoid damage and confusion.</p>
+
+      <h2>The takeaway</h2>
+      <p>Custom drinkware works when the product feels useful and the production details are handled carefully. Orange Goods helps teams choose the right vessel, tune the decoration, and prepare the packaging so the goods arrive ready for the launch.</p>
+    `,
+  },
+  {
+    slug: "custom-towels-for-hospitality-events-and-coastal-brands",
+    title: "Custom Towels for Hospitality, Events, and Coastal Brands",
+    excerpt:
+      "A custom towel gives a brand scale, utility, and a strong photo moment when the weight, artwork, edge detail, and use case are planned together.",
+    date: "July 15, 2026",
+    category: "Accessories",
+    readTime: "7 min read",
+    image: "/images/gallery/accessories-boatsetter-towel-2025-06-30-22-57-55.jpg",
+    cropPosition: "center 48%",
+    content: `
+      <p>Custom towels can be more than a beach giveaway. For hotels, coastal brands, fitness studios, beverage events, pool programs, and travel launches, a towel can provide scale, utility, color, and a strong photo surface. The difference between a weak towel and a strong one usually comes down to material and intent.</p>
+      <p>A towel has to feel good in use, not just look good flat.</p>
+
+      <figure>
+        <img src="/images/gallery/accessories-apteka-towel.jpg" alt="Custom towel photographed with a bold full-size design" />
+        <figcaption>Towels give artwork room to breathe, but the product quality still carries the value.</figcaption>
+      </figure>
+      <h2>Choose the towel around the setting</h2>
+      <p>A pool towel, beach towel, gym towel, golf towel, rally towel, and hospitality towel all have different needs. Size, weight, absorbency, softness, edge finish, and packing space should be chosen around how the towel will be used and stored.</p>
+
+      <h2>Use scale carefully</h2>
+      <p>Towels offer a large canvas, which can be useful for bold patterns, full-field graphics, place-based artwork, or big brand color. But bigger is not always better. A cleaner border, restrained logo, woven label, or pattern system can feel more premium than a giant mark.</p>
+
+      <h2>Think about display and handoff</h2>
+      <p>Towels can be rolled, folded, stacked, tagged, banded, or packed into a larger kit. The presentation matters because towels take up space. A strong fold, label, belly band, or carton plan can make the receiving and retail experience much easier.</p>
+
+      <h2>The takeaway</h2>
+      <p>Custom towels work when they are designed as real soft goods. Orange Goods helps brands choose the right weight, size, decoration, and presentation so the towel feels useful, photogenic, and worth keeping.</p>
+    `,
+  },
+  {
+    slug: "how-to-plan-a-merch-launch-photo-set",
+    title: "How to Plan a Merch Launch Photo Set",
+    excerpt:
+      "Finished merch should be built to photograph well for launch pages, social posts, emails, case studies, retail, and sales decks.",
+    date: "July 15, 2026",
+    category: "Launch",
+    readTime: "8 min read",
+    image: "/images/gallery/goods-hero-misc-dscf4876.jpg",
+    cropPosition: "center 50%",
+    content: `
+      <p>A merch launch does not end when the goods arrive. The product still has to show up on the website, in emails, on social, in sales decks, in retail displays, and in future case studies. If the goods are not designed and shot with those moments in mind, the marketing team has to work harder later.</p>
+      <p>The best launch content starts before production, not after the boxes land.</p>
+
+      <figure>
+        <img src="/images/gallery/design-built-production-dscf1585.jpg" alt="Production and design materials prepared for a merch launch" />
+        <figcaption>Good launch content shows the product, the details, and the reason the goods exist.</figcaption>
+      </figure>
+      <h2>Shot list the product before it arrives</h2>
+      <p>Plan for hero shots, detail shots, scale shots, lifestyle shots, packaging, and any process photos that help explain the product. A hat may need front, side, back, interior, closure, and on-body images. Apparel may need front, back, detail, fit, folded, and lifestyle shots.</p>
+
+      <h2>Make the product readable fast</h2>
+      <p>Launch images need to show the viewer what the item is quickly. Texture, decoration, color, and scale should be visible. Dark, cropped, or overly atmospheric images can work for mood, but the launch still needs clear product evidence.</p>
+
+      <h2>Capture the details that support selling</h2>
+      <p>Interior labels, woven patches, screen print texture, embroidery depth, towel edges, tote handles, sock packaging, drinkware print, and carton details can all help a product feel more real. These images also help sales conversations later because they show what is possible.</p>
+
+      <h2>The takeaway</h2>
+      <p>Merch that photographs well creates more value after production. Orange Goods helps teams think through the product, decoration, packaging, and photo needs together so launch content has real material to work with.</p>
+    `,
+  },
+  {
+    slug: "custom-socks-as-a-small-but-strong-merch-drop",
+    title: "Custom Socks as a Small but Strong Merch Drop",
+    excerpt:
+      "Socks can be easy to size, easy to gift, and easy to merchandise when the pattern, color, knit limits, and packaging are handled well.",
+    date: "July 15, 2026",
+    category: "Socks",
+    readTime: "6 min read",
+    image: "/images/gallery/socks-verve-gd.jpg",
+    cropPosition: "center 48%",
+    content: `
+      <p>Custom socks are small, but they can do a lot. They avoid most apparel sizing friction, travel well in mailers, work as retail add-ons, and give brands room for color and pattern without asking someone to wear a giant logo. A good sock drop can support coffee shops, breweries, outdoor brands, hotels, universities, events, and holiday gifting.</p>
+      <p>The best sock projects respect the knit instead of treating the sock like a tiny poster.</p>
+
+      <figure>
+        <img src="/images/gallery/socks-firestone-_mg_0147.jpg" alt="Custom socks with bold color and packaged merch appeal" />
+        <figcaption>Socks work well when color and pattern are simple enough to knit cleanly.</figcaption>
+      </figure>
+      <h2>Design for the structure</h2>
+      <p>Fine lines, small type, gradients, and detailed illustrations can struggle in knit. Stripes, icons, blocks, repeat patterns, mascots, simple wordmarks, and strong color contrast usually translate better. The design should still look good when stretched and worn.</p>
+
+      <h2>Use packaging to create retail value</h2>
+      <p>A belly band, hang tag, header card, or small boxed set can make socks feel more giftable. Packaging also gives the brand room to explain a collaboration, campaign, or size without forcing that information into the sock design.</p>
+
+      <h2>Pair socks with a larger assortment</h2>
+      <p>Socks can stand alone, but they also pair naturally with hats, mugs, totes, tees, blankets, and kits. They are useful as an add-on because they add color, texture, and giftability without taking over the full budget.</p>
+
+      <h2>The takeaway</h2>
+      <p>Custom socks are strongest when they are treated like real product. Orange Goods helps brands simplify artwork for knit, choose the right sock body, and finish the drop with packaging that makes the small item feel complete.</p>
+    `,
+  },
+  {
+    slug: "verve-coffee-merch-system-case-study",
+    title: "Project Spotlight: Verve Coffee Merch System",
+    excerpt:
+      "Coffee merch gets stronger when hats, tees, mugs, socks, and details all feel connected to the same retail world.",
+    date: "July 15, 2026",
+    category: "Case Study",
+    readTime: "7 min read",
+    image: "/images/gallery/headwear-verve-roasters-dscf3088.jpg",
+    cropPosition: "center 42%",
+    content: `
+      <p>Verve Coffee is a useful merch reference because the products show how a coffee brand can move beyond a single logo item. Hats, tees, mugs, socks, and detail-driven pieces can all support the same retail world when the colors, materials, and decoration feel connected.</p>
+      <p>For cafes and roasters, the goal is not just to make merch. The goal is to create goods that belong near the coffee, on the shelf, in the daily routine, and in the photos that carry the brand online.</p>
+
+      <figure>
+        <img src="/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_040.jpg" alt="Verve Coffee graphic tee photographed as part of a merch program" />
+        <figcaption>A strong coffee merch system can move across apparel, headwear, drinkware, and small goods.</figcaption>
+      </figure>
+      <h2>Use the cafe routine as the product filter</h2>
+      <p>Mugs and drinkware connect directly to the coffee ritual. Hats and tees connect to daily wear. Socks and small goods can become giftable add-ons. The mix works when every item has a clear place in the customer experience instead of feeling like extra inventory.</p>
+
+      <h2>Let details make the goods feel retail-ready</h2>
+      <p>Embroidery, interior taping, soft apparel blanks, printed graphics, knit patterns, and considered product photography all help the goods feel finished. Small decisions matter because customers are comparing the merch to everything else they could buy, not just to other branded giveaways.</p>
+
+      <h2>Build content into the assortment</h2>
+      <p>A coffee merch drop needs images for the shop, email, social, and future sales conversations. A collection with texture, color, detail, and multiple product types gives the brand more to show than a flat mockup or one folded tee.</p>
+
+      <h2>The takeaway</h2>
+      <p>Verve-style coffee merch works because the goods feel like part of a larger retail system. Orange Goods helps cafes and roasters choose products, decoration methods, and launch content that make the collection feel natural to the brand.</p>
+    `,
+  },
+  {
     slug: "restaurant-merch-that-actually-sells",
     title: "Restaurant Merch That Actually Sells",
     excerpt:

@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
@@ -22,7 +23,7 @@ function formatEmbStyle(value: string | null) {
     .join(" ");
 }
 
-export default function CartPage() {
+function CartPageContent() {
   const searchParams = useSearchParams();
   const style = searchParams.get("style");
   const color = searchParams.get("color");
@@ -167,5 +168,13 @@ export default function CartPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function CartPage() {
+  return (
+    <Suspense>
+      <CartPageContent />
+    </Suspense>
   );
 }
