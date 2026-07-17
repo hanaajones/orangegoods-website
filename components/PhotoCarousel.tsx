@@ -2,26 +2,67 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const photos = [
+type TestimonialPhoto = {
+  company: string;
+  quote: string;
+  person: string;
+  role: string;
+  logo: string;
+  src: string;
+  alt: string;
+  logoClass?: string;
+  preserveLogoDetail?: boolean;
+};
+
+const photos: TestimonialPhoto[] = [
   {
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
-    alt: "Custom headwear by Orange Goods",
+    company: "High Street Deli",
+    quote: "The OG team just gets it.",
+    person: "Doobie C.",
+    role: "Founder, Owner",
+    logo: "/logos/clients/high-street.png",
+    src: "/images/testimonials/high-street-deli-rotated-fullwidth.jpg",
+    alt: "High Street Deli branded merch spread by Orange Goods",
+    logoClass: "scale-110 md:scale-125",
   },
   {
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-    alt: "Custom apparel by Orange Goods",
-  },
-  {
+    company: "Stanford Medicine",
+    quote: "Our go-to for curated event giveaways and team swag",
+    person: "Robin D.",
+    role: "Director, Strategic Initiatives",
+    logo: "/logos/clients/stanford-medicine.svg",
     src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
-    alt: "Custom drinkware by Orange Goods",
+    alt: "Stanford Medicine branded backpacks by Orange Goods",
+    preserveLogoDetail: true,
   },
   {
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
-    alt: "Branded bags by Orange Goods",
+    company: "Synergy Kombucha",
+    quote: "OG has come through for us for years.",
+    person: "Noah C.",
+    role: "Graphic Designer",
+    logo: "/logos/clients/synergy-kombucha.svg",
+    src: "/images/testimonials/synergy-kombucha-shirt-press-fullwidth.jpg",
+    alt: "Synergy Kombucha branded shirt being pressed by Orange Goods",
+    logoClass: "scale-125 md:scale-[1.35]",
   },
   {
-    src: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
-    alt: "Branded accessories by Orange Goods",
+    company: "Verve Coffee",
+    quote: "The swag partner that does it all.",
+    person: "Sophia P.",
+    role: "Marketing Ops Manager",
+    logo: "/logos/clients/verve-coffee.png",
+    src: "/images/gallery/drinkware-verve-milk-glass-mug.jpg",
+    alt: "Verve Coffee branded drinkware by Orange Goods",
+    logoClass: "scale-125 md:scale-[1.35]",
+  },
+  {
+    company: "Red Bull",
+    quote: "They turned a loose idea into gear our team was excited to wear.",
+    person: "Joe K.",
+    role: "Field Marketing Manager",
+    logo: "/logos/clients/red-bull.svg",
+    src: "/images/testimonials/red-bull-girl-widescreen.jpg",
+    alt: "Red Bull branded jacket by Orange Goods",
   },
 ];
 
@@ -47,11 +88,15 @@ export function PhotoCarousel() {
   }
 
   return (
-    <div className="relative w-full overflow-hidden" style={{ height: "clamp(320px, 55vw, 720px)" }}>
+    <section
+      className="relative w-full overflow-hidden"
+      style={{ height: "clamp(360px, 55vw, 720px)" }}
+      aria-label="Client testimonials"
+    >
       {/* Photos */}
       {photos.map((photo, i) => (
         <div
-          key={photo.src}
+          key={`${photo.company}-${photo.src}`}
           className="absolute inset-0 transition-opacity duration-700"
           style={{ opacity: i === current ? 1 : 0 }}
         >
@@ -61,11 +106,40 @@ export function PhotoCarousel() {
             alt={photo.alt}
             className="h-full w-full object-cover"
           />
+          <div className="absolute inset-0 bg-[#1C1C1C]/10" />
         </div>
       ))}
 
+      <div className="absolute inset-0 z-10 flex items-center justify-center px-5 text-center text-white">
+        <div className="mx-auto flex max-w-4xl flex-col items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={photos[current].logo}
+            alt={photos[current].company}
+            className={`mx-auto h-[5.6rem] max-w-[22.4rem] object-contain md:h-[7rem] md:max-w-[28rem] ${
+              photos[current].preserveLogoDetail
+                ? "drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+                : "brightness-0 invert"
+            } ${photos[current].logoClass ?? ""}`}
+          />
+          <div className="mt-4 flex h-[7.25rem] items-center justify-center md:mt-5 md:h-[11rem] lg:h-[12.5rem]">
+            <blockquote className="font-display mx-auto max-w-4xl text-center text-[2rem] font-normal uppercase leading-none tracking-normal text-white md:text-[3.4rem] lg:text-[4.2rem]">
+              &ldquo;{photos[current].quote}&rdquo;
+            </blockquote>
+          </div>
+          <div className="mt-3 min-h-[3.75rem] md:mt-4">
+            <p className="font-noir-alt text-sm font-bold uppercase tracking-[0.14em] text-white md:text-base">
+              {photos[current].person}
+            </p>
+            <p className="font-noir-alt mt-1 text-sm font-medium text-white/72 md:text-base">
+              {photos[current].role}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Dot navigation */}
-      <div className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-5 left-1/2 z-20 flex -translate-x-1/2 gap-2">
         {photos.map((_, i) => (
           <button
             key={i}
@@ -81,18 +155,18 @@ export function PhotoCarousel() {
       {/* Prev / Next arrows */}
       <button
         onClick={() => go((current - 1 + photos.length) % photos.length)}
-        className="absolute left-4 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50"
+        className="absolute left-9 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
         aria-label="Previous photo"
       >
         ‹
       </button>
       <button
         onClick={() => go((current + 1) % photos.length)}
-        className="absolute right-4 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition hover:bg-black/50"
+        className="absolute right-9 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
         aria-label="Next photo"
       >
         ›
       </button>
-    </div>
+    </section>
   );
 }

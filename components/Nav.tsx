@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
@@ -41,6 +42,23 @@ const aboutLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
+const aboutFeatureCards = [
+  {
+    title: "Who We Are",
+    detail: "Southern California team, product-first thinking",
+    href: "/about",
+    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+    position: "center 48%",
+  },
+  {
+    title: "Common Questions",
+    detail: "How we work, minimums, timing, and what to expect",
+    href: "/faq",
+    image: "/images/gallery/hat-og-patch-lifestyle.jpg",
+    position: "center 38%",
+  },
+];
+
 function MenuLink({
   href,
   children,
@@ -70,10 +88,12 @@ function MenuLink({
 }
 
 export function Nav() {
+  const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
   const [hoveredProduct, setHoveredProduct] = useState(products[0].image);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
+  const hideMobileBottomCtas = pathname === "/quiz" || pathname.startsWith("/quiz/");
 
   const scheduleClose = () => {
     if (closeTimer[0]) clearTimeout(closeTimer[0]);
@@ -185,7 +205,7 @@ export function Nav() {
                 </svg>
               </Link>
               <Link
-                href="/build"
+                href="/cart"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
                 aria-label="Cart"
               >
@@ -227,7 +247,7 @@ export function Nav() {
                     />
                   </div>
                   {/* Col 2: Products */}
-                  <div>
+                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Products
                     </p>
@@ -241,7 +261,7 @@ export function Nav() {
                     </div>
                   </div>
                   {/* Col 3: How It Works */}
-                  <div>
+                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       How It Works
                     </p>
@@ -262,8 +282,8 @@ export function Nav() {
                       ))}
                     </div>
                   </div>
-                  {/* Col 3: Explore */}
-                  <div>
+                  {/* Col 4: Explore */}
+                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Explore
                     </p>
@@ -333,16 +353,54 @@ export function Nav() {
               ) : null}
 
               {activeMenu === "about" ? (
-                <div className="ml-auto max-w-sm">
-                  <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                    About Orange Goods
-                  </p>
-                  <div className="grid gap-1">
-                    {aboutLinks.map((item) => (
-                      <MenuLink key={item.label} href={item.href}>
-                        {item.label}
-                      </MenuLink>
-                    ))}
+                <div className="grid gap-4 md:grid-cols-[1fr_1fr_0.9fr]">
+                  {aboutFeatureCards.map((card) => (
+                    <Link
+                      key={card.title}
+                      href={card.href}
+                      className="group relative block min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae] transition hover:-translate-y-0.5 hover:border-[#FF4200]"
+                    >
+                      <Image
+                        src={card.image}
+                        alt={card.title}
+                        fill
+                        sizes="(min-width: 768px) 22vw, 100vw"
+                        className="object-cover transition duration-500 group-hover:scale-105"
+                        style={{ objectPosition: card.position }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/82 via-[#1C1C1C]/24 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-[var(--og-tangerine)]">
+                          About
+                        </p>
+                        <h3
+                          className="mt-2 text-[2rem] uppercase leading-[0.92]"
+                          style={{ fontFamily: "var(--font-display)" }}
+                        >
+                          {card.title}
+                        </h3>
+                        <p className="mt-2 max-w-xs text-sm leading-5 text-white/80">
+                          {card.detail}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+
+                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 p-4">
+                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                      About Orange Goods
+                    </p>
+                    <div className="grid gap-1">
+                      {aboutLinks.map((item) => (
+                        <MenuLink key={item.label} href={item.href}>
+                          {item.label}
+                        </MenuLink>
+                      ))}
+                    </div>
+                    <p className="px-3 pt-4 text-sm leading-6 text-[#1C1C1C]/58">
+                      Learn how we think about product, design, process, and the kind of goods
+                      people actually keep.
+                    </p>
                   </div>
                 </div>
               ) : null}
@@ -401,22 +459,24 @@ export function Nav() {
         </div>
       ) : null}
 
-      <div className={`fixed inset-x-0 bottom-0 z-30 grid ${showBuildOnlineNav ? "grid-cols-2" : "grid-cols-1"} gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden`}>
-        <Link
-          href={startProjectHref}
-          className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
-        >
-          Start a Project
-        </Link>
-        {showBuildOnlineNav ? (
+      {!hideMobileBottomCtas ? (
+        <div className={`fixed inset-x-0 bottom-0 z-30 grid ${showBuildOnlineNav ? "grid-cols-2" : "grid-cols-1"} gap-2 border-t border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] p-3 backdrop-blur md:hidden`}>
           <Link
-            href={buildOnlineHref}
-            className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
+            href={startProjectHref}
+            className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.12em] text-white"
           >
-            Build Online
+            Start a Project
           </Link>
-        ) : null}
-      </div>
+          {showBuildOnlineNav ? (
+            <Link
+              href={buildOnlineHref}
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
+            >
+              Build Online
+            </Link>
+          ) : null}
+        </div>
+      ) : null}
     </>
   );
 }

@@ -1,7 +1,9 @@
 .DS_Store
 .next
+.next-*
+.next_*
+.next.*
 node_modules
 npm-debug.log*
-node_modules
-.next
 tsconfig.tsbuildinfo
+test-results/

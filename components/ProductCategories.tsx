@@ -6,62 +6,62 @@ import { Reveal } from "@/components/Reveal";
 
 const categories = [
   {
-    name: "Headwear",
-    description: "Structured caps, beanies, dad hats, bucket hats — built from brim to button",
-    href: "/goods/hats",
+    name: "Influencer Gifting",
+    description: "Launch-ready kits that feel considered, camera-friendly, and worth posting.",
+    href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
   },
   {
-    name: "Apparel",
-    description: "Tees, polos, hoodies, flannels, outerwear — built for your brand, not the clearance bin",
+    name: "Corporate Gifting",
+    description: "Premium gifts for clients, partners, and internal teams that people actually keep.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
   },
   {
-    name: "Drinkware",
-    description: "Bottles, mugs, tumblers — the merch people actually use every single day",
+    name: "Corporate Events",
+    description: "Event merch, welcome goods, and leave-behinds built for the full experience.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
   },
   {
-    name: "Bags + Totes",
-    description: "Totes, backpacks, duffels — branded carry that doesn't look like a trade-show giveaway",
+    name: "Team Gear",
+    description: "Polished apparel, headwear, and everyday goods for teams that want to look aligned.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif",
   },
   {
-    name: "Accessories",
-    description: "Socks, patches, keychains, lanyards, and more — the details that tie a brand kit together",
+    name: "Brand Activations",
+    description: "Giveaways, pop-up moments, and event goods that make the brand feel tangible.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
   },
   {
-    name: "Outerwear",
-    description: "Jackets, coaches, flannels, quarter-zips — premium layering with your brand built in",
+    name: "Retail",
+    description: "Merch collections with the quality, details, and finish to sit on a real shelf.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
   },
   {
-    name: "Socks",
-    description: "Custom knit socks — the most talked-about giveaway item we make. Everyone takes them",
+    name: "Launch Kits",
+    description: "Coordinated product drops, press kits, and campaign boxes built around the moment.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif",
   },
   {
-    name: "Packaging + Kits",
-    description: "Retail-ready boxes, tissue, tags, and full gift kits. The unbox moment, done right",
+    name: "Employee Onboarding",
+    description: "Starter kits and team goods that make day one feel organized and intentional.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2024/07/OrangeGoods_ABoutUs_5-1.jpg",
   },
   {
-    name: "Labels",
-    description: "Woven labels, heat transfers, hang tags, neck labels — the inside details that matter",
+    name: "Trade Shows",
+    description: "Booth-ready goods, uniforms, handouts, and follow-up gifts that feel useful.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2024/07/Namebrands_2.jpg",
   },
   {
-    name: "Technical Apparel",
-    description: "Performance fabrics, athletic cuts, moisture-wicking — made to move with your brand",
+    name: "VIP Mailers",
+    description: "High-touch mailers for customers, press, creators, and key accounts.",
     href: "/goods",
     image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif",
   },
@@ -152,12 +152,12 @@ export function ProductCategories() {
         {/* Header */}
         <div className="mb-10 px-4 text-center md:px-8 lg:px-12">
           <h2
-            className="font-noir-alt text-3xl font-semibold normal-case tracking-normal text-[#FF4200] md:text-5xl"
+            className="font-display text-3xl font-normal uppercase leading-none tracking-normal text-[#FF4200] md:text-5xl"
           >
-            We handle it all
+            We Handle It All
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
-            Unlimited capabilities — from hats to hoodies, drinkware to kits, and everything in between
+            Merch for launches, events, teams, gifting, activations, retail, and the moments in between.
           </p>
         </div>
 

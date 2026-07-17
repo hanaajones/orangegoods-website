@@ -23,29 +23,6 @@ export const homeStats: Stat[] = [
   { value: "15+", label: "Product categories" },
 ];
 
-export const twoPathsTitle = "How do you want to start?";
-
-export const twoPaths = [
-  {
-    title: "Talk to Us",
-    description:
-      "Tell us what you need. We'll figure out the right product, production method, and timeline — and send you a quote. Best for custom projects, large orders, or anything with specific requirements.",
-    details: ["Custom products", "Full-service", "Any complexity"],
-    href: startProjectHref,
-    label: "Start a Conversation",
-    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
-  },
-  {
-    title: "Build Online",
-    description:
-      "Pick a product, pick a style, upload your logo. We'll send you a quote same day. Best if you know what you want and want to move fast.",
-    details: ["Fast quotes", "Instant start", "Easy process"],
-    href: buildOnlineHref,
-    label: "Start Building",
-    image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
-  },
-];
-
 export const homeGallery = [
   {
     title: "Factory Direct Headwear",
@@ -99,51 +76,147 @@ export const testimonials = [
     quote: "Our go-to for curated event giveaways and team swag",
     name: "Robin D",
     role: "Director, Strategic Initiatives, Stanford Medicine",
-    logo: "https://orangegoods.co/wp-content/uploads/2024/07/SM_Web_vert_LG.png",
+    logo: "/logos/clients/stanford-medicine.svg",
   },
   {
-    quote: "Truly happy with the turnout",
-    name: "Sophia P",
-    role: "Marketing Ops Manager, Verve Coffee",
-    logo: "https://orangegoods.co/wp-content/uploads/2025/04/OrangeGoodsClients_Website_2025_VerveCoffee.avif",
+    quote: "Client testimonial placeholder.",
+    name: "First L",
+    role: "Job Title",
+    logo: "/logos/clients/verve-coffee.png",
   },
 ];
 
 export const logos = [
   {
-    name: "Google",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/02/OrangeGoodsClients_Website_2024_Google.png",
-  },
-  {
     name: "Stanford Medicine",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/SM_Web_vert_LG.png",
+    image: "/logos/clients/stanford-medicine.svg",
   },
   {
-    name: "805 Firestone Walker",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/10/OrangeGoodsClients_Website_2024-36.png",
+    name: "Red Bull",
+    image: "/logos/clients/red-bull.svg",
+  },
+  {
+    name: "Supergoop!",
+    image: "/logos/clients/supergoop.png",
+  },
+  {
+    name: "Synergy Kombucha",
+    image: "/logos/clients/synergy-kombucha.svg",
+  },
+  {
+    name: "GoodOnya",
+    image: "/logos/clients/goodonya.svg",
+  },
+  {
+    name: "Islands Restaurant",
+    image: "/logos/clients/islands-restaurant.svg",
+  },
+  {
+    name: "Oak Essentials",
+    image: "/logos/clients/oak-essentials.svg",
+  },
+  {
+    name: "Pura Vida",
+    image: "/logos/clients/pura-vida.png",
+  },
+  {
+    name: "Google",
+    image: "/logos/clients/google.png",
   },
   {
     name: "Verve Coffee",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/04/OrangeGoodsClients_Website_2025_VerveCoffee.avif",
+    image: "/logos/clients/verve-coffee.png",
+  },
+  {
+    name: "Primally Pure",
+    image: "/logos/clients/primally-pure.svg",
+  },
+  {
+    name: "Vive Organic",
+    image: "/logos/clients/vive-organic.png",
+  },
+  {
+    name: "Hobie",
+    image: "/logos/clients/hobie.png",
+  },
+  {
+    name: "High Street",
+    image: "/logos/clients/high-street.png",
+  },
+  {
+    name: "Jarritos",
+    image: "/logos/clients/jarritos.png",
+  },
+  {
+    name: "Channel Islands",
+    image: "/logos/clients/channel-islands.png",
+  },
+  {
+    name: "Eye Glove",
+    image: "/logos/clients/eye-glove.png",
+  },
+  {
+    name: "Mountain Valley",
+    image: "/logos/clients/mountain-valley.png",
+  },
+  {
+    name: "Nitro Circus",
+    image: "/logos/clients/nitro-circus.png",
+  },
+  {
+    name: "Field Day Coffee",
+    image: "/logos/clients/field-day.png",
+  },
+  {
+    name: "Fantastic",
+    image: "/logos/clients/fantastic.png",
+  },
+  {
+    name: "South Congress Hotel",
+    image: "/logos/clients/south-congress-hotel.png",
+  },
+  {
+    name: "Crooked Hammock",
+    image: "/logos/clients/crooked-hammock.png",
+  },
+  {
+    name: "Thrasher",
+    image: "/logos/clients/thrasher.png",
+  },
+  {
+    name: "805 Firestone Walker",
+    image: "/logos/clients/firestone-805.png",
+  },
+  {
+    name: "Firestone Walker",
+    image: "/logos/clients/firestone-walker.png",
+  },
+  {
+    name: "Marriott",
+    image: "/logos/clients/marriott.png",
+  },
+  {
+    name: "Outerknown",
+    image: "/logos/clients/outerknown.png",
+  },
+  {
+    name: "Microsoft",
+    image: "/logos/clients/microsoft.png",
   },
 ];
 
 export const homeProcess = [
   {
-    title: "Tell us what you need",
-    body: "Product, quantity, timeline, budget — that's it. No deck required. We respond same day with a real answer from a real person.",
+    title: "Bring us an idea",
+    body: "Send a logo, a rough direction, or just the goal. If the artwork is not there yet, we can help shape it.",
   },
   {
-    title: "Free mockups, zero guessing",
-    body: "We design it, send mockups, and iterate until it's right. Nothing goes to production without your sign-off. No extra charges for revisions.",
+    title: "Choose the right goods",
+    body: "We narrow the products, quantity, budget, and timeline before anything goes into production.",
   },
   {
-    title: "We build it. You receive it.",
-    body: "Factory-direct production, 6–8 weeks start to finish. Full tracking, free shipping, and one contact from first email to final delivery.",
+    title: "We get it moving",
+    body: "Once the direction is approved, we handle quoting, mockups, production, and delivery.",
   },
 ];
 
@@ -157,9 +230,10 @@ export const hatAnchorLinks = [
   { label: "Overview", href: "#overview" },
   { label: "Pricing", href: "#pricing" },
   { label: "Styles", href: "#styles" },
-  { label: "Materials", href: "#materials" },
-  { label: "Decoration", href: "#decoration" },
-  { label: "Gallery", href: "#gallery" },
+  { label: "Decoration", href: "#decoration-methods" },
+  { label: "Fabric", href: "#fabric" },
+  { label: "Closure", href: "#closure" },
+  { label: "Add-ons", href: "#addons" },
   { label: "Process", href: "#process" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -280,37 +354,5 @@ export const hatFaqs = [
   {
     question: "What does pricing include?",
     answer: "Sampling, production, and standard shipping to one US address",
-  },
-];
-
-export const hatGallery = [
-  {
-    title: "Factory Direct Headwear",
-    image: hatImage,
-  },
-  {
-    title: "Graphic Design",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/GraphicDesign-271x300.jpg",
-  },
-  {
-    title: "Embroidery",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/Embroidery_2-271x300.jpg",
-  },
-  {
-    title: "Packaging",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2025/01/Packaging_Stanford-271x300.jpg",
-  },
-  {
-    title: "Drinkware",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/Drinkware-1-271x300.jpg",
-  },
-  {
-    title: "Retail Finishing",
-    image:
-      "https://orangegoods.co/wp-content/uploads/2024/07/HangTag-271x300.jpg",
   },
 ];

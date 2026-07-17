@@ -12,6 +12,21 @@ type PathItem = {
 };
 
 export function TwoPaths({ items, title }: { items: PathItem[]; title: string }) {
+  const startOptions = [
+    {
+      title: "Bring us an idea",
+      copy: "You have a launch, event, team, or product direction. We help shape the right merch mix, source it, produce it, and get it delivered.",
+    },
+    {
+      title: "Send us your logo",
+      copy: "You know the product and need a clean quote fast. Pick the item, send the artwork, and we will confirm the best production route.",
+    },
+    {
+      title: "Not sure yet",
+      copy: "If you are still deciding what to make, we can narrow it down by use case, budget, timeline, quantity, and the kind of impression you want to leave.",
+    },
+  ];
+
   const configs = [
     {
       bg: "bg-[#FF4200]",
@@ -44,8 +59,41 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
   ];
 
   return (
-    <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+    <Reveal className="px-4 pb-8 pt-[100px] md:px-8 lg:px-12">
       <section id="paths" className="mx-auto max-w-6xl">
+        <div className="mb-6 overflow-hidden rounded-[2rem] border-[3px] border-[#081E6F] bg-white shadow-[5px_5px_0px_#0B32A0] md:mb-8">
+          <div className="grid gap-0 md:grid-cols-[0.9fr_1.35fr]">
+            <div className="relative isolate flex min-h-[12rem] flex-col justify-center overflow-hidden bg-[#081E6F] px-6 py-8 text-white md:px-8">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/gallery/ideas-quality-goods-towel-500gsm.jpg"
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 -z-10 h-full w-full object-cover"
+                style={{ objectPosition: "center 52%" }}
+              />
+              <p className="font-noir-alt text-xs font-bold uppercase tracking-[0.24em] text-white/68">
+                Full-service support
+              </p>
+              <h3 className="font-display mt-4 max-w-md text-[2.75rem] font-normal uppercase leading-none tracking-normal text-[#FF4200] md:text-[3.5rem]">
+                Ideas into quality goods
+              </h3>
+            </div>
+            <div className="relative flex items-center px-6 py-8 md:px-8 md:py-12 lg:px-10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/graphics/stickers/quality-goods.svg"
+                alt=""
+                aria-hidden="true"
+                className="quality-guaranteed-scroll-sticker pointer-events-none absolute right-4 top-4 z-10 hidden w-20 select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] md:block lg:right-6 lg:top-5 lg:w-24"
+              />
+              <p className="font-noir-alt max-w-3xl pr-0 text-base font-medium leading-8 text-[#1C1C1C]/70 md:pr-28 md:text-lg md:leading-9 lg:pr-32">
+                We partner with teams and businesses of all sizes to turn early ideas into finished merch people actually want to keep. Whether you have polished artwork, a rough direction, or just a deadline and a goal, we can help shape the product, handle design and production, and keep the process clear while holding every piece to our quality standards.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <h2
           className="mb-8 text-center text-3xl font-extrabold uppercase leading-tight text-[#FF4200] md:text-5xl"
           style={{ fontFamily: "var(--font-display)" }}
@@ -115,6 +163,24 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
               </article>
             );
           })}
+        </div>
+
+        <div className="mt-5 rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-white p-4 shadow-[5px_5px_0px_#0B32A0] md:p-6">
+          <div className="grid gap-3 md:grid-cols-3">
+            {startOptions.map((option) => (
+              <article
+                key={option.title}
+                className="rounded-xl bg-[#F3EFE7] p-5 text-[#081E6F]"
+              >
+                <h3 className="font-display text-2xl font-normal uppercase leading-none tracking-normal text-[#0B32A0] md:text-[1.7rem]">
+                  {option.title}
+                </h3>
+                <p className="font-noir-alt mt-3 text-sm font-medium leading-6 text-[#1C1C1C]/70">
+                  {option.copy}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
 
         {/* Education note */}

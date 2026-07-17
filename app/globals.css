@@ -116,6 +116,15 @@ a {
   text-decoration: none;
 }
 
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -164,6 +173,37 @@ img {
   color: var(--og-blue);
 }
 
+.insight-content--noir-sample h2 {
+  margin-top: 2.5rem;
+  font-family: var(--font-noir-alt);
+  font-size: clamp(1.3rem, 1.95vw, 1.72rem);
+  font-weight: 600;
+  line-height: 1.02;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--og-blue);
+}
+
+.insight-content--noir-sample h3 {
+  margin-top: 2rem;
+  font-family: var(--font-noir-alt);
+  font-size: clamp(0.98rem, 1.35vw, 1.18rem);
+  font-weight: 600;
+  line-height: 1.12;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--og-blue);
+}
+
+.insight-content--noir-sample figcaption {
+  margin-top: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(28, 28, 28, 0.48);
+}
+
 .insight-content p {
   font-family: var(--font-body);
 }
@@ -184,8 +224,43 @@ h1, h2, h3 {
   to   { transform: translateX(-50%); }
 }
 
+@keyframes qualityGuaranteedCounterSpin {
+  from { transform: rotate(14deg); }
+  to { transform: rotate(-132deg); }
+}
+
+@keyframes qualityGuaranteedDriftSpin {
+  from { transform: rotate(14deg); }
+  to { transform: rotate(-346deg); }
+}
+
 .animate-marquee {
   animation: marquee 50s linear infinite;
+}
+
+.animate-logo-marquee {
+  animation: marquee 380s linear infinite;
+}
+
+.quality-guaranteed-scroll-sticker {
+  transform: rotate(14deg);
+  transform-origin: center;
+  animation: qualityGuaranteedCounterSpin linear both;
+  animation-timeline: view(block);
+  animation-range: entry 0% exit 100%;
+}
+
+@supports not (animation-timeline: view()) {
+  .quality-guaranteed-scroll-sticker {
+    animation: qualityGuaranteedDriftSpin 18s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quality-guaranteed-scroll-sticker {
+    animation: none;
+    transform: rotate(14deg);
+  }
 }
 
 /* ── Button base ──
