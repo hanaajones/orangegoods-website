@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
+import { HatPageStickyNav } from "@/components/HatPageStickyNav";
 import { ReadyMadeHatGrid } from "@/components/ReadyMadeHatGrid";
 import { READY_MADE_HATS } from "@/lib/ready-made-hats";
 
@@ -46,6 +47,8 @@ export default function ReadyMadeHatsPage() {
           </div>
         </div>
       </section>
+
+      <HatPageStickyNav mode="ready-made" />
 
       <section className="py-4">
         <ReadyMadeHatGrid styles={READY_MADE_HATS} />

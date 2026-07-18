@@ -34,7 +34,7 @@ export function HatPricingSlider({ tiers }: { tiers: QuantityTier[] }) {
         {tiers.map((tier) => (
           <article
             key={tier.label}
-            className="rounded-[1.55rem] border-2 border-[#0B32A0]/18 bg-white p-5 transition hover:-translate-y-[2px] hover:border-[#0B32A0]"
+            className="flex h-full flex-col rounded-[1.55rem] border-2 border-[#0B32A0]/18 bg-white p-5 transition hover:-translate-y-[2px] hover:border-[#0B32A0]"
           >
             <div className="flex items-start justify-between gap-3">
               <span className="inline-flex rounded-full border border-[#FF4200]/18 bg-[#FFF1E9] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--og-orange)]">
@@ -59,15 +59,9 @@ export function HatPricingSlider({ tiers }: { tiers: QuantityTier[] }) {
               Front decoration, fabric choice, and interior label included.
             </p>
 
-            {tier.note ? (
-              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#1C1C1C]/68">
-                {tier.note}
-              </p>
-            ) : null}
-
             <Link
               href={tier.href}
-              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-[1rem] border-2 border-[#0B32A0] bg-[#0B32A0] px-5 text-center text-sm font-semibold text-white transition hover:-translate-y-[2px] hover:border-[var(--og-orange)] hover:bg-[var(--og-orange)]"
+              className="mt-auto inline-flex min-h-12 w-full items-center justify-center rounded-[1rem] border-2 border-[#0B32A0] bg-[#0B32A0] px-5 text-center text-sm font-semibold text-white transition hover:-translate-y-[2px] hover:border-[var(--og-orange)] hover:bg-[var(--og-orange)]"
             >
               Start this order
             </Link>

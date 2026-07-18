@@ -3,6 +3,7 @@ export type HatStyle = {
   model: string;
   title: string;
   description: string;
+  selectorDescription: string;
   image: string;
   imagePosition?: string;
   closure: string;
@@ -16,6 +17,7 @@ export const hatStyles = [
     model: "OG 100",
     title: "Dad Hat",
     description: "Relaxed 6-panel, everyday fit.",
+    selectorDescription: "6-panel, low profile",
     image: "/images/product/hats/og100-dad-hat-brown-front.jpg",
     imagePosition: "center 50%",
     closure: "Strapback",
@@ -27,6 +29,7 @@ export const hatStyles = [
     model: "OG 110",
     title: "5-panel unstructured hat",
     description: "Clean 5-panel shape with a laid-back feel.",
+    selectorDescription: "5-panel, unstructured, mid profile",
     image: "/images/product/hats/og110-five-panel-brown-front.jpg",
     imagePosition: "center 50%",
     closure: "Strapback",
@@ -38,6 +41,7 @@ export const hatStyles = [
     model: "OG 120",
     title: "Coast Cap",
     description: "Soft low-profile shape with a laid-back feel.",
+    selectorDescription: "6-panel, low profile",
     image: "/images/product/hat-lifestyle-hero.jpg",
     imagePosition: "center 44%",
     closure: "Strapback",
@@ -49,6 +53,7 @@ export const hatStyles = [
     model: "OG 130",
     title: "Setter Cap",
     description: "A sharper 5-panel with more structure.",
+    selectorDescription: "5-panel, structured, mid profile",
     image: "/images/product/hat-bucket-hero.jpg",
     imagePosition: "center 45%",
     closure: "Snapback",
@@ -60,6 +65,7 @@ export const hatStyles = [
     model: "OG 140",
     title: "Surf Trucker",
     description: "Relaxed trucker built for lifestyle brands.",
+    selectorDescription: "trucker, mid profile",
     image: "/images/product/hats/og140-surf-trucker-brown-front.jpg",
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -71,6 +77,7 @@ export const hatStyles = [
     model: "OG 150",
     title: "Stock Trucker",
     description: "Classic mesh-back trucker with more presence.",
+    selectorDescription: "trucker, mesh back, mid profile",
     image: "/images/product/hat-lifestyle-secondary.jpg",
     imagePosition: "center 48%",
     closure: "Snapback",
@@ -82,6 +89,7 @@ export const hatStyles = [
     model: "OG 160",
     title: "Field Trucker",
     description: "More structured front with extra logo room.",
+    selectorDescription: "trucker, structured front, high profile",
     image: "/images/product/hats/og160-retro-trucker-front.jpg",
     imagePosition: "center 42%",
     closure: "Snapback",
@@ -93,6 +101,7 @@ export const hatStyles = [
     model: "OG 170",
     title: "Foam Trucker",
     description: "High-profile trucker that makes more of a statement.",
+    selectorDescription: "foam trucker, high profile",
     image: "/images/product/hats/og170-foam-trucker-front.jpg",
     imagePosition: "center 44%",
     closure: "Snapback",
@@ -104,6 +113,7 @@ export const hatStyles = [
     model: "OG 180",
     title: "Trail Cap",
     description: "Camper-style shape with an outdoor lean.",
+    selectorDescription: "camper, low profile",
     image: "/images/product/hats/as-colour/1104-nylon-cap-front.jpg",
     imagePosition: "center 48%",
     closure: "Clip closure",
@@ -115,6 +125,7 @@ export const hatStyles = [
     model: "OG 190",
     title: "Highline Cap",
     description: "Structured high-profile cap with a stronger crown.",
+    selectorDescription: "structured cap, high profile",
     image: "/images/product/hats/feb-highline-navy-front.jpg",
     imagePosition: "center 46%",
     closure: "Snapback",
@@ -126,6 +137,7 @@ export const hatStyles = [
     model: "OG 200",
     title: "Perform Cap",
     description: "Lighter, more technical, and built for movement.",
+    selectorDescription: "performance cap, low profile",
     image: "/images/product/hats/feb-perform-black-front.jpg",
     imagePosition: "center 44%",
     closure: "Clip closure",
@@ -137,6 +149,7 @@ export const hatStyles = [
     model: "OG 210",
     title: "Bucket Hat",
     description: "A custom bucket built for summer drops and events.",
+    selectorDescription: "bucket hat",
     image: "/images/gallery/hat-client-bucket-brown.jpg",
     imagePosition: "center 48%",
     closure: "Fitted",

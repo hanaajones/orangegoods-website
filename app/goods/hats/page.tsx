@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { HatBuildAccordion } from "@/components/HatBuildAccordion";
+import { HatPageStickyNav } from "@/components/HatPageStickyNav";
 import { HatPricingSlider } from "@/components/HatPricingSlider";
+import { HomepageGoodsSlideshow } from "@/components/HomepageGoodsSlideshow";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 import {
@@ -19,32 +21,29 @@ import {
 } from "@/lib/content";
 
 const startHatsHref = "/contact";
+const hatsBuilderHref = "/build/og-crafted-hats";
 
 const quantityTiers = [
   {
     label: "100",
     base: "$13.00",
-    note: "Best place to start",
-    href: "/contact?product=hats&program=og-crafted&quantity=100",
+    href: hatsBuilderHref,
   },
   {
     label: "250",
     base: "$12.50",
-    note: "A little more breathing room",
-    href: "/contact?product=hats&program=og-crafted&quantity=250",
+    href: hatsBuilderHref,
   },
   {
     label: "500",
     base: "$11.50",
     badge: "Great value",
-    note: "The sweet spot for price",
-    href: "/contact?product=hats&program=og-crafted&quantity=500",
+    href: hatsBuilderHref,
   },
   {
     label: "1,000",
     base: "$10.50",
-    note: "Best public volume tier",
-    href: "/contact?product=hats&program=og-crafted&quantity=1000",
+    href: hatsBuilderHref,
   },
 ];
 
@@ -79,6 +78,25 @@ const decorationPreviewOptions = [
     image: "/images/gallery/headwear-printed-mg-6778.jpg",
     imagePosition: "center 48%",
     details: [],
+  },
+];
+
+const heroShowcaseSlides = [
+  {
+    src: "/images/gallery/headwear-customize-detail-mg-2672.jpg",
+    position: "center 62%",
+  },
+  {
+    src: "/images/gallery/headwear-fabric-swatches-mg-9430.jpg",
+    position: "center 50%",
+  },
+  {
+    src: "/images/gallery/headwear-strap-color-mg-9427.jpg",
+    position: "center 50%",
+  },
+  {
+    src: "/images/gallery/headwear-interior-label-img-7638.jpg",
+    position: "center 50%",
   },
 ];
 
@@ -304,31 +322,16 @@ export default function HatsPage() {
         </div>
       </section>
 
-      <div className="sticky top-[5.75rem] z-30 border-y border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] px-4 py-3 backdrop-blur md:px-8 lg:px-12">
-        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto">
-          {hatAnchorLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+      <HatPageStickyNav mode="og-crafted" links={hatAnchorLinks} />
 
       <Reveal className="px-4 py-10 md:px-8 lg:px-12">
         <section id="overview" className="mx-auto max-w-6xl">
           <article className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] text-white">
             <div className="absolute inset-0">
-              <Image
-                src="/images/gallery/headwear-reel-life-gear-boat-2.jpg"
-                alt="Custom hats photographed on the water"
-                fill
-                sizes="100vw"
-                className="object-cover"
-                style={{ objectPosition: "center 42%" }}
+              <HomepageGoodsSlideshow
+                slides={heroShowcaseSlides}
+                intervalMs={3200}
+                transitionMs={550}
               />
             </div>
             <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(72,72,72,0.72),rgba(28,28,28,0.52))]" />
@@ -356,7 +359,64 @@ export default function HatsPage() {
             </div>
           </article>
 
-          <div className="mt-5 grid gap-5 lg:grid-cols-[0.72fr_1.28fr]">
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 pb-8 pt-3 md:px-8 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <HatBuildAccordion />
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+        <section id="pricing" className="mx-auto max-w-6xl">
+          <SectionHeader
+            eyebrow="Pricing"
+            title="Straightforward Pricing"
+          />
+
+          <HatPricingSlider tiers={quantityTiers} />
+
+          <div className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
+            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                  How it moves
+                </p>
+                <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
+                  Keep it simple.
+                </h3>
+              </div>
+              <p className="max-w-xl text-sm leading-6 text-[var(--og-muted)]">
+                We help narrow the choices and run the project.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-3 lg:grid-cols-3">
+              {flowCards.map((card, index) => (
+                <article
+                  key={card.title}
+                  className="rounded-[1.35rem] border border-[#0B32A0]/12 bg-[rgba(255,248,241,0.72)] p-5"
+                >
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h4 className="mt-3 text-2xl font-semibold leading-tight text-[#1C1C1C]">
+                    {card.title}
+                  </h4>
+                  <p className="mt-3 text-sm leading-6 text-[var(--og-muted)]">
+                    {card.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <div className="grid gap-5 lg:grid-cols-[0.72fr_1.28fr]">
             <div className="relative min-h-[16rem] overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/15 bg-[#d9c5ae]">
               <Image
                 src="/images/product/hat-lifestyle-hero.jpg"
@@ -400,66 +460,18 @@ export default function HatsPage() {
       </Reveal>
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-        <section id="pricing" className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Pricing"
-            title="Choose your hat quantity"
-          />
-
-          <HatPricingSlider tiers={quantityTiers} />
-
-          <HatBuildAccordion />
-
-          <div className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                  How it moves
-                </p>
-                <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
-                  Keep it simple.
-                </h3>
-              </div>
-              <p className="max-w-xl text-sm leading-6 text-[var(--og-muted)]">
-                We help narrow the choices and run the project.
-              </p>
-            </div>
-
-            <div className="mt-6 grid gap-3 lg:grid-cols-3">
-              {flowCards.map((card, index) => (
-                <article
-                  key={card.title}
-                  className="rounded-[1.35rem] border border-[#0B32A0]/12 bg-[rgba(255,248,241,0.72)] p-5"
-                >
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h4 className="mt-3 text-2xl font-semibold leading-tight text-[#1C1C1C]">
-                    {card.title}
-                  </h4>
-                  <p className="mt-3 text-sm leading-6 text-[var(--og-muted)]">
-                    {card.body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      </Reveal>
-
-      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="styles" className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Styles"
             title="Start with the shape"
-            description="Pick the silhouette first."
+            description="Pick the silhouette here, then refine the rest inside the builder."
           />
 
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {featuredHatStyles.map((card) => (
               <Link
                 key={card.slug}
-                href={`/goods/hats/styles/${card.slug}`}
+                href={`${hatsBuilderHref}?hatStyle=${card.slug}`}
                 className="group block"
               >
                 <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
@@ -484,7 +496,7 @@ export default function HatsPage() {
                       {card.description}
                     </p>
                     <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
-                      Order this style →
+                      Build this style →
                     </p>
                   </div>
                 </article>

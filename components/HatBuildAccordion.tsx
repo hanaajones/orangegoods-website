@@ -17,28 +17,24 @@ const hatBuildItems: HatBuildItem[] = [
     description: "Choose the shape, fabric, color, and core brand details.",
     image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
     imagePosition: "center 44%",
-    badge: "Included",
   },
   {
     title: "Front decoration",
     description: "Pick the main hit up front, from embroidery to patches or labels.",
     image: "/images/gallery/headwear-front-decoration-feeling-shell-labbet.jpg",
     imagePosition: "center 56%",
-    badge: "Included",
   },
   {
     title: "Fabric + color",
     description: "Pick the material, color direction, and overall feel.",
     image: "/images/gallery/headwear-fabric-color-mg-9423.jpg",
     imagePosition: "center 50%",
-    badge: "Included",
   },
   {
     title: "Interior label",
     description: "Add the inside label and finishing details.",
     image: "/images/gallery/headwear-interior-woven-label-img-7684.jpg",
     imagePosition: "center 60%",
-    badge: "Included",
   },
   {
     title: "Choose add-ons",
@@ -68,10 +64,10 @@ export function HatBuildAccordion() {
                 key={item.title}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className="w-full border-b border-[#0B32A0]/12 text-left transition last:border-b-0"
+                className="w-full border-b border-[#0B32A0]/12 text-left last:border-b-0"
               >
                 <div
-                  className={`flex gap-4 transition-all ${
+                  className={`flex gap-4 ${
                     active ? "min-h-[7.5rem] items-start py-5" : "min-h-[6.15rem] items-center py-4"
                   }`}
                 >
@@ -118,7 +114,6 @@ export function HatBuildAccordion() {
       <article className="overflow-hidden rounded-[1.9rem] border border-[#0B32A0]/15 bg-white min-h-[22rem] lg:h-full">
         <div className="relative h-full min-h-[22rem] bg-[#d9c5ae]">
           <Image
-            key={activeItem.image}
             src={activeItem.image}
             alt={activeItem.title}
             fill

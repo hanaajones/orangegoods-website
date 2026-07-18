@@ -89,6 +89,7 @@ function ContactForm({
   onSubmit,
   variant = "standard",
   projectDefault = "",
+  designHelpDefault = "",
   hiddenFields = {},
 }: {
   submitted: boolean;
@@ -96,6 +97,7 @@ function ContactForm({
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   variant?: "standard" | "rounded";
   projectDefault?: string;
+  designHelpDefault?: string;
   hiddenFields?: Record<string, string>;
 }) {
   const isRounded = variant === "rounded";
@@ -125,12 +127,12 @@ function ContactForm({
 
       {isRounded ? (
         <div className="rounded-[1.5rem] border border-[#FF4200]/18 bg-white/70 p-5">
-          <p className="font-accent text-sm font-normal uppercase tracking-[0.2em] text-[#FF4200]">
-            Let&apos;s get started
-          </p>
           <h2 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-4xl">
-            Start with the basics.
+            Tell us what you&apos;re making.
           </h2>
+          <p className="mt-2 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/52">
+            You&apos;ll hear back in 24 hours or less
+          </p>
         </div>
       ) : null}
 
@@ -241,7 +243,7 @@ function ContactForm({
         <select
           name="designHelp"
           required
-          defaultValue=""
+          defaultValue={designHelpDefault}
           className={selectClass}
           style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
         >
@@ -307,8 +309,10 @@ function ContactPageContent() {
   const style = searchParams.get("style") ?? "";
   const styleName = searchParams.get("styleName") ?? "";
   const quantity = searchParams.get("quantity") ?? "";
+  const projectSummary = searchParams.get("projectSummary") ?? "";
+  const needsArtworkHelp = searchParams.get("needsArtworkHelp") ?? "";
 
-  const projectDefault = [
+  const projectDefault = projectSummary || [
     product ? `Product: ${product}` : "",
     program ? `Program: ${program}` : "",
     style ? `Style: ${style}${styleName ? ` - ${styleName}` : ""}` : "",
@@ -377,6 +381,7 @@ function ContactPageContent() {
             onSubmit={handleSubmit}
             variant="rounded"
             projectDefault={projectDefault}
+            designHelpDefault={needsArtworkHelp}
             hiddenFields={{
               ...(product ? { product } : {}),
               ...(program ? { program } : {}),
@@ -446,47 +451,6 @@ function ContactPageContent() {
 
       <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
         <section className="mx-auto grid max-w-5xl gap-8">
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <Link
-              href="/goods"
-              className="group rounded-[2rem] border-[3px] border-[#0B32A0] bg-white px-6 py-6 transition hover:-translate-y-[3px]"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                Browse first
-              </p>
-              <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-[2.15rem]">
-                View the goods
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
-                See the categories, materials, and product directions before you fill anything out.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-orange)] transition group-hover:text-[var(--og-blue)]">
-                Browse goods
-                <span aria-hidden="true">+</span>
-              </span>
-            </Link>
-
-            <Link
-              href="/design"
-              className="group rounded-[2rem] border-[3px] border-[#FF4200] bg-[#FFF6EE] px-6 py-6 transition hover:-translate-y-[3px]"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-blue)]">
-                Need creative?
-              </p>
-              <h2 className="mt-3 text-3xl leading-none text-[var(--og-orange)] md:text-[2.15rem]">
-                Need design help?
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
-                If you need help with graphics, product direction, or mockups, start there first.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
-                Explore design
-                <span aria-hidden="true">+</span>
-              </span>
-            </Link>
-          </div>
-
           <div className="flex flex-1 flex-col rounded-[2rem] border border-[#0B32A0]/10 bg-white/92 p-6 md:p-8">
               <div className="grid gap-6 rounded-[1.75rem] border border-[#0B32A0]/12 bg-[linear-gradient(135deg,#0B2A73_0%,#163E8F_52%,#1C4AA3_100%)] p-5 text-white md:grid-cols-[1.08fr_0.92fr] md:items-center md:p-6">
                 <div>
@@ -526,6 +490,46 @@ function ContactPageContent() {
                 </p>
               </div>
 
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Link
+              href="/goods"
+              className="group rounded-[2rem] border-[3px] border-[#0B32A0] bg-white px-6 py-6 transition hover:-translate-y-[3px]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                Browse first
+              </p>
+              <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-[2.15rem]">
+                View the goods
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
+                See the categories, materials, and product directions before you fill anything out.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-orange)] transition group-hover:text-[var(--og-blue)]">
+                Browse goods
+                <span aria-hidden="true">+</span>
+              </span>
+            </Link>
+
+            <Link
+              href="/design"
+              className="group rounded-[2rem] border-[3px] border-[#FF4200] bg-[#FFF6EE] px-6 py-6 transition hover:-translate-y-[3px]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-blue)]">
+                Need creative?
+              </p>
+              <h2 className="mt-3 text-3xl leading-none text-[var(--og-orange)] md:text-[2.15rem]">
+                Need design help?
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
+                If you need help with graphics, product direction, or mockups, start there first.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
+                Explore design
+                <span aria-hidden="true">+</span>
+              </span>
+            </Link>
           </div>
         </section>
       </Reveal>

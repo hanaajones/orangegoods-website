@@ -4,7 +4,11 @@ export type HatsOptionCard = {
   image: string;
   imagePosition?: string;
   details: string[];
+  href?: string;
+  openInNewTab?: boolean;
 };
+
+const fabricDeckHref = "/pdfs/hat-fabric-swatch-catalog.pdf";
 
 export const fabricOptions: HatsOptionCard[] = [
   {
@@ -13,6 +17,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-folds-unsplash.jpg",
     imagePosition: "center 56%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Cotton canvas",
@@ -20,6 +26,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-folds-unsplash.jpg",
     imagePosition: "center 54%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Corduroy Thin Whale",
@@ -27,6 +35,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-ribbed-unsplash.jpg",
     imagePosition: "center 52%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Corduroy Thick Whale",
@@ -34,6 +44,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-ribbed-unsplash.jpg",
     imagePosition: "center 52%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Recycled fabric",
@@ -41,6 +53,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-folds-unsplash.jpg",
     imagePosition: "center 56%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Denim",
@@ -48,6 +62,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-blue-grid-unsplash.jpg",
     imagePosition: "center 52%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Hemp",
@@ -55,6 +71,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-folds-unsplash.jpg",
     imagePosition: "center 54%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Polyester",
@@ -62,6 +80,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-blue-grid-unsplash.jpg",
     imagePosition: "center 50%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Recycled canvas",
@@ -69,6 +89,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-folds-unsplash.jpg",
     imagePosition: "center 54%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Ripstop nylon",
@@ -76,6 +98,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-blue-grid-unsplash.jpg",
     imagePosition: "center 50%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Faux suede",
@@ -83,6 +107,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/hat-og-patch-studio.jpg",
     imagePosition: "center 50%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Ripstop cotton canvas",
@@ -90,6 +116,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-blue-grid-unsplash.jpg",
     imagePosition: "center 50%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Ripstop cotton",
@@ -97,6 +125,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/fabric-closeups/fabric-blue-grid-unsplash.jpg",
     imagePosition: "center 50%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
   {
     title: "Camo",
@@ -104,6 +134,8 @@ export const fabricOptions: HatsOptionCard[] = [
     image: "/images/gallery/hat-og-patch-studio.jpg",
     imagePosition: "center 50%",
     details: [],
+    href: fabricDeckHref,
+    openInNewTab: true,
   },
 ];
 
@@ -119,7 +151,7 @@ export const decorationOptions: HatsOptionCard[] = [
     title: "Flat embroidery",
     description: "Clean stitched logo work.",
     image: "/images/gallery/headwear-flat-embroidery-mg-6827.jpg",
-    imagePosition: "center 52%",
+    imagePosition: "center 66%",
     details: [],
   },
   {
@@ -283,8 +315,8 @@ export const addOnOptions: HatsOptionCard[] = [
 
 export const closureOptions: HatsOptionCard[] = [
   {
-    title: "Leather closure",
-    description: "A leather strap and clasp for a more elevated finish.",
+    title: "Leather clasp",
+    description: "A leather strap with clasp hardware for a more elevated finish.",
     image: "/images/gallery/headwear-leather-closure.png",
     imagePosition: "center 54%",
     details: [],
@@ -311,10 +343,17 @@ export const closureOptions: HatsOptionCard[] = [
     details: [],
   },
   {
-    title: "Clasp closure",
-    description: "Metal clasp hardware with a slightly more premium finish.",
+    title: "Strapback with clasp",
+    description: "Classic strapback adjustability with clasp hardware and a more premium feel.",
     image: "/images/gallery/headwear-clasp-closure.webp",
     imagePosition: "center 60%",
+    details: [],
+  },
+  {
+    title: "Strapback with slider",
+    description: "A cleaner strapback adjuster with easy slide hardware.",
+    image: "/images/gallery/headwear-strap-color-mg-9427.jpg",
+    imagePosition: "center 50%",
     details: [],
   },
   {

@@ -13,6 +13,7 @@ export default function HatsFabricPage() {
       title="Choose your fabric."
       description="Fabric sets the tone fast. Start with the feel you want, then we can narrow the exact construction and colors."
       cards={fabricOptions}
+      compactCards
     />
   );
 }

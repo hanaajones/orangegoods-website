@@ -28,9 +28,7 @@ export default async function HatStyleDetailPage({
     notFound();
   }
 
-  const baseOrderHref = `/contact?product=hats&program=og-crafted&style=${encodeURIComponent(
-    style.model
-  )}&styleName=${encodeURIComponent(style.title)}`;
+  const baseOrderHref = `/build/og-crafted-hats?hatStyle=${encodeURIComponent(style.slug)}`;
 
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
@@ -119,7 +117,7 @@ export default async function HatStyleDetailPage({
                 </div>
                 <p className="mt-4 text-sm leading-6 text-[var(--og-muted)]">{quantity.note}</p>
                 <Link
-                  href={`${baseOrderHref}&quantity=${quantity.hrefValue}`}
+                  href={`${baseOrderHref}&qty=${quantity.hrefValue}`}
                   className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-[#0B32A0] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-[2px] hover:bg-[var(--og-orange)]"
                 >
                   Start {quantity.hrefValue}

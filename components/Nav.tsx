@@ -231,7 +231,7 @@ export function Nav() {
               onMouseEnter={cancelClose}
             />
             <div
-              className="absolute left-1/2 top-[calc(100%+0.75rem)] hidden min-h-[320px] w-[60vw] -translate-x-1/2 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
+              className="absolute left-1/2 top-[calc(100%+0.75rem)] hidden min-h-[320px] w-[calc(100vw-3rem)] max-w-[68rem] -translate-x-1/2 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
               onMouseEnter={cancelClose}
             >
               {activeMenu === "custom" ? (
