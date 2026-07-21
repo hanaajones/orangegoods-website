@@ -61,7 +61,7 @@ const modes: Record<ModeKey, {
     eyebrow: "Build Online · OG Crafted",
     title: "Build Your Hat",
     description: "A guided builder path for shape, fabric, interior labels, seam tape, patches, and full custom decisions.",
-    cta: "Start Your Order",
+    cta: "Submit Your Build",
     unitLabel: "starting at",
     unitPrice: 12.5,
     timeline: "6-8 weeks",
@@ -71,7 +71,7 @@ const modes: Record<ModeKey, {
     eyebrow: "OG Crafted · Hats",
     title: "OG Crafted Hats",
     description: "A dedicated OG Crafted hats page with guided decisions for silhouette, fabric, labels, seam tape, patches, and custom details.",
-    cta: "Start Your Order",
+    cta: "Submit Your Build",
     unitLabel: "starting at",
     unitPrice: 12.5,
     timeline: "6-8 weeks",
@@ -250,6 +250,97 @@ const hatClosureOptions = [
   "Leather clasp",
 ];
 
+const hatClosurePrices: Partial<Record<(typeof hatClosureOptions)[number], number>> = {
+  "Leather clasp": 1,
+};
+
+const hatClosurePreviewOptions = [
+  {
+    label: "Snapback",
+    image: "/images/gallery/headwear-snapback-closure.jpg",
+    imageAlt: "Snapback closure reference",
+    imagePosition: "center 78%",
+    imageScale: 1.35,
+  },
+  {
+    label: "Strapback + clasp",
+    image: "/images/gallery/headwear-clasp-closure.webp",
+    imageAlt: "Strapback with clasp closure reference",
+    imagePosition: "center 82%",
+    imageScale: 1.45,
+  },
+  {
+    label: "Strapback + slider",
+    image: "/images/gallery/headwear-strap-color-mg-9427.jpg",
+    imageAlt: "Strapback with slider closure reference",
+    imagePosition: "center 76%",
+    imageScale: 1.35,
+  },
+  {
+    label: "Velcro",
+    image: "/images/gallery/headwear-velcro-closure.webp",
+    imageAlt: "Velcro closure reference",
+    imagePosition: "center 80%",
+    imageScale: 1.45,
+  },
+  {
+    label: "Clip closure",
+    image: "/images/gallery/headwear-buckle-closure.jpg",
+    imageAlt: "Clip closure reference",
+    imagePosition: "center 76%",
+    imageScale: 1.35,
+  },
+  {
+    label: "Leather clasp",
+    image: "/images/gallery/headwear-leather-closure.png",
+    imageAlt: "Leather clasp closure reference",
+    imagePosition: "center 78%",
+    imageScale: 1.4,
+  },
+] as const;
+
+const hatSampleOptions = [
+  {
+    id: "none",
+    label: "No sample",
+    description: "Skip sampling and move into production from the approved tech pack.",
+    feeLabel: "No added sample time",
+    image: "",
+    imageAlt: "",
+  },
+  {
+    id: "pp",
+    label: "PP sample",
+    description: "Minor adjustments only after bulk materials are placed with the factory.",
+    feeLabel: "Included upon request · adds two weeks",
+    image: "/images/gallery/headwear-patch-layout-mg-9412.jpg",
+    imageAlt: "PP sample reference",
+  },
+  {
+    id: "proto",
+    label: "Proto sample",
+    description: "Full custom sample before bulk materials are placed with the factory.",
+    feeLabel: "+$100 per sample",
+    image: "/images/gallery/headwear-customize-detail-mg-2672.jpg",
+    imageAlt: "Proto sample reference",
+  },
+] as const;
+
+const hatSampleDeliveryOptions = [
+  {
+    id: "photo",
+    label: "Photo review",
+    description: "Review the sample by photos first.",
+    feeLabel: "Included",
+  },
+  {
+    id: "shipped",
+    label: "Ship sample",
+    description: "Ship the physical sample for review.",
+    feeLabel: "+$50 shipping · adds 1 week",
+  },
+] as const;
+
 const additionalLocations = [
   { label: "Back embroidery", price: 4.5 },
   { label: "Side embroidery", price: 4.5 },
@@ -279,6 +370,12 @@ const decorationOptions = [
   },
 ] as const;
 
+const selectArrowSvg = encodeURIComponent(`
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M3.5 5.25L7 8.75L10.5 5.25" stroke="#0B32A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+`);
+
 function addDays(date: Date, days: number) {
   const next = new Date(date);
   next.setDate(next.getDate() + days);
@@ -298,6 +395,29 @@ function formatShortDate(date: Date) {
   const day = date.getDate();
   const year = String(date.getFullYear()).slice(-2);
   return `${month}/${day}/${year}`;
+}
+
+function parseListParam(value: string | null) {
+  return (value ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function sliderPositionStyle(index: number, total: number, thumbSizePx = 16) {
+  if (total <= 1) {
+    return {
+      left: `${thumbSizePx / 2}px`,
+      transform: "translateX(-50%)",
+    };
+  }
+
+  const percent = (index / (total - 1)) * 100;
+
+  return {
+    left: `calc(${percent}% * (100% - ${thumbSizePx}px) / 100% + ${thumbSizePx / 2}px)`,
+    transform: "translateX(-50%)",
+  };
 }
 
 export function ProductStylePreview({
@@ -325,6 +445,8 @@ export function ProductStylePreview({
   const [backDecoration, setBackDecoration] = useState<"none" | "embroidery">("none");
   const [sideDecoration, setSideDecoration] = useState<"none" | "embroidery">("none");
   const [hatAdditionalDecorations, setHatAdditionalDecorations] = useState<string[]>([]);
+  const [sampleType, setSampleType] = useState<"none" | "pp" | "proto">("none");
+  const [sampleDelivery, setSampleDelivery] = useState<"photo" | "shipped">("photo");
   const [threadFinish, setThreadFinish] = useState<"matte" | "shiny">("matte");
   const [embroideryColor, setEmbroideryColor] = useState("");
   const [additionalCallouts, setAdditionalCallouts] = useState("");
@@ -346,9 +468,7 @@ export function ProductStylePreview({
   const qtyTierIndex = activeQtyMarks.reduce((bestIndex, mark, index) => (
     qty >= mark.value ? index : bestIndex
   ), 0);
-  const qtySliderPct = activeQtyMarks.length <= 1
-    ? 0
-    : (qtyTierIndex / (activeQtyMarks.length - 1)) * 100;
+  const qtyTooltipPosition = sliderPositionStyle(qtyTierIndex, activeQtyMarks.length);
   const isCustomQuote = isHatBuilderMode && qty >= 5000;
   const apparelSizeTotal = Object.values(apparelSizeBreakdown).reduce((sum, value) => sum + value, 0);
   const additionalLocationTotal = useMemo(
@@ -362,11 +482,50 @@ export function ProductStylePreview({
   const embroideryUpgradePrice = mode !== "shop" && decoration === "embroidery" && embroideryUpgrade !== "none" ? 1 : 0;
   const washedFabricPrice = isHatBuilderMode && washedFabric ? 0.5 : 0;
   const hatAdditionalDecorationPrice = isHatBuilderMode ? hatAdditionalDecorations.length : 0;
+  const hatClosurePrice = isHatBuilderMode ? (hatClosurePrices[hatClosure] ?? 0) : 0;
+  const sampleBaseFee = sampleType === "proto" ? 100 : 0;
+  const sampleShippingFee = sampleType !== "none" && sampleDelivery === "shipped" ? 50 : 0;
+  const sampleFlatFeeTotal = sampleBaseFee + sampleShippingFee;
+  const sampleProductionDays = sampleType === "none" ? 0 : 14;
+  const sampleShippingDays = sampleType !== "none" && sampleDelivery === "shipped" ? 7 : 0;
   const baseUnitPrice = baseUnitPriceForQty(activeMode.unitPrice);
-  const unitPrice = baseUnitPrice + (mode === "shop" ? 0 : locationTotal + embroideryUpgradePrice + washedFabricPrice + hatAdditionalDecorationPrice);
-  const total = mode === "shop" ? unitPrice : unitPrice * qty;
-  const addOnUnitPrice = mode === "shop" ? 0 : locationTotal + embroideryUpgradePrice + washedFabricPrice + hatAdditionalDecorationPrice;
+  const unitPrice = baseUnitPrice + (mode === "shop" ? 0 : locationTotal + embroideryUpgradePrice + washedFabricPrice + hatAdditionalDecorationPrice + hatClosurePrice);
+  const total = mode === "shop" ? unitPrice : (unitPrice * qty) + sampleFlatFeeTotal;
+  const addOnUnitPrice = mode === "shop" ? 0 : locationTotal + embroideryUpgradePrice + washedFabricPrice + hatAdditionalDecorationPrice + hatClosurePrice;
   const unitName = mode === "catalog" ? "tee" : mode === "shop" ? "item" : "hat";
+  const closureSummaryLabel = isBucketHatStyle
+    ? "None"
+    : hatClosurePrice > 0
+      ? `${hatClosure} (+$${hatClosurePrice.toFixed(2)}/${unitName})`
+      : hatClosure;
+  const sampleTypeLabel = sampleType === "none" ? "No sample" : sampleType === "pp" ? "PP sample" : "Proto sample";
+  const sampleReviewLabel = sampleType === "none" ? "Not needed" : sampleDelivery === "photo" ? "Photo review" : "Shipped sample";
+  const sampleSummaryLabel = sampleType === "none" ? "No sample" : `${sampleTypeLabel} · ${sampleReviewLabel}`;
+  const sampleFeeLabel = sampleType === "none"
+    ? "None"
+    : sampleFlatFeeTotal > 0
+      ? `+$${sampleFlatFeeTotal.toFixed(0)} one-time`
+      : "Included";
+  const timelineItems = [
+    { label: "Tech pack", value: "2 days" },
+    ...(sampleType !== "none" ? [{ label: "Sample production", value: "2 weeks" }] : []),
+    ...(sampleType !== "none" && sampleDelivery === "shipped" ? [{ label: "Sample shipping", value: "1 week" }] : []),
+    { label: "Production", value: "5 weeks" },
+    { label: "Shipping", value: "1 to 2 weeks" },
+  ];
+  const orderProcessSteps = [
+    { title: "Build your order", detail: "You are here now." },
+    { title: "We build your tech pack + get approval", detail: "We map out every detail and get your sign-off before anything moves forward." },
+    ...(sampleType !== "none"
+      ? [{
+          title: sampleType === "proto" ? "Proto sample review" : "PP sample review",
+          detail: sampleDelivery === "shipped"
+            ? "We make your sample and ship it for review before production starts."
+            : "We make your sample and send photos for review before production starts.",
+        }]
+      : []),
+    { title: "We produce and deliver", detail: "Factory production starts after approval, then your hats arrive ready to go." },
+  ];
   const orderPriceLabel = isCustomQuote
     ? "Custom quote"
     : mode === "shop"
@@ -383,12 +542,30 @@ export function ProductStylePreview({
   const totalPriceLabel = isCustomQuote ? "Custom quote" : `$${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
   const turnAroundLabel = timelineLabel();
   const lightboxItem = lightboxIndex === null ? null : activeMedia[lightboxIndex];
-  const availableModes = lockedMode ? [lockedMode] : (Object.keys(modes) as ModeKey[]);
-  const requestedHatStyleSlug = searchParams.get("hatStyle");
+  const availableModes = useMemo(
+    () => (lockedMode ? [lockedMode] : (Object.keys(modes) as ModeKey[])),
+    [lockedMode],
+  );
+  const requestedBuilderMode = searchParams.get("builderMode");
+  const requestedHatStyleSlug = searchParams.get("hatStyleSlug") ?? searchParams.get("hatStyle");
   const requestedQty = searchParams.get("qty");
+  const requestedDecoration = searchParams.get("decoration");
+  const requestedHatMaterial = searchParams.get("hatMaterial");
+  const requestedWashedFabric = searchParams.get("washedFabric");
+  const requestedFabricColor = searchParams.get("fabricColor");
+  const requestedHatClosure = searchParams.get("hatClosure");
+  const requestedBackDecoration = searchParams.get("backDecoration");
+  const requestedSideDecoration = searchParams.get("sideDecoration");
+  const requestedHatAdditionalDecorations = searchParams.get("hatAdditionalDecorations") ?? searchParams.get("additionalDecorations");
+  const requestedSampleType = searchParams.get("sampleType");
+  const requestedSampleDelivery = searchParams.get("sampleDelivery");
+  const requestedThreadFinish = searchParams.get("threadFinish");
+  const requestedEmbroideryColor = searchParams.get("embroideryColor");
+  const requestedAdditionalCallouts = searchParams.get("additionalCallouts");
+  const requestedNeedsArtworkHelp = searchParams.get("needsArtworkHelp");
   const selectedColorLabel = isHatBuilderMode ? (hatColorCallout.trim() || "Not specified yet") : color.name;
-  const estimatedDeliveryStart = addDays(new Date(), 58);
-  const estimatedDeliveryEnd = addDays(new Date(), 65);
+  const estimatedDeliveryStart = addDays(new Date(), 44 + sampleProductionDays + sampleShippingDays);
+  const estimatedDeliveryEnd = addDays(new Date(), 51 + sampleProductionDays + sampleShippingDays);
   const estimatedDeliveryLabel = `${formatLongDate(estimatedDeliveryStart)} - ${formatLongDate(estimatedDeliveryEnd)}`;
   const estimatedDeliveryShortLabel = `${formatShortDate(estimatedDeliveryStart)} - ${formatShortDate(estimatedDeliveryEnd)}`;
   const projectSummary = [
@@ -398,8 +575,9 @@ export function ProductStylePreview({
     `Quantity: ${qty.toLocaleString()}`,
     `Tier: ${quantityTierLabel()}`,
     `Color: ${selectedColorLabel}`,
-    isHatBuilderMode ? `Material: ${[hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ")}` : "",
-    isHatBuilderMode ? `Closure: ${isBucketHatStyle ? "None" : hatClosure}` : "",
+    isHatBuilderMode ? `Fabric: ${[hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ")}` : "",
+    isHatBuilderMode ? `Closure: ${closureSummaryLabel}` : "",
+    isHatBuilderMode ? `Sample: ${sampleSummaryLabel}` : "",
     `Front decoration: ${decorationOptions.find((option) => option.id === decoration)?.label ?? decoration}`,
     isHatBuilderMode ? `Back decoration: ${backDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
     isHatBuilderMode ? `Side decoration: ${sideDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
@@ -408,16 +586,20 @@ export function ProductStylePreview({
     embroideryColor ? `Embroidery color: ${embroideryColor}` : "",
     needsArtworkHelp ? "Artwork help: Yes" : "",
     additionalCallouts ? `Additional callouts: ${additionalCallouts}` : "",
+    isHatBuilderMode && sampleType !== "none" ? `Sample fees: ${sampleFeeLabel}` : "",
     `Estimated unit price: ${isCustomQuote ? "Custom quote" : `$${unitPrice.toFixed(2)}`}`,
-    `Estimated total: ${isCustomQuote ? "Custom quote" : `$${total.toFixed(0)}`}`,
+    `Estimated total: ${isCustomQuote ? "Custom quote" : `$${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}`,
     logoFileName ? `Logo file: ${logoFileName}` : "",
   ]
     .filter(Boolean)
     .join("\n");
   const questionsHref = `/contact?${new URLSearchParams({
-    intent: "product-question",
+    intent: isHatBuilderMode ? "submit-build" : "product-question",
+    source: isHatBuilderMode ? "og-crafted-hat-builder" : "",
     product: activeMode.title,
     mode: activeMode.label,
+    builderMode: isHatBuilderMode ? mode : "",
+    hatStyleSlug: isHatBuilderMode ? selectedHatStyle.slug : "",
     hatStyle: isHatBuilderMode ? `${selectedHatStyle.model} ${selectedHatStyle.title}` : "",
     color: selectedColorLabel,
     size: mode === "shop" ? shopSize : "",
@@ -425,10 +607,19 @@ export function ProductStylePreview({
     qty: String(qty),
     tier: quantityTierLabel(),
     decoration,
-    material: isHatBuilderMode ? [hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ") : "",
-    closure: isHatBuilderMode ? hatClosure : "",
+    fabricColor: isHatBuilderMode ? hatColorCallout : "",
+    hatMaterial: isHatBuilderMode ? hatMaterial : "",
+    washedFabric: isHatBuilderMode && washedFabric ? "true" : "",
+    fabric: isHatBuilderMode ? [hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ") : "",
+    hatClosure: isHatBuilderMode ? hatClosure : "",
+    closure: isHatBuilderMode ? closureSummaryLabel : "",
+    sampleType: isHatBuilderMode ? sampleType : "",
+    sampleDelivery: isHatBuilderMode ? sampleDelivery : "",
+    sample: isHatBuilderMode ? sampleSummaryLabel : "",
+    sampleFees: isHatBuilderMode ? sampleFeeLabel : "",
     backDecoration: isHatBuilderMode ? backDecoration : "",
     sideDecoration: isHatBuilderMode ? sideDecoration : "",
+    hatAdditionalDecorations: isHatBuilderMode ? hatAdditionalDecorations.join(", ") : "",
     additionalDecorations: isHatBuilderMode ? hatAdditionalDecorations.join(", ") : "",
     embroideryUpgrade,
     additionalLocations: isHatBuilderMode ? "" : selectedLocations.join(", "),
@@ -437,11 +628,15 @@ export function ProductStylePreview({
     additionalCallouts,
     needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
     timeline: timelineLabel(),
+    estimatedDeliveryDate: isHatBuilderMode ? estimatedDeliveryLabel : "",
     estimatedUnitPrice: isCustomQuote ? "Custom quote" : `$${unitPrice.toFixed(2)}`,
-    estimatedTotal: isCustomQuote ? "Custom quote" : `$${total.toFixed(0)}`,
+    estimatedTotal: isCustomQuote ? "Custom quote" : `$${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
     logoFile: logoFileName,
     projectSummary,
   }).toString()}`;
+  const primaryCtaLabel = showBuilderSecondaryCta && !isCustomQuote
+    ? "Submit Your Build"
+    : activeMode.cta;
 
   function toggleLocation(label: string) {
     setSelectedLocations((current) =>
@@ -510,6 +705,15 @@ export function ProductStylePreview({
   }, [lockedMode, mode]);
 
   useEffect(() => {
+    if (!isHatBuilderMode || !requestedBuilderMode) return;
+
+    const nextMode = requestedBuilderMode as ModeKey;
+    if (availableModes.includes(nextMode) && nextMode !== mode) {
+      setMode(nextMode);
+    }
+  }, [availableModes, isHatBuilderMode, mode, requestedBuilderMode]);
+
+  useEffect(() => {
     if (!isHatBuilderMode || !requestedHatStyleSlug) return;
 
     const requestedStyle = hatStyles.find((style) => style.slug === requestedHatStyleSlug);
@@ -530,6 +734,137 @@ export function ProductStylePreview({
       setQtyInput(String(clampedQty));
     }
   }, [isHatBuilderMode, maxQty, qty, requestedQty]);
+
+  useEffect(() => {
+    if (!isHatBuilderMode) return;
+
+    if (
+      requestedDecoration
+      && decorationOptions.some((option) => option.id === requestedDecoration)
+      && requestedDecoration !== decoration
+    ) {
+      setDecoration(requestedDecoration as typeof decoration);
+    }
+
+    if (requestedHatMaterial && hatMaterialOptions.includes(requestedHatMaterial) && requestedHatMaterial !== hatMaterial) {
+      setHatMaterial(requestedHatMaterial);
+    }
+
+    if (requestedWashedFabric !== null) {
+      const nextWashedFabric = requestedWashedFabric.toLowerCase() === "true";
+      if (nextWashedFabric !== washedFabric) {
+        setWashedFabric(nextWashedFabric);
+      }
+    }
+
+    if (requestedFabricColor !== null && requestedFabricColor !== hatColorCallout) {
+      setHatColorCallout(requestedFabricColor);
+    }
+
+    if (
+      requestedHatClosure
+      && (hatClosureOptions.includes(requestedHatClosure) || requestedHatClosure === "No closure")
+      && requestedHatClosure !== hatClosure
+    ) {
+      setHatClosure(requestedHatClosure);
+    }
+
+    if (
+      requestedBackDecoration
+      && (requestedBackDecoration === "none" || requestedBackDecoration === "embroidery")
+      && requestedBackDecoration !== backDecoration
+    ) {
+      setBackDecoration(requestedBackDecoration);
+    }
+
+    if (
+      requestedSideDecoration
+      && (requestedSideDecoration === "none" || requestedSideDecoration === "embroidery")
+      && requestedSideDecoration !== sideDecoration
+    ) {
+      setSideDecoration(requestedSideDecoration);
+    }
+
+    if (requestedHatAdditionalDecorations !== null) {
+      const nextAdditionalDecorations = parseListParam(requestedHatAdditionalDecorations)
+        .filter((item): item is (typeof hatAdditionalDecorationOptions)[number] =>
+          hatAdditionalDecorationOptions.includes(item as (typeof hatAdditionalDecorationOptions)[number]));
+      const currentAdditionalDecorations = hatAdditionalDecorations.join(", ");
+
+      if (nextAdditionalDecorations.join(", ") !== currentAdditionalDecorations) {
+        setHatAdditionalDecorations(nextAdditionalDecorations);
+      }
+    }
+
+    if (
+      requestedSampleType
+      && hatSampleOptions.some((option) => option.id === requestedSampleType)
+      && requestedSampleType !== sampleType
+    ) {
+      setSampleType(requestedSampleType as typeof sampleType);
+    }
+
+    if (
+      requestedSampleDelivery
+      && hatSampleDeliveryOptions.some((option) => option.id === requestedSampleDelivery)
+      && requestedSampleDelivery !== sampleDelivery
+    ) {
+      setSampleDelivery(requestedSampleDelivery as typeof sampleDelivery);
+    }
+
+    if (
+      requestedThreadFinish
+      && (requestedThreadFinish === "matte" || requestedThreadFinish === "shiny")
+      && requestedThreadFinish !== threadFinish
+    ) {
+      setThreadFinish(requestedThreadFinish);
+    }
+
+    if (requestedEmbroideryColor !== null && requestedEmbroideryColor !== embroideryColor) {
+      setEmbroideryColor(requestedEmbroideryColor);
+    }
+
+    if (requestedAdditionalCallouts !== null && requestedAdditionalCallouts !== additionalCallouts) {
+      setAdditionalCallouts(requestedAdditionalCallouts);
+    }
+
+    if (requestedNeedsArtworkHelp !== null) {
+      const nextNeedsArtworkHelp = requestedNeedsArtworkHelp.toLowerCase() === "yes";
+      if (nextNeedsArtworkHelp !== needsArtworkHelp) {
+        setNeedsArtworkHelp(nextNeedsArtworkHelp);
+      }
+    }
+  }, [
+    additionalCallouts,
+    backDecoration,
+    decoration,
+    embroideryColor,
+    hatClosure,
+    hatColorCallout,
+    hatMaterial,
+    hatAdditionalDecorations,
+    isHatBuilderMode,
+    needsArtworkHelp,
+    requestedAdditionalCallouts,
+    requestedBackDecoration,
+    requestedDecoration,
+    requestedEmbroideryColor,
+    requestedFabricColor,
+    requestedHatAdditionalDecorations,
+    requestedHatClosure,
+    requestedHatMaterial,
+    requestedNeedsArtworkHelp,
+    requestedSampleDelivery,
+    requestedSampleType,
+    requestedSideDecoration,
+    requestedThreadFinish,
+    requestedWashedFabric,
+    sampleDelivery,
+    sampleType,
+    sideDecoration,
+    threadFinish,
+    washedFabric,
+  ]);
 
   function handleQtyInput(value: string) {
     setQtyInput(value);
@@ -571,6 +906,10 @@ export function ProductStylePreview({
 
   function timelineLabel() {
     if (mode === "shop") return activeMode.timeline;
+    if (isHatBuilderMode) {
+      if (sampleType === "none") return activeMode.timeline;
+      return sampleDelivery === "shipped" ? "9-11 weeks" : "8-10 weeks";
+    }
     if (decoration === "embroidery") return activeMode.timeline;
     return "4-6 weeks";
   }
@@ -628,14 +967,14 @@ export function ProductStylePreview({
 
       <section className="px-4 py-8 sm:px-6 lg:px-8">
         <div
-          className={`mx-auto grid max-w-[90rem] gap-8 ${
+          className={`mx-auto grid max-w-[90rem] gap-4 ${
             showLiveCalculator
               ? "xl:grid-cols-[minmax(0,1fr)_minmax(360px,420px)_minmax(300px,340px)]"
               : "lg:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]"
           }`}
         >
-          <div className="space-y-8">
-            <div className={useSingleColumnMedia ? "grid gap-3" : "grid gap-3 md:grid-cols-2"}>
+          <div className="space-y-4">
+            <div className={useSingleColumnMedia ? "grid gap-4" : "grid gap-4 md:grid-cols-2"}>
               {activeMedia.map((item, index) => (
                 <button
                   key={item.src}
@@ -666,15 +1005,10 @@ export function ProductStylePreview({
             {isHatBuilderMode ? (
               <div className="rounded-lg border border-[#081E6F]/10 bg-white p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                  Turnaround
+                  From order to delivery
                 </p>
-                <div className="relative mt-4 space-y-3 before:absolute before:bottom-3 before:left-[9px] before:top-3 before:w-px before:bg-[#0B32A0]/18">
-                  {[
-                    { label: "Tech pack", value: "2 days" },
-                    { label: "Sample", value: "2 weeks" },
-                    { label: "Production", value: "5 weeks" },
-                    { label: "Shipping", value: "1 to 2 weeks" },
-                  ].map((item) => (
+                <div className="relative mt-4 space-y-3 before:absolute before:bottom-[22px] before:left-[9px] before:top-[22px] before:w-px before:bg-[#0B32A0]/18">
+                  {timelineItems.map((item) => (
                     <div key={item.label} className="relative grid grid-cols-[20px_1fr] items-center gap-3">
                       <span className="z-10 h-2.5 w-2.5 justify-self-center rounded-full bg-[var(--og-orange)]" />
                       <div className="flex flex-1 items-center justify-between gap-4 rounded-lg bg-[#F7F4ED] px-4 py-3">
@@ -717,18 +1051,13 @@ export function ProductStylePreview({
                   What happens after you start your order
                 </p>
               </div>
-              <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {[
-                  { title: "Build your order", detail: "You are here now." },
-                  { title: "We build your tech pack", detail: "Every detail gets mapped out." },
-                  { title: "You approve the details", detail: "Nothing moves forward without sign-off." },
-                  { title: "We produce and deliver", detail: "Factory production starts after approval, then your hats arrive ready to go." },
-                ].map((step, index) => (
+              <div className={`mt-4 grid gap-4 md:grid-cols-2 ${sampleType !== "none" ? "xl:grid-cols-4" : "xl:grid-cols-3"}`}>
+                {orderProcessSteps.map((step, index) => (
                   <div key={step.title} className="rounded-lg border border-[#081E6F]/12 bg-[#F7F4ED] p-4 text-[var(--og-blue)] shadow-[0_12px_35px_rgba(8,30,111,0.06)]">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
                       Step {index + 1}
                     </p>
-                    <p className="mt-3 text-lg font-semibold">{step.title}</p>
+                    <p className="mt-3 text-lg font-semibold leading-tight">{step.title}</p>
                     <p className="mt-2 text-sm leading-5 text-[#4b4b4b]">{step.detail}</p>
                   </div>
                 ))}
@@ -817,7 +1146,8 @@ export function ProductStylePreview({
                     <select
                       value={hatStyleSlug}
                       onChange={(event) => setHatStyleSlug(event.target.value)}
-                      className="h-11 w-full rounded-lg border border-[#081E6F]/15 bg-white px-3 text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
+                      className="h-11 w-full appearance-none rounded-lg border border-[#081E6F]/15 bg-[length:14px_14px] bg-[right_0.9rem_center] bg-no-repeat px-3 pr-10 text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none md:inline-block md:w-auto md:max-w-full"
+                      style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
                     >
                       {hatStyles.map((style) => (
                         <option key={style.slug} value={style.slug}>
@@ -881,18 +1211,11 @@ export function ProductStylePreview({
                     </div>
                     <div className="relative px-1 pt-8">
                       <div
-                        className="pointer-events-none absolute top-0 z-10 transition-all duration-300 ease-out"
-                        style={{
-                          left: `${qtySliderPct}%`,
-                          transform: qtyTierIndex === 0
-                            ? "translateX(0)"
-                            : qtyTierIndex === activeQtyMarks.length - 1
-                              ? "translateX(-100%)"
-                              : "translateX(-50%)",
-                        }}
+                        className="pointer-events-none absolute top-0 z-10"
+                        style={qtyTooltipPosition}
                       >
                         <span className="inline-flex min-h-7 whitespace-nowrap rounded-full bg-[var(--og-blue)] px-3 py-1 text-[11px] font-semibold text-white shadow-[0_10px_24px_rgba(8,30,111,0.16)]">
-                          Tier {quantityTierLabel()} · {basePriceLabel}
+                          {basePriceLabel}
                         </span>
                       </div>
                       <input
@@ -902,16 +1225,22 @@ export function ProductStylePreview({
                         step={1}
                         value={qtyTierIndex}
                         onChange={(event) => handleQtySlider(event.target.value)}
-                        className="w-full"
+                        className="h-2 w-full cursor-pointer accent-[var(--og-orange)]"
                         style={{ accentColor: "#0B32A0" }}
                       />
-                      <div className="pointer-events-none mt-1.5 flex items-start justify-between gap-2 px-1">
-                        {activeQtyMarks.map(({ value, label, tick }) => {
+                      <div className="pointer-events-none relative mt-1.5 h-8">
+                        {activeQtyMarks.map(({ value, label }, index) => {
+                          const markPosition = sliderPositionStyle(index, activeQtyMarks.length);
+
                           return (
-                            <div key={value} className="flex min-w-0 flex-1 flex-col items-center">
-                              <div className={`h-1.5 w-px ${tick ? "bg-[#081E6F]/30" : "bg-transparent"}`} />
-                              <span className={`mt-0.5 text-[10px] transition ${
-                                qtyTierIndex === activeQtyMarks.findIndex((mark) => mark.value === value)
+                            <div
+                              key={value}
+                              className="absolute top-0 flex min-w-0 flex-col items-center"
+                              style={markPosition}
+                            >
+                              <div className="h-1.5 w-px bg-[#081E6F]/30" />
+                              <span className={`mt-0.5 text-[10px] ${
+                                qtyTierIndex === index
                                   ? "font-semibold text-[var(--og-blue)]"
                                   : "text-[#8a8a8a]"
                               }`}>
@@ -922,32 +1251,6 @@ export function ProductStylePreview({
                         })}
                       </div>
                     </div>
-                  </div>
-                )}
-
-                {isHatBuilderMode && (
-                  <div>
-                    <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Type the color or fabrics
-                    </label>
-                    <input
-                      type="text"
-                      value={hatColorCallout}
-                      onChange={(event) => setHatColorCallout(event.target.value)}
-                      placeholder="e.g. washed black canvas, natural twill, cream / forest combo"
-                      className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
-                    />
-                    <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
-                      Type the color or fabrics you have in mind.
-                    </p>
-                    <a
-                      href="/goods/hats/fabric"
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-3 inline-flex text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] underline-offset-4 transition hover:text-[var(--og-orange)] hover:underline"
-                    >
-                      See fabric and color options
-                    </a>
                   </div>
                 )}
 
@@ -1055,7 +1358,7 @@ export function ProductStylePreview({
                 {isHatBuilderMode && (
                   <div>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Material
+                      Fabric
                     </p>
                     <div className="grid grid-cols-2 gap-2">
                       {hatMaterialOptions.map((option) => (
@@ -1089,14 +1392,74 @@ export function ProductStylePreview({
                         <span className="mt-1 block text-[11px] text-[#8a8a8a]">+$0.50</span>
                       </button>
                     </div>
+                    <div className="mt-4">
+                      <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                        Fabric color
+                      </label>
+                      <input
+                        type="text"
+                        value={hatColorCallout}
+                        onChange={(event) => setHatColorCallout(event.target.value)}
+                        placeholder="e.g. Black canvas number 26"
+                        className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                      />
+                      <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
+                        Type the fabric color you have in mind.
+                      </p>
+                      <a
+                        href="/goods/hats/fabric"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-lg border border-[#081E6F]/15 bg-white px-4 text-center text-xs font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+                      >
+                        See fabric and color options
+                      </a>
+                    </div>
                   </div>
                 )}
 
                 {isHatBuilderMode && (
                   <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Closure
-                    </p>
+                    <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                        Closure
+                      </p>
+                      <div className="group relative inline-flex">
+                        <button
+                          type="button"
+                          className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] underline underline-offset-4 transition hover:text-[var(--og-orange)] focus:text-[var(--og-orange)] focus:outline-none"
+                        >
+                          See closure options
+                        </button>
+                        <div className="pointer-events-none absolute left-0 top-full z-30 mt-3 w-[30rem] max-w-[calc(100vw-2rem)] rounded-[1.5rem] border border-[#081E6F]/12 bg-white p-4 opacity-0 shadow-[0_22px_55px_rgba(8,30,111,0.16)] transition duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+                          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                            Closure guide
+                          </p>
+                          <div className="grid grid-cols-3 gap-3">
+                            {hatClosurePreviewOptions.map((option) => (
+                              <div key={option.label} className="overflow-hidden rounded-xl border border-[#081E6F]/10 bg-[#F7F4ED]">
+                                <div className="relative aspect-[4/3] overflow-hidden">
+                                  <Image
+                                    src={option.image}
+                                    alt={option.imageAlt}
+                                    fill
+                                    sizes="(max-width: 768px) 30vw, 150px"
+                                    className="object-cover"
+                                    style={{
+                                      objectPosition: option.imagePosition,
+                                      transform: `scale(${option.imageScale})`,
+                                    }}
+                                  />
+                                </div>
+                                <div className="px-2.5 py-2.5 text-[11px] font-semibold leading-4 text-[var(--og-blue)]">
+                                  {option.label}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     {isBucketHatStyle ? (
                       <div className="rounded-lg border border-dashed border-[#081E6F]/18 bg-[#F7F4ED] px-3 py-3 text-sm font-medium text-[var(--og-blue)]">
                         Bucket hats do not use a closure.
@@ -1108,13 +1471,20 @@ export function ProductStylePreview({
                             key={option}
                             type="button"
                             onClick={() => setHatClosure(option)}
-                            className={`min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
+                            className={`min-h-10 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
                               hatClosure === option
                                 ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
                                 : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
                             }`}
                           >
-                            {option}
+                            <span className="block">{option}</span>
+                            {(hatClosurePrices[option] ?? 0) > 0 ? (
+                              <span className={`mt-0.5 block text-[11px] ${
+                                hatClosure === option ? "text-white/75" : "text-[#8a8a8a]"
+                              }`}>
+                                +${(hatClosurePrices[option] ?? 0).toFixed(2)}
+                              </span>
+                            ) : null}
                           </button>
                         ))}
                       </div>
@@ -1363,9 +1733,82 @@ export function ProductStylePreview({
                     </div>
                   </div>
                 )}
+
+                {isHatBuilderMode && (
+                  <div className="rounded-lg border border-[#081E6F]/10 bg-white p-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                      Do you want a sample?
+                    </p>
+                    <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
+                      Hat samples are only made after a bulk order is placed and paid.
+                    </p>
+                    <div className="mt-4 grid gap-2 md:grid-cols-3">
+                      {hatSampleOptions.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setSampleType(option.id)}
+                          className={`rounded-lg border p-3 text-left transition ${
+                            sampleType === option.id
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                          }`}
+                        >
+                          <span className="block text-sm font-semibold">{option.label}</span>
+                          <span className={`mt-1 block text-[11px] leading-5 ${
+                            sampleType === option.id ? "text-white/78" : "text-[#6b6b6b]"
+                          }`}>
+                            {option.description}
+                          </span>
+                          <span className={`mt-2 block text-[11px] font-semibold ${
+                            sampleType === option.id ? "text-white/80" : "text-[#8a8a8a]"
+                          }`}>
+                            {option.feeLabel}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+
+                    {sampleType !== "none" && (
+                      <div className="mt-4">
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                            Do you want the sample by photo or shipped?
+                          </p>
+                          <div className="mt-3 grid gap-2 md:grid-cols-2">
+                            {hatSampleDeliveryOptions.map((option) => (
+                              <button
+                                key={option.id}
+                                type="button"
+                                onClick={() => setSampleDelivery(option.id)}
+                                className={`rounded-lg border p-3 text-left transition ${
+                                  sampleDelivery === option.id
+                                    ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                                    : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                                }`}
+                              >
+                                <span className="block text-sm font-semibold">{option.label}</span>
+                                <span className={`mt-1 block text-[11px] leading-5 ${
+                                  sampleDelivery === option.id ? "text-white/78" : "text-[#6b6b6b]"
+                                }`}>
+                                  {option.description}
+                                </span>
+                                <span className={`mt-2 block text-[11px] font-semibold ${
+                                  sampleDelivery === option.id ? "text-white/80" : "text-[#8a8a8a]"
+                                }`}>
+                                  {option.feeLabel}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              <div className="mt-5 border-t border-[#081E6F]/10 pt-5">
+              <div className="mt-5">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                   Included
                 </p>
@@ -1410,18 +1853,12 @@ export function ProductStylePreview({
           {showLiveCalculator && (
             <aside className="lg:sticky lg:top-32 lg:self-start xl:col-start-3 xl:self-start">
               <div className="rounded-lg border border-[#081E6F]/12 bg-white p-5 shadow-[0_18px_55px_rgba(8,30,111,0.07)]">
-                <div className="flex items-start justify-between gap-4">
+                <div>
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                       Live price summary
                     </p>
-                    <p className="mt-1 text-sm leading-6 text-[#4b4b4b]">
-                      Updates as the product options change.
-                    </p>
                   </div>
-                  <p className="rounded-full bg-[#F7F4ED] px-3 py-1 text-xs font-semibold text-[var(--og-blue)]">
-                    {quantityTierLabel()}
-                  </p>
                 </div>
 
                 <div className="mt-5 space-y-3 text-sm">
@@ -1432,8 +1869,11 @@ export function ProductStylePreview({
                       ? [
                           { label: "Hat style", value: `${selectedHatStyle.model} ${selectedHatStyle.title}` },
                           { label: "Color", value: selectedColorLabel },
-                          { label: "Material", value: [hatMaterial, washedFabric ? "Washed" : ""].filter(Boolean).join(" · ") },
-                          { label: "Closure", value: isBucketHatStyle ? "None" : hatClosure },
+                          { label: "Fabric", value: [hatMaterial, washedFabric ? "Washed" : ""].filter(Boolean).join(" · ") },
+                          { label: "Closure", value: closureSummaryLabel },
+                          { label: "Sample", value: sampleSummaryLabel },
+                          { label: "Embroidery thread finish", value: threadFinish === "matte" ? "Matte" : "Shiny" },
+                          ...(embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
                           { label: "Back decoration", value: backDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Side decoration", value: sideDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Additional decorations", value: hatAdditionalDecorations.length > 0 ? hatAdditionalDecorations.join(", ") : "None" },
@@ -1442,13 +1882,14 @@ export function ProductStylePreview({
                         ]
                       : []),
                     { label: "Base unit price", value: basePriceLabel },
+                    ...(isHatBuilderMode && sampleType !== "none" ? [{ label: "Sample fees", value: sampleFeeLabel }] : []),
                     { label: "Selected options", value: selectedOptionsLabel },
                     { label: "Turnaround", value: turnAroundLabel },
                     ...(isHatBuilderMode ? [{ label: "Estimated delivery date", value: estimatedDeliveryShortLabel }] : []),
                   ].map((row) => (
                     <div key={row.label} className="grid grid-cols-[1fr_auto] items-baseline gap-4">
                       <span className="text-[#6b6b6b]">{row.label}</span>
-                      <span className="text-right font-semibold text-[var(--og-blue)]">{row.value}</span>
+                      <span className="text-right font-semibold text-[#171717]">{row.value}</span>
                     </div>
                   ))}
                 </div>
@@ -1472,32 +1913,48 @@ export function ProductStylePreview({
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
-                >
-                  {activeMode.cta}
-                </button>
-                {showBuilderSecondaryCta ? (
+                {isCustomQuote ? (
                   <>
                     <a
                       href={questionsHref}
-                      className="mt-3 flex min-h-12 w-full items-center justify-center rounded-lg border border-[var(--og-blue)] bg-white px-5 text-center text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:-translate-y-0.5 hover:bg-[#f5f7ff]"
+                      className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
                     >
-                      Build This with Our Team
+                      Request Custom Quote
                     </a>
                     <p className="mt-3 text-center text-xs leading-5 text-[#6b6b6b]">
-                      Before anything goes to production, we&apos;ll build your tech pack and get your approval before sending off to the factory.
+                      We&apos;ll review your selections and come back with a custom quote for 5,000+ pieces.
                     </p>
                   </>
                 ) : (
+                  showBuilderSecondaryCta ? (
+                    <>
+                      <a
+                        href={questionsHref}
+                        className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
+                      >
+                        {primaryCtaLabel}
+                      </a>
+                      <p className="mt-3 text-center text-xs leading-5 text-[#6b6b6b]">
+                        Final step: add your contact and shipping details so we can review the build and send next steps.
+                      </p>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
+                    >
+                      {primaryCtaLabel}
+                    </button>
+                  )
+                )}
+                {!showBuilderSecondaryCta || isCustomQuote ? (
                   <a
                     href={questionsHref}
                     className="mt-3 block text-center text-xs font-semibold text-[#777] underline-offset-4 transition hover:text-[var(--og-blue)] hover:underline"
                   >
                     Have Questions? Talk to our team.
                   </a>
-                )}
+                ) : null}
               </div>
             </aside>
           )}

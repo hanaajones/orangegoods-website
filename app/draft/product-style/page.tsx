@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { ProductStylePreview } from "@/components/ProductStylePreview";
 
 export const metadata = {
@@ -5,5 +6,9 @@ export const metadata = {
 };
 
 export default function ProductStyleDraftPage() {
-  return <ProductStylePreview />;
+  return (
+    <Suspense fallback={null}>
+      <ProductStylePreview />
+    </Suspense>
+  );
 }

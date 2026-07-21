@@ -37,6 +37,18 @@ export type ProductTab = {
   content: string | React.ReactNode;
 };
 
+export type ShoppableCtaConfig = {
+  basePath: string;
+  staticParams?: Record<string, string>;
+  product?: string;
+  packageValues?: {
+    core: string;
+    deluxe: string;
+  };
+  includeStyleName?: boolean;
+  projectSummaryPrefix?: string;
+};
+
 export type ShoppableProductProps = {
   name: string;
   tagline: string;
@@ -45,8 +57,23 @@ export type ShoppableProductProps = {
   variants: ProductVariant[];
   tabs: ProductTab[];
   addOnGroups?: AddOnGroup[];
-  ctaHref: string;
+  ctaHref?: string;
+  ctaConfig?: ShoppableCtaConfig;
   ctaLabel?: string;
+  eyebrowLabel?: string;
+  variantLabel?: string;
+  packageLabel?: string;
+  quantityLabel?: string;
+  packageLabels?: {
+    core: string;
+    deluxe: string;
+  };
+  packageBadgeLabel?: string;
+  includedLabels?: {
+    core: string;
+    deluxe: string;
+  };
+  optionsHeading?: string;
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -60,7 +87,22 @@ export function ShoppableProduct({
   tabs,
   addOnGroups = [],
   ctaHref,
+  ctaConfig,
   ctaLabel = "Start a Project",
+  eyebrowLabel = "OG Crafted",
+  variantLabel = "Style",
+  packageLabel = "Package",
+  quantityLabel = "Quantity",
+  packageLabels = {
+    core: "Core",
+    deluxe: "Deluxe",
+  },
+  packageBadgeLabel = "Best Value",
+  includedLabels = {
+    core: "Core includes",
+    deluxe: "Deluxe includes",
+  },
+  optionsHeading = "Options & upgrades",
 }: ShoppableProductProps) {
   const [selectedTier, setSelectedTier] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(0);
@@ -69,13 +111,42 @@ export function ShoppableProduct({
 
   const tier = tiers[selectedTier];
   const variant = variants[selectedVariant];
+  const variantSelectId = `${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-variant-select`;
+  const resolvedCtaHref = (() => {
+    if (ctaConfig) {
+      const params = new URLSearchParams(ctaConfig.staticParams);
+
+      if (ctaConfig.product) {
+        params.set("product", ctaConfig.product);
+      }
+
+      params.set("style", variant.modelNum);
+      if (ctaConfig.includeStyleName !== false) {
+        params.set("styleName", variant.name);
+      }
+      params.set("quantity", tier.label);
+
+      if (ctaConfig.packageValues) {
+        params.set("program", ctaConfig.packageValues[pkg]);
+      }
+
+      if (ctaConfig.projectSummaryPrefix) {
+        const summary = [variant.name, tier.label, packageLabels[pkg]].join(", ");
+        params.set("projectSummary", `${ctaConfig.projectSummaryPrefix}: ${summary}`);
+      }
+
+      return `${ctaConfig.basePath}?${params.toString()}`;
+    }
+
+    return ctaHref ?? "/contact";
+  })();
 
   return (
     <div className="mx-auto max-w-6xl rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.88)] p-6 shadow-[0_24px_80px_rgba(8,30,111,0.07)] backdrop-blur md:p-8">
       {/* Header */}
       <div className="mb-8">
         <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-          OG Crafted
+          {eyebrowLabel}
         </p>
         <h2
           className="mt-2 text-4xl font-semibold leading-none tracking-[-0.03em] text-[var(--og-blue)] md:text-6xl"
@@ -105,14 +176,14 @@ export function ShoppableProduct({
           {/* Style dropdown */}
           <div>
             <label
-              htmlFor="hat-style-select"
+              htmlFor={variantSelectId}
               className="mb-1.5 block text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]"
             >
-              Style
+              {variantLabel}
             </label>
             <div className="relative">
               <select
-                id="hat-style-select"
+                id={variantSelectId}
                 value={selectedVariant}
                 onChange={(e) => setSelectedVariant(Number(e.target.value))}
                 className="w-full appearance-none rounded-xl border border-[#0B32A0]/20 bg-white/80 px-4 py-3 text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-orange)] focus:outline-none"
@@ -141,7 +212,7 @@ export function ShoppableProduct({
           {/* Package toggle */}
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]">
-              Package
+              {packageLabel}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {(["core", "deluxe"] as const).map((p) => (
@@ -160,11 +231,11 @@ export function ShoppableProduct({
                       pkg === p ? "text-white" : "text-[var(--og-blue)]"
                     }`}
                   >
-                    {p === "core" ? "Hat Core" : "Hat Core Deluxe"}
+                    {packageLabels[p]}
                   </p>
                   {p === "deluxe" && (
                     <span className="mt-0.5 inline-block rounded-full bg-[var(--og-orange)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                      Best Value
+                      {packageBadgeLabel}
                     </span>
                   )}
                 </button>
@@ -175,7 +246,7 @@ export function ShoppableProduct({
           {/* Quantity tier selector */}
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]">
-              Quantity
+              {quantityLabel}
             </p>
             <div className="grid gap-2">
               {tiers.map((t, i) => (
@@ -214,7 +285,7 @@ export function ShoppableProduct({
           {/* What's included */}
           <div className="rounded-[1.25rem] border border-[#0B32A0]/15 bg-white/70 p-5">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]">
-              {pkg === "core" ? "Hat Core includes" : "Hat Core Deluxe includes"}
+              {includedLabels[pkg]}
             </p>
             <ul className="space-y-1.5">
               {(pkg === "core" ? tier.coreFeatures : tier.deluxeFeatures).map((f) => (
@@ -225,6 +296,43 @@ export function ShoppableProduct({
               ))}
             </ul>
           </div>
+
+          {addOnGroups.length ? (
+            <div className="rounded-[1.25rem] border border-[#0B32A0]/15 bg-white/70 p-5">
+              <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]">
+                {optionsHeading}
+              </p>
+              <div className="space-y-4">
+                {addOnGroups.map((group) => (
+                  <div key={group.heading}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="text-sm font-semibold text-[var(--og-blue)]">
+                        {group.heading}
+                      </p>
+                      {group.note ? (
+                        <p className="text-[11px] uppercase tracking-[0.12em] text-[var(--og-muted)]">
+                          {group.note}
+                        </p>
+                      ) : null}
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {group.items.map((item) => (
+                        <div
+                          key={`${group.heading}-${item.label}`}
+                          className="rounded-full border border-[#0B32A0]/10 bg-[rgba(255,248,241,0.9)] px-3 py-2 text-xs text-[var(--og-muted)]"
+                        >
+                          <span className="font-semibold text-[var(--og-blue)]">
+                            {item.label}
+                          </span>{" "}
+                          <span>{item.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           {/* Tabs */}
           <div>
@@ -251,62 +359,13 @@ export function ShoppableProduct({
 
           {/* CTA */}
           <Link
-            href={ctaHref}
+            href={resolvedCtaHref}
             className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-[var(--og-orange)] text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]"
           >
             {ctaLabel}
           </Link>
         </div>
       </div>
-
-      {/* ── Add-ons section ── */}
-      {addOnGroups.length > 0 && (
-        <div className="mt-10 border-t border-[#0B32A0]/10 pt-10">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-            Upgrades & Add-Ons
-          </p>
-          <h3
-            className="mb-8 text-2xl font-semibold text-[var(--og-blue)]"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Customize every detail
-          </h3>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {addOnGroups.map((group) => (
-              <div
-                key={group.heading}
-                className="rounded-[1.25rem] border border-[#0B32A0]/15 bg-white/70 p-5"
-              >
-                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-blue)]">
-                  {group.heading}
-                </p>
-                {group.note && (
-                  <p className="mb-3 text-xs text-[var(--og-muted)] opacity-70">{group.note}</p>
-                )}
-                <ul className="space-y-2">
-                  {group.items.map((item) => (
-                    <li
-                      key={item.label}
-                      className="flex items-center justify-between gap-2 text-sm"
-                    >
-                      <span className="text-[var(--og-muted)]">{item.label}</span>
-                      <span
-                        className={`shrink-0 text-xs font-semibold ${
-                          item.price === "Included"
-                            ? "text-green-600"
-                            : "text-[var(--og-orange)]"
-                        }`}
-                      >
-                        {item.price}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

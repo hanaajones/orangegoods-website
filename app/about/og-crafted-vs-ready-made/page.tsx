@@ -5,9 +5,9 @@ import { Reveal } from "@/components/Reveal";
 import { startProjectHref } from "@/lib/content";
 
 export const metadata = {
-  title: "OG Crafted vs Ready Made — Orange Goods",
+  title: "Our Process — Orange Goods",
   description:
-    "Two ways to make something great. OG Crafted is fully custom from scratch. Ready Made starts with premium blanks decorated fast. Learn which is right for your project.",
+    "Our process starts with the right path. Compare Ready Made and OG Crafted to see which approach fits your timeline, budget, and level of customization.",
 };
 
 const paths = [
@@ -93,15 +93,15 @@ export default function OGCraftedVsReadyMadePage() {
       <section className="bg-[var(--og-blue)] px-4 py-20 text-white md:px-8 md:py-28 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/60">
-            Orange Goods
+            Our Process
           </p>
           <h1 className="mt-5 text-5xl leading-none text-white md:text-6xl lg:text-7xl">
-            TWO WAYS TO MAKE SOMETHING GREAT
+            READY MADE OR OG CRAFTED
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75 md:text-xl">
-            OG Crafted is built from the ground up. Ready Made starts with
-            premium blanks and moves fast. Both produce goods worth keeping —
-            the difference is timeline, cost, and how custom you need to go.
+            Start with the right lane. Ready Made uses premium blanks and moves
+            fast. OG Crafted is built from scratch for projects that need a
+            more custom end result. Both lead to goods worth keeping.
           </p>
         </div>
       </section>

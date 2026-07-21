@@ -2,7 +2,6 @@
 
 import { FormEvent, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 
@@ -62,7 +61,6 @@ function isValidStep(container: HTMLDivElement | null) {
 }
 
 export default function DraftContactSteppedPage() {
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -100,8 +98,7 @@ export default function DraftContactSteppedPage() {
 
     setSubmitting(false);
     setSubmitted(true);
-    event.currentTarget.reset();
-    router.push("/thank-you");
+    window.location.assign("/thank-you?source=draft-contact-stepped&intent=contact");
   }
 
   return (

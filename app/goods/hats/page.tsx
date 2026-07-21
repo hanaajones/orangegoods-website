@@ -25,40 +25,25 @@ const hatsBuilderHref = "/build/og-crafted-hats";
 
 const quantityTiers = [
   {
-    label: "100",
+    label: "100 hats",
     base: "$13.00",
     href: hatsBuilderHref,
   },
   {
-    label: "250",
+    label: "250 hats",
     base: "$12.50",
     href: hatsBuilderHref,
   },
   {
-    label: "500",
+    label: "500 hats",
     base: "$11.50",
     badge: "Great value",
     href: hatsBuilderHref,
   },
   {
-    label: "1,000",
+    label: "1000 hats",
     base: "$10.50",
     href: hatsBuilderHref,
-  },
-];
-
-const flowCards = [
-  {
-    title: "Send the direction",
-    body: "Send the brand, quantity, and timeline.",
-  },
-  {
-    title: "Approve the build",
-    body: "We dial in style, fabric, and decoration.",
-  },
-  {
-    title: "We run the project",
-    body: "One team handles production and delivery.",
   },
 ];
 
@@ -240,7 +225,7 @@ function OptionPathCard({
                   />
                 </div>
                 <div className="px-2 pb-1 pt-4 text-center">
-                  <h3 className="text-lg font-semibold uppercase leading-tight tracking-[0.04em] text-[#1C1C1C] md:text-[1.38rem]">
+                  <h3 className="text-lg font-semibold uppercase leading-tight tracking-[0.04em] text-[#0B32A0] md:text-[1.38rem]">
                     {option.title}
                   </h3>
                 </div>
@@ -377,38 +362,57 @@ export default function HatsPage() {
 
           <HatPricingSlider tiers={quantityTiers} />
 
-          <div className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                  How it moves
-                </p>
-                <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
-                  Keep it simple.
-                </h3>
-              </div>
-              <p className="max-w-xl text-sm leading-6 text-[var(--og-muted)]">
-                We help narrow the choices and run the project.
-              </p>
+          <div id="styles" className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
+            <SectionHeader
+              eyebrow="Styles"
+              title="Start with the shape"
+              description="Pick the silhouette here, then refine the rest inside the builder."
+            />
+
+            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              {featuredHatStyles.map((card) => (
+                <Link
+                  key={card.slug}
+                  href={`${hatsBuilderHref}?hatStyle=${card.slug}`}
+                  className="group block"
+                >
+                  <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[#F7F4ED] shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
+                    <div className="relative aspect-[16/10] bg-[#d9c5ae]">
+                      <Image
+                        src={card.image}
+                        alt={card.title}
+                        fill
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        style={{ objectPosition: card.imagePosition }}
+                      />
+                    </div>
+                    <div className="p-6">
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                        {card.model}
+                      </p>
+                      <h3 className="mt-2 text-3xl font-semibold leading-none text-[#0B32A0]">
+                        {card.title}
+                      </h3>
+                      <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
+                        {card.description}
+                      </p>
+                      <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
+                        Build this style →
+                      </p>
+                    </div>
+                  </article>
+                </Link>
+              ))}
             </div>
 
-            <div className="mt-6 grid gap-3 lg:grid-cols-3">
-              {flowCards.map((card, index) => (
-                <article
-                  key={card.title}
-                  className="rounded-[1.35rem] border border-[#0B32A0]/12 bg-[rgba(255,248,241,0.72)] p-5"
-                >
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h4 className="mt-3 text-2xl font-semibold leading-tight text-[#1C1C1C]">
-                    {card.title}
-                  </h4>
-                  <p className="mt-3 text-sm leading-6 text-[var(--og-muted)]">
-                    {card.body}
-                  </p>
-                </article>
-              ))}
+            <div className="mt-8 flex justify-center">
+              <Link
+                href="/goods/hats/styles"
+                className="inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
+              >
+                See all styles
+              </Link>
             </div>
           </div>
         </section>
@@ -431,7 +435,7 @@ export default function HatsPage() {
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
                 Need it sooner?
               </p>
-              <h3 className="mt-3 text-3xl font-semibold leading-tight text-[#1C1C1C]">
+              <h3 className="mt-3 text-3xl font-semibold leading-tight text-[#0B32A0]">
                 Start with a premium blank.
               </h3>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -450,67 +454,11 @@ export default function HatsPage() {
               </div>
               <Link
                 href="/goods/hats/ready-made"
-                className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1C1C1C] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
+                className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See ready-made hats
               </Link>
             </div>
-          </div>
-        </section>
-      </Reveal>
-
-      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-        <section id="styles" className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Styles"
-            title="Start with the shape"
-            description="Pick the silhouette here, then refine the rest inside the builder."
-          />
-
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {featuredHatStyles.map((card) => (
-              <Link
-                key={card.slug}
-                href={`${hatsBuilderHref}?hatStyle=${card.slug}`}
-                className="group block"
-              >
-                <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
-                  <div className="relative aspect-[16/10] bg-[#d9c5ae]">
-                    <Image
-                      src={card.image}
-                      alt={card.title}
-                      fill
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                      className="object-cover transition duration-300 group-hover:scale-[1.03]"
-                      style={{ objectPosition: card.imagePosition }}
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                      {card.model}
-                    </p>
-                    <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
-                      {card.title}
-                    </h3>
-                    <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                      {card.description}
-                    </p>
-                    <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
-                      Build this style →
-                    </p>
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/goods/hats/styles"
-              className="inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1C1C1C] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
-            >
-              See all styles
-            </Link>
           </div>
         </section>
       </Reveal>
@@ -591,7 +539,7 @@ export default function HatsPage() {
                 >
                   {String(index + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-4 text-2xl font-semibold text-[#1C1C1C]">
+                <h3 className="mt-4 text-2xl font-semibold text-[#0B32A0]">
                   {step.title}
                 </h3>
                 <p className="mt-4 text-base leading-7 text-[var(--og-muted)]">
@@ -615,7 +563,7 @@ export default function HatsPage() {
                 key={faq.question}
                 className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
               >
-                <summary className="cursor-pointer text-lg font-semibold text-[#1C1C1C]">
+                <summary className="cursor-pointer text-lg font-semibold text-[#0B32A0]">
                   {faq.question}
                 </summary>
                 <p className="mt-3 text-base leading-7 text-[var(--og-muted)]">

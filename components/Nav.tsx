@@ -10,12 +10,22 @@ const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
 const showBuildOnlineNav = false;
 const products = [
-  { label: "Hats", href: "/goods/hats", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif" },
-  { label: "Apparel", href: "/build/products/as-colour-5001", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif" },
-  { label: "Drinkware", href: "/goods/drinkware", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif" },
-  { label: "Bags + Totes", href: "/goods/bags", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif" },
-  { label: "Accessories", href: "/goods/accessories", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },
-  { label: "Socks", href: "/goods/socks", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },
+  { label: "Hats", href: "/goods/hats", image: "/images/gallery/hat-og-patch-lifestyle.jpg", position: "center 42%" },
+  { label: "Apparel", href: "/build/products/as-colour-5001", image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg", position: "center 50%" },
+  { label: "Drink wear", href: "/goods/drinkware", image: "/images/gallery/drinkware-verve-grateful-dead-mug-034.jpg", position: "center 52%" },
+  { label: "Bags and totes", href: "/goods/bags", image: "/images/gallery/bags-boatsetter-tote.jpg", position: "center 50%" },
+  { label: "Accessories", href: "/goods/accessories", image: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg", position: "center 42%" },
+  { label: "Socks", href: "/goods/socks", image: "/images/gallery/socks-verve-gd.jpg", position: "center 54%" },
+];
+
+const goodsMenuTiles = [
+  ...products,
+  {
+    label: "View all",
+    href: "/goods",
+    image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
+    position: "center 50%",
+  },
 ];
 
 const serviceLinks = [
@@ -24,20 +34,12 @@ const serviceLinks = [
 ];
 
 const customLinks = [
-  { label: "Our Process", href: "/#process" },
-  { label: "Gallery", href: "/gallery" },
   { label: "FAQ", href: "/faq" },
-];
-
-const howItWorksLinks = [
-  { label: "Ready Made", href: "/services#ready-made" },
-  { label: "OG Crafted", href: "/services#og-crafted" },
-  { label: "Find My Goods", href: "/quiz" },
 ];
 
 const aboutLinks = [
   { label: "About", href: "/about" },
-  { label: "OG Crafted vs Ready Made", href: "/about/og-crafted-vs-ready-made" },
+  { label: "Our Process", href: "/our-process" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
@@ -90,7 +92,6 @@ function MenuLink({
 export function Nav() {
   const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
-  const [hoveredProduct, setHoveredProduct] = useState(products[0].image);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
   const hideMobileBottomCtas = pathname === "/quiz" || pathname.startsWith("/quiz/");
@@ -235,54 +236,53 @@ export function Nav() {
               onMouseEnter={cancelClose}
             >
               {activeMenu === "custom" ? (
-                <div className="grid gap-3 md:grid-cols-[1.4fr_0.9fr_0.9fr_0.9fr]">
-                  {/* Col 1: Photo */}
-                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
-                    <Image
-                      src={hoveredProduct}
-                      alt="Orange Goods product"
-                      fill
-                      sizes="260px"
-                      className="object-cover transition-opacity duration-300"
-                    />
-                  </div>
-                  {/* Col 2: Products */}
+                <div className="grid gap-3 md:grid-cols-[1.65fr_0.85fr_0.85fr]">
                   <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                    <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Products
                     </p>
-                    <div className="grid gap-1">
-                      <MenuLink href="/goods">View All</MenuLink>
-                      {products.map((item) => (
-                        <div key={item.label} onMouseEnter={() => setHoveredProduct(item.image)}>
-                          <MenuLink href={item.href}>{item.label}</MenuLink>
-                        </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {goodsMenuTiles.map((item, index) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className={`group relative block min-h-[7.25rem] overflow-hidden rounded-[1.25rem] border-[2px] border-[#0B32A0] bg-[#d9c5ae] transition hover:-translate-y-0.5 hover:border-[#FF4200] ${
+                            index === goodsMenuTiles.length - 1 ? "sm:col-span-2" : ""
+                          }`}
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.label}
+                            fill
+                            sizes={index === goodsMenuTiles.length - 1 ? "(min-width: 768px) 32vw, 100vw" : "(min-width: 768px) 15vw, 100vw"}
+                            className="object-cover transition duration-500 group-hover:scale-105"
+                            style={{ objectPosition: item.position }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/82 via-[#1C1C1C]/22 to-transparent" />
+                          <div className="absolute inset-x-0 bottom-0 p-3 text-white">
+                            <p className="font-[var(--font-noir-alt)] text-sm font-bold uppercase tracking-[0.08em]">
+                              {item.label}
+                            </p>
+                          </div>
+                        </Link>
                       ))}
                     </div>
                   </div>
-                  {/* Col 3: How It Works */}
+                  {/* Col 2: Ready Made Services */}
                   <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      How It Works
-                    </p>
-                    <div className="grid gap-1">
-                      {howItWorksLinks.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
-                      ))}
-                    </div>
-                    <p className="px-3 pb-2 pt-5 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Ready Made Services
                     </p>
                     <div className="grid gap-1">
                       {serviceLinks.map((item) => (
                         <div key={item.label}>
                           <MenuLink href={item.href}>{item.label}</MenuLink>
-                          {item.note && <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p>}
+                          {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
                         </div>
                       ))}
                     </div>
                   </div>
-                  {/* Col 4: Explore */}
+                  {/* Col 3: Explore */}
                   <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       Explore
@@ -293,8 +293,14 @@ export function Nav() {
                       ))}
                       <MenuLink href="/case-studies">Case Studies</MenuLink>
                     </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <Link href={startProjectHref} className="btn-og">Start a Project</Link>
+                    <div className="mt-4 flex flex-col items-start gap-2">
+                      <Link href={startProjectHref} className="btn-og min-w-[14rem] justify-center">Start a Project</Link>
+                      <Link
+                        href="/quiz"
+                        className="inline-flex min-w-[14rem] items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] font-[var(--font-noir-alt)] text-base font-bold uppercase tracking-normal text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
+                      >
+                        Merch Quiz
+                      </Link>
                     </div>
                   </div>
                 </div>

@@ -14,7 +14,7 @@ const services = [
     title: "OG Crafted",
     tagline: "Built from scratch. Nothing off the shelf.",
     description:
-      "OG Crafted is our fully custom production path. Everything is designed and manufactured from the ground up — your fabric, your fit, your trims, your labels. The result is something nobody else has. It takes longer and costs more, but there's no other way to get goods this specific to your brand.",
+      "OG Crafted is our fully custom production path. Everything is designed and manufactured from the ground up — your fabric, your fit, your trims, your labels. The result is something nobody else has. It takes longer, but it lands as the lower-cost path here while giving you the most brand-specific result.",
     details: [
       "Custom fabric selection and development",
       "Cut + sew construction from scratch",
@@ -37,13 +37,13 @@ const services = [
     title: "Ready Made",
     tagline: "Premium blanks. Decorated locally. Fast.",
     description:
-      "Ready Made starts with premium blank garments and hard goods — brands like Richardson, Yupoong, S+S Activewear — and adds your decoration locally. Embroidery, screen print, patches, and heat transfers applied cleanly and quickly. You get excellent quality at a faster pace.",
+      "Ready Made starts with premium blank garments and hard goods — brands like Richardson, Yupoong, S+S Activewear — and adds your decoration locally. Embroidery, screen print, patches, and heat transfers applied cleanly and quickly. You get excellent quality at a faster pace, with a higher cost than OG Crafted.",
     details: [
       "Premium blanks from top suppliers",
       "Embroidery, screen print, and patches",
       "Mix styles — same design applies across all",
       "2–4 week turnaround on most orders",
-      "Lower cost per unit than OG Crafted",
+      "Higher cost per unit than OG Crafted",
     ],
     specs: [
       { label: "MOQ", value: "100+ pieces" },
@@ -79,10 +79,34 @@ const services = [
   },
 ];
 
+const comparisons = [
+  { label: "Timeline", crafted: "6–10 weeks", readyMade: "2–4 weeks" },
+  { label: "MOQ", crafted: "100+ pieces", readyMade: "100+ pieces" },
+  { label: "Construction", crafted: "Built from scratch", readyMade: "Premium blanks" },
+  { label: "Customization", crafted: "Everything", readyMade: "Logo + decoration" },
+  { label: "Cost", crafted: "Lower", readyMade: "Higher" },
+  { label: "Lead time", crafted: "Longer", readyMade: "Faster" },
+];
+
+const chooseCrafted = [
+  "You need something nobody else makes",
+  "Fit, fabric, and trims are part of the brand story",
+  "You're building a retail product line",
+  "It's a premium gift or collector piece",
+  "You want the lower-cost path",
+];
+
+const chooseReadyMade = [
+  "You need it in 2–4 weeks",
+  "The design is the hero, not the construction",
+  "You can spend more for faster turnaround",
+  "It's for events, onboarding, or campaigns",
+  "You want to mix styles across one order",
+];
+
 export default function ServicesPage() {
   return (
     <main>
-      {/* Hero */}
       <section className="bg-[#0B32A0] px-4 py-16 text-white md:px-8 md:py-20 lg:px-12">
         <div className="mx-auto max-w-4xl text-center">
           <p
@@ -103,12 +127,10 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Service sections */}
       {services.map((service) => (
         <section key={service.id} id={service.id} className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
           <div className="mx-auto max-w-6xl">
             <div className="grid gap-12 md:grid-cols-2 md:items-center">
-              {/* Photo */}
               <div className="relative min-h-[280px] overflow-hidden rounded-[2rem] md:min-h-[400px]">
                 <Image
                   src={service.image}
@@ -119,10 +141,9 @@ export default function ServicesPage() {
                 />
               </div>
 
-              {/* Content */}
               <div>
                 <p
-                  className={`text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]`}
+                  className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]"
                   style={{ fontFamily: "var(--font-accent)" }}
                 >
                   {service.eyebrow}
@@ -136,22 +157,20 @@ export default function ServicesPage() {
                 <p className="mt-2 text-lg font-semibold text-[#1C1C1C]">{service.tagline}</p>
                 <p className="mt-4 text-base leading-7 text-[#1C1C1C]/70">{service.description}</p>
 
-                {/* Detail list */}
                 <ul className="mt-6 space-y-2">
-                  {service.details.map((d) => (
-                    <li key={d} className="flex items-start gap-2 text-sm text-[#1C1C1C]/70">
+                  {service.details.map((detail) => (
+                    <li key={detail} className="flex items-start gap-2 text-sm text-[#1C1C1C]/70">
                       <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF4200]" />
-                      {d}
+                      {detail}
                     </li>
                   ))}
                 </ul>
 
-                {/* Specs pills */}
                 <div className="mt-6 flex flex-wrap gap-3">
-                  {service.specs.map((s) => (
-                    <div key={s.label} className="rounded-xl border border-[#0B32A0]/20 bg-[#F3EFE7] px-4 py-2">
-                      <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#FF4200]">{s.label}</p>
-                      <p className="text-sm text-[#1C1C1C]/70">{s.value}</p>
+                  {service.specs.map((spec) => (
+                    <div key={spec.label} className="rounded-xl border border-[#0B32A0]/20 bg-[#F3EFE7] px-4 py-2">
+                      <p className="text-xs font-bold uppercase tracking-[0.15em] text-[#FF4200]">{spec.label}</p>
+                      <p className="text-sm text-[#1C1C1C]/70">{spec.value}</p>
                     </div>
                   ))}
                 </div>
@@ -165,7 +184,73 @@ export default function ServicesPage() {
         </section>
       ))}
 
-      {/* Bottom CTA */}
+      <section className="bg-[var(--og-warm-grey)] px-4 py-16 md:px-8 md:py-20 lg:px-12">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-4xl leading-tight text-[#1C1C1C] md:text-5xl">
+            Which is right for you?
+          </h2>
+          <p className="mt-4 max-w-2xl text-lg leading-8 text-[#1C1C1C]/70">
+            Not sure? Pick the path that matches your situation. Either way,
+            we&apos;ll make sure you end up with goods worth keeping.
+          </p>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <div className="border border-[#FF4200]/30 bg-white p-6 md:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#FF4200]">
+                Go with OG Crafted if…
+              </p>
+              <ul className="mt-5 space-y-3">
+                {chooseCrafted.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-base text-[#1C1C1C]/70">
+                    <span className="mt-1 text-[#FF4200]">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="border border-[#0B32A0]/30 bg-white p-6 md:p-8">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#0B32A0]">
+                Go with Ready Made if…
+              </p>
+              <ul className="mt-5 space-y-3">
+                {chooseReadyMade.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-base text-[#1C1C1C]/70">
+                    <span className="mt-1 text-[#0B32A0]">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="text-4xl leading-tight text-[#1C1C1C] md:text-5xl">At a glance</h2>
+          <div className="mt-8 overflow-hidden border border-[#0B32A0]/20">
+            <div className="grid grid-cols-3 bg-[var(--og-blue)] px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white">
+              <span />
+              <span>OG Crafted</span>
+              <span>Ready Made</span>
+            </div>
+            {comparisons.map((row, index) => (
+              <div
+                key={row.label}
+                className={`grid grid-cols-3 px-6 py-4 text-sm ${
+                  index % 2 === 0 ? "bg-white" : "bg-[#F3EFE7]"
+                }`}
+              >
+                <span className="font-semibold text-[#1C1C1C]">{row.label}</span>
+                <span className="text-[#1C1C1C]/70">{row.crafted}</span>
+                <span className="text-[#1C1C1C]/70">{row.readyMade}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-[#0B32A0] px-4 py-16 text-center text-white md:px-8">
         <h2
           className="text-3xl uppercase text-white md:text-4xl"
@@ -180,7 +265,11 @@ export default function ServicesPage() {
           <Link href={startProjectHref} className="btn-og-white">
             Talk to Us
           </Link>
-          <Link href="/quiz" className="inline-flex items-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-sm font-bold uppercase text-white transition hover:-translate-y-[3px]" style={{ fontFamily: "var(--font-display)" }}>
+          <Link
+            href="/quiz"
+            className="inline-flex items-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-sm font-bold uppercase text-white transition hover:-translate-y-[3px]"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
             Take the Quiz
           </Link>
         </div>
