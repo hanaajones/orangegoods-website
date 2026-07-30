@@ -15,29 +15,33 @@ const hatBuildItems: HatBuildItem[] = [
   {
     title: "Full custom hat",
     description: "Choose the shape, fabric, color, and core brand details.",
-    image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
-    imagePosition: "center 44%",
+    image: "/images/gallery/custom-uploaded/headwear-full-custom-hat-mg-2711.jpg",
+    imagePosition: "center 50%",
+    badge: "Included",
+  },
+  {
+    title: "Fabric and color",
+    description: "Pick the material, color direction, and overall feel.",
+    image: "/images/gallery/headwear-fabric-color-mg-9423.jpg",
+    imagePosition: "center 50%",
+    badge: "Included",
   },
   {
     title: "Front decoration",
     description: "Pick the main hit up front, from embroidery to patches or labels.",
     image: "/images/gallery/headwear-front-decoration-feeling-shell-labbet.jpg",
     imagePosition: "center 56%",
-  },
-  {
-    title: "Fabric + color",
-    description: "Pick the material, color direction, and overall feel.",
-    image: "/images/gallery/headwear-fabric-color-mg-9423.jpg",
-    imagePosition: "center 50%",
+    badge: "Included",
   },
   {
     title: "Interior label",
     description: "Add the inside label and finishing details.",
     image: "/images/gallery/headwear-interior-woven-label-img-7684.jpg",
     imagePosition: "center 60%",
+    badge: "Included",
   },
   {
-    title: "Choose add-ons",
+    title: "Extras",
     description: "Optional paid upgrades like interior taping, back or side embroidery, rope, closure labels, or contrast fabric.",
     image: "/images/gallery/headwear-verve-roasters-dscf3088.jpg",
     imagePosition: "center 54%",
@@ -80,9 +84,7 @@ export function HatBuildAccordion() {
                   <div className="min-w-0 flex-1 self-center">
                     <div className="flex flex-wrap items-center gap-2">
                       <p
-                        className={`text-lg font-semibold leading-tight transition md:text-xl ${
-                          active ? "text-[var(--og-orange)]" : "text-[var(--og-blue)]"
-                        }`}
+                        className="text-lg font-semibold leading-tight text-[#1C1C1C] transition md:text-xl"
                       >
                         {item.title}
                       </p>
@@ -90,7 +92,7 @@ export function HatBuildAccordion() {
                         <span
                           className={`rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] ${
                             item.badge === "Included"
-                              ? "border border-[#0B32A0]/18 bg-[#EEF3FF] text-[var(--og-blue)]"
+                              ? "border border-[#0B32A0]/18 bg-[#EDF3FF] text-[#0B32A0]"
                               : "border border-[#FF4200]/20 bg-[#FFF1E9] text-[var(--og-orange)]"
                           }`}
                         >
@@ -112,7 +114,10 @@ export function HatBuildAccordion() {
       </div>
 
       <article className="overflow-hidden rounded-[1.9rem] border border-[#0B32A0]/15 bg-white min-h-[22rem] lg:h-full">
-        <div className="relative h-full min-h-[22rem] bg-[#d9c5ae]">
+        <div
+          key={`${activeItem.image}-${activeItem.imagePosition}`}
+          className="relative h-full min-h-[22rem] bg-[#d9c5ae]"
+        >
           <Image
             src={activeItem.image}
             alt={activeItem.title}

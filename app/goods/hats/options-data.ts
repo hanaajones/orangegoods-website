@@ -3,6 +3,7 @@ export type HatsOptionCard = {
   description: string;
   image: string;
   imagePosition?: string;
+  imageScaleClass?: string;
   details: string[];
   href?: string;
   openInNewTab?: boolean;
@@ -267,93 +268,99 @@ export const addOnOptions: HatsOptionCard[] = [
     description: "Add another logo hit on the back.",
     image: "/images/gallery/headwear-back-embroidery-mg-6901-zoom.jpg",
     imagePosition: "center 52%",
+    imageScaleClass: "scale-[1.18] group-hover:scale-[1.21]",
     details: [],
   },
   {
     title: "Side embroidery",
     description: "Clean side hits for extra brand presence.",
     image: "/images/gallery/headwear-side-embroidery-img-7667-exposure.jpg",
-    imagePosition: "center 44%",
+    imagePosition: "58% 44%",
     details: [],
   },
   {
     title: "Brim rope",
     description: "Add rope across the brim for a more styled finish.",
-    image: "/images/gallery/headwear-brim-rope-img-7693.jpg",
-    imagePosition: "center 52%",
+    image: "/images/gallery/custom-uploaded/headwear-brim-rope-img-7595.jpg",
+    imagePosition: "center 58%",
+    imageScaleClass: "scale-[1.12] group-hover:scale-[1.15]",
     details: [],
   },
   {
     title: "Closure label",
     description: "A small branded label at the closure.",
     image: "/images/gallery/headwear-closure-label-mg-6920.jpg",
-    imagePosition: "center 58%",
+    imagePosition: "center 62%",
+    imageScaleClass: "scale-[1.18] group-hover:scale-[1.21]",
     details: [],
   },
   {
     title: "Contrast fabric",
     description: "Mix fabrics or colors for more visual depth.",
-    image: "/images/gallery/headwear-fabric-color-mg-9423.jpg",
-    imagePosition: "center 50%",
+    image: "/images/gallery/custom-uploaded/headwear-contrast-fabric-img-7633.jpg",
+    imagePosition: "center 54%",
+    imageScaleClass: "scale-[1.02] group-hover:scale-[1.05]",
     details: [],
   },
   {
     title: "Stripe trim",
     description: "Decorative trim tape wrapped around the back panels.",
     image: "/images/gallery/headwear-stripe-trim-img-7709.jpg",
-    imagePosition: "center 52%",
+    imagePosition: "56% 60%",
+    imageScaleClass: "scale-[1.17] group-hover:scale-[1.2]",
     details: [],
   },
   {
     title: "Brim embroidery",
     description: "Add embroidery on the brim for another custom hit.",
     image: "/images/gallery/headwear-brim-embroidery-img-7704.jpg",
-    imagePosition: "center 58%",
+    imagePosition: "62% 64%",
+    imageScaleClass: "scale-[1.18] group-hover:scale-[1.21]",
     details: [],
   },
 ];
 
 export const closureOptions: HatsOptionCard[] = [
   {
-    title: "Leather clasp",
-    description: "A leather strap with clasp hardware for a more elevated finish.",
-    image: "/images/gallery/headwear-leather-closure.png",
-    imagePosition: "center 54%",
-    details: [],
-  },
-  {
-    title: "Velcro closure",
-    description: "Easy hook-and-loop adjustability with a softer casual feel.",
-    image: "/images/gallery/headwear-velcro-closure.webp",
-    imagePosition: "center 62%",
-    details: [],
-  },
-  {
     title: "Snapback",
     description: "Classic plastic snap for truckers and structured caps.",
-    image: "/images/gallery/headwear-snapback-closure.jpg",
-    imagePosition: "center 60%",
-    details: [],
-  },
-  {
-    title: "Buckle closure",
-    description: "A technical buckle adjuster for nylon and performance styles.",
-    image: "/images/gallery/headwear-buckle-closure.jpg",
-    imagePosition: "center 60%",
+    image: "/images/hats/closures/closure-snapback.jpg",
+    imagePosition: "center 74%",
     details: [],
   },
   {
     title: "Strapback with clasp",
     description: "Classic strapback adjustability with clasp hardware and a more premium feel.",
-    image: "/images/gallery/headwear-clasp-closure.webp",
+    image: "/images/hats/closures/closure-strapback-clasp.jpg",
+    imagePosition: "center 68%",
+    details: [],
+  },
+  {
+    title: "Velcro closure",
+    description: "Easy hook-and-loop adjustability with a softer casual feel.",
+    image: "/images/hats/closures/closure-velcro.jpg",
+    imagePosition: "center 76%",
+    details: [],
+  },
+  {
+    title: "Buckle closure",
+    description: "A technical buckle adjuster for nylon and performance styles.",
+    image: "/images/hats/closures/closure-clip-buckle.jpg",
     imagePosition: "center 60%",
     details: [],
   },
   {
     title: "Strapback with slider",
     description: "A cleaner strapback adjuster with easy slide hardware.",
-    image: "/images/gallery/headwear-strap-color-mg-9427.jpg",
+    image: "/images/hats/closures/closure-strapback-slider.jpg",
     imagePosition: "center 50%",
+    details: [],
+  },
+  {
+    title: "Leather clasp",
+    description: "A leather strap with clasp hardware for a more elevated finish.",
+    image: "/images/hats/closures/closure-leather-clasp.jpg",
+    imagePosition: "center 60%",
     details: [],
   },
   {

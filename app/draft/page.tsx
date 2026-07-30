@@ -344,12 +344,6 @@ export default function DraftPage() {
             >
               Start a Project
             </Link>
-            <Link
-              href="/build"
-              className="inline-flex min-h-12 items-center rounded-xl border border-[#0B32A0]/20 px-6 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
-            >
-              Build Online
-            </Link>
           </div>
         </div>
       </section>

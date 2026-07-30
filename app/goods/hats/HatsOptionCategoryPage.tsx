@@ -51,21 +51,21 @@ export function HatsOptionCategoryPage({
               href={card.href ?? undefined}
               target={card.openInNewTab ? "_blank" : undefined}
               rel={card.openInNewTab ? "noreferrer" : undefined}
-              className={`group block overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-white shadow-[8px_8px_0px_#0B32A0] transition ${
+              className={`group isolate block overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-white shadow-[8px_8px_0px_#0B32A0] transition ${
                 card.href ? "hover:-translate-y-1" : ""
               }`}
             >
-              <div className={`relative bg-[#d8c3aa] ${compactCards ? "aspect-[4/3]" : "aspect-[4/5]"}`}>
+              <div className={`relative overflow-hidden bg-[#d8c3aa] ${compactCards ? "aspect-[4/3]" : "aspect-[4/5]"}`}>
                 <Image
                   src={card.image}
                   alt={card.title}
                   fill
                   sizes="(min-width: 1024px) 30vw, 100vw"
-                  className="object-cover scale-[1.08]"
+                  className={`object-cover ${card.imageScaleClass ?? "scale-[1.08]"}`}
                   style={{ objectPosition: card.imagePosition }}
                 />
               </div>
-              <div className={compactCards ? "p-5" : "p-6"}>
+              <div className={`relative z-10 bg-white ${compactCards ? "p-5" : "p-6"}`}>
                 <h2 className="text-3xl font-semibold leading-none text-[var(--og-blue)]">
                   {card.title}
                 </h2>

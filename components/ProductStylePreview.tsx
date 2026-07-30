@@ -1,12 +1,26 @@
 "use client";
 
-import { hatStyles } from "@/app/goods/hats/style-data";
-import { useSearchParams } from "next/navigation";
+import { hatStyles, type HatStyle, type HatStyleImage } from "@/app/goods/hats/style-data";
+import {
+  CATALOG_PACKAGING_PRICES,
+  CATALOG_PRODUCTS,
+  JOL_SPECIALTY_INK_PRICE,
+  calculateCatalogBuilderPricing,
+  type CatalogPackagingUpgrade,
+  type CatalogSpecialtyPrintUpgrade,
+} from "@/data/catalog";
+import { READY_MADE_HATS } from "@/lib/ready-made-hats";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 
 type ModeKey = "ready" | "catalog" | "shop" | "build" | "crafted";
-type ApparelSize = "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL";
+type ApparelSize = "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL" | "4XL";
+type CatalogColorOption = {
+  name: string;
+  value: string;
+};
 
 type ProductStylePreviewProps = {
   initialMode?: ModeKey;
@@ -14,7 +28,25 @@ type ProductStylePreviewProps = {
   pageKicker?: string;
   pageTitle?: string;
   pageDescription?: string;
+  pageBackHref?: string;
+  pageBackLabel?: string;
+  modeLabelOverrides?: Partial<Record<ModeKey, string>>;
+  previewLinks?: {
+    label: string;
+    href: string;
+  }[];
 };
+
+type PreviewMediaItem = {
+  src: string;
+  alt: string;
+  label: string;
+  imagePosition?: string;
+  imageClassName?: string;
+};
+
+type ReadyMadeStyle = (typeof READY_MADE_HATS)[number];
+type ReadyMadeColor = ReadyMadeStyle["colors"][number];
 
 const modes: Record<ModeKey, {
   label: string;
@@ -29,9 +61,9 @@ const modes: Record<ModeKey, {
   ready: {
     label: "Ready-made",
     eyebrow: "Ready Made · AS Colour",
-    title: "Stock Cap",
-    description: "A proven blank with front embroidery included, fast turnaround, and enough options to make it feel intentional.",
-    cta: "Proceed to Checkout",
+    title: "Ready Made Hats",
+    description: "A simplified branded-hat builder built around premium blanks, fast turns, and only the decisions that actually matter.",
+    cta: "Submit Hat for Review",
     unitLabel: "per hat",
     unitPrice: 16.5,
     timeline: "2-3 weeks",
@@ -61,7 +93,7 @@ const modes: Record<ModeKey, {
     eyebrow: "Build Online · OG Crafted",
     title: "Build Your Hat",
     description: "A guided builder path for shape, fabric, interior labels, seam tape, patches, and full custom decisions.",
-    cta: "Submit Your Build",
+    cta: "Submit Hat for Review",
     unitLabel: "starting at",
     unitPrice: 12.5,
     timeline: "6-8 weeks",
@@ -71,7 +103,7 @@ const modes: Record<ModeKey, {
     eyebrow: "OG Crafted · Hats",
     title: "OG Crafted Hats",
     description: "A dedicated OG Crafted hats page with guided decisions for silhouette, fabric, labels, seam tape, patches, and custom details.",
-    cta: "Submit Your Build",
+    cta: "Submit Hat for Review",
     unitLabel: "starting at",
     unitPrice: 12.5,
     timeline: "6-8 weeks",
@@ -85,8 +117,167 @@ const colorOptions = [
   { name: "Eucalyptus", value: "#718a78" },
 ];
 
+const catalogColorOptions: CatalogColorOption[] = [
+  { name: "Vintage Black", value: "#232323" },
+  { name: "Bone", value: "#e7ddca" },
+  { name: "Natural", value: "#e4d9c8" },
+  { name: "Heather Grey", value: "#b6b7bb" },
+  { name: "Cobalt", value: "#315caa" },
+  { name: "Forest", value: "#32443a" },
+  { name: "Clay", value: "#bf785d" },
+  { name: "Chocolate", value: "#5b4035" },
+];
+
+const READY_MADE_COLOR_HEX: Record<string, string> = {
+  Black: "#1a1a1a",
+  Coal: "#3a3a3a",
+  Asphalt: "#4a4a4a",
+  "Midnight Blue": "#1b2a4a",
+  Atlantic: "#1e3a5f",
+  Navy: "#1a2f5a",
+  Cypress: "#2d4a3e",
+  Forest: "#2d4a2d",
+  "Forest Green": "#254833",
+  Army: "#4a5a2a",
+  Khaki: "#8a7a5a",
+  Camel: "#c4956a",
+  Walnut: "#7a5a3a",
+  Natural: "#ddd3bf",
+  Bone: "#e8e0d0",
+  Ecru: "#f0ead8",
+  Cream: "#f5f0e0",
+  White: "#ffffff",
+  "Bright White": "#ffffff",
+  "Hazy Pink": "#e8c4c0",
+  Bubblegum: "#f0a0b8",
+  "Charity Pink": "#f3a0b9",
+  "Pale Pink": "#efc2c4",
+  Orchid: "#c87ab8",
+  Burgundy: "#6a1a2a",
+  Cardinal: "#9a1a2a",
+  Red: "#cc2222",
+  Fire: "#e05a1a",
+  Sunset: "#e88040",
+  Mustard: "#c8a020",
+  Butter: "#f0d870",
+  Lemonade: "#f5e878",
+  Yellow: "#f0d020",
+  Seafoam: "#7acfb8",
+  Sage: "#9ca68b",
+  Mint: "#b8d8c8",
+  Eucalyptus: "#708f83",
+  Powder: "#a0c8e8",
+  "Carolina Blue": "#5aa0d0",
+  "Slate Blue": "#637a92",
+  "Petrol Blue": "#22536b",
+  Hydro: "#168aa6",
+  Topaz: "#1b9eb3",
+  "Bright Royal": "#2255bb",
+  Royal: "#2255bb",
+  Cobalt: "#1d4f91",
+  Autumn: "#c86030",
+  Clay: "#b87060",
+  Chestnut: "#7d4f3c",
+  Mushroom: "#a08878",
+  Taupe: "#908070",
+  Grey: "#808080",
+  "Light Grey": "#c8c9c7",
+  Ash: "#c8c8c8",
+  Silver: "#b8b8b8",
+  Smoke: "#777c78",
+  Storm: "#6b7480",
+  Citrus: "#d2c83a",
+  Pistachio: "#a1ad70",
+  "Pine Green": "#1f4a36",
+  Grape: "#5c4a82",
+  Violet: "#8d75b5",
+  Liberty: "#5d3f91",
+  Charlotte: "#79c7d3",
+  Lapis: "#3347a1",
+  Lime: "#a8c63f",
+  Mineral: "#7c8f8b",
+  "Desert Camo": "#8a8060",
+  "Tree Camo": "#4a6040",
+  "Faded Bone": "#ddd8ca",
+  "Faded Midnight": "#2a3550",
+  "Faded Grey": "#909090",
+  "Faded Black": "#3a3a3a",
+};
+
+const DEFAULT_CATALOG_PRICING_PRODUCT =
+  CATALOG_PRODUCTS.find((product) => product.slug === "as-colour-5026") ?? CATALOG_PRODUCTS[0];
+
+function resolveReadyMadeSwatchColor(name: string) {
+  const direct = READY_MADE_COLOR_HEX[name];
+  if (direct) return direct;
+
+  const unslashed = name.replace(/\s*\/\s*/g, " ");
+  if (READY_MADE_COLOR_HEX[unslashed]) return READY_MADE_COLOR_HEX[unslashed];
+
+  if (name.includes(" / ")) {
+    const parts = name.split(" / ").map((part) => part.trim());
+    const match = parts.find((part) => !part.toLowerCase().includes("black") && READY_MADE_COLOR_HEX[part])
+      ?? parts.find((part) => READY_MADE_COLOR_HEX[part]);
+    if (match) return READY_MADE_COLOR_HEX[match];
+  }
+
+  const lowerName = unslashed.toLowerCase();
+  const key = Object.keys(READY_MADE_COLOR_HEX)
+    .sort((a, b) => b.length - a.length)
+    .find((colorName) => lowerName.includes(colorName.toLowerCase()));
+
+  return key ? READY_MADE_COLOR_HEX[key] : undefined;
+}
+
+function readyMadeSwatchStyle(name: string) {
+  return { background: resolveReadyMadeSwatchColor(name) ?? "#d0ccc0" };
+}
+
+function uniqueReadyMadePhotos(candidates: (string | undefined)[]) {
+  return candidates.filter((src, index, all): src is string => Boolean(src) && all.indexOf(src) === index);
+}
+
+function readyMadeGalleryPhotos(color: ReadyMadeColor) {
+  return uniqueReadyMadePhotos([color.front, color.side ?? color.turn, color.back]);
+}
+
+function firstReadyMadeColorIndex(style: ReadyMadeStyle) {
+  const nextIndex = style.colors.findIndex((color) => readyMadeGalleryPhotos(color).length > 0);
+  return nextIndex >= 0 ? nextIndex : 0;
+}
+
+function rebalanceApparelSizeBreakdown(
+  target: number,
+  current: Record<ApparelSize, number>,
+) {
+  const next = Object.fromEntries(apparelSizeOptions.map((size) => [size, 0])) as Record<ApparelSize, number>;
+  const currentTotal = Object.values(current).reduce((sum, value) => sum + value, 0);
+
+  if (currentTotal <= 0) {
+    next.M = Math.floor(target * 0.4);
+    next.L = Math.floor(target * 0.35);
+    next.XL = Math.floor(target * 0.15);
+    next.S = target - next.M - next.L - next.XL;
+    return next;
+  }
+
+  let assigned = 0;
+  apparelSizeOptions.forEach((size, index) => {
+    if (index === apparelSizeOptions.length - 1) {
+      next[size] = Math.max(0, target - assigned);
+      return;
+    }
+
+    const value = Math.floor((current[size] / currentTotal) * target);
+    next[size] = value;
+    assigned += value;
+  });
+
+  return next;
+}
+
 const shopSizeOptions = ["S/M", "L/XL", "One size"];
-const apparelSizeOptions: ApparelSize[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+const apparelSizeOptions: ApparelSize[] = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"];
 const initialApparelSizeBreakdown: Record<ApparelSize, number> = {
   XS: 10,
   S: 35,
@@ -95,6 +286,7 @@ const initialApparelSizeBreakdown: Record<ApparelSize, number> = {
   XL: 25,
   "2XL": 20,
   "3XL": 10,
+  "4XL": 0,
 };
 
 const standardQtyMarks = [
@@ -103,6 +295,13 @@ const standardQtyMarks = [
   { value: 500, label: "500", tick: true },
   { value: 750, label: "750", tick: true },
   { value: 1000, label: "1,000", tick: false },
+];
+
+const catalogQtyMarks = [
+  { value: 100, label: "100", tick: false },
+  { value: 500, label: "500", tick: true },
+  { value: 1000, label: "1,000", tick: true },
+  { value: 2000, label: "2,000", tick: false },
 ];
 
 const buildQtyMarks = [
@@ -116,7 +315,7 @@ const buildQtyMarks = [
   { value: 5000, label: "5K", tick: false },
 ];
 
-const defaultMedia = [
+const defaultMedia: PreviewMediaItem[] = [
   {
     src: "/images/product/hats/feb-snapback-navy-front.jpg",
     alt: "Navy stock cap front view",
@@ -139,26 +338,26 @@ const defaultMedia = [
   },
 ];
 
-const craftedHatMedia = [
+const catalogMedia: PreviewMediaItem[] = [
   {
-    src: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
-    alt: "Full custom Verve hat lineup",
-    label: "Program",
+    src: "/images/product/apparel-tshirt-hero.jpg",
+    alt: "Heavyweight tee front view",
+    label: "Front view",
   },
   {
-    src: "/images/gallery/headwear-customize-detail-mg-2672.jpg",
-    alt: "Exploded full-custom hat detail",
-    label: "Detail",
+    src: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_040.jpg",
+    alt: "Screen printed tee detail",
+    label: "Print detail",
   },
   {
-    src: "/images/gallery/headwear-fabric-swatches-mg-9430.jpg",
-    alt: "Fabric swatches for OG Crafted hats",
-    label: "Fabric",
+    src: "/images/gallery/apparel-686-hoodie-front.jpg",
+    alt: "Premium blank garment view",
+    label: "Garment view",
   },
   {
-    src: "/images/gallery/headwear-interior-label-img-7638.jpg",
-    alt: "Interior label and seam tape detail",
-    label: "Inside",
+    src: "/images/gallery/apparel-686-hoodie-detail.jpg",
+    alt: "Garment fabric and print detail",
+    label: "Fabric detail",
   },
 ];
 
@@ -197,10 +396,10 @@ const relatedProducts = [
 
 const includedByMode: Record<ModeKey, string[]> = {
   ready: ["Blank cap", "Front embroidery", "Digitizing setup", "Tech pack", "Sample photo"],
-  catalog: ["Blank garment", "Standard print", "Art check", "Tiered pricing", "Quote review"],
+  catalog: ["Blank garment", "Color selection", "Size breakdown", "Front print", "Quote review"],
   shop: ["Finished product", "OG packaging", "Fast fulfillment", "Easy checkout"],
   build: ["Custom silhouette", "Fabric selection", "Front decoration", "Interior label", "Tech pack"],
-  crafted: ["Custom silhouette", "Fabric selection", "Front decoration", "Interior label", "Tech pack"],
+  crafted: ["Full custom hat", "Front decoration", "Interior label", "Extras"],
 };
 
 const shopInfoSections = [
@@ -239,6 +438,8 @@ const hatAdditionalDecorationOptions = [
   "Branded taping",
   "Closure label",
   "Brim rope",
+  "Contrast fabric",
+  "Stripe trim",
 ] as const;
 
 const hatClosureOptions = [
@@ -254,50 +455,76 @@ const hatClosurePrices: Partial<Record<(typeof hatClosureOptions)[number], numbe
   "Leather clasp": 1,
 };
 
+const hatBrimCurveOptions = ["Flat", "Slight curve", "Curved"] as const;
+
 const hatClosurePreviewOptions = [
   {
     label: "Snapback",
-    image: "/images/gallery/headwear-snapback-closure.jpg",
+    image: "/images/hats/closures/closure-snapback.jpg",
     imageAlt: "Snapback closure reference",
-    imagePosition: "center 78%",
-    imageScale: 1.35,
+    imagePosition: "center 100%",
+    imageScale: 1.3,
   },
   {
     label: "Strapback + clasp",
-    image: "/images/gallery/headwear-clasp-closure.webp",
+    image: "/images/hats/closures/closure-strapback-clasp.jpg",
     imageAlt: "Strapback with clasp closure reference",
-    imagePosition: "center 82%",
-    imageScale: 1.45,
+    imagePosition: "center 104%",
+    imageScale: 1.38,
   },
   {
     label: "Strapback + slider",
-    image: "/images/gallery/headwear-strap-color-mg-9427.jpg",
+    image: "/images/hats/closures/closure-strapback-slider.jpg",
     imageAlt: "Strapback with slider closure reference",
-    imagePosition: "center 76%",
-    imageScale: 1.35,
+    imagePosition: "center 100%",
+    imageScale: 1.3,
   },
   {
     label: "Velcro",
-    image: "/images/gallery/headwear-velcro-closure.webp",
+    image: "/images/hats/closures/closure-velcro.jpg",
     imageAlt: "Velcro closure reference",
-    imagePosition: "center 80%",
-    imageScale: 1.45,
+    imagePosition: "center 104%",
+    imageScale: 1.38,
   },
   {
     label: "Clip closure",
-    image: "/images/gallery/headwear-buckle-closure.jpg",
+    image: "/images/hats/closures/closure-clip-buckle.jpg",
     imageAlt: "Clip closure reference",
-    imagePosition: "center 76%",
-    imageScale: 1.35,
+    imagePosition: "center 100%",
+    imageScale: 1.3,
   },
   {
     label: "Leather clasp",
-    image: "/images/gallery/headwear-leather-closure.png",
+    image: "/images/hats/closures/closure-leather-clasp.jpg",
     imageAlt: "Leather clasp closure reference",
-    imagePosition: "center 78%",
-    imageScale: 1.4,
+    imagePosition: "center 102%",
+    imageScale: 1.34,
   },
 ] as const;
+
+function defaultHatClosureForStyle(style: HatStyle): (typeof hatClosureOptions)[number] | "No closure" {
+  if (style.profile === "Bucket" || style.closure === "Fitted") return "No closure";
+  if (style.closure === "Clip closure") return "Clip closure";
+  if (style.closure === "Leather / metal clasp") return "Leather clasp";
+  if (style.closure === "Strapback + slider") return "Strapback + slider";
+  if (style.closure === "Velcro") return "Velcro";
+  if (style.closure === "Strapback") return "Strapback + clasp";
+  return "Snapback";
+}
+
+function defaultHatBrimCurveForStyle(style: HatStyle): (typeof hatBrimCurveOptions)[number] {
+  switch (style.slug) {
+    case "og-100-dad-hat":
+    case "og-120-coast-cap":
+      return "Curved";
+    case "og-140-surf-trucker":
+    case "og-150-stock-trucker":
+    case "og-200-perform-cap":
+      return "Slight curve";
+    default:
+      return "Flat";
+  }
+}
 
 const hatSampleOptions = [
   {
@@ -346,27 +573,94 @@ const additionalLocations = [
   { label: "Side embroidery", price: 4.5 },
 ];
 
-const decorationOptions = [
+const catalogPrintAddOnOptions = [
+  { label: "Water-Based Ink", price: JOL_SPECIALTY_INK_PRICE },
+  { label: "Discharge Print", price: JOL_SPECIALTY_INK_PRICE },
+  { label: "Puff Print", price: JOL_SPECIALTY_INK_PRICE },
+] as const;
+
+const catalogPackagingOptions = [
+  { label: "Printed neck label", price: CATALOG_PACKAGING_PRICES["Printed neck label"] },
+  { label: "Woven label", price: CATALOG_PACKAGING_PRICES["Woven label"] },
+  { label: "Folded + poly bagged", price: CATALOG_PACKAGING_PRICES["Folded + poly bagged"] },
+] as const;
+
+const craftedDecorationOptions = [
   {
     id: "embroidery",
     label: "Embroidery",
-    sub: "2-3 weeks · included",
-    image: "/images/product/hats/og100-dad-detail.jpg",
+    sub: "Classic stitched finish with texture.",
+    image: "/images/gallery/headwear-flat-embroidery-mg-6827.jpg",
     imageAlt: "Flat embroidery detail",
+    imagePosition: "center 66%",
   },
   {
     id: "embroideredPatch",
     label: "Embroidered Patch",
-    sub: "4-6 weeks · included",
-    image: "/images/gallery/patches-og-oval-quality-logo-dscf2869.jpg",
+    sub: "Raised patch look with border.",
+    image: "/images/gallery/headwear-patch-mg-6923.jpg",
     imageAlt: "Embroidered patch detail",
+    imagePosition: "center 52%",
   },
   {
     id: "wovenPatch",
     label: "Woven Patch",
-    sub: "4-6 weeks · included",
+    sub: "Crisp detail for finer logos.",
     image: "/images/gallery/headwear-woven-patch-mg-6859.jpg",
     imageAlt: "Woven patch detail",
+    imagePosition: "center 52%",
+  },
+  {
+    id: "screenPrint",
+    label: "Screen Print",
+    sub: "Best for bold graphic hits.",
+    image: "/images/gallery/hat-feb-img_7544.jpg",
+    imageAlt: "Screen print detail",
+    imagePosition: "center 48%",
+  },
+  {
+    id: "rubberPvcPatch",
+    label: "Rubber PVC Patch",
+    sub: "Dimensional molded patch with depth.",
+    image: "/images/gallery/headwear-patch-mg-6923.jpg",
+    imageAlt: "Rubber PVC patch detail",
+    imagePosition: "center 52%",
+  },
+] as const;
+
+const readyMadeDecorationOptions = [
+  {
+    id: "embroidery",
+    label: "Embroidery",
+    sub: "Classic stitched finish with texture.",
+  },
+  {
+    id: "embroideredPatch",
+    label: "Patch (adds three weeks)",
+    sub: "A cleaner patch-first direction for bolder logos.",
+  },
+  {
+    id: "heatTransfer",
+    label: "Heat Transfer",
+    sub: "Best for crisp graphic hits and flatter artwork.",
+  },
+  {
+    id: "other",
+    label: "Other Decoration",
+    sub: "If you want something outside the core set.",
+  },
+] as const;
+
+const catalogDecorationOptions = [
+  {
+    id: "screenPrint",
+    label: "Screen Print",
+    sub: "Default front print. Best for standard runs.",
+  },
+  {
+    id: "embroidery",
+    label: "Embroidery",
+    sub: "Premium stitched option. Usually +$3/ea.",
   },
 ] as const;
 
@@ -423,25 +717,58 @@ function sliderPositionStyle(index: number, total: number, thumbSizePx = 16) {
 export function ProductStylePreview({
   initialMode = "ready",
   lockedMode,
-  pageKicker = "Product page system",
+  pageKicker = "",
   pageTitle = "Unified Product Page Preview",
-  pageDescription = "One shared layout for ready-made hats, ready-made apparel, catalog products, shop items, and Build Online.",
+  pageDescription = "One shared layout for ready-made hats, ready-made apparel, catalog products, shop items, and OG Crafted hats.",
+  pageBackHref,
+  pageBackLabel,
+  modeLabelOverrides = {},
+  previewLinks = [],
 }: ProductStylePreviewProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
+  const requestedBuilderMode = searchParams.get("builderMode");
+  const requestedHatStyleSlug = searchParams.get("hatStyleSlug") ?? searchParams.get("hatStyle");
+  const requestedInitialHatStyle = hatStyles.find((style) => style.slug === requestedHatStyleSlug);
   const [mode, setMode] = useState<ModeKey>(lockedMode ?? initialMode);
   const [color, setColor] = useState(colorOptions[0]);
+  const [catalogColors, setCatalogColors] = useState<CatalogColorOption[]>([catalogColorOptions[0], catalogColorOptions[1]]);
   const [shopSize, setShopSize] = useState(shopSizeOptions[2]);
   const [apparelSizeBreakdown, setApparelSizeBreakdown] = useState<Record<ApparelSize, number>>(initialApparelSizeBreakdown);
   const [qty, setQty] = useState(250);
   const [qtyInput, setQtyInput] = useState("250");
-  const [decoration, setDecoration] = useState<"embroidery" | "embroideredPatch" | "wovenPatch">("embroidery");
-  const [embroideryUpgrade, setEmbroideryUpgrade] = useState<"none" | "puff" | "chain">("none");
-  const [selectedLocations, setSelectedLocations] = useState<string[]>(["Back embroidery"]);
-  const [hatStyleSlug, setHatStyleSlug] = useState(hatStyles[0].slug);
+  const [decoration, setDecoration] = useState<
+    | "embroidery"
+    | "embroideredPatch"
+    | "wovenPatch"
+    | "screenPrint"
+    | "rubberPvcPatch"
+    | "heatTransfer"
+    | "waterBasedInk"
+    | "dischargePrint"
+    | "puffPrint"
+    | "chainStitchEmbroidery"
+    | "foilPrint"
+    | "other"
+  >("embroidery");
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedCatalogPackaging, setSelectedCatalogPackaging] = useState<string[]>([]);
+  const [catalogFrontPrintColors, setCatalogFrontPrintColors] = useState(1);
+  const [catalogBackPrintEnabled, setCatalogBackPrintEnabled] = useState(false);
+  const [catalogBackPrintColors, setCatalogBackPrintColors] = useState(1);
+  const [catalogSidePrintEnabled, setCatalogSidePrintEnabled] = useState(false);
+  const [catalogSidePrintColors, setCatalogSidePrintColors] = useState(1);
+  const [hatStyleSlug, setHatStyleSlug] = useState(requestedInitialHatStyle?.slug ?? hatStyles[0].slug);
   const [hatMaterial, setHatMaterial] = useState(hatMaterialOptions[0]);
   const [washedFabric, setWashedFabric] = useState(false);
   const [hatColorCallout, setHatColorCallout] = useState("");
-  const [hatClosure, setHatClosure] = useState(hatClosureOptions[0]);
+  const [hatClosure, setHatClosure] = useState<(typeof hatClosureOptions)[number] | "No closure">(
+    defaultHatClosureForStyle(requestedInitialHatStyle ?? hatStyles[0])
+  );
+  const [hatBrimCurve, setHatBrimCurve] = useState<(typeof hatBrimCurveOptions)[number]>(
+    defaultHatBrimCurveForStyle(requestedInitialHatStyle ?? hatStyles[0])
+  );
   const [backDecoration, setBackDecoration] = useState<"none" | "embroidery">("none");
   const [sideDecoration, setSideDecoration] = useState<"none" | "embroidery">("none");
   const [hatAdditionalDecorations, setHatAdditionalDecorations] = useState<string[]>([]);
@@ -449,37 +776,161 @@ export function ProductStylePreview({
   const [sampleDelivery, setSampleDelivery] = useState<"photo" | "shipped">("photo");
   const [threadFinish, setThreadFinish] = useState<"matte" | "shiny">("matte");
   const [embroideryColor, setEmbroideryColor] = useState("");
+  const [customDecoration, setCustomDecoration] = useState("");
   const [additionalCallouts, setAdditionalCallouts] = useState("");
+  const [catalogRush, setCatalogRush] = useState(false);
+  const customDecorationRef = useRef<HTMLTextAreaElement | null>(null);
   const [needsArtworkHelp, setNeedsArtworkHelp] = useState(false);
   const [logoFileName, setLogoFileName] = useState("");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [readyMadeStyleId, setReadyMadeStyleId] = useState(READY_MADE_HATS[0]?.id.toLowerCase() ?? "");
+  const [readyMadeColorIndex, setReadyMadeColorIndex] = useState(
+    READY_MADE_HATS[0] ? firstReadyMadeColorIndex(READY_MADE_HATS[0]) : 0
+  );
 
   const activeMode = modes[mode];
   const isHatBuilderMode = mode === "build" || mode === "crafted";
-  const showBuilderSecondaryCta = mode === "build" || mode === "crafted";
+  const summaryBreadcrumbLabel = mode === "crafted" ? "hats" : activeMode.label;
+  const summaryEyebrow = mode === "crafted" ? "" : activeMode.eyebrow;
+  const selectedReadyMadeStyle = READY_MADE_HATS.find((style) => style.id.toLowerCase() === readyMadeStyleId) ?? READY_MADE_HATS[0];
+  const selectedReadyMadeColor = selectedReadyMadeStyle?.colors[readyMadeColorIndex] ?? selectedReadyMadeStyle?.colors[0];
+  const activeDecorationOptions = mode === "ready"
+    ? readyMadeDecorationOptions
+    : mode === "catalog"
+      ? catalogDecorationOptions
+      : craftedDecorationOptions;
+  const activeCatalogAddOnOptions = mode === "catalog" ? catalogPrintAddOnOptions : additionalLocations;
+  const showCatalogEmbroideryFields = mode !== "catalog" || decoration === "embroidery";
+  const summaryTitle = mode === "crafted"
+    ? "full custom hats"
+    : mode === "ready" && selectedReadyMadeStyle
+      ? selectedReadyMadeStyle.name
+      : activeMode.title;
+  const showBuilderSecondaryCta = mode === "ready" || mode === "build" || mode === "crafted";
   const selectedHatStyle = hatStyles.find((style) => style.slug === hatStyleSlug) ?? hatStyles[0];
   const isBucketHatStyle = selectedHatStyle.title === "Bucket Hat";
+  const defaultHatBrimCurve = defaultHatBrimCurveForStyle(selectedHatStyle);
   const showDecorationIncludedPill = mode === "ready" || mode === "crafted";
   const showLiveCalculator = mode !== "shop";
-  const activeMedia = mode === "crafted" ? craftedHatMedia : defaultMedia;
-  const useSingleColumnMedia = mode === "crafted";
-  const maxQty = isHatBuilderMode ? 5000 : 1000;
-  const activeQtyMarks = isHatBuilderMode ? buildQtyMarks : standardQtyMarks;
+  const hasPageHeaderContent = Boolean(pageKicker || pageTitle || pageDescription);
+  const activeMedia = useMemo<PreviewMediaItem[]>(() => {
+    if (mode === "ready" && selectedReadyMadeStyle && selectedReadyMadeColor) {
+      const currentGallery = readyMadeGalleryPhotos(selectedReadyMadeColor);
+      const fallbackColor = selectedReadyMadeStyle.colors.find((color) => readyMadeGalleryPhotos(color).length > 0) ?? selectedReadyMadeColor;
+      const gallery = currentGallery.length > 0 ? currentGallery : readyMadeGalleryPhotos(fallbackColor);
+      const labels = ["Front view", "Side view", "Back view"];
+
+      return gallery.map((src, index) => ({
+        src,
+        alt: `${selectedReadyMadeStyle.name} ${selectedReadyMadeColor.name} ${labels[index]?.toLowerCase() ?? "view"}`,
+        label: labels[index] ?? `View ${index + 1}`,
+        imageClassName: "object-contain transition duration-500 group-hover:scale-[1.02]",
+      }));
+    }
+
+    if (mode === "catalog") return catalogMedia;
+
+    if (mode !== "crafted") return defaultMedia;
+
+    const styleGallery: HatStyleImage[] = selectedHatStyle.gallery?.length
+      ? selectedHatStyle.gallery
+      : [{ src: selectedHatStyle.image, label: "Front view", imagePosition: selectedHatStyle.imagePosition }];
+
+    return styleGallery.map((image) => ({
+      src: image.src,
+      alt: `${selectedHatStyle.model} ${selectedHatStyle.title} ${image.label.toLowerCase()}`,
+      label: image.label,
+      imagePosition: image.imagePosition ?? selectedHatStyle.imagePosition,
+      imageClassName: "object-cover transition duration-500 group-hover:scale-[1.02]",
+    }));
+  }, [mode, selectedHatStyle, selectedReadyMadeColor, selectedReadyMadeStyle]);
+  const useSingleColumnMedia = mode === "crafted" || mode === "ready" || mode === "catalog";
+  const maxQty = isHatBuilderMode ? 5000 : mode === "catalog" ? 2000 : 1000;
+  const activeQtyMarks = isHatBuilderMode
+    ? buildQtyMarks
+    : mode === "catalog"
+      ? catalogQtyMarks
+      : standardQtyMarks;
   const qtyTierIndex = activeQtyMarks.reduce((bestIndex, mark, index) => (
     qty >= mark.value ? index : bestIndex
   ), 0);
   const qtyTooltipPosition = sliderPositionStyle(qtyTierIndex, activeQtyMarks.length);
   const isCustomQuote = isHatBuilderMode && qty >= 5000;
   const apparelSizeTotal = Object.values(apparelSizeBreakdown).reduce((sum, value) => sum + value, 0);
-  const additionalLocationTotal = useMemo(
-    () => additionalLocations
-      .filter((location) => selectedLocations.includes(location.label))
-      .reduce((total, location) => total + location.price, 0),
-    [selectedLocations]
+  const catalogPrintUpgrade = (selectedLocations[0] ?? null) as CatalogSpecialtyPrintUpgrade | null;
+  const catalogPricing = useMemo(
+    () => mode === "catalog"
+      ? calculateCatalogBuilderPricing({
+        blank: DEFAULT_CATALOG_PRICING_PRODUCT.blank,
+        blankMarkup: DEFAULT_CATALOG_PRICING_PRODUCT.blankMarkup,
+        printCat: DEFAULT_CATALOG_PRICING_PRODUCT.printCat,
+        qty,
+        frontDecoration: decoration === "embroidery" ? "embroidery" : "screenPrint",
+        frontColors: catalogFrontPrintColors,
+        backPrintColors: catalogBackPrintEnabled ? catalogBackPrintColors : 0,
+        sidePrintColors: catalogSidePrintEnabled ? catalogSidePrintColors : 0,
+        printUpgrade: catalogPrintUpgrade,
+        packagingUpgrades: selectedCatalogPackaging as CatalogPackagingUpgrade[],
+        rush: catalogRush,
+        customerSuppliedGoods: false,
+      })
+      : null,
+    [
+      catalogBackPrintColors,
+      catalogBackPrintEnabled,
+      catalogFrontPrintColors,
+      catalogPrintUpgrade,
+      catalogRush,
+      catalogSidePrintColors,
+      catalogSidePrintEnabled,
+      decoration,
+      mode,
+      qty,
+      selectedCatalogPackaging,
+    ]
   );
+  const catalogPrintUpgradeTotal = useMemo(
+    () => mode === "catalog"
+      ? (catalogPricing?.specialtyUpgradeUnitPrice ?? 0)
+      : activeCatalogAddOnOptions
+        .filter((location) => selectedLocations.includes(location.label))
+        .reduce((total, location) => total + location.price, 0),
+    [activeCatalogAddOnOptions, catalogPricing?.specialtyUpgradeUnitPrice, mode, selectedLocations]
+  );
+  const catalogPackagingTotal = useMemo(
+    () => mode === "catalog"
+      ? (catalogPricing?.packagingUnitPrice ?? 0)
+      : catalogPackagingOptions
+        .filter((option) => selectedCatalogPackaging.includes(option.label))
+        .reduce((total, option) => total + option.price, 0),
+    [catalogPricing?.packagingUnitPrice, mode, selectedCatalogPackaging]
+  );
+  const readyMadeExtraLocationTotal = (backDecoration === "embroidery" ? 4.5 : 0) + (sideDecoration === "embroidery" ? 4.5 : 0);
   const hatExtraBrandingTotal = (backDecoration === "embroidery" ? 1 : 0) + (sideDecoration === "embroidery" ? 1 : 0);
-  const locationTotal = isHatBuilderMode ? hatExtraBrandingTotal : additionalLocationTotal;
-  const embroideryUpgradePrice = mode !== "shop" && decoration === "embroidery" && embroideryUpgrade !== "none" ? 1 : 0;
+  const catalogDecorationPriceMap: Partial<Record<typeof decoration, number>> = {
+    embroidery: 3,
+  };
+  const catalogDecorationExtraPrice = mode === "catalog"
+    ? (catalogPricing?.frontDecorationUnitPrice ?? catalogDecorationPriceMap[decoration] ?? 0)
+    : 0;
+  const catalogRushPrice = mode === "catalog" ? (catalogPricing?.rushUnitPrice ?? 0) : 0;
+  const catalogFrontPrintColorPrice = mode === "catalog" && decoration === "screenPrint"
+    ? (catalogPricing?.frontExtraColorUnitPrice ?? 0)
+    : 0;
+  const catalogBackPrintPrice = mode === "catalog" && catalogBackPrintEnabled
+    ? (catalogPricing?.backPrintUnitPrice ?? 0)
+    : 0;
+  const catalogSidePrintPrice = mode === "catalog" && catalogSidePrintEnabled
+    ? (catalogPricing?.sidePrintUnitPrice ?? 0)
+    : 0;
+  const catalogPlacementTotal = catalogFrontPrintColorPrice + catalogBackPrintPrice + catalogSidePrintPrice;
+  const locationTotal = isHatBuilderMode
+    ? hatExtraBrandingTotal
+    : mode === "ready"
+      ? readyMadeExtraLocationTotal
+      : mode === "catalog"
+        ? catalogPlacementTotal + catalogPrintUpgradeTotal
+        : 0;
   const washedFabricPrice = isHatBuilderMode && washedFabric ? 0.5 : 0;
   const hatAdditionalDecorationPrice = isHatBuilderMode ? hatAdditionalDecorations.length : 0;
   const hatClosurePrice = isHatBuilderMode ? (hatClosurePrices[hatClosure] ?? 0) : 0;
@@ -488,10 +939,19 @@ export function ProductStylePreview({
   const sampleFlatFeeTotal = sampleBaseFee + sampleShippingFee;
   const sampleProductionDays = sampleType === "none" ? 0 : 14;
   const sampleShippingDays = sampleType !== "none" && sampleDelivery === "shipped" ? 7 : 0;
-  const baseUnitPrice = baseUnitPriceForQty(activeMode.unitPrice);
-  const unitPrice = baseUnitPrice + (mode === "shop" ? 0 : locationTotal + embroideryUpgradePrice + washedFabricPrice + hatAdditionalDecorationPrice + hatClosurePrice);
+  const showBuilderTimeline = isHatBuilderMode || mode === "ready" || mode === "catalog";
+  const baseUnitPrice = mode === "catalog"
+    ? (catalogPricing?.baseUnitPrice ?? activeMode.unitPrice)
+    : baseUnitPriceForQty(activeMode.unitPrice);
+  const addOnUnitPrice = mode === "catalog"
+    ? (catalogPricing?.addOnUnitPrice ?? 0)
+    : mode === "shop"
+      ? 0
+      : locationTotal + catalogPackagingTotal + catalogRushPrice + washedFabricPrice + hatAdditionalDecorationPrice + hatClosurePrice + catalogDecorationExtraPrice;
+  const unitPrice = mode === "catalog"
+    ? (catalogPricing?.unitPrice ?? (baseUnitPrice + addOnUnitPrice))
+    : baseUnitPrice + (mode === "shop" ? 0 : addOnUnitPrice);
   const total = mode === "shop" ? unitPrice : (unitPrice * qty) + sampleFlatFeeTotal;
-  const addOnUnitPrice = mode === "shop" ? 0 : locationTotal + embroideryUpgradePrice + washedFabricPrice + hatAdditionalDecorationPrice + hatClosurePrice;
   const unitName = mode === "catalog" ? "tee" : mode === "shop" ? "item" : "hat";
   const closureSummaryLabel = isBucketHatStyle
     ? "None"
@@ -506,16 +966,31 @@ export function ProductStylePreview({
     : sampleFlatFeeTotal > 0
       ? `+$${sampleFlatFeeTotal.toFixed(0)} one-time`
       : "Included";
+  const readyMadeUsesPatchTimeline = mode === "ready" && decoration === "embroideredPatch";
   const timelineItems = [
     { label: "Tech pack", value: "2 days" },
     ...(sampleType !== "none" ? [{ label: "Sample production", value: "2 weeks" }] : []),
     ...(sampleType !== "none" && sampleDelivery === "shipped" ? [{ label: "Sample shipping", value: "1 week" }] : []),
-    { label: "Production", value: "5 weeks" },
-    { label: "Shipping", value: "1 to 2 weeks" },
+    {
+      label: "Production",
+      value: mode === "ready"
+        ? (readyMadeUsesPatchTimeline ? "3 to 4 weeks + sewing" : "1 to 2 weeks")
+        : mode === "catalog"
+          ? (catalogRush ? "10 business days" : "2 to 3 weeks")
+          : "5 weeks",
+    },
+    {
+      label: "Shipping",
+      value: mode === "ready"
+        ? "3 to 5 days"
+        : mode === "catalog"
+          ? "3 to 5 days"
+          : "1 to 2 weeks",
+    },
   ];
   const orderProcessSteps = [
     { title: "Build your order", detail: "You are here now." },
-    { title: "We build your tech pack + get approval", detail: "We map out every detail and get your sign-off before anything moves forward." },
+    { title: "We build your tech pack and get your approval", detail: "We map out every detail and get your sign-off before anything moves forward." },
     ...(sampleType !== "none"
       ? [{
           title: sampleType === "proto" ? "Proto sample review" : "PP sample review",
@@ -524,7 +999,12 @@ export function ProductStylePreview({
             : "We make your sample and send photos for review before production starts.",
         }]
       : []),
-    { title: "We produce and deliver", detail: "Factory production starts after approval, then your hats arrive ready to go." },
+    {
+      title: "We produce and deliver",
+      detail: mode === "catalog"
+        ? "Production starts after your approval, then your printed garments arrive."
+        : "Factory production starts after your approval, then your custom hats arrive.",
+    },
   ];
   const orderPriceLabel = isCustomQuote
     ? "Custom quote"
@@ -543,17 +1023,19 @@ export function ProductStylePreview({
   const turnAroundLabel = timelineLabel();
   const lightboxItem = lightboxIndex === null ? null : activeMedia[lightboxIndex];
   const availableModes = useMemo(
-    () => (lockedMode ? [lockedMode] : (Object.keys(modes) as ModeKey[])),
+    () =>
+      lockedMode
+        ? [lockedMode]
+        : (Object.keys(modes) as ModeKey[]).filter((key) => key !== "build"),
     [lockedMode],
   );
-  const requestedBuilderMode = searchParams.get("builderMode");
-  const requestedHatStyleSlug = searchParams.get("hatStyleSlug") ?? searchParams.get("hatStyle");
   const requestedQty = searchParams.get("qty");
   const requestedDecoration = searchParams.get("decoration");
   const requestedHatMaterial = searchParams.get("hatMaterial");
   const requestedWashedFabric = searchParams.get("washedFabric");
   const requestedFabricColor = searchParams.get("fabricColor");
   const requestedHatClosure = searchParams.get("hatClosure");
+  const requestedHatBrimCurve = searchParams.get("hatBrimCurve") ?? searchParams.get("brimCurve");
   const requestedBackDecoration = searchParams.get("backDecoration");
   const requestedSideDecoration = searchParams.get("sideDecoration");
   const requestedHatAdditionalDecorations = searchParams.get("hatAdditionalDecorations") ?? searchParams.get("additionalDecorations");
@@ -561,31 +1043,81 @@ export function ProductStylePreview({
   const requestedSampleDelivery = searchParams.get("sampleDelivery");
   const requestedThreadFinish = searchParams.get("threadFinish");
   const requestedEmbroideryColor = searchParams.get("embroideryColor");
+  const requestedCustomDecoration = searchParams.get("customDecoration")
+    ?? (searchParams.get("decoration") === "other" ? searchParams.get("additionalCallouts") : null);
   const requestedAdditionalCallouts = searchParams.get("additionalCallouts");
+  const requestedPackagingUpgrades = searchParams.get("packagingUpgrades");
+  const requestedRush = searchParams.get("rush");
   const requestedNeedsArtworkHelp = searchParams.get("needsArtworkHelp");
-  const selectedColorLabel = isHatBuilderMode ? (hatColorCallout.trim() || "Not specified yet") : color.name;
-  const estimatedDeliveryStart = addDays(new Date(), 44 + sampleProductionDays + sampleShippingDays);
-  const estimatedDeliveryEnd = addDays(new Date(), 51 + sampleProductionDays + sampleShippingDays);
+  const readyMadeLocationSummary = [
+    backDecoration === "embroidery" ? "Back embroidery" : "",
+    sideDecoration === "embroidery" ? "Side embroidery" : "",
+  ].filter(Boolean).join(", ");
+  const catalogFrontPlacementSummary = decoration === "screenPrint"
+    ? `Screen print · ${catalogFrontPrintColors} color${catalogFrontPrintColors === 1 ? "" : "s"}`
+    : "Embroidery";
+  const catalogBackPlacementSummary = catalogBackPrintEnabled
+    ? `${catalogBackPrintColors} color${catalogBackPrintColors === 1 ? "" : "s"}`
+    : "None";
+  const catalogSidePlacementSummary = catalogSidePrintEnabled
+    ? `${catalogSidePrintColors} color${catalogSidePrintColors === 1 ? "" : "s"}`
+    : "None";
+  const catalogPrintAddOnSummary = selectedLocations.length > 0 ? selectedLocations.join(", ") : "None";
+  const catalogPackagingSummary = selectedCatalogPackaging.length > 0 ? selectedCatalogPackaging.join(", ") : "None";
+  const frontDecorationSummaryLabel = decoration === "other"
+    ? (customDecoration.trim() || "Other decoration")
+    : (activeDecorationOptions.find((option) => option.id === decoration)?.label ?? decoration);
+  const apparelSizeBreakdownSummary = apparelSizeOptions
+    .map((size) => ({ size, qty: apparelSizeBreakdown[size] }))
+    .filter((item) => item.qty > 0)
+    .map((item) => `${item.size} ${item.qty}`)
+    .join(" · ");
+  const selectedColorLabel = mode === "ready"
+    ? (selectedReadyMadeColor?.name ?? "Not specified yet")
+    : mode === "catalog"
+      ? (catalogColors.length > 0 ? catalogColors.map((option) => option.name).join(", ") : "Not specified yet")
+      : isHatBuilderMode
+        ? (hatColorCallout.trim() || "Not specified yet")
+        : color.name;
+  const estimatedDeliveryStart = addDays(
+    new Date(),
+    (mode === "catalog" ? (catalogRush ? 14 : 19) : 44) + sampleProductionDays + sampleShippingDays
+  );
+  const estimatedDeliveryEnd = addDays(
+    new Date(),
+    (mode === "catalog" ? (catalogRush ? 19 : 28) : 51) + sampleProductionDays + sampleShippingDays
+  );
   const estimatedDeliveryLabel = `${formatLongDate(estimatedDeliveryStart)} - ${formatLongDate(estimatedDeliveryEnd)}`;
   const estimatedDeliveryShortLabel = `${formatShortDate(estimatedDeliveryStart)} - ${formatShortDate(estimatedDeliveryEnd)}`;
   const projectSummary = [
     `Product: ${activeMode.title}`,
     `Program: ${activeMode.label}`,
+    mode === "ready" && selectedReadyMadeStyle ? `Hat style: ${selectedReadyMadeStyle.id} ${selectedReadyMadeStyle.name}` : "",
     isHatBuilderMode ? `Hat style: ${selectedHatStyle.model} ${selectedHatStyle.title}` : "",
     `Quantity: ${qty.toLocaleString()}`,
+    mode === "catalog" ? `Size breakdown: ${apparelSizeBreakdownSummary || "Not assigned yet"}` : "",
     `Tier: ${quantityTierLabel()}`,
     `Color: ${selectedColorLabel}`,
+    mode === "catalog" ? `Front of shirt: ${catalogFrontPlacementSummary}` : "",
+    mode === "catalog" ? `Back of shirt: ${catalogBackPlacementSummary}` : "",
+    mode === "catalog" ? `Side print: ${catalogSidePlacementSummary}` : "",
+    mode === "catalog" ? `Print upgrades: ${catalogPrintAddOnSummary}` : "",
+    mode === "catalog" ? `Packaging upgrades: ${catalogPackagingSummary}` : "",
+    mode === "catalog" ? `Rush delivery: ${catalogRush ? "Yes" : "No"}` : "",
+    mode === "ready" && selectedReadyMadeStyle ? `Blank details: ${selectedReadyMadeStyle.crown} · ${selectedReadyMadeStyle.closure}` : "",
     isHatBuilderMode ? `Fabric: ${[hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ")}` : "",
     isHatBuilderMode ? `Closure: ${closureSummaryLabel}` : "",
+    isHatBuilderMode && !isBucketHatStyle ? `Brim curve: ${hatBrimCurve}` : "",
     isHatBuilderMode ? `Sample: ${sampleSummaryLabel}` : "",
-    `Front decoration: ${decorationOptions.find((option) => option.id === decoration)?.label ?? decoration}`,
-    isHatBuilderMode ? `Back decoration: ${backDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
-    isHatBuilderMode ? `Side decoration: ${sideDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
+    `Front decoration: ${frontDecorationSummaryLabel}`,
+    (isHatBuilderMode || mode === "ready") ? `Back decoration: ${backDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
+    (isHatBuilderMode || mode === "ready") ? `Side decoration: ${sideDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
     isHatBuilderMode && hatAdditionalDecorations.length > 0 ? `Additional decorations: ${hatAdditionalDecorations.join(", ")}` : "",
-    `Embroidery thread finish: ${threadFinish}`,
-    embroideryColor ? `Embroidery color: ${embroideryColor}` : "",
+    (mode !== "catalog" || showCatalogEmbroideryFields) ? `Embroidery thread finish: ${threadFinish}` : "",
+    (mode !== "catalog" || showCatalogEmbroideryFields) && embroideryColor ? `Embroidery color: ${embroideryColor}` : "",
     needsArtworkHelp ? "Artwork help: Yes" : "",
-    additionalCallouts ? `Additional callouts: ${additionalCallouts}` : "",
+    customDecoration ? `Custom decoration: ${customDecoration}` : "",
+    additionalCallouts ? `${mode === "catalog" ? "Order notes" : "Additional notes"}: ${additionalCallouts}` : "",
     isHatBuilderMode && sampleType !== "none" ? `Sample fees: ${sampleFeeLabel}` : "",
     `Estimated unit price: ${isCustomQuote ? "Custom quote" : `$${unitPrice.toFixed(2)}`}`,
     `Estimated total: ${isCustomQuote ? "Custom quote" : `$${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}`,
@@ -595,15 +1127,25 @@ export function ProductStylePreview({
     .join("\n");
   const questionsHref = `/contact?${new URLSearchParams({
     intent: isHatBuilderMode ? "submit-build" : "product-question",
-    source: isHatBuilderMode ? "og-crafted-hat-builder" : "",
+    source: isHatBuilderMode ? "og-crafted-hat-builder" : mode === "ready" ? "ready-made-hat-builder" : "",
     product: activeMode.title,
     mode: activeMode.label,
     builderMode: isHatBuilderMode ? mode : "",
+    readyMadeStyleId: mode === "ready" && selectedReadyMadeStyle ? selectedReadyMadeStyle.id : "",
+    readyMadeStyle: mode === "ready" && selectedReadyMadeStyle ? selectedReadyMadeStyle.name : "",
     hatStyleSlug: isHatBuilderMode ? selectedHatStyle.slug : "",
     hatStyle: isHatBuilderMode ? `${selectedHatStyle.model} ${selectedHatStyle.title}` : "",
     color: selectedColorLabel,
     size: mode === "shop" ? shopSize : "",
     sizeBreakdown: mode === "catalog" ? apparelSizeOptions.map((size) => `${size}:${apparelSizeBreakdown[size]}`).join(", ") : "",
+    colors: mode === "catalog" ? catalogColors.map((option) => option.name).join(", ") : "",
+    frontPrintColors: mode === "catalog" && decoration === "screenPrint" ? String(catalogFrontPrintColors) : "",
+    backPrint: mode === "catalog" ? (catalogBackPrintEnabled ? "Yes" : "No") : "",
+    backPrintColors: mode === "catalog" && catalogBackPrintEnabled ? String(catalogBackPrintColors) : "",
+    sidePrint: mode === "catalog" ? (catalogSidePrintEnabled ? "Yes" : "No") : "",
+    sidePrintColors: mode === "catalog" && catalogSidePrintEnabled ? String(catalogSidePrintColors) : "",
+    printUpgrades: mode === "catalog" ? selectedLocations.join(", ") : "",
+    packagingUpgrades: mode === "catalog" ? selectedCatalogPackaging.join(", ") : "",
     qty: String(qty),
     tier: quantityTierLabel(),
     decoration,
@@ -612,19 +1154,22 @@ export function ProductStylePreview({
     washedFabric: isHatBuilderMode && washedFabric ? "true" : "",
     fabric: isHatBuilderMode ? [hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ") : "",
     hatClosure: isHatBuilderMode ? hatClosure : "",
+    hatBrimCurve: isHatBuilderMode && !isBucketHatStyle ? hatBrimCurve : "",
+    brimCurve: isHatBuilderMode && !isBucketHatStyle ? hatBrimCurve : "",
     closure: isHatBuilderMode ? closureSummaryLabel : "",
     sampleType: isHatBuilderMode ? sampleType : "",
     sampleDelivery: isHatBuilderMode ? sampleDelivery : "",
     sample: isHatBuilderMode ? sampleSummaryLabel : "",
     sampleFees: isHatBuilderMode ? sampleFeeLabel : "",
-    backDecoration: isHatBuilderMode ? backDecoration : "",
-    sideDecoration: isHatBuilderMode ? sideDecoration : "",
+    backDecoration: (isHatBuilderMode || mode === "ready") ? backDecoration : "",
+    sideDecoration: (isHatBuilderMode || mode === "ready") ? sideDecoration : "",
     hatAdditionalDecorations: isHatBuilderMode ? hatAdditionalDecorations.join(", ") : "",
     additionalDecorations: isHatBuilderMode ? hatAdditionalDecorations.join(", ") : "",
-    embroideryUpgrade,
-    additionalLocations: isHatBuilderMode ? "" : selectedLocations.join(", "),
+    additionalLocations: isHatBuilderMode ? "" : mode === "ready" ? readyMadeLocationSummary : selectedLocations.join(", "),
+    rush: mode === "catalog" ? (catalogRush ? "Yes" : "No") : "",
     threadFinish,
     embroideryColor,
+    customDecoration,
     additionalCallouts,
     needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
     timeline: timelineLabel(),
@@ -635,15 +1180,46 @@ export function ProductStylePreview({
     projectSummary,
   }).toString()}`;
   const primaryCtaLabel = showBuilderSecondaryCta && !isCustomQuote
-    ? "Submit Your Build"
+    ? "Submit Hat for Review"
     : activeMode.cta;
 
   function toggleLocation(label: string) {
-    setSelectedLocations((current) =>
+    setSelectedLocations((current) => {
+      if (mode === "catalog") {
+        return current[0] === label ? [] : [label];
+      }
+
+      return current.includes(label)
+        ? current.filter((item) => item !== label)
+        : [...current, label];
+    });
+  }
+
+  function toggleCatalogPackaging(label: string) {
+    setSelectedCatalogPackaging((current) =>
       current.includes(label)
         ? current.filter((item) => item !== label)
         : [...current, label]
     );
+  }
+
+  function adjustCatalogPrintColors(
+    setter: Dispatch<SetStateAction<number>>,
+    delta: number,
+  ) {
+    setter((current) => Math.min(8, Math.max(1, current + delta)));
+  }
+
+  function setCatalogPrintColorCount(
+    setter: Dispatch<SetStateAction<number>>,
+    value: string,
+  ) {
+    const parsedValue = Number.parseInt(value, 10);
+    if (Number.isNaN(parsedValue)) {
+      setter(1);
+      return;
+    }
+    setter(Math.min(8, Math.max(1, parsedValue)));
   }
 
   function toggleHatAdditionalDecoration(label: string) {
@@ -652,6 +1228,16 @@ export function ProductStylePreview({
         ? current.filter((item) => item !== label)
         : [...current, label]
     );
+  }
+
+  function toggleCatalogColor(option: CatalogColorOption) {
+    setCatalogColors((current) => {
+      const exists = current.some((item) => item.name === option.name);
+      if (exists) {
+        return current.length === 1 ? current : current.filter((item) => item.name !== option.name);
+      }
+      return [...current, option];
+    });
   }
 
   function updateApparelSize(size: ApparelSize, value: string) {
@@ -676,7 +1262,7 @@ export function ProductStylePreview({
   }, [maxQty, qty]);
 
   useEffect(() => {
-    if (!isHatBuilderMode) return;
+    if (!isHatBuilderMode && mode !== "ready") return;
 
     if (isBucketHatStyle) {
       setHatClosure("No closure");
@@ -696,7 +1282,7 @@ export function ProductStylePreview({
 
       setHatClosure(defaultClosure);
     }
-  }, [hatClosure, isBucketHatStyle, isHatBuilderMode, selectedHatStyle.closure]);
+  }, [hatClosure, isBucketHatStyle, isHatBuilderMode, mode, selectedHatStyle.closure]);
 
   useEffect(() => {
     if (lockedMode && mode !== lockedMode) {
@@ -705,13 +1291,13 @@ export function ProductStylePreview({
   }, [lockedMode, mode]);
 
   useEffect(() => {
-    if (!isHatBuilderMode || !requestedBuilderMode) return;
+    if (!requestedBuilderMode) return;
 
     const nextMode = requestedBuilderMode as ModeKey;
     if (availableModes.includes(nextMode) && nextMode !== mode) {
       setMode(nextMode);
     }
-  }, [availableModes, isHatBuilderMode, mode, requestedBuilderMode]);
+  }, [availableModes, mode, requestedBuilderMode]);
 
   useEffect(() => {
     if (!isHatBuilderMode || !requestedHatStyleSlug) return;
@@ -719,8 +1305,14 @@ export function ProductStylePreview({
     const requestedStyle = hatStyles.find((style) => style.slug === requestedHatStyleSlug);
     if (requestedStyle && requestedStyle.slug !== hatStyleSlug) {
       setHatStyleSlug(requestedStyle.slug);
+      if (!requestedHatClosure) {
+        setHatClosure(defaultHatClosureForStyle(requestedStyle));
+      }
+      if (!requestedHatBrimCurve) {
+        setHatBrimCurve(defaultHatBrimCurveForStyle(requestedStyle));
+      }
     }
-  }, [hatStyleSlug, isHatBuilderMode, requestedHatStyleSlug]);
+  }, [hatStyleSlug, isHatBuilderMode, requestedHatBrimCurve, requestedHatClosure, requestedHatStyleSlug]);
 
   useEffect(() => {
     if (!isHatBuilderMode || !requestedQty) return;
@@ -736,11 +1328,57 @@ export function ProductStylePreview({
   }, [isHatBuilderMode, maxQty, qty, requestedQty]);
 
   useEffect(() => {
+    const validDecorationIds = activeDecorationOptions.map((option) => option.id) as typeof decoration[];
+    if (!validDecorationIds.includes(decoration)) {
+      setDecoration(mode === "catalog" ? "screenPrint" : "embroidery");
+    }
+  }, [activeDecorationOptions, decoration, mode]);
+
+  useEffect(() => {
+    if (mode === "catalog" && requestedDecoration === null) {
+      setDecoration((current) => (current === "embroidery" ? "screenPrint" : current));
+    }
+  }, [mode, requestedDecoration]);
+
+  useEffect(() => {
+    if (mode !== "catalog") return;
+
+    const validLabels = new Set<string>(catalogPrintAddOnOptions.map((option) => option.label));
+    setSelectedLocations((current) => current.filter((label) => validLabels.has(label)).slice(0, 1));
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== "catalog") return;
+
+    const validLabels = new Set<string>(catalogPackagingOptions.map((option) => option.label));
+    setSelectedCatalogPackaging((current) => current.filter((label) => validLabels.has(label)));
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== "catalog") return;
+
+    if (requestedPackagingUpgrades !== null) {
+      const validLabels = new Set<string>(catalogPackagingOptions.map((option) => option.label));
+      const nextPackaging = parseListParam(requestedPackagingUpgrades).filter((label) => validLabels.has(label));
+      if (nextPackaging.join(", ") !== selectedCatalogPackaging.join(", ")) {
+        setSelectedCatalogPackaging(nextPackaging);
+      }
+    }
+
+    if (requestedRush !== null) {
+      const nextRush = requestedRush.toLowerCase() === "yes" || requestedRush.toLowerCase() === "true";
+      if (nextRush !== catalogRush) {
+        setCatalogRush(nextRush);
+      }
+    }
+  }, [catalogRush, mode, requestedPackagingUpgrades, requestedRush, selectedCatalogPackaging]);
+
+  useEffect(() => {
     if (!isHatBuilderMode) return;
 
     if (
       requestedDecoration
-      && decorationOptions.some((option) => option.id === requestedDecoration)
+      && (craftedDecorationOptions.some((option) => option.id === requestedDecoration) || requestedDecoration === "other")
       && requestedDecoration !== decoration
     ) {
       setDecoration(requestedDecoration as typeof decoration);
@@ -767,6 +1405,14 @@ export function ProductStylePreview({
       && requestedHatClosure !== hatClosure
     ) {
       setHatClosure(requestedHatClosure);
+    }
+
+    if (
+      requestedHatBrimCurve
+      && hatBrimCurveOptions.includes(requestedHatBrimCurve as (typeof hatBrimCurveOptions)[number])
+      && requestedHatBrimCurve !== hatBrimCurve
+    ) {
+      setHatBrimCurve(requestedHatBrimCurve as (typeof hatBrimCurveOptions)[number]);
     }
 
     if (
@@ -824,6 +1470,10 @@ export function ProductStylePreview({
       setEmbroideryColor(requestedEmbroideryColor);
     }
 
+    if (requestedCustomDecoration !== null && requestedCustomDecoration !== customDecoration) {
+      setCustomDecoration(requestedCustomDecoration);
+    }
+
     if (requestedAdditionalCallouts !== null && requestedAdditionalCallouts !== additionalCallouts) {
       setAdditionalCallouts(requestedAdditionalCallouts);
     }
@@ -837,20 +1487,25 @@ export function ProductStylePreview({
   }, [
     additionalCallouts,
     backDecoration,
+    customDecoration,
     decoration,
     embroideryColor,
     hatClosure,
     hatColorCallout,
     hatMaterial,
     hatAdditionalDecorations,
+    hatBrimCurve,
     isHatBuilderMode,
+    mode,
     needsArtworkHelp,
     requestedAdditionalCallouts,
+    requestedCustomDecoration,
     requestedBackDecoration,
     requestedDecoration,
     requestedEmbroideryColor,
     requestedFabricColor,
     requestedHatAdditionalDecorations,
+    requestedHatBrimCurve,
     requestedHatClosure,
     requestedHatMaterial,
     requestedNeedsArtworkHelp,
@@ -866,11 +1521,27 @@ export function ProductStylePreview({
     washedFabric,
   ]);
 
+  useEffect(() => {
+    if (decoration === "other") {
+      customDecorationRef.current?.focus();
+    }
+  }, [decoration]);
+
+  useEffect(() => {
+    if (!selectedReadyMadeStyle) return;
+    const nextIndex = firstReadyMadeColorIndex(selectedReadyMadeStyle);
+    setReadyMadeColorIndex(nextIndex);
+    setLightboxIndex(null);
+  }, [selectedReadyMadeStyle]);
+
   function handleQtyInput(value: string) {
     setQtyInput(value);
     const nextQty = Number(value);
     if (Number.isFinite(nextQty) && nextQty >= 100 && nextQty <= maxQty) {
       setQty(nextQty);
+      if (mode === "catalog") {
+        setApparelSizeBreakdown((current) => rebalanceApparelSizeBreakdown(nextQty, current));
+      }
     }
   }
 
@@ -878,9 +1549,43 @@ export function ProductStylePreview({
     const nextQty = activeQtyMarks[Number(value)]?.value ?? activeQtyMarks[0].value;
     setQty(nextQty);
     setQtyInput(String(nextQty));
+    if (mode === "catalog") {
+      setApparelSizeBreakdown((current) => rebalanceApparelSizeBreakdown(nextQty, current));
+    }
+  }
+
+  function handleHatStyleChange(nextHatStyleSlug: string) {
+    const nextStyle = hatStyles.find((style) => style.slug === nextHatStyleSlug) ?? hatStyles[0];
+    const nextDefaultClosure = defaultHatClosureForStyle(nextStyle);
+    const nextDefaultBrimCurve = defaultHatBrimCurveForStyle(nextStyle);
+
+    setHatStyleSlug(nextHatStyleSlug);
+    setHatClosure(nextDefaultClosure);
+    setHatBrimCurve(nextDefaultBrimCurve);
+    setLightboxIndex(null);
+
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.set("hatStyle", nextHatStyleSlug);
+    nextParams.set("hatClosure", nextDefaultClosure);
+    if (nextStyle.profile === "Bucket") {
+      nextParams.delete("hatBrimCurve");
+      nextParams.delete("brimCurve");
+    } else {
+      nextParams.set("hatBrimCurve", nextDefaultBrimCurve);
+      nextParams.set("brimCurve", nextDefaultBrimCurve);
+    }
+    nextParams.delete("hatStyleSlug");
+
+    router.replace(`${pathname}?${nextParams.toString()}`, { scroll: false });
   }
 
   function quantityTierLabel() {
+    if (mode === "catalog") {
+      if (qty >= 2000) return "2,000+";
+      if (qty >= 1000) return "1,000-1,999";
+      if (qty >= 500) return "500-999";
+      return "100-499";
+    }
     if (!isHatBuilderMode) return "100-1,000";
     if (qty >= 5000) return "5,000 custom quote";
     if (qty >= 4000) return "4,000-4,999";
@@ -910,6 +1615,8 @@ export function ProductStylePreview({
       if (sampleType === "none") return activeMode.timeline;
       return sampleDelivery === "shipped" ? "9-11 weeks" : "8-10 weeks";
     }
+    if (mode === "catalog") return catalogRush ? "10 business days" : "2-3 weeks";
+    if (mode === "ready" && decoration === "embroideredPatch") return "4-5 weeks";
     if (decoration === "embroidery") return activeMode.timeline;
     return "4-6 weeks";
   }
@@ -929,37 +1636,79 @@ export function ProductStylePreview({
   return (
     <main className="bg-[#F7F4ED] text-[var(--og-off-black)]">
       <section className="border-b border-[#081E6F]/10 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-5 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                {pageKicker}
-              </p>
-              <h1 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-5xl">
-                {pageTitle}
-              </h1>
+        <div
+          className={`${
+            hasPageHeaderContent
+              ? "mx-auto flex max-w-7xl flex-col gap-5 px-4 py-5 sm:px-6 lg:px-8"
+              : "flex justify-start px-6 pt-6 pb-3 md:px-12"
+          }`}
+        >
+          {pageBackHref && pageBackLabel ? (
+            <Link
+              href={pageBackHref}
+              className={`inline-flex items-center gap-1.5 text-sm font-semibold transition ${
+                hasPageHeaderContent
+                  ? "w-fit text-[var(--og-blue)] hover:text-[var(--og-orange)]"
+                  : "text-[var(--og-blue)] hover:text-[var(--og-orange)]"
+              }`}
+            >
+              ← {pageBackLabel}
+            </Link>
+          ) : null}
+          {hasPageHeaderContent ? (
+            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                {pageKicker ? (
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                    {pageKicker}
+                  </p>
+                ) : null}
+                {pageTitle ? (
+                  <h1 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-5xl">
+                    {pageTitle}
+                  </h1>
+                ) : null}
+              </div>
+              {pageDescription ? (
+                <p className="max-w-xl text-sm leading-6 text-[#4b4b4b]">
+                  {pageDescription}
+                </p>
+              ) : null}
             </div>
-            <p className="max-w-xl text-sm leading-6 text-[#4b4b4b]">
-              {pageDescription}
-            </p>
-          </div>
+          ) : null}
 
           {lockedMode ? null : (
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {availableModes.map((key) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setMode(key)}
-                className={`min-h-10 shrink-0 rounded-lg border px-4 text-sm font-semibold transition ${
-                  mode === key
-                    ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
-                    : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
-                }`}
-              >
-                {modes[key].label}
-              </button>
-              ))}
+            <div className="space-y-3">
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {availableModes.map((key) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setMode(key)}
+                    className={`min-h-10 shrink-0 rounded-lg border px-4 text-sm font-semibold transition ${
+                      mode === key
+                        ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                        : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                    }`}
+                  >
+                    {modeLabelOverrides[key] ?? modes[key].label}
+                  </button>
+                ))}
+              </div>
+
+              {previewLinks.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {previewLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="inline-flex min-h-10 items-center rounded-lg border border-dashed border-[#081E6F]/20 bg-[#F7F4ED] px-4 text-sm font-semibold text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
             </div>
           )}
         </div>
@@ -995,14 +1744,15 @@ export function ProductStylePreview({
                     sizes={useSingleColumnMedia
                       ? "(min-width: 1280px) 34vw, (min-width: 1024px) 46vw, 100vw"
                       : "(min-width: 1024px) 32vw, (min-width: 768px) 50vw, 100vw"}
-                    className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                    className={item.imageClassName ?? "object-cover transition duration-500 group-hover:scale-[1.02]"}
+                    style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
                     priority={index === 0}
                   />
                 </button>
               ))}
             </div>
 
-            {isHatBuilderMode ? (
+            {showBuilderTimeline ? (
               <div className="rounded-lg border border-[#081E6F]/10 bg-white p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                   From order to delivery
@@ -1070,17 +1820,19 @@ export function ProductStylePreview({
               <nav className="flex flex-wrap gap-1 text-xs text-[#6b6b6b]">
                 <span>Goods</span>
                 <span>/</span>
-                <span>{activeMode.label}</span>
+                <span>{summaryBreadcrumbLabel}</span>
                 <span>/</span>
-                <span className="font-semibold text-[var(--og-blue)]">{activeMode.title}</span>
+                <span className="font-semibold text-[var(--og-blue)]">{summaryTitle}</span>
               </nav>
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                  {activeMode.eyebrow}
-                </p>
+                {summaryEyebrow ? (
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                    {summaryEyebrow}
+                  </p>
+                ) : null}
                 <h2 className="mt-2 text-4xl leading-none text-[var(--og-blue)]">
-                  {activeMode.title}
+                  {summaryTitle}
                 </h2>
                 <p className="mt-3 text-sm leading-6 text-[#4b4b4b]">
                   {activeMode.description}
@@ -1112,29 +1864,125 @@ export function ProductStylePreview({
             <div className="rounded-lg border border-[#081E6F]/12 bg-white p-5 shadow-[0_18px_55px_rgba(8,30,111,0.07)]">
               <div className="space-y-6 py-5">
                 {!isHatBuilderMode && (
+                  mode === "ready" ? (
+                    <div>
+                      <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                        Hat style
+                      </label>
+                      <select
+                        value={readyMadeStyleId}
+                        onChange={(event) => setReadyMadeStyleId(event.target.value)}
+                        className="h-11 w-full appearance-none rounded-lg border border-[#081E6F]/15 bg-[length:14px_14px] bg-[right_0.9rem_center] bg-no-repeat px-3 pr-10 text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
+                        style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+                      >
+                        {READY_MADE_HATS.map((style) => (
+                          <option key={style.id} value={style.id.toLowerCase()}>
+                            {`${style.id} - ${style.name}`}
+                          </option>
+                        ))}
+                      </select>
+                      {selectedReadyMadeStyle ? (
+                        <p className="mt-2 text-xs leading-5 text-[#8a8a8a]">
+                          {selectedReadyMadeStyle.tagline} · {selectedReadyMadeStyle.crown}
+                        </p>
+                      ) : null}
+                    </div>
+                  ) : null
+                )}
+
+                {!isHatBuilderMode && mode !== "catalog" && (
                   <div>
                     <div className="mb-3 flex items-center justify-between">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                         Color
                       </p>
-                      <p className="text-sm font-semibold text-[var(--og-blue)]">{color.name}</p>
+                      <p className="text-sm font-semibold text-[var(--og-blue)]">
+                        {mode === "ready" ? selectedReadyMadeColor?.name : color.name}
+                      </p>
                     </div>
-                    <div className="flex gap-2">
-                      {colorOptions.map((option) => (
-                        <button
-                          key={option.name}
-                          type="button"
-                          title={option.name}
-                          onClick={() => setColor(option)}
-                          className={`h-6 w-6 rounded-full border transition ${
-                            color.name === option.name
-                              ? "border-[var(--og-orange)] ring-2 ring-[var(--og-orange)] ring-offset-1"
-                              : "border-[#1C1C1C]/15 hover:border-[var(--og-blue)]"
-                          }`}
-                          style={{ backgroundColor: option.value }}
-                        />
-                      ))}
+                    <div className="flex flex-wrap gap-2.5 overflow-visible py-1">
+                      {mode === "ready" && selectedReadyMadeStyle
+                        ? selectedReadyMadeStyle.colors
+                            .filter((option) => option.name !== "Default" && !option.name.includes("→"))
+                            .map((option) => {
+                              const actualIndex = selectedReadyMadeStyle.colors.findIndex(
+                                (colorOption) => colorOption.name === option.name
+                              );
+
+                              return (
+                                <button
+                                  key={`${selectedReadyMadeStyle.id}-${option.name}`}
+                                  type="button"
+                                  aria-label={option.name}
+                                  title={option.name}
+                                  onClick={() => setReadyMadeColorIndex(actualIndex)}
+                                  style={option.swatch ? { background: option.swatch } : readyMadeSwatchStyle(option.name)}
+                                  className={`h-7 w-7 shrink-0 rounded-full border border-[#1C1C1C]/10 shadow-sm transition ${
+                                    readyMadeColorIndex === actualIndex
+                                      ? "ring-2 ring-[var(--og-orange)] ring-offset-2"
+                                      : "hover:ring-2 hover:ring-[var(--og-orange)] hover:ring-offset-2"
+                                  }`}
+                                />
+                              );
+                            })
+                        : colorOptions.map((option) => (
+                            <button
+                              key={option.name}
+                              type="button"
+                              title={option.name}
+                              onClick={() => setColor(option)}
+                              className={`h-6 w-6 rounded-full border transition ${
+                                color.name === option.name
+                                  ? "border-[var(--og-orange)] ring-2 ring-[var(--og-orange)] ring-offset-1"
+                                  : "border-[#1C1C1C]/15 hover:border-[var(--og-blue)]"
+                              }`}
+                              style={{ backgroundColor: option.value }}
+                            />
+                          ))}
                     </div>
+                    {mode === "ready" && selectedReadyMadeStyle ? (
+                      <p className="mt-2 text-xs leading-5 text-[#8a8a8a]">
+                        {selectedReadyMadeStyle.material} · {selectedReadyMadeStyle.bill} bill
+                      </p>
+                    ) : null}
+                  </div>
+                )}
+
+                {mode === "catalog" && (
+                  <div>
+                    <div className="mb-3 flex items-center justify-between">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                        Colors
+                      </p>
+                      <p className="text-sm font-semibold text-[var(--og-blue)]">
+                        {selectedColorLabel}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2.5 overflow-visible py-1">
+                      {catalogColorOptions.map((option) => {
+                        const isSelected = catalogColors.some((item) => item.name === option.name);
+                        return (
+                          <button
+                            key={option.name}
+                            type="button"
+                            aria-label={option.name}
+                            title={option.name}
+                            onClick={() => toggleCatalogColor(option)}
+                            className={`h-7 w-7 shrink-0 rounded-full border border-[#1C1C1C]/10 shadow-sm transition ${
+                              isSelected
+                                ? "ring-2 ring-[var(--og-orange)] ring-offset-2"
+                                : "hover:ring-2 hover:ring-[var(--og-orange)] hover:ring-offset-2"
+                            }`}
+                            style={{ backgroundColor: option.value }}
+                          />
+                        );
+                      })}
+                    </div>
+                    <p className="mt-2 text-xs leading-5 text-[#8a8a8a]">
+                      {catalogColors.length > 0
+                        ? `${catalogColors.length} selected · ${catalogColors.map((option) => option.name).join(", ")}`
+                        : "Select at least one color to price the run."}
+                    </p>
                   </div>
                 )}
 
@@ -1145,7 +1993,7 @@ export function ProductStylePreview({
                     </label>
                     <select
                       value={hatStyleSlug}
-                      onChange={(event) => setHatStyleSlug(event.target.value)}
+                      onChange={(event) => handleHatStyleChange(event.target.value)}
                       className="h-11 w-full appearance-none rounded-lg border border-[#081E6F]/15 bg-[length:14px_14px] bg-[right_0.9rem_center] bg-no-repeat px-3 pr-10 text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none md:inline-block md:w-auto md:max-w-full"
                       style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
                     >
@@ -1190,11 +2038,11 @@ export function ProductStylePreview({
                   </div>
                 )}
 
-                {mode !== "shop" && (
+                {mode !== "shop" && mode !== "catalog" && (
                   <div>
                     <div className="mb-3 flex items-center justify-between gap-3">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                        Quantity
+                        Quantity (100-piece minimum)
                       </p>
                       <div className="flex items-center gap-2">
                         <input
@@ -1255,27 +2103,25 @@ export function ProductStylePreview({
                 )}
 
                 {mode === "catalog" && (
-                  <div>
-                    <div className="mb-3 flex items-center justify-between gap-3">
+                  <div className="rounded-[1.5rem] border border-[#081E6F]/10 bg-[#FBF8F1] p-4 md:p-5">
+                    <div className="mb-4 flex items-start justify-between gap-3">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                          Size breakdown
+                          Sizes + quantity
                         </p>
-                        <p className="mt-1 text-[11px] text-[#8a8a8a]">
-                          Add quantities by size. Example: 25 XL.
+                        <p className="mt-1 text-[11px] leading-5 text-[#8a8a8a]">
+                          Set the total and keep the full size run in one compact block.
                         </p>
                       </div>
-                      <p className="shrink-0 text-xs font-semibold text-[var(--og-blue)]">
-                        {qty.toLocaleString()} units
-                      </p>
+                      <span className="shrink-0 rounded-full bg-[var(--og-orange)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
+                        100-piece minimum
+                      </span>
                     </div>
-                    <div className="flex gap-2 overflow-x-auto pb-1">
+
+                    <div className="grid grid-cols-4 gap-2 md:grid-cols-8">
                       {apparelSizeOptions.map((size) => (
-                        <label
-                          key={size}
-                          className="flex min-h-10 min-w-[5.25rem] shrink-0 items-center gap-2 rounded-lg border border-[#081E6F]/10 bg-white px-2.5 py-1.5 transition focus-within:border-[var(--og-blue)]"
-                        >
-                          <span className="w-7 text-[11px] font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)]">
+                        <label key={size} className="block">
+                          <span className="mb-1.5 block text-center text-[11px] font-semibold uppercase tracking-[0.08em] text-[#7d7d7d]">
                             {size}
                           </span>
                           <input
@@ -1284,14 +2130,78 @@ export function ProductStylePreview({
                             step={1}
                             value={apparelSizeBreakdown[size]}
                             onChange={(event) => updateApparelSize(size, event.target.value)}
-                            className="h-7 w-10 rounded-md border border-[#081E6F]/12 px-1 text-center text-xs font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
+                            className="h-14 w-full rounded-2xl border border-[#081E6F]/10 bg-white px-2 text-center text-xl font-semibold text-[var(--og-blue)] outline-none transition focus:border-[var(--og-orange)]"
                             aria-label={`${size} quantity`}
                           />
                         </label>
                       ))}
                     </div>
-                    <p className="mt-2 text-xs leading-5 text-[#8a8a8a]">
-                      Updating a size quantity updates the total units and slider.
+
+                    <div className="mt-4 rounded-[1.5rem] bg-[#F3EEE4] p-4 md:p-5">
+                      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <p className="text-xl font-semibold text-[var(--og-blue)]">
+                          Total: {qty.toLocaleString()} pieces
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            min={100}
+                            max={maxQty}
+                            step={10}
+                            value={qtyInput}
+                            onChange={(event) => handleQtyInput(event.target.value)}
+                            className="h-10 w-28 rounded-xl border border-[#081E6F]/12 bg-white px-3 text-right text-sm font-semibold text-[var(--og-blue)] outline-none focus:border-[var(--og-orange)]"
+                          />
+                          <span className="text-xs font-medium text-[#8a8a8a]">pieces</span>
+                        </div>
+                      </div>
+
+                      <div className="relative mt-4 px-1 pt-8">
+                        <div
+                          className="pointer-events-none absolute top-0 z-10"
+                          style={qtyTooltipPosition}
+                        >
+                          <span className="inline-flex min-h-7 whitespace-nowrap rounded-full bg-[var(--og-blue)] px-3 py-1 text-[11px] font-semibold text-white shadow-[0_10px_24px_rgba(8,30,111,0.16)]">
+                            {basePriceLabel}
+                          </span>
+                        </div>
+                        <input
+                          type="range"
+                          min={0}
+                          max={Math.max(activeQtyMarks.length - 1, 0)}
+                          step={1}
+                          value={qtyTierIndex}
+                          onChange={(event) => handleQtySlider(event.target.value)}
+                          className="h-2 w-full cursor-pointer accent-[var(--og-orange)]"
+                          style={{ accentColor: "#0B32A0" }}
+                        />
+                        <div className="pointer-events-none relative mt-2 h-11">
+                          {activeQtyMarks.map(({ value, label }, index) => {
+                            const markPosition = sliderPositionStyle(index, activeQtyMarks.length);
+
+                            return (
+                              <div
+                                key={value}
+                                className="absolute top-0 flex min-w-0 flex-col items-center"
+                                style={markPosition}
+                              >
+                                <div className="h-1.5 w-px bg-[#081E6F]/30" />
+                                <span className={`mt-1 inline-flex min-w-[3.75rem] justify-center whitespace-nowrap rounded-full border px-2.5 py-1 text-[10px] ${
+                                  qtyTierIndex === index
+                                    ? "border-[var(--og-blue)] bg-[var(--og-blue)] font-semibold text-white"
+                                    : "border-[#081E6F]/12 bg-white text-[#8a8a8a]"
+                                }`}>
+                                  {label}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="mt-3 text-xs leading-5 text-[#8a8a8a]">
+                      {apparelSizeBreakdownSummary || "No sizes assigned yet"}
                     </p>
                   </div>
                 )}
@@ -1308,42 +2218,82 @@ export function ProductStylePreview({
                         </span>
                       ) : null}
                     </div>
-                    <div className="grid gap-2">
-                      {decorationOptions.map((option) => (
+                    <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
+                      {mode === "catalog"
+                        ? "Keep the main decoration simple here, then layer in print upgrades or extra placements below."
+                        : "Not sure? We&apos;ll help guide you into the right decoration."}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {activeDecorationOptions
+                        .filter((option) => option.id !== "other")
+                        .map((option) => (
                         <button
                           key={option.id}
                           type="button"
                           onClick={() => setDecoration(option.id)}
-                          className={`rounded-lg border p-3 text-left transition ${
+                          className={`min-h-[4.25rem] rounded-lg border px-3 py-2.5 text-left transition ${
                             decoration === option.id
-                              ? "border-[var(--og-blue)] bg-[#F7F4ED] text-[var(--og-blue)]"
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
                               : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
                           }`}
                         >
-                          <span className="flex items-center gap-3">
-                            <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-[#F7F4ED]">
-                              <Image
-                                src={option.image}
-                                alt={option.imageAlt}
-                                fill
-                                sizes="56px"
-                                className="object-cover transition duration-300 group-hover:scale-[1.04]"
-                              />
+                          <span className="block min-w-0">
+                            <span className="block text-xs font-semibold uppercase tracking-[0.12em]">
+                              {option.label}
                             </span>
-                            <span className="min-w-0">
-                              <span className="block text-xs font-semibold uppercase tracking-[0.12em]">
-                                {option.label}
-                              </span>
-                              <span className="mt-1 block text-[11px] text-[#8a8a8a]">
-                                {showDecorationIncludedPill
-                                  ? (option.id === "embroidery" ? activeMode.timeline : option.sub.replace(" · included", ""))
-                                  : (option.id === "embroidery" ? `${activeMode.timeline} · included` : option.sub)}
-                              </span>
+                            <span className={`mt-1 block text-[11px] leading-4 ${
+                              decoration === option.id ? "text-white/75" : "text-[#8a8a8a]"
+                            }`}>
+                              {option.sub}
                             </span>
                           </span>
                         </button>
                       ))}
+                      {(mode === "ready" || isHatBuilderMode) && (
+                        <button
+                          type="button"
+                          onClick={() => setDecoration("other")}
+                          className={`min-h-[4.25rem] rounded-lg border px-3 py-2.5 text-left transition ${
+                            decoration === "other"
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                          }`}
+                        >
+                          <span className="block min-w-0">
+                            <span className="block text-xs font-semibold uppercase tracking-[0.12em]">
+                              Other decoration
+                            </span>
+                            <span className={`mt-1 block text-[11px] leading-4 ${
+                              decoration === "other" ? "text-white/75" : "text-[#8a8a8a]"
+                            }`}>
+                              {mode === "ready"
+                                ? "If you want something outside the core set."
+                                : "Felt patch, woven label, puff print, and more."}
+                            </span>
+                          </span>
+                        </button>
+                      )}
                     </div>
+                    {decoration === "other" && (
+                      <div className="mt-3">
+                        <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-[#6b6b6b]">
+                          Other decoration details
+                        </label>
+                        <textarea
+                          ref={customDecorationRef}
+                          value={customDecoration}
+                          onChange={(event) => setCustomDecoration(event.target.value)}
+                          placeholder="Tell us the decoration method you want"
+                          rows={2}
+                          className="w-full rounded-lg border border-[#081E6F]/15 px-3 py-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                        />
+                        <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
+                          {mode === "catalog"
+                            ? "Tell us if you want something like patches, hem labels, hang tags, or another specialty print finish."
+                            : "Tell us the decoration method you want. Not sure what&apos;s right? Tell us what you&apos;re after and we&apos;ll help guide you."}
+                        </p>
+                      </div>
+                    )}
                     <a
                       href="/insights/decoration-options-guide"
                       target="_blank"
@@ -1352,6 +2302,197 @@ export function ProductStylePreview({
                     >
                       Learn more about decoration options
                     </a>
+                  </div>
+                )}
+
+                {mode === "catalog" && (
+                  <div className="rounded-[1.5rem] border border-[#081E6F]/10 bg-[#FBF7F1] p-4 md:p-5">
+                    <div className="mb-4">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                        Decoration locations
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[#4b4b4b]">
+                        Set the front, back, and side decoration here. If it&apos;s a screen print, you can type the number of colors needed for each placement and the pricing updates automatically.
+                      </p>
+                    </div>
+
+                    <div className="grid gap-4">
+                      <div>
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                          Front decoration
+                        </p>
+                        {decoration === "screenPrint" ? (
+                          <>
+                            <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
+                              Screen print includes one front color. Add more colors here and the price updates automatically.
+                            </p>
+                            <div className="rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3">
+                              <div className="flex items-start justify-between gap-4">
+                                <div>
+                                  <p className="text-sm font-semibold text-[var(--og-blue)]">Front decoration colors</p>
+                                  <p className="mt-1 text-[11px] text-[#8a8a8a]">
+                                    {catalogFrontPrintColors === 1 ? "1 color included" : `+$${(catalogFrontPrintColors - 1).toFixed(2)}/tee for extra front colors`}
+                                  </p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustCatalogPrintColors(setCatalogFrontPrintColors, -1)}
+                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
+                                  >
+                                    −
+                                  </button>
+                                  <input
+                                    type="number"
+                                    min={1}
+                                    max={8}
+                                    value={catalogFrontPrintColors}
+                                    onChange={(event) => setCatalogPrintColorCount(setCatalogFrontPrintColors, event.target.value)}
+                                    className="h-10 w-16 rounded-lg border border-[#081E6F]/15 text-center text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
+                                    aria-label="Front decoration color count"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustCatalogPrintColors(setCatalogFrontPrintColors, 1)}
+                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <p className="rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3 text-sm text-[#4b4b4b]">
+                            Front embroidery selected. Embroidery adds +$3.00 per tee.
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                          Back decoration
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {([
+                            { id: "none", label: "None" },
+                            { id: "print", label: "Add back decoration" },
+                          ] as const).map((option) => (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => setCatalogBackPrintEnabled(option.id === "print")}
+                              className={`min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
+                                (catalogBackPrintEnabled && option.id === "print") || (!catalogBackPrintEnabled && option.id === "none")
+                                  ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                                  : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
+                        {catalogBackPrintEnabled ? (
+                          <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3">
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <p className="text-sm font-semibold text-[var(--og-blue)]">Back decoration colors</p>
+                                <p className="mt-1 text-[11px] text-[#8a8a8a]">
+                                  1 color starts at +$3.00/tee, then +$1.00 per extra color
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => adjustCatalogPrintColors(setCatalogBackPrintColors, -1)}
+                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
+                                >
+                                  −
+                                </button>
+                                <input
+                                  type="number"
+                                  min={1}
+                                  max={8}
+                                  value={catalogBackPrintColors}
+                                  onChange={(event) => setCatalogPrintColorCount(setCatalogBackPrintColors, event.target.value)}
+                                  className="h-10 w-16 rounded-lg border border-[#081E6F]/15 text-center text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
+                                  aria-label="Back decoration color count"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => adjustCatalogPrintColors(setCatalogBackPrintColors, 1)}
+                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+
+                      <div>
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                          Side decoration
+                        </p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {([
+                            { id: "none", label: "None" },
+                            { id: "print", label: "Add side decoration" },
+                          ] as const).map((option) => (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => setCatalogSidePrintEnabled(option.id === "print")}
+                              className={`min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
+                                (catalogSidePrintEnabled && option.id === "print") || (!catalogSidePrintEnabled && option.id === "none")
+                                  ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                                  : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
+                        {catalogSidePrintEnabled ? (
+                          <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3">
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <p className="text-sm font-semibold text-[var(--og-blue)]">Side decoration colors</p>
+                                <p className="mt-1 text-[11px] text-[#8a8a8a]">
+                                  1 color starts at +$2.00/tee, then +$1.00 per extra color
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={() => adjustCatalogPrintColors(setCatalogSidePrintColors, -1)}
+                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
+                                >
+                                  −
+                                </button>
+                                <input
+                                  type="number"
+                                  min={1}
+                                  max={8}
+                                  value={catalogSidePrintColors}
+                                  onChange={(event) => setCatalogPrintColorCount(setCatalogSidePrintColors, event.target.value)}
+                                  className="h-10 w-16 rounded-lg border border-[#081E6F]/15 text-center text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
+                                  aria-label="Side decoration color count"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => adjustCatalogPrintColors(setCatalogSidePrintColors, 1)}
+                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -1401,11 +2542,8 @@ export function ProductStylePreview({
                         value={hatColorCallout}
                         onChange={(event) => setHatColorCallout(event.target.value)}
                         placeholder="e.g. Black canvas number 26"
-                        className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                        className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-normal text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
                       />
-                      <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
-                        Type the fabric color you have in mind.
-                      </p>
                       <a
                         href="/goods/hats/fabric"
                         target="_blank"
@@ -1492,35 +2630,42 @@ export function ProductStylePreview({
                   </div>
                 )}
 
-                {mode !== "shop" && decoration === "embroidery" && (
+                {isHatBuilderMode && !isBucketHatStyle && (
                   <div>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Embroidery upgrade
+                      Brim curve
                     </p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {([
-                        { id: "puff", label: "Puff Embroidery" },
-                        { id: "chain", label: "Chain Stitch" },
-                      ] as const).map((option) => (
+                    <div className="grid grid-cols-3 gap-2">
+                      {hatBrimCurveOptions.map((option) => (
                         <button
-                          key={option.id}
+                          key={option}
                           type="button"
-                          onClick={() => setEmbroideryUpgrade(embroideryUpgrade === option.id ? "none" : option.id)}
-                          className={`rounded-lg border p-3 text-left transition ${
-                            embroideryUpgrade === option.id
-                              ? "border-[var(--og-blue)] bg-[#F7F4ED] text-[var(--og-blue)]"
+                          onClick={() => setHatBrimCurve(option)}
+                          className={`min-h-10 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                            hatBrimCurve === option
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
                               : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
                           }`}
                         >
-                          <span className="block text-xs font-semibold">{option.label}</span>
-                          <span className="mt-1 block text-[11px] text-[#8a8a8a]">+$1.00</span>
+                          <span className="flex items-center justify-center gap-1.5">
+                            <span>{option}</span>
+                            {defaultHatBrimCurve === option ? (
+                              <span
+                                className={`text-[11px] font-medium ${
+                                  hatBrimCurve === option ? "text-white/70" : "text-[#a3a3a3]"
+                                }`}
+                              >
+                                (Default)
+                              </span>
+                            ) : null}
+                          </span>
                         </button>
                       ))}
                     </div>
                   </div>
                 )}
 
-                {isHatBuilderMode && (
+                {(isHatBuilderMode || mode === "ready") && (
                   <div>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                       Back decoration
@@ -1528,7 +2673,7 @@ export function ProductStylePreview({
                     <div className="grid grid-cols-2 gap-2">
                       {([
                         { id: "none", label: "None" },
-                        { id: "embroidery", label: "Embroidery +$1.00" },
+                        { id: "embroidery", label: mode === "ready" ? "Embroidery +$4.50" : "Embroidery +$1.00" },
                       ] as const).map((option) => (
                         <button
                           key={option.id}
@@ -1547,7 +2692,7 @@ export function ProductStylePreview({
                   </div>
                 )}
 
-                {isHatBuilderMode && (
+                {(isHatBuilderMode || mode === "ready") && (
                   <div>
                     <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                       Side decoration
@@ -1555,7 +2700,7 @@ export function ProductStylePreview({
                     <div className="grid grid-cols-2 gap-2">
                       {([
                         { id: "none", label: "None" },
-                        { id: "embroidery", label: "Embroidery +$1.00" },
+                        { id: "embroidery", label: mode === "ready" ? "Embroidery +$4.50" : "Embroidery +$1.00" },
                       ] as const).map((option) => (
                         <button
                           key={option.id}
@@ -1571,6 +2716,142 @@ export function ProductStylePreview({
                         </button>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {mode !== "shop" && !isHatBuilderMode && mode !== "ready" && (
+                  <div>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                      {mode === "catalog" ? "Print upgrades" : "Additional locations"}
+                    </p>
+                    {mode === "catalog" ? (
+                      <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
+                        Use these when the print itself needs a specific finish beyond standard screen print.
+                      </p>
+                    ) : null}
+                    <div className="space-y-2">
+                      {activeCatalogAddOnOptions.map((location) => (
+                        <label
+                          key={location.label}
+                          className="flex min-h-12 cursor-pointer items-center justify-between rounded-lg border border-[#081E6F]/10 px-3 transition hover:border-[var(--og-blue)]"
+                        >
+                          <span className="flex items-center gap-3 text-sm font-medium text-[var(--og-blue)]">
+                            <input
+                              type={mode === "catalog" ? "radio" : "checkbox"}
+                              name={mode === "catalog" ? "catalog-print-upgrade" : undefined}
+                              checked={selectedLocations.includes(location.label)}
+                              onChange={() => toggleLocation(location.label)}
+                              className="h-4 w-4 accent-[var(--og-orange)]"
+                            />
+                            {location.label}
+                          </span>
+                          <span className="text-sm text-[#8a8a8a]">+${location.price.toFixed(2)}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {mode === "catalog" && (
+                  <div>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                      Packaging upgrades
+                    </p>
+                    <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
+                      Add the finishing touches here. Use order notes if you want hem labels, hang tags, or something more custom.
+                    </p>
+                    <div className="space-y-2">
+                      {catalogPackagingOptions.map((option) => (
+                        <label
+                          key={option.label}
+                          className="flex min-h-12 cursor-pointer items-center justify-between rounded-lg border border-[#081E6F]/10 px-3 transition hover:border-[var(--og-blue)]"
+                        >
+                          <span className="flex items-center gap-3 text-sm font-medium text-[var(--og-blue)]">
+                            <input
+                              type="checkbox"
+                              checked={selectedCatalogPackaging.includes(option.label)}
+                              onChange={() => toggleCatalogPackaging(option.label)}
+                              className="h-4 w-4 accent-[var(--og-orange)]"
+                            />
+                            {option.label}
+                          </span>
+                          <span className="text-sm text-[#8a8a8a]">+${option.price.toFixed(2)}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {mode === "catalog" && (
+                  <div>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                      Rush delivery
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {([
+                        { id: "standard", label: "Standard", sub: "Included · 2 to 3 weeks" },
+                        { id: "rush", label: "Rush +$3.00", sub: "Cuts production to 10 business days" },
+                      ] as const).map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => setCatalogRush(option.id === "rush")}
+                          className={`rounded-lg border p-3 text-left transition ${
+                            (catalogRush && option.id === "rush") || (!catalogRush && option.id === "standard")
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                          }`}
+                        >
+                          <span className="block text-sm font-semibold">{option.label}</span>
+                          <span className={`mt-1 block text-[11px] ${
+                            (catalogRush && option.id === "rush") || (!catalogRush && option.id === "standard")
+                              ? "text-white/72"
+                              : "text-[#8a8a8a]"
+                          }`}>
+                            {option.sub}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {mode !== "shop" && showCatalogEmbroideryFields && (
+                  <div>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                      {mode === "catalog" ? "Embroidery finish" : "Embroidery thread finish"}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {(["matte", "shiny"] as const).map((finish) => (
+                        <button
+                          key={finish}
+                          type="button"
+                          onClick={() => setThreadFinish(finish)}
+                          className={`min-h-10 rounded-lg border px-3 text-sm font-semibold capitalize transition ${
+                            threadFinish === finish
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                          }`}
+                        >
+                          {finish}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {mode !== "shop" && showCatalogEmbroideryFields && (
+                  <div>
+                    <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
+                      Embroidery color
+                    </label>
+                    <input
+                      type="text"
+                      value={embroideryColor}
+                      onChange={(event) => setEmbroideryColor(event.target.value)}
+                      placeholder="e.g. Ivory, PMS 165, tonal navy"
+                      className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-normal text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                    />
                   </div>
                 )}
 
@@ -1601,86 +2882,24 @@ export function ProductStylePreview({
                   </div>
                 )}
 
-                {mode !== "shop" && !isHatBuilderMode && (
-                  <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Additional locations
-                    </p>
-                    <div className="space-y-2">
-                      {additionalLocations.map((location) => (
-                        <label
-                          key={location.label}
-                          className="flex min-h-12 cursor-pointer items-center justify-between rounded-lg border border-[#081E6F]/10 px-3 transition hover:border-[var(--og-blue)]"
-                        >
-                          <span className="flex items-center gap-3 text-sm font-medium text-[var(--og-blue)]">
-                            <input
-                              type="checkbox"
-                              checked={selectedLocations.includes(location.label)}
-                              onChange={() => toggleLocation(location.label)}
-                              className="h-4 w-4 accent-[var(--og-orange)]"
-                            />
-                            {location.label}
-                          </span>
-                          <span className="text-sm text-[#8a8a8a]">+${location.price.toFixed(2)}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {mode !== "shop" && (
-                  <div>
-                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Embroidery thread finish
-                    </p>
-                    <div className="grid grid-cols-2 gap-2">
-                      {(["matte", "shiny"] as const).map((finish) => (
-                        <button
-                          key={finish}
-                          type="button"
-                          onClick={() => setThreadFinish(finish)}
-                          className={`min-h-10 rounded-lg border px-3 text-sm font-semibold capitalize transition ${
-                            threadFinish === finish
-                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
-                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
-                          }`}
-                        >
-                          {finish}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {mode !== "shop" && (
+                {(isHatBuilderMode || mode === "catalog") && (
                   <div>
                     <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Embroidery color
-                    </label>
-                    <input
-                      type="text"
-                      value={embroideryColor}
-                      onChange={(event) => setEmbroideryColor(event.target.value)}
-                      placeholder="e.g. Ivory, PMS 165, tonal navy"
-                      className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
-                    />
-                  </div>
-                )}
-
-                {isHatBuilderMode && (
-                  <div>
-                    <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      Additional callouts
+                      {mode === "catalog" ? "Order notes" : "Additional notes"}
                     </label>
                     <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
-                      Want something specific that you don&apos;t see here? Let us know.
+                      {mode === "catalog"
+                        ? "Flag placements, patch ideas, hang tags, hem labels, packaging requests, or anything else we should build around."
+                        : "Anything else to flag beyond your decoration notes? Tell us here."}
                     </p>
                     <textarea
                       value={additionalCallouts}
                       onChange={(event) => setAdditionalCallouts(event.target.value)}
-                      placeholder="Optional notes, fabric requests, trim ideas, or anything else to flag"
+                      placeholder={mode === "catalog"
+                        ? "Optional notes on placements, rush needs, packaging, labels, or anything else to flag"
+                        : "Optional notes, fabric requests, packaging ideas, or anything else to flag"}
                       rows={3}
-                      className="w-full rounded-lg border border-[#081E6F]/15 px-3 py-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                      className="w-full rounded-lg border border-[#081E6F]/15 px-3 py-3 text-sm font-normal text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
                     />
                   </div>
                 )}
@@ -1814,9 +3033,23 @@ export function ProductStylePreview({
                 </p>
                 <ul className="grid gap-2">
                   {includedByMode[mode].map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-[#4b4b4b]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--og-orange)]" />
-                      {item}
+                    <li
+                      key={item}
+                      className={`text-sm text-[#4b4b4b] ${
+                        mode === "crafted"
+                          ? "flex items-center justify-between gap-3 rounded-xl border border-[#0B32A0]/10 bg-[#FBF7F1] px-3 py-2.5"
+                          : "flex items-center gap-2"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--og-orange)]" />
+                        {item}
+                      </span>
+                      {mode === "crafted" ? (
+                        <span className="inline-flex shrink-0 rounded-full border border-[#2F7D32]/18 bg-[#E8F6EA] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2F7D32]">
+                          Included
+                        </span>
+                      ) : null}
                     </li>
                   ))}
                 </ul>
@@ -1864,21 +3097,57 @@ export function ProductStylePreview({
                 <div className="mt-5 space-y-3 text-sm">
                   {[
                     { label: "Units", value: qty.toLocaleString() },
-                    ...(mode === "catalog" ? [{ label: "Sizes", value: `${apparelSizeTotal.toLocaleString()} assigned` }] : []),
+                    ...(mode === "catalog"
+                      ? [
+                          { label: "Colors", value: selectedColorLabel },
+                          { label: "Total quantity", value: `${qty.toLocaleString()} units` },
+                          { label: "Size breakdown", value: apparelSizeBreakdownSummary || "Not assigned yet" },
+                          { label: "Sizes", value: `${apparelSizeTotal.toLocaleString()} assigned` },
+                          { label: "Front decoration", value: frontDecorationSummaryLabel },
+                          { label: "Front of shirt", value: catalogFrontPlacementSummary },
+                          { label: "Back of shirt", value: catalogBackPlacementSummary },
+                          { label: "Side print", value: catalogSidePlacementSummary },
+                          { label: "Print upgrades", value: catalogPrintAddOnSummary },
+                          { label: "Packaging upgrades", value: catalogPackagingSummary },
+                          { label: "Rush delivery", value: catalogRush ? "Yes" : "No" },
+                          ...(showCatalogEmbroideryFields ? [{ label: "Embroidery finish", value: threadFinish === "matte" ? "Matte" : "Shiny" }] : []),
+                          ...(showCatalogEmbroideryFields && embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
+                          ...(needsArtworkHelp ? [{ label: "Artwork help", value: "Yes" }] : []),
+                          ...(customDecoration.trim() && decoration === "other" ? [{ label: "Other decoration", value: customDecoration.trim() }] : []),
+                          ...(additionalCallouts.trim() ? [{ label: "Order notes", value: additionalCallouts.trim() }] : []),
+                        ]
+                      : []),
+                    ...(mode === "ready" && selectedReadyMadeStyle
+                      ? [
+                          { label: "Hat style", value: `${selectedReadyMadeStyle.id} ${selectedReadyMadeStyle.name}` },
+                          { label: "Color", value: selectedColorLabel },
+                          { label: "Blank details", value: `${selectedReadyMadeStyle.crown} · ${selectedReadyMadeStyle.closure}` },
+                          { label: "Front decoration", value: frontDecorationSummaryLabel },
+                          { label: "Embroidery thread finish", value: threadFinish === "matte" ? "Matte" : "Shiny" },
+                          ...(embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
+                          { label: "Back decoration", value: backDecoration === "embroidery" ? "Embroidery" : "None" },
+                          { label: "Side decoration", value: sideDecoration === "embroidery" ? "Embroidery" : "None" },
+                          ...(needsArtworkHelp ? [{ label: "Artwork help", value: "Yes" }] : []),
+                          ...(customDecoration.trim() && decoration === "other" ? [{ label: "Other decoration", value: customDecoration.trim() }] : []),
+                        ]
+                      : []),
                     ...(isHatBuilderMode
                       ? [
                           { label: "Hat style", value: `${selectedHatStyle.model} ${selectedHatStyle.title}` },
                           { label: "Color", value: selectedColorLabel },
                           { label: "Fabric", value: [hatMaterial, washedFabric ? "Washed" : ""].filter(Boolean).join(" · ") },
                           { label: "Closure", value: closureSummaryLabel },
+                          ...(!isBucketHatStyle ? [{ label: "Brim curve", value: hatBrimCurve }] : []),
                           { label: "Sample", value: sampleSummaryLabel },
+                          { label: "Front decoration", value: frontDecorationSummaryLabel },
                           { label: "Embroidery thread finish", value: threadFinish === "matte" ? "Matte" : "Shiny" },
                           ...(embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
                           { label: "Back decoration", value: backDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Side decoration", value: sideDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Additional decorations", value: hatAdditionalDecorations.length > 0 ? hatAdditionalDecorations.join(", ") : "None" },
                           ...(needsArtworkHelp ? [{ label: "Artwork help", value: "Yes" }] : []),
-                          ...(additionalCallouts.trim() ? [{ label: "Additional callouts", value: additionalCallouts.trim() }] : []),
+                          ...(customDecoration.trim() && decoration === "other" ? [{ label: "Other decoration", value: customDecoration.trim() }] : []),
+                          ...(additionalCallouts.trim() ? [{ label: "Additional notes", value: additionalCallouts.trim() }] : []),
                         ]
                       : []),
                     { label: "Base unit price", value: basePriceLabel },
@@ -1935,7 +3204,7 @@ export function ProductStylePreview({
                         {primaryCtaLabel}
                       </a>
                       <p className="mt-3 text-center text-xs leading-5 text-[#6b6b6b]">
-                        Final step: add your contact and shipping details so we can review the build and send next steps.
+                        Send us your build for review. Final quote is confirmed after review.
                       </p>
                     </>
                   ) : (

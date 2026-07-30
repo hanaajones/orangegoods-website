@@ -3,6 +3,7 @@ import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { CATALOG_PRODUCTS, type CatalogProduct } from "@/data/catalog";
 
 export const metadata = {
   title: "Ready Made Screen Printing - Orange Goods",
@@ -34,6 +35,74 @@ const processSteps = [
     number: "03",
     title: "Print fast and clean",
     body: "Local production in Hermosa Beach, then straight to delivery or pickup.",
+  },
+];
+
+function getCatalogProduct(slug: string): CatalogProduct {
+  const product = CATALOG_PRODUCTS.find((item) => item.slug === slug);
+
+  if (!product) {
+    throw new Error(`Missing catalog product: ${slug}`);
+  }
+
+  return product;
+}
+
+const blankGuideCards = [
+  {
+    direction: "Soft retail",
+    bestFor: "Cleaner event merch, teams, and easy everyday tees.",
+    whyItWorks: "Lighter feel, smoother print surface, and an easy fit that works for most runs.",
+    product: getCatalogProduct("bella-canvas-3001"),
+    href: "/catalog/bella-canvas-3001",
+  },
+  {
+    direction: "Heavier premium",
+    bestFor: "Retail programs that want a stronger silhouette and more structure.",
+    whyItWorks: "Boxier and more substantial than the usual promo tee, with a better fashion feel.",
+    product: getCatalogProduct("as-colour-5026"),
+    href: "/catalog/as-colour-5026",
+  },
+  {
+    direction: "Broken-in vintage",
+    bestFor: "Lifestyle merch that should feel familiar right away.",
+    whyItWorks:
+      "Garment-dyed color, softer handfeel, and a worn-in finish people usually keep wearing.",
+    product: getCatalogProduct("comfort-colors-1717"),
+    href: "/catalog/comfort-colors-1717",
+  },
+  {
+    direction: "Heavy streetwear",
+    bestFor: "Oversized fits, premium drops, and a bigger graphic presence.",
+    whyItWorks:
+      "More weight, more drape, and a stronger body so the print sits on something with real presence.",
+    product: getCatalogProduct("lane-seven-ls16005gd"),
+    href: "/catalog/lane-seven-ls16005gd",
+  },
+];
+
+const decorationFitCards = [
+  {
+    eyebrow: "Choose screen print",
+    title: "When the art needs more room",
+    body:
+      "Best for bigger fronts, backs, sleeves, more color, and graphic-heavy programs on tees, fleece, and totes.",
+    bullets: ["Larger placements", "More color range", "Best for apparel graphics"],
+    ctaLabel: "Start a Screen Print Quote",
+    href: "/contact",
+    className: "border-[#FF7F00] bg-[#081E6F] text-white",
+    bulletClassName: "text-white/78",
+  },
+  {
+    eyebrow: "Choose embroidery",
+    title: "When the logo should feel stitched",
+    body:
+      "Better for smaller logo hits, more texture, and premium branded placements on hats, polos, jackets, and select fleece.",
+    bullets: ["Smaller logo placements", "More textured finish", "Best for hats and outerwear"],
+    ctaLabel: "View Embroidery",
+    href: "/services/embroidery",
+    className: "border-[#0B32A0]/14 bg-white text-[var(--og-blue)]",
+    bulletClassName: "text-[#676767]",
   },
 ];
 
@@ -349,7 +418,8 @@ export default function ScreenPrintingPage() {
                   Better blank options
                 </p>
                 <p className="mt-3 text-sm leading-6 text-[#676767]">
-                  Tees, fleece, totes, and other premium ready-made goods that are actually worth printing on.
+                  AS Colour, Comfort Colors, Bella+Canvas, and other blanks that are actually
+                  worth printing on.
                 </p>
               </article>
             </div>
@@ -381,6 +451,65 @@ export default function ScreenPrintingPage() {
                 </h3>
                 <p className="mt-4 text-base leading-7 text-[#676767]">{step.body}</p>
               </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <SectionHeader
+            eyebrow="Blanks"
+            title="Choose the right blank"
+            description="The print matters, but the blank sets the whole feel. These are the four directions we reach for most when a brand wants screen print done right."
+          />
+          <div className="mt-8 grid gap-4 lg:grid-cols-2">
+            {blankGuideCards.map((card) => (
+              <Link
+                key={card.product.slug}
+                href={card.href}
+                className="group rounded-[1.75rem] border border-[#0B32A0]/14 bg-white p-6 transition hover:border-[#0B32A0] hover:shadow-[0_18px_50px_rgba(8,30,111,0.08)] md:p-7"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#FF7F00]">
+                      {card.direction}
+                    </p>
+                    <h3
+                      className="mt-3 text-[2rem] uppercase leading-[0.95] text-[var(--og-blue)]"
+                      style={{ fontFamily: "var(--font-display)" }}
+                    >
+                      {card.product.name}
+                    </h3>
+                  </div>
+                  <span className="rounded-full border border-[#0B32A0]/12 bg-[#F7F4ED] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#676767]">
+                    {card.product.weight}
+                  </span>
+                </div>
+                <p className="mt-4 text-base leading-7 text-[#676767]">{card.whyItWorks}</p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-[1.2rem] bg-[#F7F4ED] p-4">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#FF7F00]">
+                      Best for
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-[#676767]">{card.bestFor}</p>
+                  </div>
+                  <div className="rounded-[1.2rem] bg-[#F7F4ED] p-4">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#FF7F00]">
+                      Fit + fabric
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-[#676767]">
+                      {card.product.fit} fit. {card.product.material}
+                    </p>
+                  </div>
+                </div>
+                <span className="mt-5 inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)]">
+                  View blank
+                  <span className="text-[#FF7F00] transition duration-200 group-hover:translate-x-1">
+                    →
+                  </span>
+                </span>
+              </Link>
             ))}
           </div>
         </section>
@@ -493,6 +622,46 @@ export default function ScreenPrintingPage() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="bg-[#EFE7DA] px-4 py-14 md:px-8 md:py-18 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <SectionHeader
+            eyebrow="Decoration guide"
+            title="Screen print or embroidery?"
+            description="Both are strong. The right call usually comes down to scale, texture, and what kind of product program you are building."
+          />
+          <div className="mt-8 grid gap-4 lg:grid-cols-2">
+            {decorationFitCards.map((card) => (
+              <article
+                key={card.title}
+                className={`rounded-[1.9rem] border p-7 md:p-8 ${card.className}`}
+              >
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#FF7F00]">
+                  {card.eyebrow}
+                </p>
+                <h3
+                  className="mt-4 text-[2.2rem] uppercase leading-[0.94]"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {card.title}
+                </h3>
+                <p className={`mt-4 text-base leading-7 ${card.bulletClassName}`}>{card.body}</p>
+                <ul className={`mt-5 space-y-2 text-sm leading-6 ${card.bulletClassName}`}>
+                  {card.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+                <Link
+                  href={card.href}
+                  className={`mt-7 inline-flex ${card.href === "/contact" ? "btn-og-white" : "btn-og"}`}
+                >
+                  {card.ctaLabel}
+                </Link>
+              </article>
+            ))}
           </div>
         </section>
       </Reveal>

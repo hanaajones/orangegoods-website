@@ -34,11 +34,11 @@ export default function HatStylesPage() {
           {hatStyles.map((style) => (
             <Link
               key={style.slug}
-              href={`/goods/hats/styles/${style.slug}`}
+              href={`/build/og-crafted-hats?hatStyle=${encodeURIComponent(style.slug)}`}
               className="group block"
             >
               <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
-                <div className="relative aspect-[16/10] bg-[#d9c5ae]">
+                <div className="relative aspect-[4/3] bg-[#d9c5ae]">
                   <Image
                     src={style.image}
                     alt={style.title}
@@ -59,7 +59,7 @@ export default function HatStylesPage() {
                     {style.description}
                   </p>
                   <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
-                    Shop this style →
+                    Customize this style →
                   </p>
                 </div>
               </article>
@@ -71,8 +71,8 @@ export default function HatStylesPage() {
       <CTASection
         title="Ready to pick your hat style?"
         description="Choose the silhouette first, then we will help narrow the decoration, fabric, and finishing."
-        buttonLabel="Start a Project"
-        buttonHref="/contact?product=hats&program=og-crafted"
+        buttonLabel="Customize your hat"
+        buttonHref="/build/og-crafted-hats"
       />
     </main>
   );

@@ -344,7 +344,8 @@ export const hatFaqs = [
   },
   {
     question: "What file formats do you need?",
-    answer: ".ai, .eps, or .pdf with vector artwork. No artwork yet? We can help",
+    answer:
+      "Vector files please! These typically have the file extension .ai, .eps, or .pdf. No artwork yet?",
   },
   {
     question: "Do you ship internationally?",
