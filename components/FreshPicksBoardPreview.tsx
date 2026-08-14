@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -92,7 +91,7 @@ const trendTiles: TrendTile[] = [
   {
     title: "Rope hats for outdoor brands",
     note: "A rope detail gives a cap a little more personality without making the whole hat loud.",
-    image: "/images/product/hats/as-colour/1123-rope-cap-front.jpg",
+    image: "/images/product/hats/as-colour/as1123-surf-rope-cap-main.jpg",
     category: "Outdoor",
     tags: ["Hats", "Rope detail"],
     action: "See rope caps",
@@ -148,6 +147,146 @@ const trendTiles: TrendTile[] = [
     action: "Compare decoration",
     href: "/insights/decoration-options-guide",
     size: "small",
+  },
+  {
+    title: "Cafe aprons still feel useful",
+    note: "Restaurant merch works better when the piece actually belongs in service, not just on a shelf.",
+    image: "/images/gallery/banner-coffee-apron-2026-08-14.jpg",
+    category: "Restaurants",
+    tags: ["Aprons", "Staff merch"],
+    action: "Plan staff merch",
+    href: "/contact?intent=restaurant-staff-merch",
+    size: "medium",
+  },
+  {
+    title: "Coffee totes as the easy add-on",
+    note: "A simple tote can pull retail, gifting, and everyday use together when the art and blank are right.",
+    image: "/images/gallery/banner-coffee-tote-2026-08-14.jpg",
+    category: "Bags",
+    tags: ["Retail add-on", "Totes"],
+    action: "See bags",
+    href: "/goods/bags",
+    size: "small",
+  },
+  {
+    title: "Crewnecks for early call times",
+    note: "A clean crewneck can carry a coffee brand or event team farther than another throwaway tee.",
+    image: "/images/gallery/field-day-coffee-crewneck-2026-08-14.jpg",
+    category: "Apparel",
+    tags: ["Crewnecks", "Coffee"],
+    action: "Build a crewneck",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Premium houseware gifting",
+    note: "A tray, candle, or object piece can make a gifting program feel far more elevated than standard promo picks.",
+    image: "/images/gallery/houseware-oak-essentials-travertine-tray.jpg",
+    category: "Gifting",
+    tags: ["Houseware", "Premium gifting"],
+    action: "Plan gifting",
+    href: "/contact?intent=premium-gifting",
+    size: "large",
+  },
+  {
+    title: "Blankets can be the hero piece",
+    note: "For hospitality, retail, and welcome kits, a blanket gives the whole project more presence right away.",
+    image: "/images/gallery/stanford-medicine-blanket-2026-08-14.jpg",
+    category: "Gifting",
+    tags: ["Blankets", "Retail feel"],
+    action: "Source blankets",
+    href: "/contact?intent=source-blankets",
+    size: "medium",
+  },
+  {
+    title: "Laptop sleeves beat another notebook",
+    note: "Useful tech pieces make branded kits feel more intentional and less like filler.",
+    image: "/images/gallery/stanford-medicine-laptop-sleeve-2026-08-14.jpg",
+    category: "Gifting",
+    tags: ["Tech", "Welcome kits"],
+    action: "Build a kit",
+    href: "/contact?intent=kit-build",
+    size: "small",
+  },
+  {
+    title: "Towel details sell the whole idea",
+    note: "A strong woven label and color story can make a towel feel like a real seasonal product, not a freebie.",
+    image: "/images/gallery/boatsetter-towel-detail-2026-08-14.jpg",
+    category: "Outdoor",
+    tags: ["Towels", "Coastal brands"],
+    action: "Source towels",
+    href: "/contact?intent=source-towels",
+    size: "medium",
+  },
+  {
+    title: "Event merch can still look premium",
+    note: "Brand activation gear lands better when the apparel, display, and gifting pieces all feel considered together.",
+    image: "/images/gallery/embroidery-k1-porsche-brand-activation.jpg",
+    category: "Events",
+    tags: ["Activations", "Premium"],
+    action: "Plan an activation",
+    href: "/contact?intent=brand-activation",
+    size: "large",
+  },
+  {
+    title: "Pouches are an easy add-on",
+    note: "Small soft goods can stretch a gifting or retail assortment without blowing up the whole budget.",
+    image: "/images/gallery/sundream-pouches-2026-08-14.jpg",
+    category: "Gifting",
+    tags: ["Pouches", "Retail add-ons"],
+    action: "Source accessories",
+    href: "/contact?intent=source-accessories",
+    size: "small",
+  },
+  {
+    title: "Bottles want better photography",
+    note: "Drinkware usually sells the idea faster when it is shown as a lifestyle piece instead of a plain product shot.",
+    image: "/images/gallery/goodonya-bamboo-bottles-detail-2026-08-14.jpg",
+    category: "Drinkware",
+    tags: ["Bottles", "Wellness"],
+    action: "See drinkware",
+    href: "/goods/drinkware",
+    size: "medium",
+  },
+  {
+    title: "Packaging can carry the mood",
+    note: "A good kit lands differently when the packaging is part of the concept instead of an afterthought.",
+    image: "/images/gallery/packaging-stanford-medicine-thinkhealth-craft-1.jpg",
+    category: "Gifting",
+    tags: ["Packaging", "Kits"],
+    action: "Talk packaging",
+    href: "/contact?intent=custom-packaging",
+    size: "medium",
+  },
+  {
+    title: "Outerwear for field teams",
+    note: "Jackets make sense when the team will actually wear them outside the office, not just for one group photo.",
+    image: "/images/gallery/embroidery-red-bull-jacket.jpg",
+    category: "Outdoor",
+    tags: ["Outerwear", "Team gear"],
+    action: "See apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Bandanas are back in the mix",
+    note: "They work best when the artwork is doing something specific and the piece feels tied to the brand world.",
+    image: "/images/gallery/accessories-royal-wine-bandana-image-1.jpg",
+    category: "Events",
+    tags: ["Bandanas", "Small add-ons"],
+    action: "Source accessories",
+    href: "/contact?intent=source-accessories",
+    size: "small",
+  },
+  {
+    title: "Backpacks for smarter team kits",
+    note: "A backpack can quietly carry a logo while making the full kit feel more useful and more valuable.",
+    image: "/images/gallery/embroidery-stanford-medicine-backpacks.jpg",
+    category: "Gifting",
+    tags: ["Backpacks", "Team kits"],
+    action: "Build a kit",
+    href: "/contact?intent=team-kit",
+    size: "large",
   },
 ];
 
@@ -227,12 +366,11 @@ export function FreshPicksBoardPreview() {
                 className="mb-4 break-inside-avoid overflow-hidden rounded-lg border border-[#081E6F]/12 bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)]"
               >
                 <div className={`relative ${tileHeight(tile.size)} bg-[#E4DFCD]`}>
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={tile.image}
                     alt={tile.title}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
+                    className="h-full w-full object-cover"
                   />
                   <div className="absolute left-3 top-3 rounded-full bg-[#FF7F00] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
                     {tile.category}
