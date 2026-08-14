@@ -453,7 +453,7 @@ export default function AS5001Page() {
       <section className="bg-[#1C1C1C] px-4 py-10 text-white md:px-8 md:py-14">
         <div className="mx-auto flex max-w-7xl flex-col gap-5">
           <div className="flex flex-wrap gap-2">
-            {["ITEM AS-5001", "180gsm Cotton", "Ready Made", "2–4 Weeks"].map((badge) => (
+            {["ITEM AS-5001", "180gsm Cotton", "Quick Turn", "2–4 Weeks"].map((badge) => (
               <span
                 key={badge}
                 className="rounded-full border border-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] text-white/70"

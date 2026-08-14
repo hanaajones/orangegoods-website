@@ -117,7 +117,16 @@ export function Nav() {
         />
       )}
 
-      <header className="sticky top-0 z-40">
+      <div className="flex min-h-8 items-center justify-center bg-[var(--og-dark-blue)] px-4 pb-2 pt-[12px] text-center md:px-8">
+        <p
+          className="w-full text-center text-[14px] leading-none text-white md:text-[1rem]"
+          style={{ fontFamily: "var(--font-accent)" }}
+        >
+          Merch Guaranteed Fresh
+        </p>
+      </div>
+
+      <header className="sticky top-0 z-40 -mb-px bg-[#FF4200] pb-px">
         <div
           className="relative"
           onMouseLeave={scheduleClose}
@@ -174,12 +183,6 @@ export function Nav() {
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 DESIGN
-              </Link>
-              <Link
-                href="/shop"
-                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
-              >
-                SHOP OG
               </Link>
               <Link
                 href="/fresh-picks"
@@ -276,10 +279,10 @@ export function Nav() {
                       ))}
                     </div>
                   </div>
-                  {/* Col 2: Ready Made Services */}
+                  {/* Col 2: Quick Turn Services */}
                   <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Ready Made Services
+                      Quick Turn Services
                     </p>
                     <div className="grid gap-1">
                       {serviceLinks.map((item) => (
@@ -305,8 +308,7 @@ export function Nav() {
                       <Link href={startProjectHref} className="btn-og min-w-[14rem] justify-center">Start a Project</Link>
                       <Link
                         href="/quiz"
-                        className="inline-flex min-w-[14rem] items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-bold uppercase tracking-normal text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
-                        style={{ fontFamily: "var(--font-noir-alt)" }}
+                        className="font-body inline-flex min-w-[14rem] items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
                       >
                         Merch Quiz
                       </Link>
@@ -345,8 +347,8 @@ export function Nav() {
                       How It Works
                     </p>
                     <div className="grid gap-1">
-                      <MenuLink href="/services#ready-made">Ready Made</MenuLink>
-                      <MenuLink href="/services#og-crafted">OG Crafted</MenuLink>
+                      <MenuLink href="/services#quick-turn">Quick Turn</MenuLink>
+                      <MenuLink href="/services#og-crafted">Full Custom</MenuLink>
                       <MenuLink href="/quiz">Find My Goods</MenuLink>
                     </div>
                   </div>
@@ -455,7 +457,6 @@ export function Nav() {
               { label: "GOODS", href: "/#paths" },
               ...(showBuildOnlineNav ? [{ label: "BUILD ONLINE", href: buildOnlineHref }] : []),
               { label: "DESIGN", href: "/design" },
-              { label: "SHOP OG", href: "/shop" },
               { label: "FRESH PICKS", href: "/fresh-picks" },
               { label: "GALLERY", href: "/gallery" },
               { label: "ABOUT", href: "/about" },

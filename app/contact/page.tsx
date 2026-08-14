@@ -667,7 +667,7 @@ function ContactPageContent() {
                 </p>
                 <a
                   href="sms:+12133764663"
-                  className="mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] font-[var(--font-noir-alt)] text-sm font-bold uppercase tracking-normal text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
+                  className="font-body mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
                 >
                   Text us
                 </a>

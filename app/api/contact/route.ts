@@ -13,6 +13,14 @@ type JCoreBridgeRequestMeta = {
   realIp?: string;
   userAgent?: string;
 };
+type StoredUpload = {
+  fieldName: string;
+  originalName: string;
+  storedName: string;
+  relativePath: string;
+  mimeType: string;
+  size: number;
+};
 
 const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL
   ?? "http://127.0.0.1:3000/api/typeform-webhook";
@@ -21,6 +29,8 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN ?? "";
 const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
 const OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL = process.env.OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL
   ?? "C0AV6PMMFD3";
+const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
+const ALLOWED_UPLOAD_EXTENSIONS = new Set([".ai", ".eps", ".pdf", ".svg", ".zip"]);
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -47,6 +57,96 @@ function truncate(value: string, maxLength: number) {
   const compact = value.replace(/\s+/g, " ").trim();
   if (compact.length <= maxLength) return compact;
   return `${compact.slice(0, Math.max(0, maxLength - 1)).trim()}…`;
+}
+
+function sanitizeFilename(filename: string) {
+  return filename
+    .replaceAll("\\", "/")
+    .split("/")
+    .pop()
+    ?.replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    ?? "upload";
+}
+
+function getFileExtension(filename: string) {
+  return path.extname(filename).toLowerCase();
+}
+
+async function parseRequestPayload(request: Request, submissionId: string) {
+  const contentType = request.headers.get("content-type") ?? "";
+
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const payloadEntries: Array<[string, string]> = [];
+    const uploads: StoredUpload[] = [];
+    const uploadDir = path.join(process.cwd(), "data", "contact-uploads", submissionId);
+
+    for (const [key, value] of formData.entries()) {
+      if (typeof value === "string") {
+        const normalized = asString(value);
+        if (normalized) payloadEntries.push([key, normalized]);
+        continue;
+      }
+
+      if (!(value instanceof File) || value.size === 0 || key !== "artwork") {
+        continue;
+      }
+
+      const originalName = sanitizeFilename(value.name || "artwork-upload");
+      const extension = getFileExtension(originalName);
+
+      if (!ALLOWED_UPLOAD_EXTENSIONS.has(extension)) {
+        throw new Error(`Unsupported upload type: ${extension || "unknown"}`);
+      }
+
+      if (value.size > MAX_UPLOAD_BYTES) {
+        throw new Error(`Upload too large: ${originalName}`);
+      }
+
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const storedName = `${uploads.length + 1}-${Date.now()}-${originalName}`;
+      const relativePath = path.join("data", "contact-uploads", submissionId, storedName);
+      const targetPath = path.join(process.cwd(), relativePath);
+      const buffer = Buffer.from(await value.arrayBuffer());
+      await fs.writeFile(targetPath, buffer);
+
+      uploads.push({
+        fieldName: key,
+        originalName,
+        storedName,
+        relativePath,
+        mimeType: value.type || "application/octet-stream",
+        size: value.size,
+      });
+    }
+
+    const payload = Object.fromEntries(payloadEntries) as Record<string, string>;
+
+    if (uploads.length) {
+      payload.artworkFiles = uploads.map((file) => file.originalName).join(", ");
+      payload.artworkUploadCount = String(uploads.length);
+    }
+
+    return { payload, uploads };
+  }
+
+  const body = (await request.json().catch(() => null)) as ContactPayload | null;
+
+  if (!body || typeof body !== "object") {
+    return { payload: null, uploads: [] };
+  }
+
+  const payload = Object.fromEntries(
+    Object.entries(body).flatMap(([key, value]) => {
+      const normalized = asString(value);
+      return normalized ? [[key, normalized]] : [];
+    }),
+  ) as Record<string, string>;
+
+  return { payload, uploads: [] };
 }
 
 function isHatBuilderSubmission(payload: Record<string, string>) {
@@ -309,21 +409,15 @@ async function deliverHatBuilderSlackNotification(payload: Record<string, string
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json().catch(() => null)) as ContactPayload | null;
+    const submissionId = `contact_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const { payload, uploads } = await parseRequestPayload(request, submissionId);
 
-    if (!body || typeof body !== "object") {
+    if (!payload) {
       return NextResponse.json(
         { ok: false, error: "Invalid request body." },
         { status: 400 },
       );
     }
-
-    const payload = Object.fromEntries(
-      Object.entries(body).flatMap(([key, value]) => {
-        const normalized = asString(value);
-        return normalized ? [[key, normalized]] : [];
-      }),
-    ) as Record<string, string>;
 
     if (!payload.name || !payload.email) {
       return NextResponse.json(
@@ -343,9 +437,10 @@ export async function POST(request: Request) {
     }
 
     const submission = {
-      id: `contact_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+      id: submissionId,
       submittedAt: new Date().toISOString(),
       payload,
+      uploads,
     };
 
     const logFile = path.join(process.cwd(), "data", "contact-submissions.jsonl");
@@ -399,6 +494,20 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[Contact Submission Error]", error);
+
+    const message = error instanceof Error ? error.message : "";
+    if (message.startsWith("Unsupported upload type")) {
+      return NextResponse.json(
+        { ok: false, error: "Unsupported artwork file type. Please upload AI, EPS, PDF, SVG, or ZIP." },
+        { status: 400 },
+      );
+    }
+    if (message.startsWith("Upload too large")) {
+      return NextResponse.json(
+        { ok: false, error: "Artwork file is too large. Please send a smaller file or share a link in the notes." },
+        { status: 400 },
+      );
+    }
 
     return NextResponse.json(
       { ok: false, error: "We could not submit your request right now." },

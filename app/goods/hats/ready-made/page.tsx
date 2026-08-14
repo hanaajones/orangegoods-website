@@ -5,7 +5,7 @@ import { ReadyMadeHatGrid } from "@/components/ReadyMadeHatGrid";
 import { READY_MADE_HATS } from "@/lib/ready-made-hats";
 
 export const metadata = {
-  title: "Ready Made Hats — Orange Goods",
+  title: "Quick Turn Hats — Orange Goods",
   description: "Premium AS Colour blank hats with your embroidery. 2–3 week turnaround from 100 units.",
 };
 
@@ -14,14 +14,14 @@ export default function ReadyMadeHatsPage() {
     <main className="bg-[#F5F0E8] pb-24 md:pb-0">
       <div className="px-6 pt-6 md:px-12">
         <Link href="/goods/hats" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--og-blue)] hover:text-[var(--og-orange)]">
-          ← Custom Hats (OG Crafted)
+          ← Custom Hats (Full Custom)
         </Link>
       </div>
 
       <section className="px-6 pb-10 pt-8 md:px-12">
         <div className="mx-auto max-w-6xl">
           <span className="inline-block rounded-full border border-[#0B32A0]/20 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--og-blue)]">
-            Ready Made
+            Quick Turn
           </span>
           <h1
             className="mt-4 text-5xl font-semibold leading-none tracking-[-0.03em] text-[var(--og-blue)] md:text-7xl"
@@ -48,7 +48,7 @@ export default function ReadyMadeHatsPage() {
         </div>
       </section>
 
-      <HatPageStickyNav mode="ready-made" />
+      <HatPageStickyNav mode="quick-turn" />
 
       <section className="py-4">
         <ReadyMadeHatGrid styles={READY_MADE_HATS} />
@@ -86,12 +86,12 @@ export default function ReadyMadeHatsPage() {
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">Want more?</p>
                 <p className="mt-1 text-base font-semibold text-white">
-                  OG Crafted hats are built from scratch — your fabric, shape, and every detail.
+                  Full Custom hats are built from scratch — your fabric, shape, and every detail.
                 </p>
               </div>
               <Link href="/goods/hats"
                 className="shrink-0 rounded-xl bg-[var(--og-orange)] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d73b05]">
-                See OG Crafted →
+                See Full Custom →
               </Link>
             </div>
           </div>

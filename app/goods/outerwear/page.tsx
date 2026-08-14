@@ -19,8 +19,8 @@ export default function OuterwearPage() {
           answer: "Fully custom outerwear typically takes 6-10 weeks after proof approval.",
         },
         {
-          question: "Can you decorate Ready Made outerwear blanks?",
-          answer: "Yes. Ready Made blank outerwear programs usually take 3-5 weeks.",
+          question: "Can you decorate Quick Turn outerwear blanks?",
+          answer: "Yes. Quick Turn blank outerwear programs usually take 3-5 weeks.",
         },
       ]}
     />

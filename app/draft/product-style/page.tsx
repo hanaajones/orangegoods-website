@@ -10,8 +10,8 @@ export default function ProductStyleDraftPage() {
     <Suspense fallback={null}>
       <ProductStylePreview
         modeLabelOverrides={{
-          ready: "Ready-made hats",
-          catalog: "Ready-made apparel",
+          ready: "Quick-turn hats",
+          catalog: "Quick-turn apparel",
           shop: "Shop OG",
         }}
         previewLinks={[

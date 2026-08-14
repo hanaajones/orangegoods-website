@@ -205,7 +205,7 @@ export function ShoppableReadyMadeHat({ style, recommendedStyles }: {
             {/* Header */}
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
-                Ready Made · #{style.id}
+                Quick Turn · #{style.id}
               </p>
               <h2 className="mt-1.5 text-3xl font-semibold text-[var(--og-blue)]"
                 style={{ fontFamily: "var(--font-display)" }}>
@@ -582,7 +582,7 @@ export function ShoppableReadyMadeHat({ style, recommendedStyles }: {
             {recommendedStyles.map(s => {
               const hero = s.colors[0]?.main ?? s.colors[0]?.turn ?? s.colors[0]?.front ?? "";
               return (
-                <a key={s.id} href={`/goods/hats/ready-made/${s.id.toLowerCase()}`}
+                <a key={s.id} href={`/goods/hats/quick-turn/${s.id.toLowerCase()}`}
                   className="group flex flex-col gap-1.5">
                   <div className="relative aspect-square overflow-hidden rounded-lg border border-[#1C1C1C]/8 bg-[#F5F0E8] transition group-hover:border-[#0B32A0]">
                     {hero && (

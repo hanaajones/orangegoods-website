@@ -209,14 +209,26 @@ export const homeProcess = [
   {
     title: "Bring us an idea",
     body: "Send a logo, a rough direction, or just the goal. If the artwork is not there yet, we can help shape it.",
+    iconSrc: "/graphics/homepage/bring-us-an-idea.svg",
+    iconWidth: 211,
+    iconHeight: 211,
+    iconClassName: "h-12 w-auto",
   },
   {
     title: "Choose the right goods",
     body: "We narrow the products, quantity, budget, and timeline before anything goes into production.",
+    iconSrc: "/graphics/homepage/choose-the-right-goods.svg",
+    iconWidth: 282,
+    iconHeight: 195,
+    iconClassName: "h-11 w-auto",
   },
   {
     title: "We get it moving",
     body: "Once the direction is approved, we handle quoting, mockups, production, and delivery.",
+    iconSrc: "/graphics/homepage/we-get-it-moving.svg",
+    iconWidth: 233,
+    iconHeight: 225,
+    iconClassName: "h-[3.3rem] w-auto",
   },
 ];
 
@@ -239,8 +251,8 @@ export const hatAnchorLinks = [
 ];
 
 export const hatCallouts = [
-  { title: "OG Crafted", body: "Fully custom, 100+ MOQ" },
-  { title: "Ready Made", body: "Premium blanks, 100+ MOQ, faster turn" },
+  { title: "Full Custom", body: "Fully custom, 100+ MOQ" },
+  { title: "Quick Turn", body: "Premium blanks, 100+ MOQ, faster turn" },
 ];
 
 export const hatPricing = [

@@ -12,7 +12,8 @@ export function SiteChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isPortal = pathname === "/portal" || pathname.startsWith("/portal/");
   const isQuiz = pathname === "/quiz" || pathname.startsWith("/quiz/");
-  const showFloatingUi = process.env.NODE_ENV === "production";
+  const showChatWidget = !isQuiz;
+  const showNewsletterPopup = process.env.NODE_ENV === "production" && !isQuiz;
 
   if (isPortal) {
     return <>{children}</>;
@@ -23,8 +24,8 @@ export function SiteChrome({ children }: { children: ReactNode }) {
       <Nav />
       {children}
       <Footer />
-      {showFloatingUi && !isQuiz ? <ChatWidget /> : null}
-      {showFloatingUi && !isQuiz ? <NewsletterPopup /> : null}
+      {showChatWidget ? <ChatWidget /> : null}
+      {showNewsletterPopup ? <NewsletterPopup /> : null}
     </>
   );
 }

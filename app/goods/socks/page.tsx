@@ -286,7 +286,7 @@ export default function SocksPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/74 via-[#1C1C1C]/50 to-[#1C1C1C]/24" />
         <div className="relative mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            OG Crafted
+            Full Custom
           </p>
           <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
             Custom Socks

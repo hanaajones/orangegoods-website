@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { ProductStylePreview } from "@/components/ProductStylePreview";
 
 export const metadata = {
-  title: "Ready Made Hats Builder · Orange Goods",
+  title: "Quick Turn Hats Builder · Orange Goods",
 };
 
 export default function ReadyMadeHatsBuildPage() {
@@ -13,7 +13,7 @@ export default function ReadyMadeHatsBuildPage() {
         lockedMode="ready"
         pageTitle=""
         pageDescription=""
-        pageBackHref="/goods/hats/ready-made"
+        pageBackHref="/goods/hats/quick-turn"
         pageBackLabel="Back to ready made hats"
       />
     </Suspense>

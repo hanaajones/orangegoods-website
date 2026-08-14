@@ -20,7 +20,7 @@ export default function ApparelPage() {
         },
         {
           question: "How long does apparel take?",
-          answer: "Apparel typically takes 3-6 weeks. Ready Made blank programs usually take 2-4 weeks.",
+          answer: "Apparel typically takes 3-6 weeks. Quick Turn blank programs usually take 2-4 weeks.",
         },
       ]}
     />

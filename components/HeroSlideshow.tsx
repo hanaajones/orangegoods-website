@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const photos = [
   { src: "/images/gallery/267A5393.jpg" },
   { src: "/images/homepage/milk-glass-mug-1-exposure-plus-015.jpg", position: "center 42%" },
+  { src: "/images/homepage/layla-bagels-mugs-hero-1.jpg", position: "center 68%" },
   { src: "/images/gallery/DSCF3148.jpg" },
   { src: "/images/gallery/_MG_0147.jpg", position: "center 82%" },
   { src: "/images/gallery/mcalister-016_2.jpg" },

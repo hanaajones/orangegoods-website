@@ -53,7 +53,7 @@ type CategoryCard = {
 const categories: CategoryCard[] = [
   {
     name: "Headwear",
-    description: "Ready-made blanks, OG Crafted hats, beanies, buckets, rope caps, and more.",
+    description: "Quick-turn blanks, Full Custom hats, beanies, buckets, rope caps, and more.",
     href: "/goods/hats",
     image: "/images/product/hat-lifestyle-hero.jpg",
     className: "lg:col-span-2 lg:min-h-[22rem]",

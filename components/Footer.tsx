@@ -90,14 +90,12 @@ export function Footer() {
               <a
                 href="/contact"
                 className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
-                style={{ fontFamily: "var(--font-noir-alt)" }}
               >
                 Start a Project
               </a>
               <a
                 href="/quiz"
-                className="inline-flex items-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white transition hover:-translate-y-[3px]"
-                style={{ fontFamily: "var(--font-noir-alt)" }}
+                className="font-body inline-flex items-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-white transition hover:-translate-y-[3px]"
               >
                 Merch Quiz
               </a>

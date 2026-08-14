@@ -59,9 +59,9 @@ const modes: Record<ModeKey, {
   timeline: string;
 }> = {
   ready: {
-    label: "Ready-made",
-    eyebrow: "Ready Made · AS Colour",
-    title: "Ready Made Hats",
+    label: "Quick-turn",
+    eyebrow: "Quick Turn · AS Colour",
+    title: "Quick Turn Hats",
     description: "A simplified branded-hat builder built around premium blanks, fast turns, and only the decisions that actually matter.",
     cta: "Submit Hat for Review",
     unitLabel: "per hat",
@@ -90,7 +90,7 @@ const modes: Record<ModeKey, {
   },
   build: {
     label: "Build Online",
-    eyebrow: "Build Online · OG Crafted",
+    eyebrow: "Build Online · Full Custom",
     title: "Build Your Hat",
     description: "A guided builder path for shape, fabric, interior labels, seam tape, patches, and full custom decisions.",
     cta: "Submit Hat for Review",
@@ -99,10 +99,10 @@ const modes: Record<ModeKey, {
     timeline: "6-8 weeks",
   },
   crafted: {
-    label: "OG Crafted Hats",
-    eyebrow: "OG Crafted · Hats",
-    title: "OG Crafted Hats",
-    description: "A dedicated OG Crafted hats page with guided decisions for silhouette, fabric, labels, seam tape, patches, and custom details.",
+    label: "Full Custom Hats",
+    eyebrow: "Full Custom · Hats",
+    title: "Full Custom Hats",
+    description: "A dedicated Full Custom hats page with guided decisions for silhouette, fabric, labels, seam tape, patches, and custom details.",
     cta: "Submit Hat for Review",
     unitLabel: "starting at",
     unitPrice: 12.5,
@@ -369,25 +369,25 @@ const relatedProducts = [
     image: "/images/product/hats/feb-snapback-navy-front.jpg",
   },
   {
-    href: "/goods/hats/ready-made/1130",
+    href: "/goods/hats/quick-turn/1130",
     name: "Stock Cap",
     price: "From $16.50",
     image: "/images/product/hats/as-colour/1130-cap-ecru-turn.jpg",
   },
   {
-    href: "/goods/hats/ready-made/1123",
+    href: "/goods/hats/quick-turn/1123",
     name: "Surf Rope Cap",
     price: "From $17.50",
     image: "/images/product/hats/as-colour/1123-rope-cap-main.jpg",
   },
   {
-    href: "/goods/hats/ready-made/1141",
+    href: "/goods/hats/quick-turn/1141",
     name: "Trucker Cap",
     price: "From $15.75",
     image: "/images/product/hats/as-colour/1141-trucker-cap-bone-front.jpg",
   },
   {
-    href: "/goods/hats/ready-made/1175",
+    href: "/goods/hats/quick-turn/1175",
     name: "Bucket Hat",
     price: "From $18.50",
     image: "/images/product/hats/as-colour/1175-bucket-hat-white-back.jpg",
@@ -719,7 +719,7 @@ export function ProductStylePreview({
   lockedMode,
   pageKicker = "",
   pageTitle = "Unified Product Page Preview",
-  pageDescription = "One shared layout for ready-made hats, ready-made apparel, catalog products, shop items, and OG Crafted hats.",
+  pageDescription = "One shared layout for quick-turn hats, quick-turn apparel, catalog products, shop items, and Full Custom hats.",
   pageBackHref,
   pageBackLabel,
   modeLabelOverrides = {},
@@ -1127,7 +1127,7 @@ export function ProductStylePreview({
     .join("\n");
   const questionsHref = `/contact?${new URLSearchParams({
     intent: isHatBuilderMode ? "submit-build" : "product-question",
-    source: isHatBuilderMode ? "og-crafted-hat-builder" : mode === "ready" ? "ready-made-hat-builder" : "",
+    source: isHatBuilderMode ? "og-crafted-hat-builder" : mode === "ready" ? "quick-turn-hat-builder" : "",
     product: activeMode.title,
     mode: activeMode.label,
     builderMode: isHatBuilderMode ? mode : "",

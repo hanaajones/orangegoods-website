@@ -25,7 +25,7 @@ export function CTASection({
   wrapperClassName?: string;
 }) {
   return (
-    <Reveal className={`px-4 py-16 md:px-8 md:py-20 lg:px-12 ${wrapperClassName}`.trim()}>
+    <Reveal className={`px-4 py-12 md:px-8 md:py-16 lg:px-12 ${wrapperClassName}`.trim()}>
       <section className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-[var(--og-blue)] p-8 text-white shadow-[0_24px_80px_rgba(8,30,111,0.22)] md:p-10">
         {backgroundImage ? (
           <div

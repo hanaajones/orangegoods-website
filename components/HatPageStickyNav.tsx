@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { MouseEvent } from "react";
 
 type HatPageStickyNavProps = {
-  mode: "og-crafted" | "ready-made";
+  mode: "og-crafted" | "quick-turn";
   links?: Array<{ href: string; label: string }>;
 };
 
@@ -32,7 +32,7 @@ export function HatPageStickyNav({
 
   const toggleOptions = [
     { href: "/goods/hats", label: "Full custom", value: "og-crafted" as const },
-    { href: "/goods/hats/ready-made", label: "Quick turn", value: "ready-made" as const },
+    { href: "/goods/hats/quick-turn", label: "Quick turn", value: "quick-turn" as const },
   ];
 
   return (

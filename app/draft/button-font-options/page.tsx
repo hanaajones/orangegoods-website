@@ -1,26 +1,27 @@
 const options = [
   {
-    name: "Tenon",
+    name: "Noir Alt",
     className: "font-noir-alt",
-    note: "Clean, modern, still branded. My pick for CTAs.",
+    note: "Clean, direct, and still branded. Strongest option if the buttons should feel sharp without yelling.",
     sampleClass: "text-sm font-bold uppercase tracking-[0.1em]",
+    badge: "Recommended",
   },
   {
-    name: "Noir Pro",
+    name: "Body",
     className: "font-body",
-    note: "Most straightforward and utilitarian. Good if we want buttons to disappear more.",
+    note: "Most utilitarian. Good if we want the CTA to feel quieter and let the surrounding layout do more of the work.",
     sampleClass: "text-sm font-semibold uppercase tracking-[0.08em]",
   },
   {
-    name: "Moret",
+    name: "Subtitle Alt",
     className: "font-subtitle-alt",
-    note: "Softer/editorial. Nice for secondary links, probably too delicate for main CTAs.",
+    note: "Softer and a little more editorial. Better for secondary actions than the main conversion button.",
     sampleClass: "text-base font-bold normal-case tracking-normal",
   },
   {
-    name: "Fat Frank",
+    name: "Display",
     className: "font-display",
-    note: "Current loud display style. Strong, but heavy for buttons.",
+    note: "Loud and branded, but it can get heavy fast. Best if we want the CTA to feel more poster-like.",
     sampleClass: "text-base font-bold uppercase tracking-normal",
   },
 ];
@@ -37,7 +38,7 @@ export default function ButtonFontOptionsPage() {
         </h1>
         <p className="font-noir-alt mt-5 max-w-2xl text-base leading-7 text-[#1C1C1C]/66 md:text-lg">
           Same button shapes, different font treatments for buttons like Start a Project, Contact our team,
-          and Find my goods.
+          and Find my goods. This is the fastest way to compare tone without changing the rest of the CTA styling.
         </p>
 
         <div className="mt-10 grid gap-4 md:grid-cols-2">
@@ -51,9 +52,9 @@ export default function ButtonFontOptionsPage() {
                   <h2 className="font-noir-alt text-lg font-bold text-[#0B32A0]">{option.name}</h2>
                   <p className="font-noir-alt mt-1 text-sm leading-5 text-[#1C1C1C]/58">{option.note}</p>
                 </div>
-                {option.name === "Tenon" ? (
+                {option.badge ? (
                   <span className="font-noir-alt rounded-full bg-[#FF4200]/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#FF4200]">
-                    Pick
+                    {option.badge}
                   </span>
                 ) : null}
               </div>

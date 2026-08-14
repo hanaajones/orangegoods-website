@@ -488,7 +488,7 @@ export default function QuizPage() {
 
             <div className="translate-y-0 opacity-100 transition duration-300 ease-out">
               <h1
-                className="max-w-4xl text-[2.8rem] uppercase leading-[0.9] text-[var(--og-blue)] md:text-[5.1rem]"
+                className="max-w-4xl text-[2.1rem] uppercase leading-[0.92] text-[var(--og-blue)] md:text-[3.9rem]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {currentQuestion.title}

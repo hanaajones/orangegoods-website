@@ -231,7 +231,7 @@ export default function DesignPage() {
                     ) : null}
                   </div>
                   {category.cta ? (
-                    <span className="font-noir-alt inline-flex min-h-11 w-fit items-center justify-center self-end rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white outline outline-[3px] outline-transparent transition-[transform,outline-color] duration-150 hover:-translate-y-[3px] hover:outline-white focus-visible:outline-white active:-translate-y-px md:mr-[30px] md:self-center md:justify-self-end">
+                    <span className="font-body inline-flex min-h-11 w-fit items-center justify-center self-end rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-white outline outline-[3px] outline-transparent transition-[transform,outline-color] duration-150 hover:-translate-y-[3px] hover:outline-white focus-visible:outline-white active:-translate-y-px md:mr-[30px] md:self-center md:justify-self-end">
                       {category.cta}
                     </span>
                   ) : null}

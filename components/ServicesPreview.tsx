@@ -3,7 +3,7 @@ import { Reveal } from "@/components/Reveal";
 
 const tiers = [
   {
-    title: "OG Crafted",
+    title: "Full Custom",
     badge: "Full Custom",
     description:
       "Built from scratch. Custom fabric, fit, trims, and labels. For brands that want something nobody else has.",
@@ -12,12 +12,12 @@ const tiers = [
     bg: "bg-[#FF4200]",
   },
   {
-    title: "Ready Made",
+    title: "Quick Turn",
     badge: "Fast + Quality",
     description:
       "Premium blanks, decorated locally. Embroidery, screen print, patches — applied cleanly and quickly.",
     detail: "2–4 weeks · 100+ pieces",
-    href: "/services#ready-made",
+    href: "/services#quick-turn",
     bg: "bg-[#0B32A0]",
   },
 ];
@@ -34,7 +34,7 @@ export function ServicesPreview() {
             How we build it
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base leading-7 text-[#1C1C1C]/60">
-            OG Crafted is built from scratch — custom everything. Ready Made starts with premium blanks, decorated locally. Both are 100+ pieces, both are retail quality.
+            Full Custom is built from scratch — custom everything. Quick Turn starts with premium blanks, decorated locally. Both are 100+ pieces, both are retail quality.
           </p>
         </div>
 

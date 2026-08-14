@@ -1,23 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CTASection } from "@/components/CTASection";
+import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 import { startProjectHref } from "@/lib/content";
 
 export const metadata = {
   title: "Our Process — Orange Goods",
   description:
-    "Our process starts with the right path. Compare Ready Made and OG Crafted to see which approach fits your timeline, budget, and level of customization.",
+    "Our process starts with the right path. Compare Quick Turn and Full Custom to see which approach fits your timeline, budget, and level of customization.",
 };
 
 const paths = [
   {
     id: "og-crafted",
     eyebrow: "Full Custom",
-    title: "OG Crafted",
+    title: "Full Custom",
     tagline: "Built from scratch. Nothing off the shelf.",
     description:
-      "OG Crafted is our fully custom production path. Everything is designed and manufactured from the ground up — your fabric, your fit, your trims, your labels. The result is something nobody else has.",
+      "Full Custom is our fully custom production path. Everything is designed and manufactured from the ground up — your fabric, your fit, your trims, your labels. The result is something nobody else has.",
     details: [
       "Custom fabric selection and development",
       "Cut + sew construction from scratch",
@@ -36,18 +37,18 @@ const paths = [
     cta: "Start a Custom Project",
   },
   {
-    id: "ready-made",
+    id: "quick-turn",
     eyebrow: "Fast + Quality",
-    title: "Ready Made",
+    title: "Quick Turn",
     tagline: "Premium blanks. Decorated locally. Fast.",
     description:
-      "Ready Made starts with premium blank garments and hard goods — brands like Richardson, Yupoong, S+S Activewear — and adds your decoration locally. Embroidery, screen print, patches, and heat transfers applied cleanly and quickly.",
+      "Quick Turn starts with premium blank garments and hard goods — brands like Richardson, Yupoong, S+S Activewear — and adds your decoration locally. Embroidery, screen print, patches, and heat transfers applied cleanly and quickly.",
     details: [
       "Premium blanks from top suppliers",
       "Embroidery, screen print, and patches",
       "Mix styles — same design applies across all",
       "2–4 week turnaround on most orders",
-      "Lower cost per unit than OG Crafted",
+      "Lower cost per unit than Full Custom",
     ],
     specs: [
       { label: "MOQ", value: "100+ pieces" },
@@ -57,7 +58,7 @@ const paths = [
     image:
       "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
     bg: "bg-[#0B32A0]",
-    cta: "Start a Ready Made Order",
+    cta: "Start a Quick Turn Order",
   },
 ];
 
@@ -88,23 +89,48 @@ const chooseReadyMade = [
 
 export default function OGCraftedVsReadyMadePage() {
   return (
-    <main className="pb-24 md:pb-0">
+    <main className="bg-[#F7F4ED] pb-24 md:pb-0">
       {/* Hero */}
-      <section className="bg-[var(--og-blue)] px-4 py-20 text-white md:px-8 md:py-28 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/60">
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+        <ParallaxHeroBackground
+          image="/images/gallery/design-built-production-dscf1585.jpg"
+          position="center 36%"
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/32" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
+        <div className="relative mx-auto max-w-6xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
             Our Process
           </p>
-          <h1 className="mt-5 text-5xl leading-none text-white md:text-6xl lg:text-7xl">
-            READY MADE OR OG CRAFTED
+          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+            Quick Turn
+            <br />
+            or Full Custom
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75 md:text-xl">
-            Start with the right lane. Ready Made uses premium blanks and moves
-            fast. OG Crafted is built from scratch for projects that need a
+          <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+            Start with the right lane. Quick Turn uses premium blanks and moves
+            fast. Full Custom is built from scratch for projects that need a
             more custom end result. Both lead to goods worth keeping.
           </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={startProjectHref} className="btn-og inline-flex">
+              Start a Project
+            </Link>
+            <Link href="/goods" className="btn-og-white inline-flex">
+              Explore Goods
+            </Link>
+          </div>
         </div>
       </section>
+
+      <div className="border-y-[3px] border-[#1C1C1C] bg-[#081E6F] px-4 py-4 text-center md:px-6 md:py-5 lg:px-8">
+        <p
+          className="mx-auto max-w-[76rem] text-[1.55rem] uppercase leading-none tracking-[0.01em] text-[#FF4200] sm:text-[2rem] md:text-[2.8rem] lg:text-[3.8rem] xl:text-[4.45rem]"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          Start with the right lane
+        </p>
+      </div>
 
       {/* Path cards */}
       <section className="px-4 py-16 md:px-8 md:py-20 lg:px-12">
@@ -191,10 +217,10 @@ export default function OGCraftedVsReadyMadePage() {
           </p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {/* OG Crafted */}
+            {/* Full Custom */}
             <div className="border border-[#FF4200]/30 bg-white p-6 md:p-8">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#FF4200]">
-                Go with OG Crafted if…
+                Go with Full Custom if…
               </p>
               <ul className="mt-5 space-y-3">
                 {chooseCrafted.map((item) => (
@@ -206,10 +232,10 @@ export default function OGCraftedVsReadyMadePage() {
               </ul>
             </div>
 
-            {/* Ready Made */}
+            {/* Quick Turn */}
             <div className="border border-[#0B32A0]/30 bg-white p-6 md:p-8">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-[#0B32A0]">
-                Go with Ready Made if…
+                Go with Quick Turn if…
               </p>
               <ul className="mt-5 space-y-3">
                 {chooseReadyMade.map((item) => (
@@ -231,8 +257,8 @@ export default function OGCraftedVsReadyMadePage() {
           <div className="mt-8 overflow-hidden border border-[#0B32A0]/20">
             <div className="grid grid-cols-3 bg-[var(--og-blue)] px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white">
               <span />
-              <span>OG Crafted</span>
-              <span>Ready Made</span>
+              <span>Full Custom</span>
+              <span>Quick Turn</span>
             </div>
             {comparisons.map((row, i) => (
               <div

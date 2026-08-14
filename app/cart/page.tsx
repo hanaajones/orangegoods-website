@@ -145,7 +145,7 @@ function CartPageContent() {
                 Your cart is empty
               </h2>
               <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#1C1C1C]/68 md:text-lg">
-                Add a product from the ready-made styles or keep exploring goods. This page now
+                Add a product from the quick-turn styles or keep exploring goods. This page now
                 gives the cart a real destination instead of sending people into the build flow.
               </p>
 

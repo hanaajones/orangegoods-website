@@ -139,11 +139,11 @@ const featuredCaseStudies = [
   },
   {
     slug: "goodonya-glass-bottle-production",
-    client: "GoodOnYa",
+    client: "Goodonya",
     category: "Drinkware",
     headline: "Clear drinkware with production-floor proof.",
     summary:
-      "GoodOnYa's glass bottle project is a useful case study because the photos show the product becoming real: decoration on clear glass, caps staged for assembly, and a production environment that makes the print, scale, and finish easy to understand.",
+      "Goodonya's glass bottle project is a useful case study because the photos show the product becoming real: decoration on clear glass, caps staged for assembly, and a production environment that makes the print, scale, and finish easy to understand.",
     image: "/images/gallery/drinkware-goodoonya1.jpg",
     secondaryImage: "/images/gallery/drinkware-goodoonya2.jpg",
     imagePosition: "center 42%",
@@ -837,16 +837,6 @@ export default function CaseStudiesPage() {
             </div>
           </div>
 
-          <div className="grid gap-3 rounded-[1.75rem] border border-white/18 bg-white/10 p-4 backdrop-blur">
-            {["Strategy before swag", "Better blanks first", "Proof-led production"].map((item) => (
-              <div
-                key={item}
-                className="rounded-[1.15rem] border border-white/14 bg-white/10 px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white/86"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

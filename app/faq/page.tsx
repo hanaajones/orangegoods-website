@@ -16,12 +16,12 @@ const sections = [
       {
         question: "How long does it take?",
         answer:
-          "Ready Made is usually 1-2 weeks once artwork is approved. OG Crafted typically takes 3-6 weeks from final approval, depending on the product, materials, and production path.",
+          "Quick Turn is usually 1-2 weeks once artwork is approved. Full Custom typically takes 3-6 weeks from final approval, depending on the product, materials, and production path.",
       },
       {
-        question: "What's the difference between OG Crafted and Ready Made?",
+        question: "What's the difference between Full Custom and Quick Turn?",
         answer:
-          "OG Crafted is fully custom - your fabric, your shape, built from scratch. Ready Made uses premium blanks decorated locally in downtown LA for faster turns.",
+          "Full Custom is fully custom - your fabric, your shape, built from scratch. Quick Turn uses premium blanks decorated locally in downtown LA for faster turns.",
       },
     ],
   },
@@ -83,9 +83,9 @@ const sections = [
           "We primarily ship within the US, but we can quote international delivery when the project calls for it.",
       },
       {
-        question: "Can I pick up locally in LA?",
+        question: "Can you split ship orders to multiple locations?",
         answer:
-          "Yes. We're based in downtown Los Angeles, and local pickup is available for many Ready Made orders.",
+          "Yes. We can usually break shipments across offices, stores, teams, or event locations when the project calls for it. Let us know early so we can build it into the quote and delivery plan.",
       },
     ],
   },
@@ -109,7 +109,7 @@ const sections = [
 const spotlightCards = [
   {
     title: "Need it fast?",
-    body: "Ready Made programs can move in 1-2 weeks with local embroidery or screen print.",
+    body: "Quick Turn programs can move in 1-2 weeks with local embroidery or screen print.",
     image: "/images/gallery/design-ready-to-create-mg-6305.jpg",
     href: "/goods",
     cta: "Explore Goods",
@@ -118,10 +118,10 @@ const spotlightCards = [
   },
   {
     title: "Building from scratch?",
-    body: "OG Crafted is where we dial in materials, trims, shape, and finishing details from the ground up.",
+    body: "Full Custom is where we dial in materials, trims, shape, and finishing details from the ground up.",
     image: "/images/gallery/full-custom-materials-mg-9406.jpg",
-    href: "/about",
-    cta: "See How We Work",
+    href: "/goods",
+    cta: "Explore Goods",
     className: "lg:col-span-6",
     imagePosition: "center 48%",
   },

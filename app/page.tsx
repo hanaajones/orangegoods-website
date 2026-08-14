@@ -207,7 +207,7 @@ export default function HomePage() {
                     ) : null}
                   </div>
                   {category.cta ? (
-                    <span className="font-noir-alt inline-flex min-h-11 w-fit items-center justify-center self-end rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white outline outline-[3px] outline-transparent transition-[transform,outline-color] duration-150 hover:-translate-y-[3px] hover:outline-white focus-visible:outline-white active:-translate-y-px md:mr-[30px] md:self-center md:justify-self-end">
+                    <span className="font-body inline-flex min-h-11 w-fit items-center justify-center self-end rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-white outline outline-[3px] outline-transparent transition-[transform,outline-color] duration-150 hover:-translate-y-[3px] hover:outline-white focus-visible:outline-white active:-translate-y-px md:mr-[30px] md:self-center md:justify-self-end">
                       {category.cta}
                     </span>
                   ) : null}
@@ -260,63 +260,46 @@ export default function HomePage() {
               {
                 title: "Full Service Partner",
                 copy: "No vendor juggling. We handle the goods, sourcing, decoration, packaging, kitting, and delivery in one place, so the whole project stays under one roof from start to finish.",
+                iconWrapClassName: "h-12 w-12",
                 icon: (
-                  <svg
+                  <Image
+                    src="/graphics/homepage/full-service-partner.svg"
+                    alt=""
                     aria-hidden="true"
-                    className="h-9 w-9"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M4 7h10" />
-                    <path d="m11 4 3 3-3 3" />
-                    <path d="M20 17H10" />
-                    <path d="m13 14-3 3 3 3" />
-                  </svg>
+                    width={183}
+                    height={238}
+                    className="h-14 w-auto"
+                  />
                 ),
               },
               {
                 title: "True Design Support",
                 copy: "We're designers by nature, not just logo placers. We can shape the concept, guide the design direction, and support the goods-making process through the whole project.",
+                iconWrapClassName: "h-[4.4rem] w-[4.4rem]",
                 icon: (
-                  <svg
+                  <Image
+                    src="/graphics/homepage/true-design-support.svg"
+                    alt=""
                     aria-hidden="true"
-                    className="h-9 w-9"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M4 20h4" />
-                    <path d="M14.5 4.5 19.5 9.5" />
-                    <path d="M12 7 5 14v5h5l7-7" />
-                    <path d="M16 3l5 5" />
-                  </svg>
+                    width={265}
+                    height={159}
+                    className="h-16 w-auto"
+                  />
                 ),
               },
               {
-                title: "Easy Communication",
+                title: "Priority Communication",
                 copy: "You can text, call, or email us directly, and we keep you posted from first mockup to final delivery so you always know what is moving and what is next.",
+                iconWrapClassName: "h-12 w-12",
                 icon: (
-                  <svg
+                  <Image
+                    src="/graphics/homepage/easy-communication.svg"
+                    alt=""
                     aria-hidden="true"
-                    className="h-9 w-9"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M21 12a8 8 0 0 1-8 8H6l-4 3 1.5-5A8 8 0 1 1 21 12Z" />
-                    <path d="M8 11h8" />
-                    <path d="M8 15h5" />
-                  </svg>
+                    width={217}
+                    height={236}
+                    className="h-[4.125rem] w-auto"
+                  />
                 ),
               },
             ].map((reason) => (
@@ -324,7 +307,11 @@ export default function HomePage() {
                 key={reason.title}
                 className="flex min-h-[17rem] flex-col items-center justify-start rounded-[2rem] border-[3px] border-[#B8AA8E] bg-[#F7F4ED] p-6 pt-8 text-center text-[#081E6F] shadow-[5px_5px_0px_#0B32A0] md:min-h-[18rem] md:p-8 md:pt-10"
               >
-                <div className="flex h-12 w-12 items-center justify-center text-[#FF4200]">
+                <div
+                  className={`flex items-center justify-center text-[#FF4200] ${
+                    reason.iconWrapClassName ?? "h-12 w-12"
+                  }`}
+                >
                   {reason.icon}
                 </div>
                 <h3 className="font-display mt-6 flex min-h-[4.2rem] max-w-full items-center justify-center text-[1.75rem] font-normal normal-case leading-none tracking-normal text-[#0B32A0] md:min-h-[4.7rem] md:text-[1.9rem] lg:text-[2.1rem]">
@@ -339,7 +326,7 @@ export default function HomePage() {
           <div className="mt-8 flex justify-center">
             <Link
               href={startProjectHref}
-              className="font-noir-alt inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 text-sm font-bold uppercase tracking-[0.1em] text-[#0B32A0] shadow-[5px_5px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
+              className="font-body inline-flex min-h-11 items-center justify-center rounded-xl bg-white px-5 text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] shadow-[5px_5px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
             >
               Connect with our team
             </Link>

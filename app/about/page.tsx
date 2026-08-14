@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AboutTimelineCards } from "@/components/AboutTimelineCards";
 import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { CTASection } from "@/components/CTASection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
@@ -18,59 +19,42 @@ const trustPoints = [
     title: "Better product",
     body: "We help shape goods people actually want to keep, not filler that gets tossed after one event.",
     icon: (
-      <svg
+      <Image
+        src="/graphics/about/better-product.svg"
+        alt=""
         aria-hidden="true"
-        className="h-9 w-9"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M4 7h10" />
-        <path d="m11 4 3 3-3 3" />
-        <path d="M20 17H10" />
-        <path d="m13 14-3 3 3 3" />
-      </svg>
+        width={294}
+        height={288}
+        className="h-12 w-auto"
+      />
     ),
   },
   {
     title: "Close communication",
     body: "You stay in touch with a real team that answers, follows up, and keeps the job moving.",
     icon: (
-      <svg
+      <Image
+        src="/graphics/about/close-communication.svg"
+        alt=""
         aria-hidden="true"
-        className="h-9 w-9"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M21 12a8 8 0 0 1-8 8H6l-4 3 1.5-5A8 8 0 1 1 21 12Z" />
-        <path d="M8 11h8" />
-        <path d="M8 15h5" />
-      </svg>
+        width={183}
+        height={238}
+        className="h-12 w-auto"
+      />
     ),
   },
   {
     title: "Follow-through",
     body: "We know where production slips happen, and we stay on the project until the final goods land right.",
     icon: (
-      <svg
+      <Image
+        src="/graphics/about/follow-through.svg"
+        alt=""
         aria-hidden="true"
-        className="h-9 w-9"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m5 13 4 4L19 7" />
-      </svg>
+        width={262}
+        height={277}
+        className="h-12 w-auto"
+      />
     ),
   },
 ];
@@ -81,7 +65,7 @@ const aboutProcess = [
     body: "We narrow the product, quantity, budget, and timeline before the project gets messy.",
   },
   {
-    title: "Dial the details",
+    title: "Dial in the details",
     body: "Artwork, decoration, trims, packaging, and approvals get tightened before production moves.",
   },
   {
@@ -90,13 +74,94 @@ const aboutProcess = [
   },
 ];
 
+const aboutHighlights = [
+  {
+    title: "Over a decade",
+    body: "15 years around custom merch, graphics, apparel, and production shaped how we make better calls now.",
+  },
+  {
+    title: "Built on referrals",
+    body: "OG grew through repeat clients, word of mouth, and good product before the larger brand programs followed.",
+  },
+  {
+    title: "All in the details",
+    body: "Good merch comes from tighter product judgment, clearer communication, and sharper execution at every step.",
+  },
+];
+
+const founderTimeline = [
+  {
+    year: "2013",
+    title: "Starting a brand in college",
+    body: "Easton launched a surf clothing brand while in college, sold 1,000s of products online, got into local shops, and kept inventory in his room. At the same time, he was working at a well-known surf brand in LA, where he learned production firsthand.",
+  },
+  {
+    year: "Early runs",
+    title: "By referral only",
+    body: "As orders picked up across the country and local businesses started reaching out for hats, shirts, and branded goods, the early merch business started taking shape.",
+  },
+  {
+    year: "Today",
+    title: "Orange Goods",
+    body: "That same hands-on approach turned local project work into Orange Goods: better merch, tighter communication, and a team that stays close from first idea to final delivery.",
+  },
+];
+
+const aboutTeamMock = [
+  {
+    name: "Easton",
+    initials: "E",
+    title: "Founder + CEO",
+    imageSrc: "/images/gallery/about-team-easton-headshot-2026-08-13.jpg",
+    imageAlt: "Easton headshot placeholder for the Orange Goods about page mockup",
+    imageClassName: "object-cover scale-[1.92]",
+    imageStyle: { objectPosition: "50% 0%" },
+  },
+  {
+    name: "Hana",
+    initials: "H",
+    title: "Co-Owner",
+    imageSrc: "/images/gallery/about-team-hana-portrait-dscf9957-2026-08-13.jpg",
+    imageAlt: "Hana headshot placeholder for the Orange Goods about page mockup",
+    imageClassName: "object-cover scale-[1.48]",
+    imageStyle: { objectPosition: "74% 35%" },
+  },
+  {
+    name: "Josh",
+    initials: "J",
+    title: "Lead Designer",
+    imageSrc: "/images/gallery/about-team-josh-headshot-2026-08-13.jpg",
+    imageAlt: "Josh headshot placeholder for the Orange Goods about page mockup",
+    imageClassName: "object-cover scale-[1.14]",
+    imageStyle: { objectPosition: "44% 36%" },
+  },
+  {
+    name: "Michaela",
+    initials: "M",
+    title: "Growth Marketing Manager",
+    imageSrc: "/images/gallery/about-team-michaela-headshot-2026-08-13.jpg",
+    imageAlt: "Michaela headshot placeholder for the Orange Goods about page mockup",
+    imageClassName: "object-cover scale-[1.48]",
+    imageStyle: { objectPosition: "68% 10%" },
+  },
+  {
+    name: "Rinnah",
+    initials: "R",
+    title: "Social Media Manager",
+    imageSrc: "/images/gallery/about-team-rinnah-headshot-2026-08-13.jpg",
+    imageAlt: "Rinnah headshot placeholder for the Orange Goods about page mockup",
+    imageClassName: "object-cover scale-[2.82]",
+    imageStyle: { objectPosition: "62% 42%" },
+  },
+];
+
 export default function AboutPage() {
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-14 text-white md:px-8 md:py-20 lg:px-12">
         <ParallaxHeroBackground
-          image="/images/gallery/design-built-production-dscf1585.jpg"
-          position="center 44%"
+          image="/images/gallery/about-process-header-stanford-backpack-dscf8350.jpg"
+          position="center 50%"
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/38" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/64 via-[#1C1C1C]/44 to-[#1C1C1C]/16" />
@@ -105,9 +170,9 @@ export default function AboutPage() {
             Founder-Led Custom Merch
           </p>
           <h1 className="mt-5 max-w-4xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Personal enough
+            Hands-on from
             <br />
-            to stay close.
+            start to finish
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
             Orange Goods helps brands make better merch with stronger product judgment, tighter
@@ -124,69 +189,53 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Reveal className="border-y border-[#0B32A0]/12 bg-[#FBF8F1] px-4 py-6 md:px-8 md:py-7 lg:px-12">
-        <section className="mx-auto grid max-w-5xl gap-6 md:grid-cols-3 md:items-center">
-          <div className="mx-auto max-w-[16rem] text-center md:px-3">
-            <p
-              className="text-[1.7rem] uppercase leading-none text-[#0B32A0] md:text-[1.95rem]"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Over a decade in merch
-            </p>
-            <p className="mt-2 text-sm leading-6 text-[var(--og-muted)]">
-              around custom merch, graphics, apparel, and production.
-            </p>
-          </div>
-          <div className="mx-auto max-w-[16rem] text-center md:border-x md:border-[#0B32A0]/12 md:px-5">
-            <p
-              className="text-[1.7rem] uppercase leading-none text-[#0B32A0] md:text-[1.95rem]"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Built on referrals
-            </p>
-            <p className="mt-2 text-sm leading-6 text-[var(--og-muted)]">
-              built the business before larger client programs followed.
-            </p>
-          </div>
-          <div className="mx-auto max-w-[16rem] text-center md:px-3">
-            <p
-              className="text-[1.7rem] uppercase leading-none text-[#0B32A0] md:text-[1.95rem]"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              Detail-driven
-            </p>
-            <p className="mt-2 text-sm leading-6 text-[var(--og-muted)]">
-              because good merch comes from tighter calls, not just more options.
-            </p>
+      <Reveal className="border-y border-[#0B32A0]/12 bg-[#FBF8F1] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <div className="grid gap-4 md:grid-cols-3">
+            {aboutHighlights.map((highlight, index) => (
+              <article
+                key={highlight.title}
+                className={`rounded-[1.75rem] border border-[#D8CCB7] bg-white p-6 text-center shadow-[4px_4px_0px_rgba(11,50,160,0.08)] ${
+                  index === 1 ? "md:-translate-y-1" : ""
+                }`}
+              >
+                <p
+                  className="text-[1.9rem] uppercase leading-none text-[#0B32A0] md:text-[2.15rem]"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {highlight.title}
+                </p>
+              </article>
+            ))}
           </div>
         </section>
       </Reveal>
 
-      <Reveal className="bg-white px-4 py-14 md:px-8 md:py-18 lg:px-12">
+      <Reveal className="bg-white px-4 py-12 md:px-8 md:py-16 lg:px-12">
         <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#D8CCB7] bg-[#FBF8F1] p-6 md:p-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:p-10">
           <div className="relative min-h-[25rem] overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#E8E0D2] lg:min-h-[34rem]">
             <Image
-              src="/images/gallery/about-casey-easton.jpg"
-              alt="Easton and Casey in the early Orange Goods founder story"
+              src="/images/gallery/about-easton-headshot-25937.jpg"
+              alt="Easton Jones, founder of Orange Goods"
               fill
               sizes="(min-width: 1024px) 40vw, 100vw"
-              className="scale-[1.28] object-cover"
-              style={{ objectPosition: "calc(50% - 20px) 24%" }}
+              className="origin-top object-cover scale-[1.18]"
+              style={{ objectPosition: "46% top" }}
             />
           </div>
 
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-              Where OG came from
+              Founder led to keep things tight
             </p>
             <h2 className="mt-4 max-w-xl text-3xl uppercase leading-none text-[#0B32A0] md:text-4xl">
-              Started by two friends.
+              Built by doing the work.
             </h2>
             <div className="mt-6 space-y-5 text-base leading-8 text-[var(--og-muted)] md:text-lg">
               <p>
-                In 2013, Easton started a surf clothing brand and learned the full process
-                firsthand, from building the brand and website to figuring out manufacturing and
-                making product people actually wanted.
+                In 2013, Easton Jones started a surf clothing brand as a self-taught graphic
+                designer and learned the full process firsthand, from building the brand and
+                website to figuring out manufacturing and making product people actually wanted.
               </p>
               <p>
                 That early work led local businesses to ask for hats and shirts of their own.
@@ -199,44 +248,166 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal className="bg-white px-4 pb-12 md:px-8 md:pb-16 lg:px-12">
-        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#D8CCB7] bg-[#F7F4ED] p-6 md:p-8 lg:grid-cols-[0.94fr_1.06fr] lg:items-center lg:p-10">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-              Started in California
-            </p>
-            <h2 className="mt-4 max-w-xl text-3xl uppercase leading-none text-[#0B32A0] md:text-4xl">
-              South Bay roots. West Coast process.
-            </h2>
-            <div className="mt-6 space-y-5 text-base leading-8 text-[var(--og-muted)] md:text-lg">
-              <p>
-                Orange Goods grew out of the South Bay in California, where product taste, surf
-                culture, and a hands-on way of working still shape how the team approaches every
-                project.
-              </p>
-              <p>
-                The goal has never been to feel like a faceless merch pipeline. OG stays close to
-                the process, works with a smaller-batch mindset, and genuinely likes being part of
-                the build from first idea to final product.
-              </p>
+      <Reveal className="bg-[#F3EBDD] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto max-w-6xl rounded-[2rem] border border-[#DCCDB8] bg-[#FFFAF3] p-6 md:p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-stretch">
+            <div className="flex h-full flex-col">
+              <div className="relative min-h-[20rem] flex-1 overflow-hidden rounded-[1.75rem] border-[3px] border-[#0B32A0]/15 bg-[#D9E8EA] lg:min-h-[32rem]">
+                <Image
+                  src="/images/gallery/about-timeline-first-order-img-2996.jpg"
+                  alt="Easton carrying boxes from an early Fish At Sea order pickup"
+                  fill
+                  sizes="(min-width: 1024px) 36vw, 100vw"
+                  className="origin-bottom object-cover scale-[1.34]"
+                  style={{ objectPosition: "center bottom" }}
+                />
+                <div className="absolute left-4 top-4 inline-flex items-center justify-center rounded-full bg-[#081E6F]/45 px-4 py-1.5 text-center text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm md:left-5 md:top-5">
+                  <span className="translate-y-[2px]">First order pickup, age 19</span>
+                </div>
+              </div>
             </div>
+
+            <AboutTimelineCards items={founderTimeline} />
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="bg-[#FFF6EB] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto grid max-w-6xl gap-6 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F7F4ED] p-5 text-[#1C1C1C] md:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+          <div className="max-w-xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]">
+              The Meaning of Orange Goods
+            </p>
+            <h2
+              className="mt-3 text-[2.2rem] uppercase leading-[0.92] text-[#081E6F] md:text-[4rem]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              What OG
+              <br />
+              actually means.
+            </h2>
+            <p className="mt-5 max-w-lg text-base leading-7 text-[#1C1C1C]/72 md:text-lg">
+              Orange Goods, or <em className="text-[#1C1C1C]">&quot;specialty goods,&quot;</em>{" "}
+              are moderately durable items like clothing that need periodic replacement through
+              regular use.
+            </p>
+            <p className="mt-4 max-w-lg text-base leading-7 text-[#1C1C1C]/72 md:text-lg">
+              They sit between yellow goods, which are convenience items, and red goods, which are
+              more considered shopping items.{" "}
+              <em className="text-[#1C1C1C]">Orange Goods live in that middle lane</em>
+              : useful, lived-in products people come back to over time.
+            </p>
           </div>
 
-          <div className="relative min-h-[20rem] overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0]/15 bg-[#D9D0C1] lg:min-h-[27rem]">
+          <div className="relative min-h-[20rem] overflow-hidden rounded-[1.6rem] border-[3px] border-[#0B32A0] bg-white md:min-h-[24rem] lg:min-h-[28rem]">
             <Image
-              src="/images/gallery/design-hero-ocean-ocean-hoodie.jpg"
-              alt="California coast-inspired Orange Goods product photography"
+              src="/images/gallery/about-og-meaning-baywood-131.jpg"
+              alt="A group wearing branded goods made by Orange Goods"
               fill
-              sizes="(min-width: 1024px) 42vw, 100vw"
+              sizes="(min-width: 1024px) 62vw, 100vw"
               className="object-cover"
-              style={{ objectPosition: "center 46%" }}
+              style={{ objectPosition: "center center" }}
             />
           </div>
         </section>
       </Reveal>
 
-      <Reveal className="bg-white px-4 pb-12 pt-2 md:px-8 md:pb-16 lg:px-12">
-        <section className="mx-auto max-w-6xl rounded-[2rem] border border-[#D8CCB7] bg-[#F8F1E3] p-6 md:p-8 lg:p-10">
+      <Reveal className="bg-[#F6F0E6] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#DCCDB8] bg-[#FFFDF8] p-6 md:p-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:p-10">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+              South Bay roots
+            </p>
+            <h2 className="mt-4 max-w-xl text-3xl uppercase leading-none text-[#0B32A0] md:text-4xl">
+              Family-run. Small business by design.
+            </h2>
+            <div className="mt-6 space-y-5 text-base leading-8 text-[var(--og-muted)] md:text-lg">
+              <p>
+                Orange Goods grew out of the South Bay and was built to stay close to the work.
+                Keeping it small means tighter communication, better judgment, and fewer layers.
+              </p>
+              <p>
+                Family keeps that perspective in place. We take your merch personally and guide
+                the process from details to delivery.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative min-h-[24rem] overflow-hidden rounded-[1.75rem] border-[3px] border-[#0B32A0]/15 bg-[#E8E0D2] lg:min-h-[31rem]">
+            <Image
+              src="/images/gallery/about-family-img-9935-2026-08-13.jpg"
+              alt="Easton Jones with his family outdoors"
+              fill
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              className="scale-x-[-1] object-cover"
+              style={{ objectPosition: "center 30%" }}
+            />
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="bg-[#F3EEE3] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto max-w-6xl rounded-[2rem] border border-[#DCCDB8] bg-[#FFFAF2] p-6 md:p-8 lg:p-10">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+              Small team
+            </p>
+            <h2 className="mt-4 text-3xl uppercase leading-none text-[#0B32A0] md:text-4xl">
+              Real people. Close process.
+            </h2>
+            <p className="mt-5 text-base leading-8 text-[var(--og-muted)] md:text-lg">
+              A tight crew across product, design, marketing, social, and ops. Small enough to
+              stay personal, experienced enough to keep the work moving.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {aboutTeamMock.map((person) => (
+              <article
+                key={person.name}
+                className="rounded-[1.75rem] border border-[#D8CCB7] bg-white p-5 text-center shadow-[4px_4px_0px_rgba(11,50,160,0.08)]"
+              >
+                <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full border-[3px] border-[#0B32A0]/12 bg-[#F3EBDD]">
+                  {person.imageSrc ? (
+                    <Image
+                      src={person.imageSrc}
+                      alt={person.imageAlt ?? `${person.name} placeholder headshot`}
+                      fill
+                      sizes="96px"
+                      className={person.imageClassName ?? "object-cover"}
+                      style={person.imageStyle}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-3xl text-[#0B32A0]">
+                      {person.initials}
+                    </div>
+                  )}
+                </div>
+                <h3 className="mt-5 text-[1.45rem] leading-none text-[#0B32A0]">
+                  {person.name}
+                </h3>
+                <p className="mt-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#1C1C1C]/55">
+                  {person.title}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
+      <Reveal className="bg-white px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[#D8CCB7] bg-white">
+          <ClientLogoMarquee
+            logos={logos}
+            label="Trusted by teams that care how the merch lands"
+            className="border-0"
+            trackClassName="gap-3 px-3 md:gap-4 md:px-4"
+          />
+        </div>
+      </Reveal>
+
+      <Reveal className="bg-[#FFF9F2] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+        <section className="mx-auto max-w-6xl rounded-[2rem] border border-[#E5D6C2] bg-[#FFF4E6] p-6 md:p-8 lg:p-10">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
@@ -255,22 +426,22 @@ export default function AboutPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="relative min-h-[15rem] overflow-hidden rounded-[1.75rem] border-[3px] border-[#0B32A0]/15 bg-[#E8E0D2]">
                 <Image
-                  src="/images/gallery/bags-boatsetter-dscf3238.jpg"
-                  alt="Boatsetter custom bag program by Orange Goods"
+                  src="/images/homepage/layla-bagels-mugs-hero-1.jpg"
+                  alt="Custom Layla Bagels & Coffee stacked mugs photographed for an Orange Goods branded merch program"
                   fill
                   sizes="(min-width: 1024px) 26vw, 100vw"
                   className="object-cover"
-                  style={{ objectPosition: "center 50%" }}
+                  style={{ objectPosition: "center 62%" }}
                 />
               </div>
               <div className="relative min-h-[15rem] overflow-hidden rounded-[1.75rem] border-[3px] border-[#0B32A0]/15 bg-[#E8E0D2]">
                 <Image
-                  src="/images/gallery/design-ready-to-create-mg-6305.jpg"
-                  alt="Orange Goods team and creative process"
+                  src="/images/gallery/full-custom-materials-mg-9406.jpg"
+                  alt="Material, trim, and branding details laid out during custom product development"
                   fill
                   sizes="(min-width: 1024px) 26vw, 100vw"
-                  className="object-cover"
-                  style={{ objectPosition: "center 42%" }}
+                  className="scale-[1.18] object-cover"
+                  style={{ objectPosition: "center 54%" }}
                 />
               </div>
             </div>
@@ -298,16 +469,6 @@ export default function AboutPage() {
 
       </Reveal>
 
-      <Reveal className="bg-white px-4 pb-12 pt-0 md:px-8 md:pb-16 lg:px-12">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[#D8CCB7] bg-white">
-          <ClientLogoMarquee
-            logos={logos}
-            label="Trusted by teams that care how the merch lands"
-            className="border-0"
-          />
-        </div>
-      </Reveal>
-
       <ProcessSteps
         eyebrow="How we work"
         title="Real team. Close process."
@@ -324,8 +485,8 @@ export default function AboutPage() {
         description="Tell us what you are making, how many you need, and when it has to land."
         buttonLabel="Start a Project"
         buttonHref={startProjectHref}
-        backgroundImage="/images/gallery/outerwear-high-st-deli-puffer-mg-2257.jpg"
-        backgroundImagePosition="center 34%"
+        backgroundImage="/images/gallery/about-cta-highst-deli-jenjoi-0970-2026-08-13.jpg"
+        backgroundImagePosition="center 52%"
         showImageOverlay
         overlayClassName="bg-[linear-gradient(135deg,rgba(28,28,28,0.24),rgba(28,28,28,0.52))]"
         eyebrow=""

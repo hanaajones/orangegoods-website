@@ -89,7 +89,7 @@ export function ShoppableProduct({
   ctaHref,
   ctaConfig,
   ctaLabel = "Start a Project",
-  eyebrowLabel = "OG Crafted",
+  eyebrowLabel = "Full Custom",
   variantLabel = "Style",
   packageLabel = "Package",
   quantityLabel = "Quantity",

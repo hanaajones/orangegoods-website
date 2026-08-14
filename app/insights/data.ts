@@ -76,34 +76,34 @@ export const posts: InsightPost[] = [
     `,
   },
   {
-    slug: "full-custom-hats-vs-ready-made-hats",
+    slug: "full-custom-hats-vs-quick-turn-hats",
     title: "Full Custom Hats vs Ready-Made Hats: Which Path Fits the Project?",
     excerpt:
-      "Full custom hats and ready-made hats both have a place. The right choice depends on timing, quantity, budget, and how specific the final product needs to be.",
+      "Full custom hats and quick-turn hats both have a place. The right choice depends on timing, quantity, budget, and how specific the final product needs to be.",
     date: "July 15, 2026",
     category: "Headwear",
     readTime: "7 min read",
     image: "/images/gallery/full-custom-materials-mg-9406.jpg",
     cropPosition: "center 50%",
     content: `
-      <p>Not every hat project needs the same production path. Some teams need a polished run quickly using a strong ready-made blank. Others need a full custom hat with specific fabric, color, decoration, closure, interior label, and add-ons. Both paths can work when the expectations are clear.</p>
+      <p>Not every hat project needs the same production path. Some teams need a polished run quickly using a strong quick-turn blank. Others need a full custom hat with specific fabric, color, decoration, closure, interior label, and add-ons. Both paths can work when the expectations are clear.</p>
       <p>The important part is choosing the path that matches the project, not forcing every hat into the same process.</p>
 
       <figure>
         <img src="/images/gallery/headwear-fabric-color-mg-9423.jpg" alt="Fabric and color materials for a full custom hat project" />
         <figcaption>Full custom gives more control over materials, color, and construction details.</figcaption>
       </figure>
-      <h2>Choose ready-made when speed and simplicity matter</h2>
-      <p>Ready-made hats are best when the blank already fits the brand. A strong dad hat, trucker, bucket, rope cap, or performance cap can move faster and keep the project simpler. The main decisions become blank, color, decoration method, placement, and quantity.</p>
+      <h2>Choose quick-turn when speed and simplicity matter</h2>
+      <p>Quick-turn hats are best when the blank already fits the brand. A strong dad hat, trucker, bucket, rope cap, or performance cap can move faster and keep the project simpler. The main decisions become blank, color, decoration method, placement, and quantity.</p>
 
       <h2>Choose full custom when the details need control</h2>
       <p>Full custom hats make sense when the brand needs a specific silhouette, fabric, color, panel setup, closure, taping, label, brim rope, or decoration combination. This path is strongest for retail, launch collections, hospitality programs, and brands that want the hat to feel like their own product from the start.</p>
 
       <h2>Use the launch date as a filter</h2>
-      <p>If the goods need to support an event, retail drop, or campaign, timing should guide the decision early. A ready-made path may be smarter for a near-term deadline. A full custom path may be worth planning further out if the product needs to carry more of the brand story.</p>
+      <p>If the goods need to support an event, retail drop, or campaign, timing should guide the decision early. A quick-turn path may be smarter for a near-term deadline. A full custom path may be worth planning further out if the product needs to carry more of the brand story.</p>
 
       <h2>The takeaway</h2>
-      <p>Ready-made hats solve speed and simplicity. Full custom hats solve specificity. Orange Goods helps teams compare both paths honestly so the final hat fits the schedule, budget, and launch plan.</p>
+      <p>Quick-turn hats solve speed and simplicity. Full custom hats solve specificity. Orange Goods helps teams compare both paths honestly so the final hat fits the schedule, budget, and launch plan.</p>
     `,
   },
   {
@@ -1753,20 +1753,20 @@ export const posts: InsightPost[] = [
   },
   {
     slug: "goodonya-custom-drinkware-case-study",
-    title: "Project Spotlight: GoodOnya Custom Drinkware",
+    title: "Project Spotlight: Goodonya Custom Drinkware",
     excerpt:
-      "Drinkware stays valuable when the product feels good in daily use. GoodOnya shows why bottle choice and decoration proof matter.",
+      "Drinkware stays valuable when the product feels good in daily use. Goodonya shows why bottle choice and decoration proof matter.",
     date: "July 10, 2026",
     category: "Project Spotlight",
     readTime: "6 min read",
     image: "/images/gallery/drinkware-goodoonya1.jpg",
     cropPosition: "center 42%",
     content: `
-      <p>Drinkware is one of the most practical merch categories, but practical does not automatically mean good. The bottle still has to feel right in hand, look aligned with the brand, and hold up through daily use. GoodOnya is a useful example because the product itself fits the brand's health, food, and everyday-use world.</p>
+      <p>Drinkware is one of the most practical merch categories, but practical does not automatically mean good. The bottle still has to feel right in hand, look aligned with the brand, and hold up through daily use. Goodonya is a useful example because the product itself fits the brand's health, food, and everyday-use world.</p>
       <p>A branded bottle can become a quiet daily impression when it earns a place on a desk, in a bag, at the gym, or in the car. That only happens when the item feels like something the recipient would choose anyway.</p>
 
       <figure>
-        <img src="/images/gallery/drinkware-goodoonya2.jpg" alt="GoodOnya custom bottle shown with finished decoration detail" />
+        <img src="/images/gallery/drinkware-goodoonya2.jpg" alt="Goodonya custom bottle shown with finished decoration detail" />
         <figcaption>For drinkware, shape, lid, finish, and decoration scale all affect whether the product gets used.</figcaption>
       </figure>
       <h2>Start with the bottle</h2>
@@ -1782,7 +1782,7 @@ export const posts: InsightPost[] = [
       <p>Packaging can also help when the bottle is part of a gift or kit, but the bottle itself still has to carry the value.</p>
 
       <h2>The takeaway</h2>
-      <p>GoodOnya shows why drinkware should be selected like a product, not a blank canvas. Orange Goods helps brands choose bottles and tumblers that fit the audience, then proof the decoration so the final piece feels clean, durable, and worth keeping.</p>
+      <p>Goodonya shows why drinkware should be selected like a product, not a blank canvas. Orange Goods helps brands choose bottles and tumblers that fit the audience, then proof the decoration so the final piece feels clean, durable, and worth keeping.</p>
     `,
   },
   {
@@ -2125,7 +2125,7 @@ export const posts: InsightPost[] = [
 
       <h2>Know when a simple item is better</h2>
       <p>Going beyond tees can be powerful, but only when the product earns the complexity. If the timeline is tight, the budget is modest, or the audience is broad, a better tee, hat, tote, or bottle may be the smarter move. Specialty goods should not introduce risk unless they also create real value.</p>
-      <p>Orange Goods helps brands decide when the more custom path is worth it and when a premium ready-made product will do the job better. The goal is not unusual merch. The goal is goods that make sense.</p>
+      <p>Orange Goods helps brands decide when the more custom path is worth it and when a premium quick-turn product will do the job better. The goal is not unusual merch. The goal is goods that make sense.</p>
     `,
   },
   {
@@ -2803,7 +2803,7 @@ export const posts: InsightPost[] = [
       <p>For California brands, hospitality groups, agencies, startups, and events, local context also helps. The merch has to feel right for the audience. A hat for a coastal restaurant, a tee for a wellness brand, and drinkware for a tech event should not all feel like they came from the same corporate catalog. Regional taste matters.</p>
       <h2>The Orange Goods difference</h2>
       <p>Orange Goods is built for brands that care about how the finished piece feels in real life. We start with the use case, not the catalog. Who is getting this? Where will they wear it? Is it a launch gift, staff uniform, retail item, trade show piece, or client thank-you? From there we recommend the product, decoration method, and production path that actually fit.</p>
-      <p>Our Ready Made path uses premium blanks and proven local decoration for projects that need to move fast with a 100-piece minimum. Our OG Crafted path is for fully custom pieces: custom fabric, shape, trims, labels, and packaging. In both cases, we keep the process human. You get clear quotes, clean proofs, practical guidance, and production visibility. The goal is simple: make merch your customers, team, or guests are glad to receive.</p>
+      <p>Our Quick Turn path uses premium blanks and proven local decoration for projects that need to move fast with a 100-piece minimum. Our Full Custom path is for fully custom pieces: custom fabric, shape, trims, labels, and packaging. In both cases, we keep the process human. You get clear quotes, clean proofs, practical guidance, and production visibility. The goal is simple: make merch your customers, team, or guests are glad to receive.</p>
     `,
   },
   {
@@ -2837,9 +2837,9 @@ export const posts: InsightPost[] = [
       <h2>Logo size is not the same as brand impact</h2>
       <p>A huge logo does not make a bottle more effective. In many cases, the most reusable drinkware is the piece with a restrained mark, a strong color choice, and a product people would already want. Think about how the item will look on a conference table, in a client meeting, or in a kitchen cabinet. If it feels too promotional, it may not get used.</p>
       <p>Brand impact can come from color, finish, packaging, a secondary mark, or a small line of copy. A tonal engraving can feel more premium than a bright print. A small front logo with a larger back graphic can feel more wearable in the drinkware sense. The right approach depends on the brand and the audience.</p>
-      <h2>Ready Made vs custom drinkware</h2>
-      <p>Orange Goods Ready Made is the right path when you want proven drinkware options decorated with your logo and produced efficiently. We help narrow the choices to bottles, tumblers, and mugs that meet the quality bar, then handle proofing and production. This is usually the right call for events, employee gifts, client mailers, and brand launches.</p>
-      <p>Fully custom drinkware can make sense when the product itself needs to be unique: custom color matching, special packaging, uncommon shapes, retail programs, or large runs where the unit needs to feel proprietary. Custom gives you more control, but it also adds development time, higher minimums, and more decisions. For many brands, a premium Ready Made piece with the right decoration is the smarter move.</p>
+      <h2>Quick Turn vs custom drinkware</h2>
+      <p>Orange Goods Quick Turn is the right path when you want proven drinkware options decorated with your logo and produced efficiently. We help narrow the choices to bottles, tumblers, and mugs that meet the quality bar, then handle proofing and production. This is usually the right call for events, employee gifts, client mailers, and brand launches.</p>
+      <p>Fully custom drinkware can make sense when the product itself needs to be unique: custom color matching, special packaging, uncommon shapes, retail programs, or large runs where the unit needs to feel proprietary. Custom gives you more control, but it also adds development time, higher minimums, and more decisions. For many brands, a premium Quick Turn piece with the right decoration is the smarter move.</p>
       <h2>Minimums and planning</h2>
       <p>For OG drinkware projects, plan around a 100-piece minimum and build enough time for product selection, proof approval, production, and shipping. If the event date is firm, work backward from the in-hand date, not the order date. Drinkware is dense and can be expensive to ship, so freight should be part of the budget conversation early.</p>
       <p>The best bottle is the one people keep reaching for. Choose the product for daily use, choose the decoration for durability, and keep the design honest to the brand. That is how logo drinkware becomes more than a giveaway.</p>
@@ -2916,9 +2916,9 @@ export const posts: InsightPost[] = [
       <h2>Patch options</h2>
       <p>Patches are a strong option when the artwork has detail, when you want a dimensional retail feel, or when the hat material is not ideal for direct embroidery. Woven patches can hold finer detail than embroidery. Embroidered patches feel classic and textured. Leather, faux leather, PVC, and rubber patches can work when they match the brand.</p>
       <p>Patch shape and placement should feel intentional. A standard rectangle can look clean, but a custom shape can make the piece feel more ownable. Side patches, back hits, and small woven labels can add detail without making the front too busy.</p>
-      <h2>Ready Made vs OG Crafted</h2>
-      <p>Orange Goods Ready Made uses premium blank hats decorated with your artwork. It is the right path for fast, sharp headwear with a 100-piece minimum. You can often mix and match styles as long as the decoration plan stays consistent. That means a project might include structured caps, unstructured caps, and truckers for different people without starting from scratch.</p>
-      <p>OG Crafted is for fully custom headwear. That can include custom panels, fabric, bill shape, interior taping, labels, closures, patches, and packaging. It gives you more control and a more proprietary result, but it also requires more development time and planning. For many brands, Ready Made is the practical place to start. For larger programs or retail lines, Crafted can take the product further.</p>
+      <h2>Quick Turn vs Full Custom</h2>
+      <p>Orange Goods Quick Turn uses premium blank hats decorated with your artwork. It is the right path for fast, sharp headwear with a 100-piece minimum. You can often mix and match styles as long as the decoration plan stays consistent. That means a project might include structured caps, unstructured caps, and truckers for different people without starting from scratch.</p>
+      <p>Full Custom is for fully custom headwear. That can include custom panels, fabric, bill shape, interior taping, labels, closures, patches, and packaging. It gives you more control and a more proprietary result, but it also requires more development time and planning. For many brands, Quick Turn is the practical place to start. For larger programs or retail lines, Crafted can take the product further.</p>
       <p>The best branded hat is not the one with the biggest logo. It is the one that fits right, feels right, and carries the brand in a way people are comfortable wearing. Get the blank right, respect the embroidery process, and keep the design wearable.</p>
     `,
   },

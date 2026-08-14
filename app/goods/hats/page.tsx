@@ -346,7 +346,7 @@ export default function HatsPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/42 to-[#1C1C1C]/16" />
         <div className="relative mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            OG Crafted
+            Full Custom
           </p>
           <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
             Custom Hats
@@ -651,7 +651,7 @@ export default function HatsPage() {
             <div className="relative min-h-[16rem] overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/15 bg-[#d9c5ae]">
               <Image
                 src="/images/product/hat-lifestyle-hero.jpg"
-                alt="Orange Goods ready-made hats"
+                alt="Orange Goods quick-turn hats"
                 fill
                 sizes="(min-width: 1024px) 30vw, 100vw"
                 className="object-cover"
@@ -680,7 +680,7 @@ export default function HatsPage() {
                 ))}
               </div>
               <Link
-                href="/goods/hats/ready-made"
+                href="/goods/hats/quick-turn"
                 className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See quick turn hats

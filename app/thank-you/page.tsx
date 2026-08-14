@@ -60,7 +60,7 @@ export default function ThankYouPage() {
             </Link>
             <Link
               href="/"
-              className="inline-flex items-center rounded-xl border-2 border-white/28 px-6 py-3 font-[var(--font-noir-alt)] text-base font-bold uppercase tracking-normal text-white transition hover:-translate-y-[3px]"
+              className="font-body inline-flex items-center rounded-xl border-2 border-white/28 px-6 py-3 text-base font-semibold uppercase tracking-[0.08em] text-white transition hover:-translate-y-[3px]"
             >
               Back to home
             </Link>
@@ -89,7 +89,7 @@ export default function ThankYouPage() {
               </p>
               <a
                 href="sms:+12133764663"
-                className="mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] font-[var(--font-noir-alt)] text-sm font-bold uppercase tracking-normal text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
+                className="font-body mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
               >
                 Text us
               </a>
