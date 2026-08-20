@@ -27,17 +27,17 @@ const processSteps = [
   {
     number: "01",
     title: "Pick the right blank",
-    body: "Tell us the product, budget range, and timeline. We help narrow the right tees, fleece, totes, or blanks based on feel, fit, and what the artwork wants to do.",
+    body: "Tell us the product, artwork, budget, and timeline. We help narrow the right blank fast.",
   },
   {
     number: "02",
     title: "Approve the artwork",
-    body: "We review placements, sizing, ink count, and print approach so the art works on the actual garment, not just in the mockup.",
+    body: "We review placement, sizing, colors, and print approach so the artwork lands right.",
   },
   {
     number: "03",
     title: "Print fast and clean",
-    body: "Once the blank, art, and quantities are locked, we move into production fast and keep the order moving toward delivery or pickup.",
+    body: "Once the blank, art, and quantities are locked, production moves fast.",
   },
 ];
 
@@ -256,11 +256,11 @@ export default function ScreenPrintingPage() {
         <div className="absolute inset-0 bg-[#1C1C1C]/34" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/62 via-[#1C1C1C]/42 to-[#1C1C1C]/18" />
         <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/74">
+          <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/74 md:block">
             Quick Turn Services
           </p>
           <h1
-            className="mt-4 text-[3.4rem] uppercase leading-[0.92] text-[var(--og-orange)] md:text-[5.25rem]"
+            className="mt-2 text-[2.9rem] uppercase leading-[0.92] text-[var(--og-orange)] md:mt-4 md:text-[5.25rem]"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Screen Printing
@@ -345,7 +345,7 @@ export default function ScreenPrintingPage() {
             className="mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-4xl uppercase leading-none tracking-[0.01em] text-white md:mb-10 md:gap-x-4 md:text-6xl lg:text-7xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            <span>Why brands choose</span>
+            <span>Why teams use</span>
             <Image
               src="/graphics/stickers/og-mark.svg"
               alt="OG"
@@ -353,6 +353,7 @@ export default function ScreenPrintingPage() {
               height={136}
               className="h-[1.45em] w-[1.45em] object-contain"
             />
+            <span>for screen printing</span>
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {[

@@ -8,7 +8,7 @@ const tiers = [
     description:
       "Built from scratch. Custom fabric, fit, trims, and labels. For brands that want something nobody else has.",
     detail: "6–10 weeks · 100+ pieces",
-    href: "/services#og-crafted",
+    href: "/services/full-custom",
     bg: "bg-[#FF4200]",
   },
   {

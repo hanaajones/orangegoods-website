@@ -11,6 +11,11 @@ const draftGroups = [
         note: "Removed from homepage. Keep here for review only.",
       },
       {
+        label: "Header account + cart actions",
+        href: "/draft#header-actions",
+        note: "Removed from the main header for now. Parked on the draft page for later release.",
+      },
+      {
         label: "Shop OG",
         href: "/shop",
         note: "Removed from the main nav for now. Keep here for direct review only.",
@@ -26,9 +31,19 @@ const draftGroups = [
         note: "Shared builder and product detail preview.",
       },
       {
+        label: "AS Colour 5001 Builder",
+        href: "/build/products/as-colour-5001",
+        note: "Direct apparel builder route for the AS Colour 5001 tee.",
+      },
+      {
         label: "Apparel template",
         href: "/draft/apparel-template",
         note: "Draft goods category pattern.",
+      },
+      {
+        label: "Goods catalog section",
+        href: "/draft/goods-catalog",
+        note: "Parked from the public /goods page until the shoppable catalog is ready.",
       },
       {
         label: "Contact stepped flow",

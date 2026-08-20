@@ -812,7 +812,7 @@ export default function CaseStudiesPage() {
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/44" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/78 via-[#1C1C1C]/50 to-[#1C1C1C]/12" />
-        <div className="relative mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/74">
               Real Work
@@ -827,16 +827,15 @@ export default function CaseStudiesPage() {
               A closer look at real Orange Goods projects: the product choices, visual direction,
               and production details that make branded goods feel worth keeping.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact" className="btn-og inline-flex">
-                Start a Project
-              </Link>
-              <Link href="/gallery" className="btn-og-white inline-flex">
-                View Gallery
-              </Link>
-            </div>
           </div>
-
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
+            <Link href="/contact" className="btn-og inline-flex">
+              Start a Project
+            </Link>
+            <Link href="/gallery" className="btn-og-white inline-flex">
+              View Gallery
+            </Link>
+          </div>
         </div>
       </section>
 

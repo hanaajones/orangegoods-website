@@ -115,7 +115,7 @@ const aboutTeamMock = [
     imageSrc: "/images/gallery/about-team-easton-headshot-2026-08-13.jpg",
     imageAlt: "Easton headshot placeholder for the Orange Goods about page mockup",
     imageClassName: "object-cover scale-[1.92]",
-    imageStyle: { objectPosition: "50% 0%" },
+    imageStyle: { objectPosition: "50% 27%" },
   },
   {
     name: "Hana",
@@ -124,7 +124,7 @@ const aboutTeamMock = [
     imageSrc: "/images/gallery/about-team-hana-portrait-dscf9957-2026-08-13.jpg",
     imageAlt: "Hana headshot placeholder for the Orange Goods about page mockup",
     imageClassName: "object-cover scale-[1.48]",
-    imageStyle: { objectPosition: "74% 35%" },
+    imageStyle: { objectPosition: "88% 35%" },
   },
   {
     name: "Josh",
@@ -142,7 +142,7 @@ const aboutTeamMock = [
     imageSrc: "/images/gallery/about-team-michaela-headshot-2026-08-13.jpg",
     imageAlt: "Michaela headshot placeholder for the Orange Goods about page mockup",
     imageClassName: "object-cover scale-[1.48]",
-    imageStyle: { objectPosition: "68% 10%" },
+    imageStyle: { objectPosition: "82% 28%" },
   },
   {
     name: "Rinnah",
@@ -151,7 +151,7 @@ const aboutTeamMock = [
     imageSrc: "/images/gallery/about-team-rinnah-headshot-2026-08-13.jpg",
     imageAlt: "Rinnah headshot placeholder for the Orange Goods about page mockup",
     imageClassName: "object-cover scale-[2.82]",
-    imageStyle: { objectPosition: "62% 42%" },
+    imageStyle: { objectPosition: "76% 60%" },
   },
 ];
 
@@ -165,20 +165,22 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/38" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/64 via-[#1C1C1C]/44 to-[#1C1C1C]/16" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            Founder-Led Custom Merch
-          </p>
-          <h1 className="mt-5 max-w-4xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Hands-on from
-            <br />
-            start to finish
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
-            Orange Goods helps brands make better merch with stronger product judgment, tighter
-            follow-through, and clearer communication than the usual big-box process.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+              Founder-Led Custom Merch
+            </p>
+            <h1 className="mt-5 max-w-4xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+              Hands-on from
+              <br />
+              start to finish
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
+              Orange Goods helps brands make better merch with stronger product judgment, tighter
+              follow-through, and clearer communication than the usual big-box process.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
             <Link href={startProjectHref} className="btn-og inline-flex">
               Start a Project
             </Link>
@@ -229,7 +231,7 @@ export default function AboutPage() {
               Founder led to keep things tight
             </p>
             <h2 className="mt-4 max-w-xl text-3xl uppercase leading-none text-[#0B32A0] md:text-4xl">
-              Built by doing the work.
+              Made from firsthand experience.
             </h2>
             <div className="mt-6 space-y-5 text-base leading-8 text-[var(--og-muted)] md:text-lg">
               <p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 const labelClass =
   "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
@@ -18,6 +18,16 @@ const selectArrowSvg = encodeURIComponent(`
 `);
 
 const selectClass = `${inputClass} appearance-none bg-[length:14px_14px] bg-[right_1rem_center] bg-no-repeat pr-12`;
+
+const attributionFieldNames = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "gclid",
+  "fbclid",
+] as const;
 
 const selectOptions = {
   designHelp: ["Yes", "No", "I'm not sure"],
@@ -71,23 +81,74 @@ export function ServiceLeadForm({
   description,
   projectDefault,
   hiddenFields = {},
+  captureAttributionFields = false,
   submitLabel = "Start Project",
+  projectLabel = "What are you making?",
+  projectPlaceholder = "Share the concept, artwork notes, or anything else that will help us quote it right.",
+  showPhone = true,
+  showTimeline = true,
+  showDesignHelp = true,
   showScreenPrintFields = false,
   showEmbroideryFields = false,
   showArtworkUpload = false,
-}: {
+}: ServiceLeadFormProps) {
+  return (
+    <ServiceLeadFormFields
+      title={title}
+      description={description}
+      projectDefault={projectDefault}
+      hiddenFields={hiddenFields}
+      captureAttributionFields={captureAttributionFields}
+      submitLabel={submitLabel}
+      projectLabel={projectLabel}
+      projectPlaceholder={projectPlaceholder}
+      showPhone={showPhone}
+      showTimeline={showTimeline}
+      showDesignHelp={showDesignHelp}
+      showScreenPrintFields={showScreenPrintFields}
+      showEmbroideryFields={showEmbroideryFields}
+      showArtworkUpload={showArtworkUpload}
+    />
+  );
+}
+
+type ServiceLeadFormProps = {
   title: string;
   description: string;
   projectDefault: string;
   hiddenFields?: Record<string, string>;
+  captureAttributionFields?: boolean;
   submitLabel?: string;
+  projectLabel?: string;
+  projectPlaceholder?: string;
+  showPhone?: boolean;
+  showTimeline?: boolean;
+  showDesignHelp?: boolean;
   showScreenPrintFields?: boolean;
   showEmbroideryFields?: boolean;
   showArtworkUpload?: boolean;
-}) {
+};
+
+function ServiceLeadFormFields({
+  title,
+  description,
+  projectDefault,
+  hiddenFields = {},
+  captureAttributionFields = false,
+  submitLabel = "Start Project",
+  projectLabel = "What are you making?",
+  projectPlaceholder = "Share the concept, artwork notes, or anything else that will help us quote it right.",
+  showPhone = true,
+  showTimeline = true,
+  showDesignHelp = true,
+  showScreenPrintFields = false,
+  showEmbroideryFields = false,
+  showArtworkUpload = false,
+}: ServiceLeadFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
   const showServiceFields = showScreenPrintFields || showEmbroideryFields;
   const productTypeOptions = showEmbroideryFields
     ? selectOptions.embroideryProductType
@@ -97,6 +158,31 @@ export function ServiceLeadForm({
   const placementOptions = showEmbroideryFields
     ? selectOptions.embroideryLocations
     : selectOptions.printLocations;
+
+  useEffect(() => {
+    if (!captureAttributionFields) {
+      setAttributionHiddenFields({});
+      return;
+    }
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const nextAttributionHiddenFields: Record<string, string> = {};
+
+    for (const fieldName of attributionFieldNames) {
+      const value = searchParams.get(fieldName)?.trim();
+
+      if (value) {
+        nextAttributionHiddenFields[fieldName] = value;
+      }
+    }
+
+    setAttributionHiddenFields(nextAttributionHiddenFields);
+  }, [captureAttributionFields]);
+
+  const allHiddenFields = {
+    ...attributionHiddenFields,
+    ...hiddenFields,
+  };
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -136,7 +222,7 @@ export function ServiceLeadForm({
       </div>
 
       <form onSubmit={handleSubmit} className="mt-5 grid gap-5">
-        {Object.entries(hiddenFields).map(([name, value]) => (
+        {Object.entries(allHiddenFields).map(([name, value]) => (
           <input key={name} type="hidden" name={name} value={value} />
         ))}
 
@@ -165,30 +251,40 @@ export function ServiceLeadForm({
           </label>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className={`grid gap-5 ${showPhone ? "md:grid-cols-2" : ""}`}>
           <label className={labelClass}>
             <RequiredLabel label="Email" required />
             <input name="email" type="email" required className={inputClass} />
           </label>
-          <label className={labelClass}>
-            <RequiredLabel label="Phone" />
-            <input name="phone" type="tel" className={inputClass} />
-          </label>
+          {showPhone ? (
+            <label className={labelClass}>
+              <RequiredLabel label="Phone" />
+              <input name="phone" type="tel" className={inputClass} />
+            </label>
+          ) : null}
         </div>
 
         <label className={labelClass}>
-          <RequiredLabel label="What are you making?" required />
+          <RequiredLabel label={projectLabel} required />
           <textarea
             name="project"
             rows={5}
             required
             defaultValue={projectDefault}
-            placeholder="Share the concept, artwork notes, or anything else that will help us quote it right."
+            placeholder={projectPlaceholder}
             className={textareaClass}
           />
         </label>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div
+          className={`grid gap-5 ${
+            showTimeline && showDesignHelp
+              ? "md:grid-cols-3"
+              : showTimeline || showDesignHelp
+                ? "md:grid-cols-2"
+                : ""
+          }`}
+        >
           <label className={labelClass}>
             <RequiredLabel label="Quantity" required />
             <select
@@ -207,41 +303,45 @@ export function ServiceLeadForm({
             </select>
           </label>
 
-          <label className={labelClass}>
-            <RequiredLabel label="Timeline" required />
-            <select
-              name="timeline"
-              required
-              defaultValue=""
-              className={selectClass}
-              style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-            >
-              <option value="" disabled>
-                Select
-              </option>
-              {selectOptions.timeline.map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
-          </label>
+          {showTimeline ? (
+            <label className={labelClass}>
+              <RequiredLabel label="Timeline" required />
+              <select
+                name="timeline"
+                required
+                defaultValue=""
+                className={selectClass}
+                style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {selectOptions.timeline.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+          ) : null}
 
-          <label className={labelClass}>
-            <RequiredLabel label="Need design help?" required />
-            <select
-              name="designHelp"
-              required
-              defaultValue=""
-              className={selectClass}
-              style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-            >
-              <option value="" disabled>
-                Select
-              </option>
-              {selectOptions.designHelp.map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
-          </label>
+          {showDesignHelp ? (
+            <label className={labelClass}>
+              <RequiredLabel label="Need design help?" required />
+              <select
+                name="designHelp"
+                required
+                defaultValue=""
+                className={selectClass}
+                style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+              >
+                <option value="" disabled>
+                  Select
+                </option>
+                {selectOptions.designHelp.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </div>
 
         {showServiceFields ? (
@@ -315,7 +415,7 @@ export function ServiceLeadForm({
                 type="file"
                 name="artwork"
                 accept=".ai,.eps,.pdf,.svg,.zip"
-                className="mt-2 block w-full cursor-pointer rounded-2xl border border-[#0B32A0]/16 bg-white px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:rounded-xl file:border file:border-[#0B32A0]/18 file:bg-[#F7F4ED] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)]"
+                className="og-file-input mt-2 block w-full cursor-pointer rounded-2xl border border-[#0B32A0]/16 bg-white px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:rounded-xl file:border file:border-[#0B32A0]/18 file:bg-[#F7F4ED] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)]"
               />
             </label>
             <p className="text-xs leading-6 text-[#1C1C1C]/52">

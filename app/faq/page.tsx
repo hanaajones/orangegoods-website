@@ -164,27 +164,23 @@ export default function FaqPage() {
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/38" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/62 via-[#1C1C1C]/44 to-[#1C1C1C]/16" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            Before You Start
-          </p>
-          <h1 className="mt-5 max-w-4xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Frequently Asked Questions
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
-            Straight answers on minimums, timelines, design help, product types, and what the process actually looks like.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="btn-og inline-flex"
-            >
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+              Before You Start
+            </p>
+            <h1 className="mt-5 max-w-4xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+              Frequently Asked Questions
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
+              Straight answers on minimums, timelines, design help, product types, and what the process actually looks like.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
+            <Link href="/contact" className="btn-og inline-flex">
               Start a Project
             </Link>
-            <Link
-              href="/goods"
-              className="btn-og-white inline-flex"
-            >
+            <Link href="/goods" className="btn-og-white inline-flex">
               Explore Goods
             </Link>
           </div>

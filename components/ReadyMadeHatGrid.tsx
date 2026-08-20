@@ -403,7 +403,7 @@ export function ReadyMadeHatGrid({ styles }: { styles: HatMeta[] }) {
                 return (
                   <Link
                     key={style.id}
-                    href={`/goods/hats/quick-turn/${style.id.toLowerCase()}`}
+                    href={`/goods/hats/ready-made/${style.id.toLowerCase()}`}
                     className="group overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/15 bg-[rgba(255,248,241,0.88)] transition hover:border-[var(--og-orange)] hover:shadow-lg"
                   >
                     <div className="relative aspect-square bg-white">

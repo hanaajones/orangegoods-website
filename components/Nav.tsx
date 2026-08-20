@@ -10,22 +10,45 @@ const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
 const showBuildOnlineNav = false;
 const products = [
-  { label: "Hats", href: "/goods/hats", image: "/images/gallery/hat-bread-head-tezza-3828.jpg", position: "center 68%" },
+  { label: "Hats", href: "/goods/hats", image: "/images/product/hat-lifestyle-hero.jpg", position: "center 52%" },
   { label: "Apparel", href: "/build/products/as-colour-5001", image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg", position: "center 50%" },
-  { label: "Drink wear", href: "/goods/drinkware", image: "/images/gallery/drinkware-verve-grateful-dead-mug-034.jpg", position: "center 52%" },
-  { label: "Bags and totes", href: "/goods/bags", image: "/images/gallery/bags-boatsetter-tote.jpg", position: "center 50%" },
-  { label: "Accessories", href: "/goods/accessories", image: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg", position: "center 42%" },
-  { label: "Socks", href: "/goods/socks", image: "/images/gallery/socks-verve-gd.jpg", position: "center 54%" },
+  { label: "Drinkware", href: "/goods/drinkware", image: "/images/gallery/drinkware-layla-stacked-mugs-img-7776-2026-08-20.jpg", position: "center 64%", scale: 1.06 },
+  { label: "Bags + Totes", href: "/goods/bags", image: "/images/gallery/totes-bags-boatsetter-dscf3148.jpg", position: "center 50%" },
+  { label: "Accessories", href: "/goods/accessories", image: "/images/gallery/accessories-bandana-lalo-trio.png", position: "center 32%" },
+  { label: "Blankets", href: "/goods/blankets", image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg", position: "center 50%" },
 ];
 
 const goodsMenuDefaultPreview = {
   image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
   position: "center 50%",
+  scale: 1,
 };
 
 const serviceLinks = [
-  { label: "Embroidery", href: "/services/embroidery", note: "" },
-  { label: "Screen Printing", href: "/services/screen-printing", note: "Quick turnaround products, 2–3 weeks" },
+  {
+    label: "Embroidery",
+    href: "/services/embroidery",
+    note: "",
+    image: "/images/gallery/embroidery-mega-menu-machine-dscf1583.jpg",
+    position: "center 50%",
+  },
+  {
+    label: "Screen Printing",
+    href: "/services/screen-printing",
+    note: "Quick turn decoration • 2-3 weeks",
+    image: "/images/gallery/screen-printing-mega-menu-synergy.jpg",
+    position: "center 44%",
+  },
+];
+
+const fullCustomLinks = [
+  {
+    label: "Full Custom",
+    href: "/services/full-custom",
+    note: "Built from scratch • 4-8+ weeks",
+    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+    position: "center 44%",
+  },
 ];
 
 const customLinks = [
@@ -84,11 +107,79 @@ function MenuLink({
   );
 }
 
+function MobileMenuArrow({
+  expanded = false,
+}: {
+  expanded?: boolean;
+}) {
+  return (
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className={`h-4 w-4 ${expanded ? "rotate-90" : ""}`}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M9 6l6 6-6 6" />
+      </svg>
+    </span>
+  );
+}
+
+function MobileMenuPlusButton({
+  expanded = false,
+}: {
+  expanded?: boolean;
+}) {
+  return (
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 12h12" />
+        {expanded ? null : <path d="M12 6v12" />}
+      </svg>
+    </span>
+  );
+}
+
+function MobileMenuCloseButton() {
+  return (
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 6l12 12" />
+        <path d="M18 6L6 18" />
+      </svg>
+    </span>
+  );
+}
+
 export function Nav() {
   const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
   const [hoveredProduct, setHoveredProduct] = useState(goodsMenuDefaultPreview);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileExpandedMenu, setMobileExpandedMenu] = useState<"goods" | "about" | null>(null);
   const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
   const hideMobileBottomCtas = pathname === "/quiz" || pathname.startsWith("/quiz/");
 
@@ -119,10 +210,10 @@ export function Nav() {
 
       <div className="flex min-h-8 items-center justify-center bg-[var(--og-dark-blue)] px-4 pb-2 pt-[12px] text-center md:px-8">
         <p
-          className="w-full text-center text-[14px] leading-none text-white md:text-[1rem]"
+          className="text-[12px] leading-none text-white md:text-[1rem]"
           style={{ fontFamily: "var(--font-accent)" }}
         >
-          Merch Guaranteed Fresh
+          Guaranteed Fresh
         </p>
       </div>
 
@@ -132,12 +223,15 @@ export function Nav() {
           onMouseLeave={scheduleClose}
           onMouseEnter={cancelClose}
         >
-          <div className="flex items-center bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:px-8">
+          <div className="relative flex items-center justify-center bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:justify-between md:px-8">
             {/* Mobile hamburger */}
             <button
               type="button"
-              onClick={() => setMobileOpen(true)}
-              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl text-xl font-semibold text-white md:hidden"
+              onClick={() => {
+                setMobileExpandedMenu(null);
+                setMobileOpen(true);
+              }}
+              className="absolute left-4 inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl text-[1.625rem] font-semibold text-white md:hidden"
               aria-label="Open menu"
             >
               ☰
@@ -148,7 +242,7 @@ export function Nav() {
               <img
                 src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
                 alt="Orange Goods"
-                className="h-9 w-auto md:h-10"
+                className="h-10 w-auto md:h-10"
               />
             </Link>
             {/* Nav — centered */}
@@ -208,24 +302,6 @@ export function Nav() {
             {/* Right group: icons + CTA */}
             <div className="hidden shrink-0 items-center gap-1 md:flex">
               <Link
-                href="/portal"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white transition hover:bg-white/15"
-                aria-label="My account"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </Link>
-              <Link
-                href="/cart"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
-                aria-label="Cart"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </Link>
-              <Link
                 href={startProjectHref}
                 className="btn-og-white inline-flex items-center rounded-xl px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-[#FF4200]"
               >
@@ -247,71 +323,99 @@ export function Nav() {
               onMouseEnter={cancelClose}
             >
               {activeMenu === "custom" ? (
-                <div className="grid gap-3 md:grid-cols-[1.2fr_0.85fr_0.85fr_0.85fr]">
-                  <div className="relative h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae]">
-                    <Image
-                      src={hoveredProduct.image}
-                      alt="Orange Goods product preview"
-                      fill
-                      sizes="(min-width: 768px) 18vw, 100vw"
-                      className="object-cover transition-opacity duration-300"
-                      style={{ objectPosition: hoveredProduct.position }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/72 via-[#1C1C1C]/18 to-transparent" />
-                  </div>
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Products
-                    </p>
-                    <div className="grid gap-1">
-                      <div onMouseEnter={() => setHoveredProduct(goodsMenuDefaultPreview)}>
-                        <MenuLink href="/goods">View all</MenuLink>
+                <div className="flex flex-col gap-4">
+                  <div className="grid gap-3 md:grid-cols-[1.15fr_0.8fr_0.95fr_0.8fr]">
+                    <div className="relative h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae]">
+                      <Image
+                        src={hoveredProduct.image}
+                        alt="Orange Goods product preview"
+                        fill
+                        sizes="(min-width: 768px) 18vw, 100vw"
+                        className="object-cover transition-[opacity,transform] duration-300"
+                        style={{ objectPosition: hoveredProduct.position, transform: `scale(${hoveredProduct.scale ?? 1})` }}
+                      />
+                    </div>
+                    <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Products
+                      </p>
+                      <div className="grid gap-1">
+                        <div onMouseEnter={() => setHoveredProduct(goodsMenuDefaultPreview)}>
+                          <MenuLink href="/goods">View all</MenuLink>
+                        </div>
+                        {products.map((item) => (
+                          <div
+                            key={item.label}
+                            onMouseEnter={() =>
+                              setHoveredProduct({ image: item.image, position: item.position, scale: item.scale ?? 1 })
+                            }
+                          >
+                            <MenuLink href={item.href}>{item.label}</MenuLink>
+                          </div>
+                        ))}
                       </div>
-                      {products.map((item) => (
-                        <div
-                          key={item.label}
-                          onMouseEnter={() =>
-                            setHoveredProduct({ image: item.image, position: item.position })
-                          }
+                    </div>
+                    <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Services
+                      </p>
+                      <div className="grid gap-1">
+                        {fullCustomLinks.map((item) => (
+                          <div
+                            key={item.label}
+                            onMouseEnter={() =>
+                              setHoveredProduct(
+                                item.image
+                                  ? { image: item.image, position: item.position ?? "center 50%", scale: 1 }
+                                  : goodsMenuDefaultPreview
+                              )
+                            }
+                          >
+                            <MenuLink href={item.href}>{item.label}</MenuLink>
+                            {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-4 border-t border-[#0B32A0]/10 pt-4">
+                        <div className="grid gap-1">
+                          {serviceLinks.map((item) => (
+                            <div
+                              key={item.label}
+                              onMouseEnter={() =>
+                                setHoveredProduct(
+                                  item.image
+                                    ? { image: item.image, position: item.position ?? "center 50%", scale: 1 }
+                                    : goodsMenuDefaultPreview
+                                )
+                              }
+                            >
+                              <MenuLink href={item.href}>{item.label}</MenuLink>
+                              {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex min-h-full flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Explore
+                      </p>
+                      <div className="grid gap-1">
+                        {customLinks.map((item) => (
+                          <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
+                        ))}
+                        <MenuLink href="/case-studies">Case Studies</MenuLink>
+                        <MenuLink href="/insights">Insights</MenuLink>
+                      </div>
+                      <div className="mt-auto flex flex-col gap-2 px-3 pt-8">
+                        <Link href={startProjectHref} className="btn-og justify-center">Start a Project</Link>
+                        <Link
+                          href="/quiz"
+                          className="font-body inline-flex items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
                         >
-                          <MenuLink href={item.href}>{item.label}</MenuLink>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Col 2: Quick Turn Services */}
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Quick Turn Services
-                    </p>
-                    <div className="grid gap-1">
-                      {serviceLinks.map((item) => (
-                        <div key={item.label}>
-                          <MenuLink href={item.href}>{item.label}</MenuLink>
-                          {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Col 3: Explore */}
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Explore
-                    </p>
-                    <div className="grid gap-1">
-                      {customLinks.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
-                      ))}
-                      <MenuLink href="/case-studies">Case Studies</MenuLink>
-                    </div>
-                    <div className="mt-4 flex flex-col items-start gap-2">
-                      <Link href={startProjectHref} className="btn-og min-w-[14rem] justify-center">Start a Project</Link>
-                      <Link
-                        href="/quiz"
-                        className="font-body inline-flex min-w-[14rem] items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
-                      >
-                        Merch Quiz
-                      </Link>
+                          Merch Quiz
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,7 +440,7 @@ export function Nav() {
                       Products
                     </p>
                     <div className="grid gap-1">
-                      {["Hats", "Apparel", "Drinkware", "Bags + Totes", "Accessories", "Socks"].map((label) => (
+                      {["Hats", "Apparel", "Drinkware", "Bags + Totes", "Accessories", "Blankets"].map((label) => (
                         <MenuLink key={label} href={buildOnlineHref}>{label}</MenuLink>
                       ))}
                     </div>
@@ -348,7 +452,7 @@ export function Nav() {
                     </p>
                     <div className="grid gap-1">
                       <MenuLink href="/services#quick-turn">Quick Turn</MenuLink>
-                      <MenuLink href="/services#og-crafted">Full Custom</MenuLink>
+                      <MenuLink href="/services/full-custom">Full Custom</MenuLink>
                       <MenuLink href="/quiz">Find My Goods</MenuLink>
                     </div>
                   </div>
@@ -428,49 +532,104 @@ export function Nav() {
       </header>
 
       {mobileOpen ? (
-        <div className="fixed inset-0 z-50 bg-[var(--og-cream)] p-4 md:hidden">
-          <div className="flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-[var(--og-blue)] p-4 md:hidden">
+          <div className="flex items-center">
             <button
               type="button"
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-[#0B32A0]/20 text-2xl text-[var(--og-blue)]"
+              onClick={() => {
+                setMobileExpandedMenu(null);
+                setMobileOpen(false);
+              }}
+              className="inline-flex items-center justify-center"
               aria-label="Close menu"
             >
-              X
+              <MobileMenuCloseButton />
             </button>
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className="text-sm font-black tracking-[0.24em] text-[var(--og-blue)]"
-            >
-              ORANGE GOODS
-            </Link>
-            <Link
-              href={startProjectHref}
-              className="inline-flex min-h-10 items-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.1em] text-white"
-            >
-              Start
-            </Link>
           </div>
           <nav className="mt-12 grid gap-3">
+            <div className="border-b border-white/25 pb-3">
+              <button
+                type="button"
+                onClick={() => setMobileExpandedMenu(mobileExpandedMenu === "goods" ? null : "goods")}
+                className="flex min-h-16 w-full items-center justify-between text-3xl font-black tracking-[-0.02em] text-white"
+              >
+                <span>GOODS</span>
+                <MobileMenuPlusButton expanded={mobileExpandedMenu === "goods"} />
+              </button>
+              {mobileExpandedMenu === "goods" ? (
+                <div className="grid gap-2 pb-2">
+                  <Link
+                    href="/goods"
+                    onClick={() => setMobileOpen(false)}
+                    className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                  >
+                    View all goods
+                  </Link>
+                  {products.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
+            {showBuildOnlineNav ? (
+              <Link
+                href={buildOnlineHref}
+                onClick={() => setMobileOpen(false)}
+                className="flex min-h-16 items-center justify-between border-b border-white/25 text-3xl font-black tracking-[-0.02em] text-white"
+              >
+                BUILD ONLINE
+                <MobileMenuArrow />
+              </Link>
+            ) : null}
+
             {[
-              { label: "GOODS", href: "/#paths" },
-              ...(showBuildOnlineNav ? [{ label: "BUILD ONLINE", href: buildOnlineHref }] : []),
               { label: "DESIGN", href: "/design" },
               { label: "FRESH PICKS", href: "/fresh-picks" },
               { label: "GALLERY", href: "/gallery" },
-              { label: "ABOUT", href: "/about" },
             ].map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex min-h-16 items-center justify-between border-b border-[#0B32A0]/20 text-3xl font-black tracking-[-0.02em] text-[var(--og-blue)]"
+                className="flex min-h-16 items-center justify-between border-b border-white/25 text-3xl font-black tracking-[-0.02em] text-white"
               >
                 {item.label}
-                <span className="text-[var(--og-orange)]">-&gt;</span>
+                <MobileMenuArrow />
               </Link>
             ))}
+
+            <div className="border-b border-white/25 pb-3">
+              <button
+                type="button"
+                onClick={() => setMobileExpandedMenu(mobileExpandedMenu === "about" ? null : "about")}
+                className="flex min-h-16 w-full items-center justify-between text-3xl font-black tracking-[-0.02em] text-white"
+              >
+                <span>ABOUT</span>
+                <MobileMenuPlusButton expanded={mobileExpandedMenu === "about"} />
+              </button>
+              {mobileExpandedMenu === "about" ? (
+                <div className="grid gap-2 pb-2">
+                  {aboutLinks.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           </nav>
         </div>
       ) : null}

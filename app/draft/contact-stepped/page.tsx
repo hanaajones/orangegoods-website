@@ -21,7 +21,7 @@ const selectOptions = {
   designHelp: ["Yes", "No", "I'm not sure"],
   quantity: ["100-250", "250-500", "500-1,000", "1,000-2,000", "2,000-5,000", "5,000+"],
   timeline: ["ASAP", "2-4 weeks", "1-2 months", "2+ months", "Not sure"],
-  budget: ["<$2,500", "$2,500-$5,000", "$5,000-$10,000", "$10,000+", "Not sure"],
+  budget: ["< $2,500", "$5k", "$10k", "$50k", "$100k +"],
 };
 
 function RequiredLabel({
@@ -302,7 +302,7 @@ export default function DraftContactSteppedPage() {
                         name="artwork"
                         multiple
                         accept=".ai,.eps,.pdf,.svg,.png,.jpg,.jpeg,.zip"
-                        className="mt-2 block w-full cursor-pointer rounded-2xl border border-[#0B32A0]/16 bg-white px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:rounded-xl file:border file:border-[#0B32A0]/18 file:bg-[var(--og-warm-grey)] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)]"
+                        className="og-file-input mt-2 block w-full cursor-pointer rounded-2xl border border-[#0B32A0]/16 bg-white px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:rounded-xl file:border file:border-[#0B32A0]/18 file:bg-[var(--og-warm-grey)] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)]"
                       />
                     </label>
                     <p className="text-xs text-[#1C1C1C]/45">

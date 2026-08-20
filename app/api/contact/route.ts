@@ -30,7 +30,7 @@ const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
 const OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL = process.env.OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL
   ?? "C0AV6PMMFD3";
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
-const ALLOWED_UPLOAD_EXTENSIONS = new Set([".ai", ".eps", ".pdf", ".svg", ".zip"]);
+const ALLOWED_UPLOAD_EXTENSIONS = new Set([".ai", ".eps", ".pdf", ".svg", ".zip", ".png", ".jpg", ".jpeg"]);
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -498,7 +498,7 @@ export async function POST(request: Request) {
     const message = error instanceof Error ? error.message : "";
     if (message.startsWith("Unsupported upload type")) {
       return NextResponse.json(
-        { ok: false, error: "Unsupported artwork file type. Please upload AI, EPS, PDF, SVG, or ZIP." },
+        { ok: false, error: "Unsupported artwork file type. Please upload AI, EPS, PDF, SVG, ZIP, PNG, or JPG." },
         { status: 400 },
       );
     }

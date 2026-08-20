@@ -115,10 +115,10 @@ export function ReadyMadeServicePage({
       <section className="px-4 pb-8 pt-10 md:px-8 md:pt-16 lg:px-12">
         <div className="mx-auto grid max-w-6xl gap-8 overflow-hidden rounded-[2rem] border border-[var(--og-sand)] bg-[rgba(255,248,241,0.86)] p-6 shadow-[0_24px_80px_rgba(8,30,111,0.08)] backdrop-blur md:grid-cols-[1fr_0.9fr] md:p-8">
           <div className="flex flex-col justify-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+            <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)] md:block">
               {content.eyebrow}
             </p>
-            <h1 className="mt-4 text-5xl font-semibold leading-none text-[var(--og-blue)] [font-family:var(--font-display)] md:text-7xl">
+            <h1 className="mt-2 text-[2.8rem] font-semibold leading-none text-[var(--og-blue)] [font-family:var(--font-display)] md:mt-4 md:text-7xl">
               {content.hero.title}
             </h1>
             <p className="mt-5 max-w-xl text-lg leading-7 text-[var(--og-muted)] [font-family:var(--font-body)] md:text-xl">

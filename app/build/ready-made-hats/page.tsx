@@ -13,7 +13,7 @@ export default function ReadyMadeHatsBuildPage() {
         lockedMode="ready"
         pageTitle=""
         pageDescription=""
-        pageBackHref="/goods/hats/quick-turn"
+        pageBackHref="/goods/hats/ready-made"
         pageBackLabel="Back to ready made hats"
       />
     </Suspense>

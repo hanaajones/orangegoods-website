@@ -345,10 +345,10 @@ export default function HatsPage() {
         <div className="absolute inset-0 bg-[#1C1C1C]/34" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/42 to-[#1C1C1C]/16" />
         <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+          <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
             Full Custom
           </p>
-          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+          <h1 className="mt-3 max-w-3xl text-[2.8rem] uppercase leading-none text-[var(--og-orange)] md:mt-5 md:text-6xl lg:text-7xl">
             Custom Hats
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
@@ -680,7 +680,7 @@ export default function HatsPage() {
                 ))}
               </div>
               <Link
-                href="/goods/hats/quick-turn"
+                href="/goods/hats/ready-made"
                 className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See quick turn hats
@@ -724,6 +724,9 @@ export default function HatsPage() {
         description="Send the style, quantity, and timeline. We will take it from there."
         buttonLabel="Customize your hat"
         buttonHref="/goods/hats/styles"
+        backgroundImage="/images/gallery/hat-og-patch-lifestyle.jpg"
+        backgroundImagePosition="center 48%"
+        overlayClassName="bg-[linear-gradient(135deg,rgba(8,30,111,0.32),rgba(8,30,111,0.56))]"
       />
     </main>
   );

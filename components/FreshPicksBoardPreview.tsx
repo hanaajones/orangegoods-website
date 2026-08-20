@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 
 type TrendTile = {
   title: string;
@@ -95,7 +96,7 @@ const trendTiles: TrendTile[] = [
     category: "Outdoor",
     tags: ["Hats", "Rope detail"],
     action: "See rope caps",
-    href: "/goods/hats/quick-turn/1123",
+    href: "/goods/hats/ready-made/1123",
     size: "small",
   },
   {
@@ -105,7 +106,7 @@ const trendTiles: TrendTile[] = [
     category: "Graphics",
     tags: ["Graphics", "Retail merch"],
     action: "Need artwork?",
-    href: "/design",
+    href: "/design/start",
     size: "medium",
   },
   {
@@ -195,7 +196,7 @@ const trendTiles: TrendTile[] = [
     category: "Gifting",
     tags: ["Blankets", "Retail feel"],
     action: "Source blankets",
-    href: "/contact?intent=source-blankets",
+    href: "/goods/blankets",
     size: "medium",
   },
   {
@@ -288,6 +289,136 @@ const trendTiles: TrendTile[] = [
     href: "/contact?intent=team-kit",
     size: "large",
   },
+  {
+    title: "Blankets for hospitality gifting",
+    note: "A good blanket can feel generous, retail-ready, and more memorable than another standard box insert.",
+    image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
+    category: "Gifting",
+    tags: ["Blankets", "Hospitality"],
+    action: "Source blankets",
+    href: "/goods/blankets",
+    size: "large",
+  },
+  {
+    title: "Milk glass mugs still work",
+    note: "For coffee, hospitality, and retail counters, a milk glass mug still feels softer and more collected than a generic tumbler.",
+    image: "/images/gallery/drinkware-verve-milk-glass-mug.jpg",
+    category: "Drinkware",
+    tags: ["Cafe", "Ceramics"],
+    action: "See drinkware",
+    href: "/goods/drinkware",
+    size: "medium",
+  },
+  {
+    title: "Felt patches warm up a cap fast",
+    note: "A felt patch can make a hat feel more tactile and more like a real piece of product than a flat logo hit.",
+    image: "/images/gallery/headwear-felt-patch-dscf7913.jpg",
+    category: "Hats",
+    tags: ["Patches", "Texture"],
+    action: "Compare decoration",
+    href: "/insights/decoration-options-guide",
+    size: "small",
+  },
+  {
+    title: "Board shorts for summer activations",
+    note: "They only make sense for the right brand moment, but when they fit, they can carry a whole seasonal story.",
+    image: "/images/gallery/board-shorts-high-st-deli-dsc01098-2.jpg",
+    category: "Outdoor",
+    tags: ["Boardshorts", "Summer"],
+    action: "Source boardshorts",
+    href: "/contact?intent=source-boardshorts",
+    size: "large",
+  },
+  {
+    title: "Back hit embroidery earns another look",
+    note: "A small front logo with a stronger back hit can make branded fleece feel way more considered.",
+    image: "/images/gallery/embroidery-verve-coffee-back-hits.jpg",
+    category: "Apparel",
+    tags: ["Embroidery", "Fleece"],
+    action: "See apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Printed neck labels feel retail",
+    note: "A neck print is a small detail, but it changes how the whole garment feels when someone picks it up.",
+    image: "/images/gallery/screen-printing-printed-neck-labels-mcalister-017.jpg",
+    category: "Graphics",
+    tags: ["Labels", "Retail details"],
+    action: "Need artwork?",
+    href: "/design/start",
+    size: "small",
+  },
+  {
+    title: "Puff print should stay selective",
+    note: "Used in one smart spot, puff can add dimension without making the whole piece feel novelty-driven.",
+    image: "/images/gallery/screen-printing-puff-print-img-7553.jpg",
+    category: "Graphics",
+    tags: ["Puff print", "Texture"],
+    action: "Compare decoration",
+    href: "/insights/decoration-options-guide",
+    size: "medium",
+  },
+  {
+    title: "Premium blanks do part of the work",
+    note: "Sometimes the best design move is picking the blank with the right weight, wash, and shape before adding anything else.",
+    image: "/images/gallery/screen-printing-premium-blanks-dscf4877.jpg",
+    category: "Apparel",
+    tags: ["Premium basics", "Blanks"],
+    action: "See apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Ceramic mugs beat another bottle sometimes",
+    note: "For cafes, desks, and gifting, a ceramic piece can feel more permanent than a sports-bottle default.",
+    image: "/images/gallery/drinkware-coastal-mugs-2026-08-13.jpg",
+    category: "Drinkware",
+    tags: ["Ceramics", "Desk merch"],
+    action: "See drinkware",
+    href: "/goods/drinkware",
+    size: "small",
+  },
+  {
+    title: "Totes with more art feel less promo",
+    note: "A tote gets stronger when the artwork uses scale, placement, and color instead of treating the bag like a flat handout.",
+    image: "/images/gallery/bags-boatsetter-tote-detail.jpg",
+    category: "Bags",
+    tags: ["Artwork scale", "Totes"],
+    action: "See bags",
+    href: "/goods/bags",
+    size: "medium",
+  },
+  {
+    title: "Beach towels want a full color story",
+    note: "The best towel programs feel designed edge to edge, not like a logo dropped onto a rectangle.",
+    image: "/images/gallery/accessories-apteka-towel2.jpg",
+    category: "Outdoor",
+    tags: ["Towels", "Color story"],
+    action: "Source towels",
+    href: "/contact?intent=source-towels",
+    size: "large",
+  },
+  {
+    title: "Sweatpants are back in the merch mix",
+    note: "A branded set lands harder when the pant feels just as considered as the hoodie or crewneck above it.",
+    image: "/images/gallery/screen-printing-high-st-deli-sweatpants-hsd-baywood-127-2.jpg",
+    category: "Apparel",
+    tags: ["Sets", "Fleece"],
+    action: "Build apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Backpacks still beat cheap giveaway bags",
+    note: "If the audience will actually commute or travel with it, a backpack can carry a lot more long-term value.",
+    image: "/images/gallery/embroidery-stanford-medicine-backpacks.jpg",
+    category: "Gifting",
+    tags: ["Backpacks", "Utility"],
+    action: "Plan gifting",
+    href: "/contact?intent=premium-gifting",
+    size: "medium",
+  },
 ];
 
 function tileHeight(size: TrendTile["size"]) {
@@ -306,33 +437,39 @@ export function FreshPicksBoardPreview() {
 
   return (
     <main className="bg-[#F7F4ED] text-[var(--og-off-black)]">
-      <section className="border-t border-[#081E6F]/10 bg-white px-4 py-14 md:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+        <ParallaxHeroBackground
+          image="/images/gallery/goods-hero-misc-dscf4876.jpg"
+          position="center 46%"
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/32" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
+        <div className="relative mx-auto max-w-6xl">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
-                Fresh Picks
+              <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
+                Monthly Edit
               </p>
-              <h1 className="mt-3 max-w-4xl text-4xl leading-none text-[var(--og-blue)] md:text-5xl">
-                Our monthly fresh picks, on trend and always moving.
+              <h1 className="mt-3 max-w-4xl text-[2.8rem] uppercase leading-none text-[var(--og-orange)] md:mt-5 md:text-6xl lg:text-7xl">
+                Fresh Picks
               </h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-[#1C1C1C]/60">
-                Product ideas, graphics, and goods we would actually recommend.
+              <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+                A tighter monthly edit of product ideas, graphics, and goods that feel current, useful, and worth making.
+              </p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-white/62">
+                August 2026 issue
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-            <Link
-              href="/contact"
-              className="inline-flex min-h-11 w-fit items-center justify-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-            >
-              Start a project
-            </Link>
-            <Link
-              href="/catalog"
-              className="inline-flex min-h-11 w-fit items-center justify-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-            >
-              See full catalog
-            </Link>
+            <div className="flex flex-wrap gap-3 md:justify-end">
+              <Link href="/contact" className="btn-og inline-flex">
+                Start a project
+              </Link>
+              <Link
+                href="/catalog"
+                className="inline-flex min-h-11 items-center text-sm font-semibold uppercase tracking-[0.14em] text-white/82 transition hover:text-white"
+              >
+                View full catalog
+              </Link>
             </div>
           </div>
         </div>
@@ -359,7 +496,7 @@ export function FreshPicksBoardPreview() {
 
       <section className="px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
+          <div className="columns-2 gap-4 lg:columns-3 xl:columns-4">
             {visibleTiles.map((tile) => (
               <article
                 key={tile.title}
@@ -391,9 +528,9 @@ export function FreshPicksBoardPreview() {
                   </div>
                   <Link
                     href={tile.href}
-                    className="mt-4 inline-flex min-h-10 items-center rounded-lg border border-[#FF7F00] px-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#FF7F00] transition hover:bg-[#FF7F00] hover:text-white"
+                    className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-[0.14em] text-[#FF7F00] transition hover:text-[var(--og-blue)]"
                   >
-                    {tile.action}
+                    Explore pick →
                   </Link>
                 </div>
               </article>

@@ -32,7 +32,7 @@ export function HatPageStickyNav({
 
   const toggleOptions = [
     { href: "/goods/hats", label: "Full custom", value: "og-crafted" as const },
-    { href: "/goods/hats/quick-turn", label: "Quick turn", value: "quick-turn" as const },
+    { href: "/goods/hats/ready-made", label: "Quick turn", value: "quick-turn" as const },
   ];
 
   return (

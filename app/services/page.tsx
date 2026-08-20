@@ -3,6 +3,8 @@ import Image from "next/image";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { startProjectHref } from "@/lib/content";
 
+const designProjectHref = "/design/start";
+
 export const metadata = {
   title: "How We Work — Orange Goods",
   description: "Full Custom, Quick Turn, and In-House Design — three ways Orange Goods builds the goods your brand deserves.",
@@ -100,18 +102,20 @@ export default function ServicesPage() {
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/32" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            How We Work
-          </p>
-          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Choose your approach
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-            Premium blanks decorated fast, fully custom goods built from scratch, and in-house
-            design support to make sure the final product actually lands.
-          </p>
-          <div className="mt-8">
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+              How We Work
+            </p>
+            <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+              Choose your approach
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+              Premium blanks decorated fast, fully custom goods built from scratch, and in-house
+              design support to make sure the final product actually lands.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
             <Link href="#og-crafted" className="btn-og-white inline-flex">
               Compare the options
             </Link>
@@ -186,7 +190,7 @@ export default function ServicesPage() {
                   ))}
                 </div>
 
-                <Link href={startProjectHref} className="btn-og mt-8 inline-flex">
+                <Link href={service.id === "design" ? designProjectHref : startProjectHref} className="btn-og mt-8 inline-flex">
                   {service.cta}
                 </Link>
               </div>

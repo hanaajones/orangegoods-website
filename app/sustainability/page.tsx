@@ -51,17 +51,19 @@ export default function SustainabilityPage() {
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/32" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            How We Think About It
-          </p>
-          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Sustainability
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-            We make goods meant to be kept. That&apos;s the whole point. Throwaway merch is the problem — we&apos;re not trying to add to it.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+              How We Think About It
+            </p>
+            <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+              Sustainability
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+              We make goods meant to be kept. That&apos;s the whole point. Throwaway merch is the problem — we&apos;re not trying to add to it.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
             <Link href={startProjectHref} className="btn-og inline-flex">
               Start a Project
             </Link>

@@ -11,7 +11,7 @@ import {
   type ServiceSnapCarouselItem,
 } from "@/app/services/_components/ServiceSnapCarousel";
 
-type Faq = {
+export type Faq = {
   question: string;
   answer: string;
 };
@@ -45,9 +45,11 @@ type PhotoItem = {
 
 type ContentSection = {
   eyebrow: string;
+  eyebrowClassName?: string;
   title: string;
   description?: string;
-  items: ContentItem[];
+  items: readonly ContentItem[];
+  itemTone?: "light" | "dark";
   featurePhoto?: PhotoItem;
   backgroundImage?: string;
   backgroundImageAlt?: string;
@@ -60,7 +62,7 @@ type PhotoSection = {
   eyebrow: string;
   title: string;
   description?: string;
-  photos: PhotoItem[];
+  photos: readonly PhotoItem[];
 };
 
 type BrandCard = {
@@ -81,7 +83,29 @@ type BrandSection = {
   footer?: string;
   backgroundImage: string;
   backgroundPosition?: string;
-  brands: BrandCard[];
+  brands: readonly BrandCard[];
+};
+
+type BuildPathCard = {
+  title: string;
+  description?: string;
+  bullets: readonly string[];
+  detail?: string;
+  imageSrc: string;
+  imageAlt: string;
+  imagePosition?: string;
+  logoSrc: string;
+  logoAlt: string;
+  logoWidth: number;
+  logoHeight: number;
+  accent: "orange" | "blue";
+};
+
+type BuildPathSection = {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  cards: readonly BuildPathCard[];
 };
 
 type ProductCategoryPageProps = {
@@ -104,9 +128,11 @@ type ProductCategoryPageProps = {
   productSnapCarouselItems?: ServiceSnapCarouselItem[];
   introSection?: ContentSection;
   brandSection?: BrandSection;
+  buildPathSection?: BuildPathSection;
   photoSection?: PhotoSection;
   detailSection?: ContentSection;
   showBottomCta?: boolean;
+  showFaqSection?: boolean;
 };
 
 const contactHref = "/contact";
@@ -117,11 +143,13 @@ function normalizeItem(item: string | ContentItem): ContentItem {
 
 function SectionHeader({
   eyebrow,
+  eyebrowClassName,
   title,
   description,
   tone = "light",
 }: {
   eyebrow: string;
+  eyebrowClassName?: string;
   title: string;
   description?: string;
   tone?: "light" | "dark";
@@ -132,7 +160,7 @@ function SectionHeader({
     <div className="max-w-3xl">
       <p
         className={`font-body text-sm font-semibold uppercase tracking-[0.28em] ${
-          isDark ? "text-[#FFB38E]" : "text-[var(--og-orange)]"
+          eyebrowClassName ?? (isDark ? "text-[#FFB38E]" : "text-[var(--og-orange)]")
         }`}
       >
         {eyebrow}
@@ -157,6 +185,37 @@ function SectionHeader({
   );
 }
 
+export function ProductCategoryFaqSection({
+  faqs,
+  className = "px-4 py-10 md:px-8 md:py-16 lg:px-12",
+}: {
+  faqs: Faq[];
+  className?: string;
+}) {
+  return (
+    <Reveal className={className}>
+      <section className="mx-auto max-w-6xl">
+        <SectionHeader eyebrow="FAQ" title="Good to know" />
+        <div className="mt-8 grid gap-3">
+          {faqs.map((faq) => (
+            <details
+              key={faq.question}
+              className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
+            >
+              <summary className="cursor-pointer font-body text-lg font-semibold text-[var(--og-blue)]">
+                {faq.question}
+              </summary>
+              <p className="mt-3 font-body text-base leading-7 text-[var(--og-muted)]">
+                {faq.answer}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+    </Reveal>
+  );
+}
+
 function ContentCard({
   item,
   index,
@@ -172,7 +231,7 @@ function ContentCard({
     <article
       className={`overflow-hidden rounded-[1.5rem] border ${
         isDark
-          ? "border-white/15 bg-white/[0.08] text-white shadow-[0_18px_50px_rgba(0,0,0,0.16)]"
+          ? "border-white/22 bg-[rgba(8,30,111,0.74)] text-white shadow-[0_24px_60px_rgba(0,0,0,0.24)] backdrop-blur-md"
           : "border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] text-[var(--og-off-black)] shadow-[0_18px_50px_rgba(8,30,111,0.06)]"
       }`}
     >
@@ -254,13 +313,18 @@ function ContentSectionBlock({
     <>
       <SectionHeader
         eyebrow={section.eyebrow}
+        eyebrowClassName={section.eyebrowClassName}
         title={section.title}
         description={section.description}
         tone={tone}
       />
       <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {section.items.map((item) => (
-          <ContentCard key={item.title} item={item} tone={tone} />
+          <ContentCard
+            key={item.title}
+            item={item}
+            tone={section.itemTone ?? tone}
+          />
         ))}
       </div>
     </>
@@ -287,9 +351,11 @@ export function ProductCategoryPage({
   productSnapCarouselItems,
   introSection,
   brandSection,
+  buildPathSection,
   photoSection,
   detailSection,
   showBottomCta = true,
+  showFaqSection = true,
 }: ProductCategoryPageProps) {
   const normalizedProducts = products.map(normalizeItem);
   const normalizedServices = services.map(normalizeItem);
@@ -303,12 +369,12 @@ export function ProductCategoryPage({
         <ParallaxHeroBackground image={image} position={heroImagePosition} />
         <div className="absolute inset-0 bg-[#1C1C1C]/34" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/62 via-[#1C1C1C]/44 to-[#1C1C1C]/16" />
-        <div className="relative mx-auto max-w-6xl">
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div className="max-w-3xl">
-            <p className="font-body text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+            <p className="hidden font-body text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
               {heroEyebrow}
             </p>
-            <h1 className="mt-5 font-display text-5xl uppercase leading-none text-[#FF4200] md:text-6xl lg:text-7xl">
+            <h1 className="mt-3 font-display text-[2.8rem] uppercase leading-none text-[#FF4200] md:mt-5 md:text-6xl lg:text-7xl">
               {title}
             </h1>
             <p className="mt-6 max-w-xl font-body text-lg leading-8 text-white/82 md:text-xl">
@@ -319,11 +385,6 @@ export function ProductCategoryPage({
                 {heroSubnote}
               </p>
             ) : null}
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href={contactHref} className="btn-og-white">
-                Start a Project
-              </Link>
-            </div>
             {heroStats?.length ? (
               <div className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
                 {heroStats.map((stat) => (
@@ -341,6 +402,11 @@ export function ProductCategoryPage({
                 ))}
               </div>
             ) : null}
+          </div>
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
+            <Link href={contactHref} className="btn-og-white">
+              Start a Project
+            </Link>
           </div>
         </div>
       </section>
@@ -476,6 +542,89 @@ export function ProductCategoryPage({
         </Reveal>
       ) : null}
 
+      {buildPathSection ? (
+        <Reveal className="px-4 pb-10 pt-4 md:px-8 md:pb-16 md:pt-6 lg:px-12">
+          <section className="mx-auto max-w-6xl">
+            <SectionHeader
+              eyebrow={buildPathSection.eyebrow}
+              title={buildPathSection.title}
+              description={buildPathSection.description}
+            />
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {buildPathSection.cards.map((card) => {
+                const accentClasses =
+                  card.accent === "orange"
+                    ? {
+                        border: "border-[#FF4200]/24",
+                        dot: "bg-[#FF4200]",
+                        detail: "text-[#FF4200]",
+                        title: "text-[#FF4200]",
+                      }
+                    : {
+                        border: "border-[#0B32A0]/24",
+                        dot: "bg-[#0B32A0]",
+                        detail: "text-[#0B32A0]",
+                        title: "text-[var(--og-blue)]",
+                      };
+
+                return (
+                  <article
+                    key={card.title}
+                    className={`overflow-hidden rounded-[1.75rem] border bg-white shadow-[0_24px_60px_rgba(8,30,111,0.06)] ${accentClasses.border}`}
+                  >
+                    <div className="relative min-h-[18rem] border-b border-[#0B32A0]/12">
+                      <Image
+                        src={card.imageSrc}
+                        alt={card.imageAlt}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover"
+                        style={{ objectPosition: card.imagePosition ?? "center" }}
+                      />
+                    </div>
+                    <div className="p-6 md:p-7">
+                      <div className="flex flex-wrap items-center justify-between gap-4">
+                        <Image
+                          src={card.logoSrc}
+                          alt={card.logoAlt}
+                          width={card.logoWidth}
+                          height={card.logoHeight}
+                          className="h-8 w-auto md:h-10"
+                        />
+                        {card.detail ? (
+                          <p className={`font-body text-xs font-semibold uppercase tracking-[0.16em] ${accentClasses.detail}`}>
+                            {card.detail}
+                          </p>
+                        ) : null}
+                      </div>
+                      <h3 className={`mt-5 font-display text-3xl uppercase leading-none ${accentClasses.title}`}>
+                        {card.title}
+                      </h3>
+                      {card.description ? (
+                        <p className="mt-4 font-body text-sm leading-7 text-[var(--og-muted)] md:text-base">
+                          {card.description}
+                        </p>
+                      ) : null}
+                      <ul className="mt-5 space-y-3">
+                        {card.bullets.map((bullet) => (
+                          <li
+                            key={bullet}
+                            className="flex items-start gap-3 font-body text-sm leading-7 text-[var(--og-muted)] md:text-base"
+                          >
+                            <span className={`mt-[0.72rem] h-1.5 w-1.5 shrink-0 rounded-full ${accentClasses.dot}`} />
+                            <span>{bullet}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </Reveal>
+      ) : null}
+
       {productSnapCarouselItems?.length ? (
         <>
           <ServiceSnapCarousel
@@ -553,24 +702,40 @@ export function ProductCategoryPage({
               {normalizedServices.map((service) => (
                 <article
                   key={service.title}
-                  className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-white/70 p-5"
+                  className="overflow-hidden rounded-[1.5rem] border border-[#0B32A0]/20 bg-white/70"
                 >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FF4200] font-display text-xl uppercase text-white">
-                    {service.title.slice(0, 1)}
+                  {service.imageSrc ? (
+                    <div className="relative min-h-[13rem] border-b border-[#0B32A0]/12">
+                      <Image
+                        src={service.imageSrc}
+                        alt={service.imageAlt ?? service.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                        className={`object-cover ${service.imageScaleClass ?? ""}`}
+                        style={{ objectPosition: service.imagePosition ?? "center" }}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="p-5">
+                    {!service.imageSrc ? (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FF4200] font-display text-xl uppercase text-white">
+                        {service.title.slice(0, 1)}
+                      </div>
+                    ) : null}
+                    {service.eyebrow ? (
+                      <p className="mt-5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">
+                        {service.eyebrow}
+                      </p>
+                    ) : null}
+                    <h3 className={`${service.imageSrc ? "mt-0" : "mt-3"} font-display text-2xl uppercase leading-none text-[var(--og-blue)]`}>
+                      {service.title}
+                    </h3>
+                    {service.description ? (
+                      <p className="mt-4 font-body text-sm leading-7 text-[var(--og-muted)]">
+                        {service.description}
+                      </p>
+                    ) : null}
                   </div>
-                  {service.eyebrow ? (
-                    <p className="mt-5 font-body text-xs font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">
-                      {service.eyebrow}
-                    </p>
-                  ) : null}
-                  <h3 className="mt-3 font-display text-2xl uppercase leading-none text-[var(--og-blue)]">
-                    {service.title}
-                  </h3>
-                  {service.description ? (
-                    <p className="mt-4 font-body text-sm leading-7 text-[var(--og-muted)]">
-                      {service.description}
-                    </p>
-                  ) : null}
                 </article>
               ))}
             </div>
@@ -640,26 +805,7 @@ export function ProductCategoryPage({
         </Reveal>
       ) : null}
 
-      <Reveal className="px-4 py-10 md:px-8 md:py-16 lg:px-12">
-        <section className="mx-auto max-w-6xl">
-          <SectionHeader eyebrow="FAQ" title="Good to know" />
-          <div className="mt-8 grid gap-3">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
-              >
-                <summary className="cursor-pointer font-body text-lg font-semibold text-[var(--og-blue)]">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 font-body text-base leading-7 text-[var(--og-muted)]">
-                  {faq.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </section>
-      </Reveal>
+      {showFaqSection ? <ProductCategoryFaqSection faqs={faqs} /> : null}
 
       {showBottomCta ? (
         <section className="bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-20 lg:px-12">

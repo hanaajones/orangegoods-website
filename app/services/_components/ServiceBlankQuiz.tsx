@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { ServiceLeadForm } from "./ServiceLeadForm";
 
-type QuestionId = "product" | "fit" | "finish" | "printMood" | "weight";
-type BlankId =
+export type ScreenPrintQuestionId = "product" | "fit" | "finish" | "printMood" | "weight";
+export type ScreenPrintBlankId =
   | "heavyBoxyTee"
   | "pigmentDyedTee"
   | "retailTee"
@@ -13,10 +13,10 @@ type BlankId =
   | "midweightFleece"
   | "relaxedSweatpants";
 
-type Answers = Partial<Record<QuestionId, string>>;
+export type ScreenPrintQuizAnswers = Partial<Record<ScreenPrintQuestionId, string>>;
 
 type Question = {
-  id: QuestionId;
+  id: ScreenPrintQuestionId;
   eyebrow: string;
   title: string;
   subtext: string;
@@ -24,7 +24,7 @@ type Question = {
 };
 
 type BlankRecommendation = {
-  id: BlankId;
+  id: ScreenPrintBlankId;
   name: string;
   detail: string;
   image: string;
@@ -32,7 +32,7 @@ type BlankRecommendation = {
   position?: string;
 };
 
-const questions: Question[] = [
+export const screenPrintQuizQuestions: Question[] = [
   {
     id: "product",
     eyebrow: "1 of 5",
@@ -70,7 +70,7 @@ const questions: Question[] = [
   },
 ];
 
-const recommendations: BlankRecommendation[] = [
+export const screenPrintQuizRecommendations: BlankRecommendation[] = [
   {
     id: "heavyBoxyTee",
     name: "Heavy Boxy Tee",
@@ -83,33 +83,33 @@ const recommendations: BlankRecommendation[] = [
     id: "pigmentDyedTee",
     name: "Pigment-Dyed Tee",
     detail: "Broken-in and washed",
-    image: "/images/gallery/screen-printing-sully-co-coyotee-on-model.webp",
-    alt: "Pigment-dyed tee shown as a washed blank recommendation",
-    position: "center 32%",
+    image: "/images/gallery/quiz-pigment-dyed-tee-bgxhj-12.jpg",
+    alt: "Washed pigment-dyed tee folded on a wood table",
+    position: "center 76%",
   },
   {
     id: "retailTee",
     name: "Clean Retail Tee",
     detail: "Versatile everyday base",
-    image: "/images/gallery/screen-printing-turnaround-bike-merch-drop-2025-5.jpg",
-    alt: "Retail tee shown as an everyday blank recommendation",
-    position: "center 38%",
+    image: "/images/gallery/quiz-clean-retail-tee-d1a6f4ae.jpg",
+    alt: "Clean retail tees hanging on a rack",
+    position: "center 34%",
   },
   {
     id: "heavyweightHoodie",
     name: "Heavyweight Hoodie",
     detail: "Premium fleece with structure",
-    image: "/images/gallery/apparel-686-hoodie-back.jpg",
-    alt: "Heavyweight hoodie shown as a premium fleece blank recommendation",
-    position: "center 36%",
+    image: "/images/gallery/quiz-heavyweight-hoodie-merch-drop-2025-7.jpg",
+    alt: "Heavyweight hoodie shown from the back with an oversized graphic print",
+    position: "center 28%",
   },
   {
     id: "midweightFleece",
     name: "Midweight Fleece",
     detail: "Easy program hoodie or crew",
-    image: "/images/gallery/screen-printing-heal-the-bay-sweatshirt-tote-hat.jpg",
-    alt: "Midweight fleece shown as an easy program blank recommendation",
-    position: "center 30%",
+    image: "/images/gallery/quiz-midweight-fleece-pxl-20250909.jpg",
+    alt: "Midweight fleece crewneck shown from the back with a blue Heal the Bay graphic print",
+    position: "center 34%",
   },
   {
     id: "relaxedSweatpants",
@@ -121,7 +121,7 @@ const recommendations: BlankRecommendation[] = [
   },
 ];
 
-const scoreRules: Partial<Record<QuestionId, Record<string, Partial<Record<BlankId, number>>>>> = {
+const scoreRules: Partial<Record<ScreenPrintQuestionId, Record<string, Partial<Record<ScreenPrintBlankId, number>>>>> = {
   product: {
     Tees: {
       heavyBoxyTee: 4,
@@ -240,32 +240,38 @@ const scoreRules: Partial<Record<QuestionId, Record<string, Partial<Record<Blank
   },
 };
 
-function getTopRecommendations(answers: Answers) {
-  const scores = new Map<BlankId, number>();
+export function getScreenPrintTopRecommendations(answers: ScreenPrintQuizAnswers) {
+  const scores = new Map<ScreenPrintBlankId, number>();
 
-  recommendations.forEach((item) => scores.set(item.id, 0));
+  screenPrintQuizRecommendations.forEach((item) => scores.set(item.id, 0));
 
   Object.entries(answers).forEach(([questionId, answer]) => {
-    const rule = scoreRules[questionId as QuestionId]?.[answer];
+    const rule = scoreRules[questionId as ScreenPrintQuestionId]?.[answer];
     if (!rule) return;
 
     Object.entries(rule).forEach(([blankId, points]) => {
-      scores.set(blankId as BlankId, (scores.get(blankId as BlankId) ?? 0) + (points ?? 0));
+      scores.set(
+        blankId as ScreenPrintBlankId,
+        (scores.get(blankId as ScreenPrintBlankId) ?? 0) + (points ?? 0),
+      );
     });
   });
 
-  return recommendations
+  return screenPrintQuizRecommendations
     .map((item) => ({ ...item, score: scores.get(item.id) ?? 0 }))
     .sort(
       (a, b) =>
         b.score - a.score
-        || recommendations.findIndex((item) => item.id === a.id)
-          - recommendations.findIndex((item) => item.id === b.id),
+        || screenPrintQuizRecommendations.findIndex((item) => item.id === a.id)
+          - screenPrintQuizRecommendations.findIndex((item) => item.id === b.id),
     )
     .slice(0, 4);
 }
 
-function getRecommendationCopy(blankId: BlankId, answers: Answers) {
+export function getScreenPrintRecommendationCopy(
+  blankId: ScreenPrintBlankId,
+  answers: ScreenPrintQuizAnswers,
+) {
   const fit = answers.fit;
   const finish = answers.finish;
   const printMood = answers.printMood;
@@ -306,7 +312,10 @@ function getRecommendationCopy(blankId: BlankId, answers: Answers) {
     : "A good sweatpant blank works best when the brand wants a retail-feeling fleece program instead of stopping at tees alone.";
 }
 
-function buildProjectDefault(answers: Answers, topRecommendations: ReturnType<typeof getTopRecommendations>) {
+function buildProjectDefault(
+  answers: ScreenPrintQuizAnswers,
+  topRecommendations: ReturnType<typeof getScreenPrintTopRecommendations>,
+) {
   const answerLines = [
     ["Product lane", answers.product],
     ["Fit direction", answers.fit],
@@ -336,18 +345,18 @@ Notes:`;
 
 export function ServiceBlankQuiz() {
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<Answers>({});
+  const [answers, setAnswers] = useState<ScreenPrintQuizAnswers>({});
 
-  const isResults = step >= questions.length;
-  const currentQuestion = questions[step];
-  const topRecommendations = getTopRecommendations(answers);
-  const progress = ((Math.min(step + 1, questions.length) / questions.length) * 100);
+  const isResults = step >= screenPrintQuizQuestions.length;
+  const currentQuestion = screenPrintQuizQuestions[step];
+  const topRecommendations = getScreenPrintTopRecommendations(answers);
+  const progress = ((Math.min(step + 1, screenPrintQuizQuestions.length) / screenPrintQuizQuestions.length) * 100);
 
-  function selectAnswer(questionId: QuestionId, option: string) {
+  function selectAnswer(questionId: ScreenPrintQuestionId, option: string) {
     setAnswers((current) => ({ ...current, [questionId]: option }));
 
     window.setTimeout(() => {
-      setStep((currentStep) => Math.min(currentStep + 1, questions.length));
+      setStep((currentStep) => Math.min(currentStep + 1, screenPrintQuizQuestions.length));
     }, 180);
   }
 
@@ -512,7 +521,7 @@ export function ServiceBlankQuiz() {
                       {item.name}
                     </h4>
                     <p className="mt-3 text-[0.98rem] leading-7 text-[#1C1C1C]/68">
-                      {getRecommendationCopy(item.id, answers)}
+                      {getScreenPrintRecommendationCopy(item.id, answers)}
                     </p>
                   </div>
                 </article>

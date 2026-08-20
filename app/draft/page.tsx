@@ -297,6 +297,57 @@ export default function DraftPage() {
         🚧 Draft — sandbox page for new sections. Not linked in nav.
       </div>
 
+      <section id="header-actions" className="px-4 py-12 md:px-8 md:py-14 lg:px-12">
+        <div className="mx-auto max-w-6xl rounded-[2rem] border border-[#0B32A0]/12 bg-white p-6 shadow-[0_20px_40px_rgba(28,28,28,0.06)] md:p-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+            Parked header actions
+          </p>
+          <div className="mt-4 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <h2
+                className="text-4xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Header cart + account buttons, parked off the live nav for now
+              </h2>
+              <p className="mt-4 text-base leading-7 text-[var(--og-muted)]">
+                These are the two header utilities we pulled from the public site.
+                Keep them here until we decide to release account and cart access in
+                the main navigation again.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/portal"
+                className="group inline-flex min-h-[7.5rem] min-w-[10.5rem] flex-col items-center justify-center gap-3 rounded-[1.75rem] border border-[#0B32A0]/12 bg-[#F7F4ED] px-6 py-5 text-[var(--og-blue)] transition hover:-translate-y-0.5 hover:border-[#FF4200] hover:text-[#FF4200]"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#FF4200] text-white transition group-hover:bg-[#0B32A0]">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </span>
+                <span className="text-center text-sm font-semibold uppercase tracking-[0.16em]">
+                  Account
+                </span>
+              </Link>
+              <Link
+                href="/cart"
+                className="group inline-flex min-h-[7.5rem] min-w-[10.5rem] flex-col items-center justify-center gap-3 rounded-[1.75rem] border border-[#0B32A0]/12 bg-[#F7F4ED] px-6 py-5 text-[var(--og-blue)] transition hover:-translate-y-0.5 hover:border-[#FF4200] hover:text-[#FF4200]"
+              >
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#FF4200] text-white transition group-hover:bg-[#0B32A0]">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </span>
+                <span className="text-center text-sm font-semibold uppercase tracking-[0.16em]">
+                  Cart
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── 2. HOW IT WORKS ─────────────────────────────────────────────── */}
       <section className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto max-w-6xl">
@@ -350,7 +401,6 @@ export default function DraftPage() {
 
       {/* Divider */}
       <div className="h-px w-full bg-[#0B32A0]/10" />
-
       {/* ── 3. SHOPPABLE PRODUCT (Hats) ──────────────────────────────────── */}
       <section className="px-4 py-16 md:px-8 md:py-24 lg:px-12">
         <div className="mx-auto mb-10 max-w-6xl">

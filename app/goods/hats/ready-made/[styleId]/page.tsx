@@ -24,7 +24,7 @@ export default async function StylePage({ params }: { params: Promise<{ styleId:
   return (
     <main className="bg-[#F5F0E8] pb-24 md:pb-0">
       <div className="px-6 pt-6 md:px-12">
-        <Link href="/goods/hats/quick-turn" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--og-blue)] hover:text-[var(--og-orange)]">
+        <Link href="/goods/hats/ready-made" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--og-blue)] hover:text-[var(--og-orange)]">
           ← All Quick Turn Hats
         </Link>
       </div>

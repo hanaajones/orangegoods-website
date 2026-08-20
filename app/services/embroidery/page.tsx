@@ -5,6 +5,7 @@ import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 import { logos } from "@/lib/content";
+import { ServiceEmbroideryQuiz } from "../_components/ServiceEmbroideryQuiz";
 import {
   ServiceLeadForm,
 } from "../_components/ServiceLeadForm";
@@ -24,17 +25,17 @@ const processSteps = [
   {
     number: "01",
     title: "Pick the right product",
-    body: "Tell us the product, logo, budget range, and timeline. We help narrow the right hats, fleece, jackets, totes, or blanks based on feel, fit, and where the embroidery wants to live.",
+    body: "Tell us the product, logo, budget, and timeline. We help narrow the right base fast.",
   },
   {
     number: "02",
     title: "Approve the setup",
-    body: "We review size, placement, thread colors, stitch count, and backing so the embroidery works on the actual product, not just in the mockup.",
+    body: "We review size, placement, thread colors, and stitch setup so the embroidery lands right.",
   },
   {
     number: "03",
     title: "Stitch and deliver",
-    body: "Once the product, art, and quantities are locked, we move into production fast and keep the order moving toward delivery or pickup.",
+    body: "Once the product, art, and quantities are locked, production moves fast.",
   },
 ];
 
@@ -104,7 +105,7 @@ const projectCarouselItems: ServiceProjectCarouselItem[] = [
   },
   {
     title: "Banner Coffee",
-    detail: "Clean wordmark",
+    detail: "Embroidered hats",
     src: "/images/gallery/embroidery-banner-coffee-hat.jpg",
     alt: "Hands holding a Banner Coffee embroidered navy cap and a box of coffee",
     position: "center 68%",
@@ -374,7 +375,15 @@ export default function EmbroideryPage() {
             className="mb-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-4xl uppercase leading-none tracking-[0.01em] text-white md:mb-10 md:gap-x-4 md:text-6xl lg:text-7xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            <span>Why teams use us for embroidery</span>
+            <span>Why teams use</span>
+            <Image
+              src="/graphics/stickers/og-mark.svg"
+              alt="OG"
+              width={136}
+              height={136}
+              className="h-[1.45em] w-[1.45em] object-contain"
+            />
+            <span>for embroidery</span>
           </h2>
           <div className="grid gap-6 md:grid-cols-3">
             {[
@@ -495,7 +504,7 @@ export default function EmbroideryPage() {
                   Better goods
                 </p>
                 <p className="mt-3 text-sm leading-6 text-[var(--og-muted)]">
-                  Hats, fleece, beanies, jackets, and other products that are actually worth
+                  Hats, crewnecks, beanies, jackets, bags, and other products that are actually worth
                   embroidering.
                 </p>
               </article>
@@ -614,8 +623,8 @@ export default function EmbroideryPage() {
                   </p>
                 </div>
                 <div className="flex items-start md:items-center">
-                  <Link href="#start-project" className="btn-og inline-flex">
-                    START A PROJECT
+                  <Link href="#embroidery-quiz" className="btn-og inline-flex">
+                    TAKE THE QUIZ
                   </Link>
                 </div>
               </div>
@@ -723,6 +732,10 @@ export default function EmbroideryPage() {
             showArtworkUpload
           />
         </section>
+      </Reveal>
+
+      <Reveal className="bg-white px-4 py-14 md:px-8 md:py-18 lg:px-12">
+        <ServiceEmbroideryQuiz />
       </Reveal>
     </main>
   );

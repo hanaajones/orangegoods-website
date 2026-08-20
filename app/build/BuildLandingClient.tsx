@@ -33,7 +33,7 @@ const productTiles = [
 
 const quantities = ["100–250", "250–500", "500–1,000", "1,000+", "Not sure"];
 const timelines = ["ASAP", "2-3 Weeks", "4-6 Weeks", "2+ Months", "Flexible"];
-const budgets = ["Under $1K", "$1K-$5K", "$5K-$15K", "$15K+", "TBD"];
+const budgets = ["< $2,500", "$5k", "$10k", "$50k", "$100k +"];
 
 const fieldClass =
   "min-h-12 rounded-xl border border-[#0B32A0]/20 bg-white px-4 text-base text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)] focus:ring-2 focus:ring-[var(--og-orange)]/15";
@@ -194,7 +194,7 @@ export function BuildLandingClient() {
                   <input
                     name="assets"
                     type="file"
-                    className="rounded-xl border border-dashed border-[#0B32A0]/30 bg-[#F3EFE7] px-4 py-4 font-body text-sm normal-case text-[var(--og-ink)] file:mr-4 file:rounded-lg file:border-0 file:bg-white file:px-4 file:py-2 file:font-display file:text-xs file:uppercase file:text-[#FF4200]"
+                    className="og-file-input rounded-xl border border-dashed border-[#0B32A0]/30 bg-[#F3EFE7] px-4 py-4 font-body text-sm normal-case text-[var(--og-ink)] file:mr-4 file:rounded-lg file:border-0 file:bg-white file:px-4 file:py-2 file:text-xs file:uppercase file:text-[#FF4200]"
                   />
                 </label>
               </div>
