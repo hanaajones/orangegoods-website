@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
@@ -12,6 +12,12 @@ const inputClass =
 
 const labelClass =
   "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
+
+const roundedInputClass =
+  "min-h-11 rounded-2xl border border-[#0B32A0]/16 bg-white px-3.5 text-sm font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]";
+
+const roundedTextareaClass =
+  "rounded-2xl border border-[#0B32A0]/16 bg-white px-3.5 py-2.5 text-sm font-normal normal-case tracking-normal text-[var(--og-ink)] placeholder:text-[#1C1C1C]/42 outline-none transition focus:border-[var(--og-orange)]";
 
 function RequiredLabel({
   label,
@@ -38,7 +44,7 @@ const selectOptions = {
   designHelp: ["Yes", "No", "I'm not sure"],
   quantity: ["100-250", "250-500", "500-1,000", "1,000-2,000", "2,000-5,000", "5,000+"],
   timeline: ["ASAP", "2-4 weeks", "1-2 months", "2+ months", "Not sure"],
-  budget: ["<$2,500", "$2,500-$5,000", "$5,000-$10,000", "$10,000+", "Not sure"],
+  budget: ["< $2,500", "$5k", "$10k", "$50k", "$100k +"],
 };
 
 const contactTestimonials = [
@@ -83,19 +89,33 @@ const contactFaqs = [
   ],
 ];
 
+const builderFieldNames = new Set([
+  "name",
+  "company",
+  "email",
+  "phone",
+  "shippingAddress",
+  "needBy",
+  "notes",
+]);
+
 function ContactForm({
   submitted,
   submitting,
+  submitError,
   onSubmit,
   variant = "standard",
   projectDefault = "",
+  designHelpDefault = "",
   hiddenFields = {},
 }: {
   submitted: boolean;
   submitting: boolean;
+  submitError?: string;
   onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
   variant?: "standard" | "rounded";
   projectDefault?: string;
+  designHelpDefault?: string;
   hiddenFields?: Record<string, string>;
 }) {
   const isRounded = variant === "rounded";
@@ -103,11 +123,11 @@ function ContactForm({
     ? "grid gap-5 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#FFFDF8] p-6 shadow-[0_22px_60px_rgba(11,50,160,0.08)] md:p-8"
     : "grid gap-5 border border-[#0B32A0]/20 bg-white/80 p-6 md:p-8";
   const variantInputClass = isRounded
-    ? "min-h-12 rounded-2xl border border-[#0B32A0]/16 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]"
+    ? roundedInputClass
     : inputClass;
   const selectClass = `${variantInputClass} appearance-none bg-[length:14px_14px] bg-[right_1.25rem_center] bg-no-repeat pr-14`;
   const textareaClass = isRounded
-    ? "rounded-2xl border border-[#0B32A0]/16 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] placeholder:text-[#1C1C1C]/42 outline-none transition focus:border-[var(--og-orange)]"
+    ? roundedTextareaClass
     : "border border-[#0B32A0]/20 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] placeholder:text-[#1C1C1C]/42 outline-none transition focus:border-[var(--og-orange)]";
 
   return (
@@ -123,14 +143,21 @@ function ContactForm({
         </div>
       ) : null}
 
+      {submitError ? (
+        <div className="border border-[#C44A2F]/20 bg-[#FFF2EE] p-5 text-[#8B2A17]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em]">Submission issue</p>
+          <p className="mt-2 text-base leading-7">{submitError}</p>
+        </div>
+      ) : null}
+
       {isRounded ? (
         <div className="rounded-[1.5rem] border border-[#FF4200]/18 bg-white/70 p-5">
-          <p className="font-accent text-sm font-normal uppercase tracking-[0.2em] text-[#FF4200]">
-            Let&apos;s get started
-          </p>
           <h2 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-4xl">
-            Start with the basics.
+            Tell us what you&apos;re making.
           </h2>
+          <p className="mt-2 text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/52">
+            You&apos;ll hear back in 24 hours or less
+          </p>
         </div>
       ) : null}
 
@@ -241,7 +268,7 @@ function ContactForm({
         <select
           name="designHelp"
           required
-          defaultValue=""
+          defaultValue={designHelpDefault}
           className={selectClass}
           style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
         >
@@ -265,7 +292,7 @@ function ContactForm({
             name="artwork"
             multiple
             accept=".ai,.eps,.pdf,.svg,.png,.jpg,.jpeg,.zip"
-            className={`mt-2 block w-full cursor-pointer px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:border file:border-[#0B32A0]/18 file:bg-[var(--og-warm-grey)] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)] ${
+            className={`og-file-input mt-2 block w-full cursor-pointer px-4 py-3 text-sm text-[#1C1C1C] file:mr-4 file:border file:border-[#0B32A0]/18 file:bg-[var(--og-warm-grey)] file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:text-[#0B32A0] file:transition hover:file:border-[var(--og-orange)] hover:file:text-[var(--og-orange)] ${
               isRounded
                 ? "rounded-2xl border border-[#0B32A0]/16 bg-white file:rounded-xl"
                 : "rounded-xl border border-[#0B32A0]/20 bg-[#F3EFE7] file:rounded-lg"
@@ -295,11 +322,168 @@ function ContactForm({
   );
 }
 
+function BuilderCheckoutForm({
+  submitted,
+  submitting,
+  submitError,
+  onSubmit,
+  hiddenFields = {},
+  summaryLines,
+}: {
+  submitted: boolean;
+  submitting: boolean;
+  submitError?: string;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  hiddenFields?: Record<string, string>;
+  summaryLines: string[];
+}) {
+  const builderInputClass = roundedInputClass;
+  const builderTextareaClass = roundedTextareaClass;
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="grid gap-5 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#FFFDF8] p-6 shadow-[0_22px_60px_rgba(11,50,160,0.08)] md:p-8"
+    >
+      {Object.entries(hiddenFields).map(([name, value]) => (
+        <input key={name} type="hidden" name={name} value={value} />
+      ))}
+
+      {submitted ? (
+        <div className="rounded-[1.5rem] border border-[var(--og-orange)] bg-[var(--og-orange)] p-5 text-white">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em]">Build Sent</p>
+          <p className="mt-2 text-lg leading-7">Thanks. We will review it and follow up within 1 business day.</p>
+        </div>
+      ) : null}
+
+      {submitError ? (
+        <div className="rounded-[1.5rem] border border-[#C44A2F]/20 bg-[#FFF2EE] p-5 text-[#8B2A17]">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em]">Submission issue</p>
+          <p className="mt-2 text-base leading-7">{submitError}</p>
+        </div>
+      ) : null}
+
+      <div className="grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="rounded-[1.5rem] border border-[#FF4200]/18 bg-white/80 p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
+            Build summary
+          </p>
+          <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-4xl">
+            Contact details
+          </h2>
+
+          <div className="mt-5 rounded-[1.25rem] border border-[#0B32A0]/10 bg-[var(--og-warm-grey)] p-4">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#1C1C1C]/46">
+              Included with this submission
+            </p>
+            <ul className="mt-3 grid gap-2">
+              {summaryLines.map((line) => {
+                const separatorIndex = line.indexOf(":");
+
+                if (separatorIndex === -1) {
+                  return (
+                    <li key={line} className="text-sm leading-6 text-[#1C1C1C]">
+                      {line}
+                    </li>
+                  );
+                }
+
+                const label = line.slice(0, separatorIndex).trim();
+                const value = line.slice(separatorIndex + 1).trim();
+
+                return (
+                  <li key={line} className="text-sm leading-6 text-[#1C1C1C]">
+                    <span className="font-semibold">{label}:</span>{" "}
+                    <span>{value}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </div>
+
+        <div className="grid gap-5">
+          <div className="grid gap-5 md:grid-cols-2">
+            <label className={labelClass}>
+              <RequiredLabel label="Full name" required />
+              <input name="name" required className={builderInputClass} />
+            </label>
+            <label className={labelClass}>
+              <RequiredLabel label="Company name" required />
+              <input name="company" required className={builderInputClass} />
+            </label>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            <label className={labelClass}>
+              <RequiredLabel label="Email" required />
+              <input name="email" type="email" required className={builderInputClass} />
+            </label>
+            <label className={labelClass}>
+              <RequiredLabel label="Phone" required />
+              <input name="phone" type="tel" required className={builderInputClass} />
+            </label>
+          </div>
+
+          <label className={labelClass}>
+            <RequiredLabel label="Shipping address" required />
+            <textarea
+              name="shippingAddress"
+              rows={2}
+              required
+              placeholder="Street address, city, state, ZIP, country"
+              className={builderTextareaClass}
+            />
+          </label>
+
+          <div className="grid gap-5">
+            <label className={labelClass}>
+              <RequiredLabel label="Anything else we should know?" />
+              <textarea
+                name="notes"
+                rows={2}
+                placeholder="Special delivery notes, timeline context, logo details, links to references, or anything else helpful."
+                className={builderTextareaClass}
+              />
+            </label>
+            <div className="grid gap-2">
+              <label htmlFor="builder-need-by" className={labelClass}>
+                <RequiredLabel label="Requested in-hand date" />
+                <input
+                  id="builder-need-by"
+                  name="needBy"
+                  type="date"
+                  className={builderInputClass}
+                />
+              </label>
+              <span className="pl-1 text-[11px] leading-5 text-[#1C1C1C]/52">
+                Final timing confirmed after review.
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="btn-og w-fit self-start rounded-full px-6 py-3 text-sm"
+          >
+            {submitting ? "Sending…" : "Submit build"}
+          </button>
+
+          <p className="text-xs uppercase tracking-[0.18em] text-[#1C1C1C]/48">
+            <span className="text-[var(--og-orange)]">*</span> Required fields
+          </p>
+        </div>
+      </div>
+    </form>
+  );
+}
+
 function ContactPageContent() {
-  const [submitted, setSubmitted] = useState(false);
+  const submitted = false;
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const product = searchParams.get("product") ?? "";
@@ -307,10 +491,33 @@ function ContactPageContent() {
   const style = searchParams.get("style") ?? "";
   const styleName = searchParams.get("styleName") ?? "";
   const quantity = searchParams.get("quantity") ?? "";
+  const projectSummary = searchParams.get("projectSummary") ?? "";
+  const needsArtworkHelp = searchParams.get("needsArtworkHelp") ?? "";
+  const source = searchParams.get("source") ?? "";
+  const mode = searchParams.get("mode") ?? "";
+  const isBuilderCheckout = source === "og-crafted-hat-builder";
+  const builderSummaryLines = projectSummary.split("\n").map((line) => line.trim()).filter(Boolean);
+  const builderHiddenFields = Object.fromEntries(
+    Array.from(searchParams.entries()).filter(([key]) => !builderFieldNames.has(key)),
+  );
+  const builderBackHref = `/draft/product-style?${new URLSearchParams(builderHiddenFields).toString()}`;
+  const standardHiddenFields = {
+    intent: "contact",
+    pageName: "Contact Page",
+    pagePath: "/contact",
+    source: source || "contact-page",
+    ...(mode ? { mode } : {}),
+    ...(needsArtworkHelp ? { needsArtworkHelp } : {}),
+    ...(product ? { product } : {}),
+    ...(program ? { program } : {}),
+    ...(style ? { style } : {}),
+    ...(styleName ? { styleName } : {}),
+    ...(quantity ? { quantity } : {}),
+  };
 
-  const projectDefault = [
+  const projectDefault = projectSummary || [
     product ? `Product: ${product}` : "",
-    program ? `Program: ${program}` : "",
+    (program || mode) ? `Program: ${program || mode}` : "",
     style ? `Style: ${style}${styleName ? ` - ${styleName}` : ""}` : "",
     quantity ? `Quantity: ${quantity}` : "",
     "",
@@ -329,20 +536,34 @@ function ContactPageContent() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
+    setSubmitError("");
 
     const formData = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
 
-    await fetch("/api/contact", {
+    const response = await fetch("/api/contact", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
+    if (!response.ok) {
+      const result = await response.json().catch(() => null) as { error?: string } | null;
+      setSubmitting(false);
+      setSubmitError(result?.error ?? "Something went wrong. Please try again.");
+      return;
+    }
+
     setSubmitting(false);
-    setSubmitted(true);
-    event.currentTarget.reset();
-    router.push("/thank-you");
+    const thankYouParams = new URLSearchParams({
+      source: source || "contact",
+      intent: isBuilderCheckout ? "submit-build" : "contact",
+      ...(product ? { product } : {}),
+      ...(program ? { program } : {}),
+      ...(mode ? { mode } : {}),
+      ...(style ? { style } : {}),
+      ...(quantity ? { quantity } : {}),
+    });
+
+    window.location.assign(`/thank-you?${thankYouParams.toString()}`);
   }
 
   return (
@@ -356,35 +577,66 @@ function ContactPageContent() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/44 to-[#1C1C1C]/18" />
         <div className="relative mx-auto max-w-6xl">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            Start a project
+            {isBuilderCheckout ? "Final step" : "Start a project"}
           </p>
           <h1 className="mt-5 text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Get in
-            <br />
-            Touch
+            {isBuilderCheckout ? (
+              <>
+                Submit
+                <br />
+                Your Build
+              </>
+            ) : (
+              <>
+                Get in
+                <br />
+                Touch
+              </>
+            )}
           </h1>
+          {isBuilderCheckout ? (
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-white/78 md:text-base">
+              This is the checkout-style handoff for your custom hat build. We already have the selections. Add the final delivery and contact details here.
+            </p>
+          ) : null}
         </div>
       </section>
 
       <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
-        <section
+      <section
           id="contact-form"
           className="mx-auto grid max-w-5xl gap-8 pt-12 md:pt-14 lg:pt-16"
         >
-          <ContactForm
-            submitted={submitted}
-            submitting={submitting}
-            onSubmit={handleSubmit}
-            variant="rounded"
-            projectDefault={projectDefault}
-            hiddenFields={{
-              ...(product ? { product } : {}),
-              ...(program ? { program } : {}),
-              ...(style ? { style } : {}),
-              ...(styleName ? { styleName } : {}),
-              ...(quantity ? { quantity } : {}),
-            }}
-          />
+          {isBuilderCheckout ? (
+            <>
+              <Link
+                href={builderBackHref}
+                className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
+              >
+                <span aria-hidden="true">←</span>
+                <span>Back to Hat Builder</span>
+              </Link>
+              <BuilderCheckoutForm
+                submitted={submitted}
+                submitting={submitting}
+                submitError={submitError}
+                onSubmit={handleSubmit}
+                summaryLines={builderSummaryLines}
+                hiddenFields={builderHiddenFields}
+              />
+            </>
+          ) : (
+            <ContactForm
+              submitted={submitted}
+              submitting={submitting}
+              submitError={submitError}
+              onSubmit={handleSubmit}
+              variant="rounded"
+              projectDefault={projectDefault}
+              designHelpDefault={needsArtworkHelp}
+              hiddenFields={standardHiddenFields}
+            />
+          )}
         </section>
       </Reveal>
 
@@ -420,7 +672,7 @@ function ContactPageContent() {
                 </p>
                 <a
                   href="sms:+12133764663"
-                  className="mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] font-[var(--font-noir-alt)] text-sm font-bold uppercase tracking-normal text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
+                  className="font-body mt-2 inline-flex min-h-[42px] items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-white px-5 py-[0.68rem] text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] transition hover:-translate-y-[3px] md:w-fit"
                 >
                   Text us
                 </a>
@@ -446,47 +698,6 @@ function ContactPageContent() {
 
       <Reveal className="px-4 pb-16 md:px-8 md:pb-20 lg:px-12">
         <section className="mx-auto grid max-w-5xl gap-8">
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <Link
-              href="/goods"
-              className="group rounded-[2rem] border-[3px] border-[#0B32A0] bg-white px-6 py-6 transition hover:-translate-y-[3px]"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                Browse first
-              </p>
-              <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-[2.15rem]">
-                View the goods
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
-                See the categories, materials, and product directions before you fill anything out.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-orange)] transition group-hover:text-[var(--og-blue)]">
-                Browse goods
-                <span aria-hidden="true">+</span>
-              </span>
-            </Link>
-
-            <Link
-              href="/design"
-              className="group rounded-[2rem] border-[3px] border-[#FF4200] bg-[#FFF6EE] px-6 py-6 transition hover:-translate-y-[3px]"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-blue)]">
-                Need creative?
-              </p>
-              <h2 className="mt-3 text-3xl leading-none text-[var(--og-orange)] md:text-[2.15rem]">
-                Need design help?
-              </h2>
-              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
-                If you need help with graphics, product direction, or mockups, start there first.
-              </p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
-                Explore design
-                <span aria-hidden="true">+</span>
-              </span>
-            </Link>
-          </div>
-
           <div className="flex flex-1 flex-col rounded-[2rem] border border-[#0B32A0]/10 bg-white/92 p-6 md:p-8">
               <div className="grid gap-6 rounded-[1.75rem] border border-[#0B32A0]/12 bg-[linear-gradient(135deg,#0B2A73_0%,#163E8F_52%,#1C4AA3_100%)] p-5 text-white md:grid-cols-[1.08fr_0.92fr] md:items-center md:p-6">
                 <div>
@@ -526,6 +737,46 @@ function ContactPageContent() {
                 </p>
               </div>
 
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Link
+              href="/goods"
+              className="group rounded-[2rem] border-[3px] border-[#0B32A0] bg-white px-6 py-6 transition hover:-translate-y-[3px]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                Browse first
+              </p>
+              <h2 className="mt-3 text-3xl leading-none text-[var(--og-blue)] md:text-[2.15rem]">
+                View the goods
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
+                See the categories, materials, and product directions before you fill anything out.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-orange)] transition group-hover:text-[var(--og-blue)]">
+                Browse goods
+                <span aria-hidden="true">+</span>
+              </span>
+            </Link>
+
+            <Link
+              href="/design"
+              className="group rounded-[2rem] border-[3px] border-[#FF4200] bg-[#FFF6EE] px-6 py-6 transition hover:-translate-y-[3px]"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--og-blue)]">
+                Need creative?
+              </p>
+              <h2 className="mt-3 text-3xl leading-none text-[var(--og-orange)] md:text-[2.15rem]">
+                Need design help?
+              </h2>
+              <p className="mt-4 max-w-md text-base leading-7 text-[var(--og-muted)]">
+                If you need help with graphics, product direction, or mockups, start there first.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
+                Explore design
+                <span aria-hidden="true">+</span>
+              </span>
+            </Link>
           </div>
         </section>
       </Reveal>
