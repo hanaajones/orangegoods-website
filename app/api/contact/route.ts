@@ -56,9 +56,15 @@ type HubSpotContactRecord = {
   properties?: Record<string, string | null | undefined>;
 };
 
-const CONTACT_UPLOADS_DIR = path.join(process.cwd(), "data", "contact-uploads");
-const CONTACT_SUBMISSIONS_DIR = path.join(process.cwd(), "data", "contact-submissions");
-const CONTACT_SUBMISSIONS_LOG = path.join(process.cwd(), "data", "contact-submissions.jsonl");
+const CONTACT_STORAGE_ROOT = process.env.VERCEL
+  ? path.join("/tmp", "orangegoods-contact")
+  : path.join(process.cwd(), "data");
+const CONTACT_STORAGE_LABEL_ROOT = process.env.VERCEL
+  ? path.join("tmp", "orangegoods-contact")
+  : "data";
+const CONTACT_UPLOADS_DIR = path.join(CONTACT_STORAGE_ROOT, "contact-uploads");
+const CONTACT_SUBMISSIONS_DIR = path.join(CONTACT_STORAGE_ROOT, "contact-submissions");
+const CONTACT_SUBMISSIONS_LOG = path.join(CONTACT_STORAGE_ROOT, "contact-submissions.jsonl");
 const HUBSPOT_PRIVATE_APP_TOKEN = process.env.HUBSPOT_PRIVATE_APP_TOKEN ?? process.env.HUBSPOT_TOKEN ?? "";
 const HUBSPOT_API_BASE = "https://api.hubapi.com";
 const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL ?? "";
@@ -232,8 +238,8 @@ async function parseRequestPayload(request: Request, submissionId: string) {
       await fs.mkdir(uploadDir, { recursive: true });
 
       const storedName = `${uploads.length + 1}-${Date.now()}-${originalName}`;
-      const relativePath = path.join("data", "contact-uploads", submissionId, storedName);
-      const targetPath = path.join(process.cwd(), relativePath);
+      const relativePath = path.join(CONTACT_STORAGE_LABEL_ROOT, "contact-uploads", submissionId, storedName);
+      const targetPath = path.join(uploadDir, storedName);
       const buffer = Buffer.from(await value.arrayBuffer());
       await fs.writeFile(targetPath, buffer);
 
@@ -738,6 +744,22 @@ async function appendSubmissionSnapshot(record: SubmissionRecord) {
   await fs.appendFile(CONTACT_SUBMISSIONS_LOG, `${JSON.stringify(record)}\n`, "utf8");
 }
 
+async function persistSubmissionRecordSafely(record: SubmissionRecord, context: string) {
+  try {
+    await persistSubmissionRecord(record);
+  } catch (error) {
+    console.error(`[Contact Submission Persistence Error] ${context}`, error);
+  }
+}
+
+async function appendSubmissionSnapshotSafely(record: SubmissionRecord) {
+  try {
+    await appendSubmissionSnapshot(record);
+  } catch (error) {
+    console.error("[Contact Submission Snapshot Error]", error);
+  }
+}
+
 async function setDeliveryResult(
   record: SubmissionRecord,
   name: DeliveryName,
@@ -749,7 +771,7 @@ async function setDeliveryResult(
     ...(detail ? { detail } : {}),
     status,
   };
-  await persistSubmissionRecord(record);
+  await persistSubmissionRecordSafely(record, `delivery:${name}`);
 }
 
 async function runDelivery(
@@ -813,7 +835,7 @@ export async function POST(request: Request) {
       await setDeliveryResult(submission, "slack", "skipped", "Skipped because J-Core marked the submission duplicate.");
     }
 
-    await appendSubmissionSnapshot(submission);
+    await appendSubmissionSnapshotSafely(submission);
     console.log("[Contact Submission]", submission);
 
     const deliveries = Object.entries(submission.deliveries)
