@@ -111,7 +111,6 @@ const contactFieldNames = new Set([
   "designHelp",
   "artwork",
 ]);
-
 function ContactForm({
   submitted,
   submitting,
