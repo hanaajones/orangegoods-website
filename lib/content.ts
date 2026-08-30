@@ -357,7 +357,7 @@ export const hatFaqs = [
   {
     question: "What file formats do you need?",
     answer:
-      "Vector files please! These typically have the file extension .ai, .eps, or .pdf. No artwork yet?",
+      "Vector files please! These typically have the file extension .ai, .eps, or .pdf. Send what you've got and we'll take a look. No artwork yet?",
   },
   {
     question: "Do you ship internationally?",
@@ -366,6 +366,7 @@ export const hatFaqs = [
   },
   {
     question: "What does pricing include?",
-    answer: "Sampling, production, and standard shipping to one US address",
+    answer:
+      "Custom hat, front decoration, interior branded label, air shipping to one US address. All-in!",
   },
 ];

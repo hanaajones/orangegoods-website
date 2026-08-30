@@ -47,7 +47,7 @@ export function HatsOptionCategoryPage({
         <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-3">
           {cards.map((card) => (
             <a
-              key={card.title}
+              key={`${card.title}-${card.href ?? card.image}`}
               href={card.href ?? undefined}
               target={card.openInNewTab ? "_blank" : undefined}
               rel={card.openInNewTab ? "noreferrer" : undefined}

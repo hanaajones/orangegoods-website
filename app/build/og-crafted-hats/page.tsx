@@ -11,6 +11,7 @@ export default function OGCraftedHatsBuildPage() {
       <ProductStylePreview
         initialMode="crafted"
         lockedMode="crafted"
+        experienceVariant="immersive"
         pageTitle=""
         pageDescription=""
         pageBackHref="/goods/hats"

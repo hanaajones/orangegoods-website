@@ -28,11 +28,22 @@ const homepageGoodsCategories = [
   {
     name: "Apparel",
     href: "/goods/apparel",
-    image: "/images/homepage/merch-drop-2025-5.jpg",
+    image: "/images/homepage/merch-drop-2025-2.jpg",
     className: "lg:col-span-2 lg:min-h-[20rem]",
     imagePosition: "center 48%",
     imageClassName: "group-hover:scale-105",
     sticker: "/graphics/stickers/fresh-goods.svg",
+    slideshowIntervalMs: 1150,
+    slideshow: [
+      {
+        src: "/images/homepage/merch-drop-2025-2.jpg",
+        position: "center 48%",
+      },
+      {
+        src: "/images/homepage/merch-drop-2025-5.jpg",
+        position: "center 48%",
+      },
+    ],
   },
   {
     name: "Tote bags",
@@ -110,7 +121,7 @@ export default function HomePage() {
         </p>
       </div>
 
-      <Reveal className="relative overflow-hidden bg-white px-4 pb-0 pt-14 md:px-8 md:pb-[20px] md:pt-20 lg:px-12">
+      <Reveal yOffset={0} className="relative overflow-hidden bg-white px-4 pb-0 pt-14 md:px-8 md:pb-[20px] md:pt-20 lg:px-12">
         <section className="mx-auto max-w-6xl">
           <div className="relative left-1/2 mb-6 flex w-screen -translate-x-1/2 items-center justify-center gap-4 md:mb-8 md:gap-6">
             <div
@@ -145,7 +156,10 @@ export default function HomePage() {
                 className={`group relative min-h-[17rem] overflow-hidden rounded-[1.75rem] border-[3px] border-transparent transition duration-200 hover:border-[#0B32A0] focus-visible:border-[#0B32A0] focus-visible:outline-none ${category.className}`}
               >
                 {category.slideshow ? (
-                  <HomepageGoodsSlideshow slides={category.slideshow} />
+                  <HomepageGoodsSlideshow
+                    slides={category.slideshow}
+                    intervalMs={category.slideshowIntervalMs}
+                  />
                 ) : category.video ? (
                   <video
                     aria-hidden="true"
@@ -217,7 +231,12 @@ export default function HomePage() {
               </Link>
             ))}
           </div>
-          <ClientLogoMarquee logos={logos} className="mt-8 pt-[9px] md:mt-10 md:pt-[9px]" />
+          <ClientLogoMarquee
+            logos={logos}
+            label="TRUSTED BY MANY"
+            labelClassName="font-accent text-[1rem] font-normal tracking-[0.16em] text-[#767676] md:text-[1.08rem]"
+            className="mt-8 pt-[9px] md:mt-10 md:pt-[9px]"
+          />
         </section>
       </Reveal>
 

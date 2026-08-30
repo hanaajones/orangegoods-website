@@ -45,7 +45,7 @@ export const hatStyles = [
   {
     slug: "og-110-five-panel-unstructured-hat",
     model: "OG 110",
-    title: "5-panel unstructured hat",
+    title: "Standard Cap",
     description: "Clean 5-panel shape with a laid-back feel.",
     selectorDescription: "5-panel, unstructured, mid profile",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-front.jpg",
@@ -75,7 +75,7 @@ export const hatStyles = [
     ],
     imagePosition: "center 48%",
     closure: "Strapback",
-    profile: "Low profile",
+    profile: "Mid profile",
     bestFor: "Casual retail programs",
   },
   {
@@ -137,7 +137,7 @@ export const hatStyles = [
     model: "OG 160",
     title: "Field Trucker",
     description: "More structured front with extra logo room.",
-    selectorDescription: "trucker, structured front, high profile",
+    selectorDescription: "trucker, structured front, low profile",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-front.jpg", label: "Front view" },
@@ -147,13 +147,13 @@ export const hatStyles = [
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
-    profile: "High profile",
+    profile: "Low profile",
     bestFor: "Bolder front decoration",
   },
   {
     slug: "og-170-foam-trucker",
     model: "OG 170",
-    title: "Foam Trucker",
+    title: "Foamie Trucker",
     description: "High-profile trucker that makes more of a statement.",
     selectorDescription: "foam trucker, high profile",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-front.jpg",
@@ -209,7 +209,7 @@ export const hatStyles = [
     model: "OG 200",
     title: "Perform Cap",
     description: "Lighter, more technical, and built for movement.",
-    selectorDescription: "performance cap, low profile",
+    selectorDescription: "performance cap, mid profile",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-front.jpg", label: "Front view" },
@@ -219,7 +219,7 @@ export const hatStyles = [
     ],
     imagePosition: "center 50%",
     closure: "Clip closure",
-    profile: "Low profile",
+    profile: "Mid profile",
     bestFor: "Technical and sport programs",
   },
   {
@@ -227,7 +227,7 @@ export const hatStyles = [
     model: "OG 210",
     title: "Bucket Hat",
     description: "A custom bucket built for summer drops and events.",
-    selectorDescription: "bucket hat",
+    selectorDescription: "bucket hat, high profile",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-front.jpg", label: "Front view" },
@@ -236,7 +236,7 @@ export const hatStyles = [
     ],
     imagePosition: "center 48%",
     closure: "Fitted",
-    profile: "Bucket",
+    profile: "High profile",
     bestFor: "Event kits and seasonal drops",
   },
 ] satisfies HatStyle[];

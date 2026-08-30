@@ -45,7 +45,6 @@ const hatBuildItems: HatBuildItem[] = [
     description: "Optional paid upgrades like interior taping, back or side embroidery, rope, closure labels, or contrast fabric.",
     image: "/images/gallery/headwear-verve-roasters-dscf3088.jpg",
     imagePosition: "center 54%",
-    badge: "Add-on charge",
   },
 ];
 

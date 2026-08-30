@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 
 type MerchTip = {
@@ -19,7 +19,7 @@ type MerchTip = {
 const merchTips: MerchTip[] = [
   {
     number: "01",
-    title: "Start with a blank <br> they would actually buy",
+    title: "Start with a blank <br> they'd actually buy",
     detail:
       "The base piece does most of the work. Better materials, shape, and construction make the logo feel more valuable before anyone reads it.",
     proof: "Quality blank",
@@ -84,8 +84,19 @@ function renderTitle(title: string) {
 
 export function MerchTipsCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const orderedTips = getOrderedTips(activeIndex);
   const activeTip = merchTips[activeIndex];
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const intervalId = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % merchTips.length);
+    }, 5000);
+
+    return () => window.clearInterval(intervalId);
+  }, [isPaused]);
 
   function goToNext() {
     setActiveIndex((current) => (current + 1) % merchTips.length);
@@ -97,7 +108,13 @@ export function MerchTipsCarousel() {
 
   return (
     <Reveal className="bg-[#F7F4ED] px-4 pb-16 pt-16 md:px-8 md:pb-20 md:pt-20 lg:px-12">
-      <section className="mx-auto max-w-6xl rounded-[1.8rem] border-[2px] border-[#0B32A0] bg-white p-5 md:p-8">
+      <section
+        className="mx-auto max-w-6xl rounded-[1.8rem] border-[2px] border-[#0B32A0] bg-white p-5 md:p-8"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocusCapture={() => setIsPaused(true)}
+        onBlurCapture={() => setIsPaused(false)}
+      >
         <div className="flex items-end justify-between gap-4">
           <div className="max-w-3xl">
             <p
@@ -212,7 +229,7 @@ export function MerchTipsCarousel() {
                   <h3 className="max-w-xl text-[1.8rem] leading-[0.98] text-[#081E6F] md:text-[2.2rem]">
                     {renderTitle(tip.title)}
                   </h3>
-                  <span className="mt-auto inline-flex w-fit items-center self-start rounded-full border border-[#0B32A0]/16 bg-white/70 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-[#0B32A0]/66 transition group-hover:border-[#0B32A0]/24 group-hover:text-[#0B32A0]">
+                  <span className="mt-auto inline-flex w-fit items-center self-start rounded-full border border-[#0B32A0]/16 bg-white/70 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.12em] text-[#0B32A0]/66 transition group-hover:border-[#081E6F] group-hover:bg-[#081E6F] group-hover:text-white">
                     View
                   </span>
                 </div>

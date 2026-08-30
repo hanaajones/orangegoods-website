@@ -1,65 +1,68 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
-interface Message {
-  from: "user" | "bot";
-  text: string;
-}
-
-const PHONE = "2133764663";
-const GREETING = "Hey! 👋 What can we help you with today? Drop us a message and we'll text you back";
+const GREETING = "Tell us what you need and we'll text you back from our team.";
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([{ from: "bot", text: GREETING }]);
-  const [input, setInput] = useState("");
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [message, setMessage] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [sentTo, setSentTo] = useState("");
+  const [sending, setSending] = useState(false);
 
-  useEffect(() => {
-    if (open) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, open]);
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (sending) return;
 
-  function send() {
-    const text = input.trim();
-    if (!text) return;
+    setSending(true);
+    setError("");
 
-    setMessages((m) => [
-      ...m,
-      { from: "user", text },
-      {
-        from: "bot",
-        text: "Got it! Tap the button below to send this to us via text — we'll reply to your phone",
-      },
-    ]);
-    setInput("");
+    try {
+      const response = await fetch("/api/quo-chat", {
+        body: JSON.stringify({
+          message,
+          name,
+          phone,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
 
-    // Option A: open native SMS app with pre-filled message
-    const smsUrl = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-      ? `sms:${PHONE}&body=${encodeURIComponent(text)}`
-      : `sms:${PHONE}?body=${encodeURIComponent(text)}`;
+      const data = (await response.json()) as {
+        error?: string;
+        ok?: boolean;
+        phone?: string;
+      };
 
-    setTimeout(() => {
-      window.open(smsUrl, "_self");
-    }, 400);
-  }
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "We could not start the text thread.");
+      }
 
-  function handleKey(e: React.KeyboardEvent) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      send();
+      setSentTo(data.phone ?? phone);
+      setMessage("");
+      setPhone("");
+      setName("");
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "We could not start the text thread.");
+    } finally {
+      setSending(false);
     }
   }
 
+  const successState = Boolean(sentTo);
+
   return (
     <>
-      {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-36 right-4 z-[60] flex w-[min(340px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl shadow-2xl md:bottom-24"
-          style={{ border: "3px solid #FF4200", maxHeight: "480px" }}
+          className="fixed bottom-36 right-4 z-[60] flex w-[min(360px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl shadow-2xl md:bottom-44"
+          style={{ border: "3px solid #FF4200", maxHeight: "560px" }}
         >
-          {/* Header */}
           <div className="flex items-center justify-between bg-[#FF4200] px-4 py-3">
             <div className="flex items-center gap-3">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-sm font-bold text-white">
@@ -69,77 +72,111 @@ export function ChatWidget() {
                 <p className="text-xs font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>
                   ORANGE GOODS
                 </p>
-                <p className="text-[10px] text-white/70">Replies via text — usually within minutes</p>
+                <p className="text-[10px] text-white/70">Chat here. We reply by text.</p>
               </div>
             </div>
             <button
               onClick={() => setOpen(false)}
               className="text-lg leading-none text-white/70 transition hover:text-white"
-              aria-label="Close chat"
+              aria-label="Close text widget"
+              type="button"
             >
               ✕
             </button>
           </div>
 
-          {/* Messages */}
-          <div
-            className="flex-1 space-y-3 overflow-y-auto bg-white px-4 py-4"
-            style={{ minHeight: "260px", maxHeight: "320px" }}
-          >
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-5 ${
-                    msg.from === "user"
-                      ? "rounded-br-sm bg-[#FF4200] text-white"
-                      : "rounded-bl-sm bg-[#F3EFE7] text-[#1C1C1C]"
-                  }`}
-                >
-                  {msg.text}
-                </div>
+          <div className="flex-1 overflow-y-auto bg-white px-4 py-4">
+            <div className="mb-4 flex justify-start">
+              <div className="max-w-[88%] rounded-2xl rounded-bl-sm bg-[#F3EFE7] px-4 py-2.5 text-sm leading-5 text-[#1C1C1C]">
+                {GREETING}
               </div>
-            ))}
-            <div ref={bottomRef} />
-          </div>
+            </div>
 
-          {/* Input */}
-          <div className="flex items-center gap-2 border-t border-black/10 bg-white px-3 py-3">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKey}
-              placeholder="Type a message…"
-              className="flex-1 rounded-full border border-black/15 bg-[#F3EFE7] px-4 py-2 text-sm text-[#1C1C1C] outline-none focus:border-[#FF4200]"
-            />
-            <button
-              onClick={send}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FF4200] transition hover:bg-[#d73b05]"
-              aria-label="Send"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+            {successState ? (
+              <div className="rounded-[1.5rem] border border-[#0B32A0]/15 bg-[#F7F4ED] p-4 text-[#1C1C1C]">
+                <p className="text-sm font-semibold text-[#0B32A0]">Thanks. Your message is in.</p>
+                <p className="mt-2 text-sm leading-6">
+                  Our team will text you shortly at <span className="font-semibold">{sentTo}</span>.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSentTo("");
+                    setError("");
+                  }}
+                  className="mt-4 inline-flex rounded-full border border-[#0B32A0]/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:border-[#FF4200] hover:text-[#FF4200]"
+                >
+                  Start another message
+                </button>
+              </div>
+            ) : (
+              <form className="space-y-3" onSubmit={handleSubmit}>
+                <label className="block">
+                  <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1C1C1C]/60">
+                    Your message
+                  </span>
+                  <textarea
+                    value={message}
+                    onChange={(event) => setMessage(event.target.value)}
+                    placeholder="Need hats for a launch next month..."
+                    rows={4}
+                    className="w-full resize-none rounded-[1.25rem] border border-black/15 bg-[#F3EFE7] px-4 py-3 text-sm text-[#1C1C1C] outline-none focus:border-[#FF4200]"
+                    required
+                  />
+                </label>
 
-          {/* Desktop fallback */}
-          <div className="border-t border-black/10 bg-[#F3EFE7] px-4 py-2 text-center">
-            <a
-              href={`sms:${PHONE}`}
-              className="text-xs text-[#0B32A0] transition hover:text-[#FF4200]"
-            >
-              Or text us directly: (213) 376-4663
-            </a>
+                <label className="block">
+                  <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1C1C1C]/60">
+                    Mobile number
+                  </span>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                    placeholder="(555) 555-5555"
+                    className="w-full rounded-full border border-black/15 bg-[#F3EFE7] px-4 py-2.5 text-sm text-[#1C1C1C] outline-none focus:border-[#FF4200]"
+                    required
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1C1C1C]/60">
+                    First name
+                    <span className="ml-2 text-[10px] font-normal tracking-normal text-[#1C1C1C]/45">optional</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder="Easton"
+                    className="w-full rounded-full border border-black/15 bg-[#F3EFE7] px-4 py-2.5 text-sm text-[#1C1C1C] outline-none focus:border-[#FF4200]"
+                  />
+                </label>
+
+                {error ? <p className="text-sm text-[#c63d16]">{error}</p> : null}
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="flex w-full items-center justify-center rounded-full bg-[#FF4200] px-4 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#d73b05] disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  {sending ? "Starting..." : "Start Text"}
+                </button>
+
+                <p className="text-center text-[11px] leading-5 text-[#1C1C1C]/55">
+                  You stay on this page. Our team gets the thread in Quo and replies by text.
+                </p>
+              </form>
+            )}
           </div>
         </div>
       )}
 
-      {/* Toggle button */}
       <button
-        onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-20 right-5 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#FF4200] shadow-lg ring-2 ring-transparent transition-all hover:bg-[#d73b05] hover:ring-white md:bottom-5"
-        aria-label={open ? "Close chat" : "Chat with us"}
+        onClick={() => setOpen((current) => !current)}
+        className="fixed bottom-20 right-5 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#FF4200] shadow-lg ring-2 ring-transparent transition-all hover:bg-[#d73b05] hover:ring-white md:bottom-24"
+        aria-label={open ? "Close text widget" : "Open text widget"}
+        type="button"
       >
         {open ? (
           <span className="text-xl leading-none text-white">✕</span>

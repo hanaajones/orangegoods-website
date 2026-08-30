@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.shopify.com",
       },
+      {
+        protocol: "https",
+        hostname: "cdn11.bigcommerce.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.ssactivewear.com",
+      },
     ],
   },
 };

@@ -6,24 +6,32 @@ export function CTASection({
   description,
   buttonLabel,
   buttonHref,
+  buttonClassName = "",
   backgroundImage,
   backgroundImagePosition,
+  backgroundImageSize,
   showImageOverlay = true,
   overlayClassName,
   eyebrow = "Start Here",
   wrapperClassName = "",
+  contentAlign = "left",
 }: {
   title: string;
   description?: string;
   buttonLabel: string;
   buttonHref: string;
+  buttonClassName?: string;
   backgroundImage?: string;
   backgroundImagePosition?: string;
+  backgroundImageSize?: string;
   showImageOverlay?: boolean;
   overlayClassName?: string;
   eyebrow?: string;
   wrapperClassName?: string;
+  contentAlign?: "left" | "center";
 }) {
+  const isCentered = contentAlign === "center";
+
   return (
     <Reveal className={`px-4 py-12 md:px-8 md:py-16 lg:px-12 ${wrapperClassName}`.trim()}>
       <section className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-[var(--og-blue)] p-8 text-white shadow-[0_24px_80px_rgba(8,30,111,0.22)] md:p-10">
@@ -33,6 +41,7 @@ export function CTASection({
             style={{
               backgroundImage: `url('${backgroundImage}')`,
               backgroundPosition: backgroundImagePosition ?? "center",
+              backgroundSize: backgroundImageSize ?? undefined,
             }}
             aria-hidden="true"
           />
@@ -43,8 +52,12 @@ export function CTASection({
             aria-hidden="true"
           />
         ) : null}
-        <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
+        <div
+          className={`relative flex flex-col gap-6 ${
+            isCentered ? "items-center text-center" : "md:flex-row md:items-end md:justify-between"
+          }`}
+        >
+          <div className={isCentered ? "mx-auto max-w-2xl" : "max-w-2xl"}>
             {eyebrow ? (
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/70">
                 {eyebrow}
@@ -61,7 +74,7 @@ export function CTASection({
           </div>
           <Link
             href={buttonHref}
-            className="btn-og-white"
+            className={`btn-og-white ${isCentered ? "self-center" : ""} ${buttonClassName}`.trim()}
           >
             {buttonLabel}
           </Link>

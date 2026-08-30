@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ServiceLeadForm } from "@/app/services/_components/ServiceLeadForm";
 import { Reveal } from "@/components/Reveal";
 import { GoodsUseCaseRotator } from "@/components/GoodsUseCaseRotator";
 
@@ -269,6 +270,67 @@ export default function GoodsPage() {
           </div>
         </div>
       </section>
+
+      <Reveal className="bg-[#F7F4ED] px-4 pb-16 md:px-8 md:pb-24 lg:px-12">
+        <section
+          id="start-project"
+          className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/14 bg-[linear-gradient(180deg,#FFF8F1_0%,#FFFDF8_100%)] p-4 shadow-[0_24px_80px_rgba(8,30,111,0.08)] md:grid-cols-[0.94fr_1.06fr] md:p-5"
+        >
+          <div className="relative min-h-[26rem] overflow-hidden rounded-[1.7rem] border border-[#0B32A0]/12 bg-[#1234A6]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/gallery/goods-hero-misc-dscf4876.jpg"
+              alt="A mix of custom branded goods shown as the closing image for the goods page"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 48%" }}
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,30,111,0.12)_0%,rgba(8,30,111,0.26)_42%,rgba(8,30,111,0.86)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.24em] text-[#FFB38E]">
+                Get a Quote
+              </p>
+              <h2 className="mt-3 font-display text-4xl uppercase leading-none md:text-5xl">
+                Ready to build the right goods program?
+              </h2>
+              <p className="mt-4 max-w-lg font-body text-sm leading-7 text-white/84 md:text-base">
+                Share the product lane, quantity, timeline, and any logo or artwork context so we
+                can point you toward the right category and next step faster.
+              </p>
+            </div>
+          </div>
+
+          <ServiceLeadForm
+            title="Get a Quote"
+            description="We will follow up with recommended product directions, decoration options, and a clear next step."
+            projectDefault=""
+            projectLabel="What kind of goods are you looking for?"
+            projectPlaceholder="Tell us what you want to make: hats, apparel, bags, drinkware, blankets, accessories, mixed goods, quantity split, budget notes, artwork context, or anything else that helps us quote the right direction."
+            hiddenFields={{
+              source: "goods-page",
+              product: "goods",
+              intent: "landing-page-inquiry",
+            }}
+            captureAttributionFields
+            submitLabel="Get a Quote"
+            showPhone={false}
+            showTimeline
+            showProductTypeField
+            productTypeLabel="What are you interested in?"
+            productTypeOptions={[
+              "Apparel",
+              "Headwear",
+              "Drinkware",
+              "Bags / Totes",
+              "Blankets",
+              "Accessories",
+              "Mixed merch run",
+              "Not sure yet",
+            ]}
+            showDesignHelp={false}
+            showArtworkUpload
+          />
+        </section>
+      </Reveal>
     </main>
   );
 }

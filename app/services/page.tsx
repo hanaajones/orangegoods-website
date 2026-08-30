@@ -63,7 +63,7 @@ const services = [
     title: "In-House Design",
     icon: "/graphics/services/in-house-design-asset-55.svg",
     iconClassName: "h-16 w-16 shrink-0 -ml-2 md:h-20 md:w-20 md:-ml-3",
-    sectionClassName: "bg-transparent",
+    sectionClassName: "bg-white",
     tagline: "Your brand, drawn by humans.",
     description:
       "Our in-house team handles merch graphics, logos, illustration, and production-ready artwork. Everything is built by hand with the product and decoration method in mind.",

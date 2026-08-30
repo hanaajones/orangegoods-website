@@ -91,6 +91,8 @@ type BuildPathCard = {
   description?: string;
   bullets: readonly string[];
   detail?: string;
+  href?: string;
+  ctaLabel?: string;
   imageSrc: string;
   imageAlt: string;
   imagePosition?: string;
@@ -98,6 +100,7 @@ type BuildPathCard = {
   logoAlt: string;
   logoWidth: number;
   logoHeight: number;
+  logoClassName?: string;
   accent: "orange" | "blue";
 };
 
@@ -117,12 +120,16 @@ type ProductCategoryPageProps = {
   heroSubnote?: string | null;
   products: Array<string | ContentItem>;
   services?: Array<string | ContentItem>;
+  servicesSectionEyebrow?: string;
+  servicesSectionTitle?: string;
+  servicesSectionTitleClassName?: string;
   faqs: Faq[];
   highlight?: string;
   heroEyebrow?: string;
   heroStats?: StatItem[];
   productSectionEyebrow?: string;
   productSectionTitle?: string;
+  productSectionTitleClassName?: string;
   productSectionDescription?: string;
   productCarouselItems?: ServiceProjectCarouselItem[];
   productSnapCarouselItems?: ServiceSnapCarouselItem[];
@@ -145,12 +152,14 @@ function SectionHeader({
   eyebrow,
   eyebrowClassName,
   title,
+  titleClassName,
   description,
   tone = "light",
 }: {
   eyebrow: string;
   eyebrowClassName?: string;
   title: string;
+  titleClassName?: string;
   description?: string;
   tone?: "light" | "dark";
 }) {
@@ -166,7 +175,7 @@ function SectionHeader({
         {eyebrow}
       </p>
       <h2
-        className={`mt-3 font-display text-4xl uppercase leading-none md:text-6xl ${
+        className={`mt-3 font-display text-4xl uppercase leading-none md:text-6xl ${titleClassName ?? ""} ${
           isDark ? "text-white" : "text-[var(--og-blue)]"
         }`}
       >
@@ -340,12 +349,16 @@ export function ProductCategoryPage({
   heroSubnote = "100+ piece MOQ",
   products,
   services = [],
+  servicesSectionEyebrow = "Decoration",
+  servicesSectionTitle = "How we decorate this",
+  servicesSectionTitleClassName,
   faqs,
   highlight,
   heroEyebrow = "Custom Goods",
   heroStats,
   productSectionEyebrow = "Products",
   productSectionTitle = "What we make",
+  productSectionTitleClassName,
   productSectionDescription,
   productCarouselItems,
   productSnapCarouselItems,
@@ -589,7 +602,7 @@ export function ProductCategoryPage({
                           alt={card.logoAlt}
                           width={card.logoWidth}
                           height={card.logoHeight}
-                          className="h-8 w-auto md:h-10"
+                          className={card.logoClassName ?? "h-8 w-auto md:h-10"}
                         />
                         {card.detail ? (
                           <p className={`font-body text-xs font-semibold uppercase tracking-[0.16em] ${accentClasses.detail}`}>
@@ -616,6 +629,20 @@ export function ProductCategoryPage({
                           </li>
                         ))}
                       </ul>
+                      {card.href && card.ctaLabel ? (
+                        <div className="mt-6">
+                          <Link
+                            href={card.href}
+                            className={`inline-flex min-h-11 items-center rounded-full border px-5 text-xs font-semibold uppercase tracking-[0.14em] transition ${
+                              card.accent === "orange"
+                                ? "border-[#FF4200]/28 text-[#FF4200] hover:border-[#FF4200] hover:bg-[#FF4200] hover:text-white"
+                                : "border-[#0B32A0]/24 text-[var(--og-blue)] hover:border-[var(--og-blue)] hover:bg-[var(--og-blue)] hover:text-white"
+                            }`}
+                          >
+                            {card.ctaLabel}
+                          </Link>
+                        </div>
+                      ) : null}
                     </div>
                   </article>
                 );
@@ -632,6 +659,7 @@ export function ProductCategoryPage({
             title={productSectionTitle}
             description={productSectionDescription}
             items={productSnapCarouselItems}
+            titleClassName={productSectionTitleClassName}
           />
           {highlight ? (
             <Reveal className="px-4 py-2 md:px-8 md:py-4 lg:px-12">
@@ -672,6 +700,7 @@ export function ProductCategoryPage({
             <SectionHeader
               eyebrow={productSectionEyebrow}
               title={productSectionTitle}
+              titleClassName={productSectionTitleClassName}
               description={productSectionDescription}
             />
             <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -697,7 +726,11 @@ export function ProductCategoryPage({
       {normalizedServices.length ? (
         <Reveal className="px-4 py-10 md:px-8 md:py-16 lg:px-12">
           <section className="mx-auto max-w-6xl">
-            <SectionHeader eyebrow="Decoration" title="How we decorate this" />
+            <SectionHeader
+              eyebrow={servicesSectionEyebrow}
+              title={servicesSectionTitle}
+              titleClassName={servicesSectionTitleClassName}
+            />
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {normalizedServices.map((service) => (
                 <article

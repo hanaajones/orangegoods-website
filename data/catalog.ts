@@ -33,6 +33,7 @@ export const JOL_FLEECE_OR_SLEEVE_PRICE = 0.25;
 export const JOL_SPECIALTY_INK_PRICE = 0.75;
 export const JOL_CUSTOMER_SUPPLIED_GOODS_PRICE = 0.25;
 export const JOL_PRINT_MARKUP_MULTIPLIER = 1.1;
+export const CATALOG_EMBROIDERY_UNIT_PRICE = 6;
 
 export const jolRates: Record<number, number> = {
   100: 2.30, 250: 2.10, 500: 1.75, 1000: 1.50, 1500: 1.40, 2000: 1.25,
@@ -149,16 +150,19 @@ export function calculateCatalogBuilderPricing({
 }: CatalogBuilderPricingInput): CatalogBuilderPricingBreakdown {
   const marginUnitPrice = getMarginForQty(qty);
   const baseBlankUnitPrice = blank + blankMarkup;
-  const frontBasePrintUnitPrice = frontDecoration === "screenPrint"
+  const hasFrontScreenPrint = frontDecoration === "screenPrint" && frontColors > 0;
+  const frontBasePrintUnitPrice = hasFrontScreenPrint
     ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: 1, printCat })
     : 0;
-  const frontFullPrintUnitPrice = frontDecoration === "screenPrint"
+  const frontFullPrintUnitPrice = hasFrontScreenPrint
     ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: frontColors, printCat })
     : 0;
-  const frontExtraColorUnitPrice = frontDecoration === "screenPrint"
+  const frontExtraColorUnitPrice = hasFrontScreenPrint
     ? Math.max(0, frontFullPrintUnitPrice - frontBasePrintUnitPrice)
     : 0;
-  const frontDecorationUnitPrice = frontDecoration === "embroidery" ? 3 : frontBasePrintUnitPrice;
+  const frontDecorationUnitPrice = frontDecoration === "embroidery"
+    ? CATALOG_EMBROIDERY_UNIT_PRICE
+    : frontBasePrintUnitPrice;
   const backPrintUnitPrice = backPrintColors > 0
     ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: backPrintColors, printCat })
     : 0;
@@ -166,7 +170,7 @@ export function calculateCatalogBuilderPricing({
     ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: sidePrintColors, printCat, isSleeveOrSide: true })
     : 0;
   const screenPrintedPlacements =
-    (frontDecoration === "screenPrint" ? 1 : 0) +
+    (hasFrontScreenPrint ? 1 : 0) +
     (backPrintColors > 0 ? 1 : 0) +
     (sidePrintColors > 0 ? 1 : 0);
   const specialtyUpgradeUnitPrice = printUpgrade ? JOL_SPECIALTY_INK_PRICE * screenPrintedPlacements : 0;
@@ -238,7 +242,7 @@ export const ADDONS: Record<AddonKey, { label: string; price: number }> = {
   extraColor:     { label: 'Additional print color',         price: 1.00 },
   backPrint:      { label: 'Back print',                     price: 3.00 },
   waterBasedPuff: { label: 'Water-based / puff ink',         price: 1.00 },
-  embroidery:     { label: 'Embroidery (instead of print)',  price: 3.00 },
+  embroidery:     { label: 'Embroidery (instead of print)',  price: CATALOG_EMBROIDERY_UNIT_PRICE },
   neckLabel:      { label: 'Printed neck label',             price: 2.00 },
   wovenLabel:     { label: 'Woven label',                    price: 3.50 },
   polybagged:     { label: 'Polybagged + folded',            price: 1.00 },

@@ -21,6 +21,7 @@ import {
 } from "@/lib/content";
 
 const hatsBuilderHref = "/build/og-crafted-hats";
+const featuredStyleStartingPrice = "$13.00";
 
 const quantityTiers = [
   {
@@ -68,6 +69,14 @@ const decorationPreviewOptions = [
   },
 ];
 
+const fabricPreviewOptions = fabricOptions.map((option, index) => ({
+  ...option,
+  imageScaleClass:
+    index < 3
+      ? "-translate-y-[10px] scale-[1.08] group-hover:-translate-y-[10px] group-hover:scale-[1.11]"
+      : option.imageScaleClass,
+}));
+
 const heroShowcaseSlides = [
   {
     src: "/images/gallery/headwear-customize-detail-mg-2672.jpg",
@@ -80,6 +89,21 @@ const heroShowcaseSlides = [
   {
     src: "/images/gallery/headwear-interior-label-img-7638.jpg",
     position: "center 50%",
+  },
+];
+
+const quickTurnHighlights = [
+  {
+    label: "Base",
+    value: "Premium blanks with your decoration",
+  },
+  {
+    label: "Timing",
+    value: "2-3 week turnaround",
+  },
+  {
+    label: "Finish",
+    value: "Decorated locally",
   },
 ];
 
@@ -342,8 +366,8 @@ export default function HatsPage() {
           position="center 40%"
           speed={0.1}
         />
-        <div className="absolute inset-0 bg-[#1C1C1C]/34" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/42 to-[#1C1C1C]/16" />
+        <div className="absolute inset-0 bg-[#1C1C1C]/46" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/72 via-[#1C1C1C]/54 to-[#1C1C1C]/26" />
         <div className="relative mx-auto max-w-6xl">
           <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
             Full Custom
@@ -457,47 +481,56 @@ export default function HatsPage() {
               title="Start with the right shape"
               description="Pick the silhouette here, then refine the rest inside the builder."
             />
-
-            <div className="mt-8 grid gap-5 md:grid-cols-3">
-              {featuredHatStyles.map((card) => (
-                <Link
-                  key={card.slug}
-                  href={`${hatsBuilderHref}?hatStyle=${card.slug}`}
-                  className="group block h-full"
+            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {featuredHatStyles.map((style) => (
+                <article
+                  key={style.slug}
+                  className="group relative overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[rgba(255,248,241,0.88)] transition hover:border-[#0B32A0] hover:shadow-lg"
                 >
-                  <article className="flex h-full flex-col overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[#F7F4ED] shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
-                    <div className="relative aspect-[4/3] bg-[#efe7da]">
+                  <Link
+                    href={`${hatsBuilderHref}?hatStyle=${encodeURIComponent(style.slug)}`}
+                    aria-label={`Open ${style.title}`}
+                    className="absolute inset-0 z-10 rounded-[1.9rem]"
+                  />
+                  <div className="pointer-events-none">
+                    <div className="relative aspect-[4/3] bg-white">
                       <Image
-                        src={card.image}
-                        alt={card.title}
+                        src={style.image}
+                        alt={style.title}
                         fill
-                        sizes="(min-width: 768px) 50vw, 100vw"
+                        sizes="(min-width: 1536px) 28vw, (min-width: 768px) 44vw, 100vw"
                         className="object-cover transition duration-300 group-hover:scale-[1.03]"
-                        style={{ objectPosition: card.imagePosition }}
+                        style={{ objectPosition: style.imagePosition }}
                       />
+                      <span className="absolute right-3 top-3 rounded-full bg-[#0B32A0]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--og-blue)]">
+                        {style.profile}
+                      </span>
                     </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                        {card.model}
-                      </p>
-                      <h3 className="mt-2 min-h-[3.85rem] text-3xl font-semibold leading-none text-[#0B32A0]">
-                        {card.title}
-                      </h3>
-                      <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                        {card.description}
-                      </p>
-                      <div className="mt-5 flex items-center gap-2 pt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
-                        <span>Build this hat</span>
-                        <span
-                          aria-hidden="true"
-                          className="text-[var(--og-orange)] transition-transform duration-200 group-hover:translate-x-1"
-                        >
-                          →
-                        </span>
-                      </div>
+                  </div>
+                  <div className="pointer-events-none p-6">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">
+                      {style.model}
+                    </p>
+                    <h3 className="mt-1 text-2xl font-semibold leading-none text-[var(--og-blue)]">
+                      {style.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-[var(--og-muted)]">
+                      {style.description}
+                    </p>
+                    <p className="mt-3 text-sm font-semibold text-[var(--og-orange)]">
+                      From {featuredStyleStartingPrice} / hat
+                    </p>
+                    <div className="mt-5 flex items-center gap-2 pt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
+                      <span>Customize this hat</span>
+                      <span
+                        aria-hidden="true"
+                        className="text-[var(--og-orange)] transition-transform duration-200 group-hover:translate-x-1"
+                      >
+                        →
+                      </span>
                     </div>
-                  </article>
-                </Link>
+                  </div>
+                </article>
               ))}
             </div>
 
@@ -534,7 +567,7 @@ export default function HatsPage() {
           description="Fabric sets the tone fast. Click through to compare the options more clearly."
           href="/goods/hats/fabric"
           cta="See all fabric options"
-          options={fabricOptions}
+          options={fabricPreviewOptions}
           horizontal
           fullBleed
           previewCount={3}
@@ -658,29 +691,34 @@ export default function HatsPage() {
                 style={{ objectPosition: "center 42%" }}
               />
             </div>
-            <div className="rounded-[1.75rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
+            <div className="rounded-[1.75rem] border border-[#0B32A0]/15 bg-[linear-gradient(180deg,rgba(255,255,255,1),rgba(255,247,238,0.98))] p-6 shadow-[0_22px_52px_rgba(11,50,160,0.08)] md:p-7">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
                 Need it sooner?
               </p>
               <h3 className="mt-3 text-3xl font-semibold leading-tight text-[#0B32A0]">
                 Start with a premium blank.
               </h3>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-[var(--og-muted)]">
+                Keep the retail feel, skip the longer custom build. Quick Turn starts
+                with a better blank and moves fast.
+              </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                {[
-                  "Premium blanks with your decoration",
-                  "2-3 week turnaround",
-                  "Decorated locally",
-                ].map((item) => (
+                {quickTurnHighlights.map((item) => (
                   <div
-                    key={item}
-                    className="flex min-h-[5.5rem] items-center justify-center rounded-[1.15rem] border border-[#0B32A0]/10 bg-[rgba(255,248,241,0.88)] px-4 py-3 text-center text-sm leading-6 text-[var(--og-muted)]"
+                    key={item.value}
+                    className="min-h-[7.25rem] rounded-[1.25rem] border border-[#0B32A0]/12 bg-white px-4 py-4 shadow-[0_12px_26px_rgba(11,50,160,0.06)]"
                   >
-                    {item}
+                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                      {item.label}
+                    </p>
+                    <p className="mt-3 max-w-[12rem] text-base font-medium leading-6 text-[#0B32A0]">
+                      {item.value}
+                    </p>
                   </div>
                 ))}
               </div>
               <Link
-                href="/goods/hats/ready-made"
+                href="/goods/hats/quick-turn"
                 className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See quick turn hats
@@ -724,9 +762,9 @@ export default function HatsPage() {
         description="Send the style, quantity, and timeline. We will take it from there."
         buttonLabel="Customize your hat"
         buttonHref="/goods/hats/styles"
-        backgroundImage="/images/gallery/hat-og-patch-lifestyle.jpg"
-        backgroundImagePosition="center 48%"
-        overlayClassName="bg-[linear-gradient(135deg,rgba(8,30,111,0.32),rgba(8,30,111,0.56))]"
+        backgroundImage="/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg"
+        backgroundImagePosition="center 32%"
+        showImageOverlay={false}
       />
     </main>
   );

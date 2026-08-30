@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, type CSSProperties } from "react";
 import Link from "next/link";
 import type { ReadyMadeHatStyle } from "@/components/ShoppableReadyMadeHat";
 
@@ -13,48 +13,30 @@ export type HatMeta = ReadyMadeHatStyle & {
 };
 
 const PROFILE_LABELS = { low: "Low Profile", mid: "Mid Profile", high: "High Profile" };
+const PROFILE_OPTIONS = ["all", "low", "mid", "high"] as const;
+const STARTING_PRICE = "$16.50";
+const COLOR_OPTIONS = [
+  "Black",
+  "Cream",
+  "Grey",
+  "Blue",
+  "Green",
+  "Brown",
+  "Tan",
+  "Pink",
+  "Burgundy",
+  "Red",
+  "Orange",
+  "Yellow",
+  "Purple",
+  "White",
+  "Camo",
+  "Stripe",
+  "Athletic Heather",
+] as const;
 
 // Simplified hat type categories
 const HAT_TYPES = ["Dad Hat", "5-Panel", "Trucker", "Bucket", "Structured", "Corduroy"];
-const FILTER_COLOR_ORDER = [
-  "Black",
-  "Blue",
-  "White",
-  "Brown",
-  "Green",
-  "Tan",
-  "Grey",
-  "Pink",
-  "Stripe",
-  "Yellow",
-  "Athletic Heather",
-  "Camo",
-  "Purple",
-  "Orange",
-  "Red",
-  "Cream",
-  "Burgundy",
-];
-
-const FILTER_COLOR_HEX: Record<string, string> = {
-  Black: "#1a1a1a",
-  Blue: "#2255bb",
-  White: "#ffffff",
-  Brown: "#7a5a3a",
-  Green: "#4a5a2a",
-  Tan: "#c4a276",
-  Grey: "#9a9a9a",
-  Pink: "#e8a0b4",
-  Stripe: "#f5f1e8",
-  Yellow: "#f0d870",
-  "Athletic Heather": "#b7b5ad",
-  Camo: "#6f7651",
-  Purple: "#8d75b5",
-  Orange: "#e05a1a",
-  Red: "#cc2222",
-  Cream: "#e8e0d0",
-  Burgundy: "#6b1f2a",
-};
 
 function getHatType(style: HatMeta): string {
   const name = style.name.toLowerCase();
@@ -127,24 +109,6 @@ const STYLE_GROUP_FRONT_PREVIEWS: Record<string, Partial<Record<string, string>>
     Green: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1123/WEB_THUMBNAILS/1123_SURF_ROPE_CAP_ARMY_WHITE_THUMB.jpg",
     Orange: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1123/WEB_THUMBNAILS/1123_SURF_ROPE_CAP_FIRE_WHITE_THUMB.jpg",
   },
-  "1150": {
-    Green: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1150/WEB_THUMBNAILS/1150_CLASS_CAP_EUCALYPTUS_THUMB_1B.jpg",
-  },
-  "1152": {
-    Pink: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1152/WEB_THUMBNAILS/1152_CLASS_CORD_CAP_HAZY_PINK_THUMB_1B.jpg",
-  },
-  "1154": {
-    Blue: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1154/WEB_THUMBNAILS/1154_CLASS_TWO-TONE_CAP_NATURAL_MIDNIGHT_THUMB.jpg",
-  },
-  "1161": {
-    Cream: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1161/WEB_THUMBNAILS/1161_FRAME_TRUCKER_CAP_ECRU_THUMB.jpg",
-  },
-  "1164C": {
-    Camo: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1164C/WEB_THUMBNAILS/1164C_FRAME_SOFT_CAMO_CAP_TREE_CAMO_THUMB.jpg",
-  },
-  "1165": {
-    Red: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1165/WEB_THUMBNAILS/1165_FRAME_TWO-TONE_CAP_NATURAL_CARDINAL_THUMB.jpg",
-  },
   "1130": {
     Black: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1130/WEB_THUMBNAILS/1130_ACCESS_CAP_BLACK_THUMB_1B.jpg",
     Cream: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1130/WEB_THUMBNAILS/1130_ACCESS_CAP_ECRU_THUMB_1B.jpg",
@@ -171,6 +135,9 @@ const STYLE_GROUP_FRONT_PREVIEWS: Record<string, Partial<Record<string, string>>
     Blue: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1153/WEB_THUMBNAILS/1153_CLASS_FIVE_PANEL_CAP_MIDNIGHT_BLUE_THUMB_1B.jpg",
     Brown: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1153/WEB_THUMBNAILS/1153_CLASS_FIVE_PANEL_CAP_WALNUT_THUMB_1B.jpg",
   },
+  "1154": {
+    Blue: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1154/WEB_THUMBNAILS/1154_CLASS_TWO-TONE_CAP_NATURAL_MIDNIGHT_THUMB.jpg",
+  },
   "1156": {
     Black: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1156/WEB_THUMBNAILS/1156_CLASS_CANVAS_CAP_BLACK_THUMB.jpg",
     Cream: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1156/WEB_THUMBNAILS/1156_CLASS_CANVAS_CAP_BONE_THUMB.jpg",
@@ -190,6 +157,15 @@ const STYLE_GROUP_FRONT_PREVIEWS: Record<string, Partial<Record<string, string>>
     Grey: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1160/WEB_THUMBNAILS/1160_FRAME_CAP_STORM_THUMB_1B.jpg",
     Blue: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1160/WEB_THUMBNAILS/1160_FRAME_CAP_NAVY_THUMB_1B.jpg",
     Brown: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1160/WEB_THUMBNAILS/1160_FRAME_CAP_WALNUT_THUMB_1B.jpg",
+  },
+  "1161": {
+    Cream: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1161/WEB_THUMBNAILS/1161_FRAME_TRUCKER_CAP_ECRU_THUMB.jpg",
+  },
+  "1164C": {
+    Camo: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1164C/WEB_THUMBNAILS/1164C_FRAME_SOFT_CAMO_CAP_TREE_CAMO_THUMB.jpg",
+  },
+  "1165": {
+    Red: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1165/WEB_THUMBNAILS/1165_FRAME_TWO-TONE_CAP_NATURAL_CARDINAL_THUMB.jpg",
   },
   "1175": {
     Black: "https://cdn11.bigcommerce.com/s-hsi95a83fz/images/stencil/640w/uploaded_images/1175/WEB_THUMBNAILS/1175_TERRY_BUCKET_HAT_BLACK_THUMB.jpg",
@@ -228,6 +204,26 @@ const STYLE_DEFAULT_PREVIEW_GROUPS: Record<string, string> = {
   "1176": "Pink",
 };
 
+const COLOR_SWATCH_BACKGROUNDS: Record<string, string> = {
+  Black: "#1a1a1a",
+  Cream: "#f0ead8",
+  Grey: "#80858d",
+  Blue: "#234a93",
+  Green: "#647a4e",
+  Brown: "#7a5a3a",
+  Tan: "#c9b390",
+  Pink: "#dfa7b4",
+  Burgundy: "#6a1a2a",
+  Red: "#c63a2a",
+  Orange: "#d9793e",
+  Yellow: "#e7c85f",
+  Purple: "#7b61a9",
+  White: "#ffffff",
+  Camo: "linear-gradient(135deg, #40543a 0%, #6c7851 50%, #8a8060 100%)",
+  Stripe: "linear-gradient(135deg, #1e3a5f 0%, #1e3a5f 34%, #f3efe6 34%, #f3efe6 66%, #b87060 66%, #b87060 100%)",
+  "Athletic Heather": "linear-gradient(135deg, #d8d8d8 0%, #bebebe 100%)",
+};
+
 function filterColorGroup(name: string): string {
   const normalized = name.toLowerCase().replace(/[^a-z]+/g, " ");
 
@@ -251,36 +247,32 @@ function filterColorGroup(name: string): string {
   return "Cream";
 }
 
-function filterSwatchBg(name: string): React.CSSProperties {
-  if (name === "Stripe") {
-    return {
-      background: "repeating-linear-gradient(90deg, #ffffff 0 5px, #d8d2c7 5px 10px)",
-    };
-  }
-
-  return { background: FILTER_COLOR_HEX[name] ?? "#d0ccc0" };
-}
-
 function isBlackColor(name: string): boolean {
   return name.toLowerCase().includes("black");
 }
 
-function cardHeroImage(style: HatMeta, selectedColor: string): string {
+function styleColorGroups(style: HatMeta) {
+  return Array.from(new Set(style.allColors.map(filterColorGroup)));
+}
+
+function colorFilterSwatchStyle(group: string): CSSProperties {
+  return {
+    background: COLOR_SWATCH_BACKGROUNDS[group] ?? "#d0ccc0",
+  };
+}
+
+function cardHeroImage(style: HatMeta, preferredGroup?: string): string {
   const styleId = style.id.toUpperCase();
-
-  if (selectedColor !== "all") {
-    const selectedFront = style.colors.find(color =>
-      filterColorGroup(color.name) === selectedColor && color.front
-    );
-
-    return selectedFront?.front ??
-      STYLE_GROUP_FRONT_PREVIEWS[styleId]?.[selectedColor] ??
-      "";
-  }
-
-  const preferredGroup = STYLE_DEFAULT_PREVIEW_GROUPS[styleId];
-  const preferredPreview = preferredGroup
+  const requestedPreview = preferredGroup
     ? STYLE_GROUP_FRONT_PREVIEWS[styleId]?.[preferredGroup]
+      ?? style.colors.find((color) => filterColorGroup(color.name) === preferredGroup && color.front)?.front
+    : undefined;
+
+  if (requestedPreview) return requestedPreview;
+
+  const defaultPreviewGroup = STYLE_DEFAULT_PREVIEW_GROUPS[styleId];
+  const preferredPreview = defaultPreviewGroup
+    ? STYLE_GROUP_FRONT_PREVIEWS[styleId]?.[defaultPreviewGroup]
     : undefined;
 
   if (preferredPreview) return preferredPreview;
@@ -295,25 +287,18 @@ function cardHeroImage(style: HatMeta, selectedColor: string): string {
 }
 
 export function ReadyMadeHatGrid({ styles }: { styles: HatMeta[] }) {
-  const [profile, setProfile] = useState<"all" | "low" | "mid" | "high">("all");
+  const [profile, setProfile] = useState<(typeof PROFILE_OPTIONS)[number]>("all");
   const [selectedType, setSelectedType] = useState<string>("all");
   const [selectedColor, setSelectedColor] = useState<string>("all");
 
-  // Unique filter color families with dedup
-  const allColorNames = useMemo(() => {
-    const set = new Set<string>();
-    styles.forEach(s =>
-      s.allColors
-        .filter(c => c !== "Default" && !c.includes("→"))
-        .forEach(c => set.add(filterColorGroup(c)))
-    );
-    return FILTER_COLOR_ORDER.filter(color => set.has(color));
-  }, [styles]);
+  const availableColors = useMemo(() => (
+    COLOR_OPTIONS.filter((group) => styles.some((style) => styleColorGroups(style).includes(group)))
+  ), [styles]);
 
   const filtered = useMemo(() => styles.filter(s => {
     if (profile !== "all" && s.profile !== profile) return false;
     if (selectedType !== "all" && getHatType(s) !== selectedType) return false;
-    if (selectedColor !== "all" && !s.allColors.some(color => filterColorGroup(color) === selectedColor)) return false;
+    if (selectedColor !== "all" && !styleColorGroups(s).includes(selectedColor)) return false;
     return true;
   }), [styles, profile, selectedType, selectedColor]);
 
@@ -321,118 +306,180 @@ export function ReadyMadeHatGrid({ styles }: { styles: HatMeta[] }) {
 
   return (
     <div className="mx-auto max-w-6xl px-6 pb-10 md:px-12">
-      {/* ── Profile filter bar (top) ── */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 border-b border-[#0B32A0]/10 pb-4">
-        {(["all", "low", "mid", "high"] as const).map(p => (
-          <button key={p} type="button" onClick={() => setProfile(p)}
-            className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] transition ${
-              profile === p
-                ? "border-[var(--og-orange)] bg-[var(--og-orange)] text-white"
-                : "border-[#0B32A0]/20 text-[var(--og-blue)] hover:border-[var(--og-orange)]"
-            }`}>
-            {p === "all" ? "All" : PROFILE_LABELS[p]}
-          </button>
-        ))}
-        {hasFilters && (
-          <button type="button" onClick={() => { setProfile("all"); setSelectedType("all"); setSelectedColor("all"); }}
-            className="ml-auto text-xs font-semibold text-[var(--og-muted)] hover:text-[var(--og-orange)]">
-            Clear ✕
-          </button>
-        )}
-      </div>
-
-      <div className="flex gap-8">
-        {/* ── Left sidebar ── */}
-        <aside className="hidden w-40 shrink-0 space-y-6 lg:block">
-          {/* Hat type */}
-          <div>
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)]">Style</p>
-            <ul className="space-y-0.5">
-              {["all", ...HAT_TYPES].map(t => (
-                <li key={t}>
-                  <button type="button" onClick={() => setSelectedType(t)}
-                    className={`w-full rounded-lg px-3 py-1.5 text-left text-xs transition ${
-                      selectedType === t
-                        ? "bg-[var(--og-orange)] font-semibold text-white"
-                        : "text-[var(--og-muted)] hover:text-[var(--og-orange)]"
-                    }`}>
-                    {t === "all" ? "All Styles" : t}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Color swatches */}
-          <div>
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)]">Color</p>
-            <div className="flex max-h-56 flex-wrap gap-2 overflow-y-auto p-1">
-              {/* All colors reset swatch */}
-              <button type="button" title="All colors" onClick={() => setSelectedColor("all")}
-                className={`h-7 w-7 shrink-0 rounded-full border-2 bg-white text-[9px] font-bold text-[var(--og-blue)] transition ${
-                  selectedColor === "all" ? "border-[var(--og-blue)] ring-2 ring-[var(--og-blue)]/20 ring-offset-1" : "border-[#0B32A0]/20 hover:border-[var(--og-blue)]"
-                }`}>
-                ✓
+      <div className="mb-8 overflow-hidden rounded-[1.6rem] border border-[#0B32A0]/10 bg-[rgba(255,255,255,0.72)] shadow-[0_14px_36px_rgba(8,30,111,0.05)] backdrop-blur-sm">
+        <div className="flex flex-col gap-3 px-4 py-4 md:flex-row md:items-start md:px-5">
+          <p className="pt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)]/72 md:w-[4.75rem] md:shrink-0">
+            Profile
+          </p>
+          <div className="flex flex-1 flex-wrap gap-2.5">
+            {PROFILE_OPTIONS.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => setProfile(option)}
+                className={`rounded-full border px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
+                  profile === option
+                    ? "border-[var(--og-orange)]/35 bg-[var(--og-orange)]/10 text-[var(--og-orange)]"
+                    : "border-[#0B32A0]/12 bg-white/45 text-[var(--og-blue)]/72 hover:border-[var(--og-orange)]/28 hover:text-[var(--og-blue)]"
+                }`}
+              >
+                <span className="relative top-px inline-block">
+                  {option === "all" ? "All" : PROFILE_LABELS[option]}
+                </span>
               </button>
-              {allColorNames.map(c => (
-                <button key={c} type="button" title={c} onClick={() => setSelectedColor(c)}
-                  className={`h-7 w-7 shrink-0 rounded-full border-2 transition ${
-                    selectedColor === c ? "border-[var(--og-orange)] ring-2 ring-[var(--og-orange)]/25 ring-offset-1" : "border-white hover:border-[var(--og-orange)]"
-                  } shadow-sm`}
-                  style={filterSwatchBg(c)}
-                />
-              ))}
-            </div>
-            {selectedColor !== "all" && (
-              <p className="mt-1 text-[11px] text-[var(--og-muted)]">{selectedColor}</p>
-            )}
+            ))}
           </div>
-        </aside>
+        </div>
 
-        {/* ── Grid ── */}
-        <div className="flex-1">
-          {filtered.length === 0 ? (
-            <div className="py-20 text-center text-sm text-[var(--og-muted)]">
-              No styles match those filters.{" "}
-              <button type="button" onClick={() => { setProfile("all"); setSelectedType("all"); setSelectedColor("all"); }} className="font-semibold text-[var(--og-orange)]">Clear</button>
+        <div className="border-t border-[#0B32A0]/8 px-4 py-4 md:px-5">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start">
+            <p className="pt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)]/72 md:w-[4.75rem] md:shrink-0">
+              Style
+            </p>
+            <div className="flex flex-1 flex-wrap items-start gap-2.5">
+              {["all", ...HAT_TYPES].map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setSelectedType(option)}
+                  className={`rounded-full border px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
+                    selectedType === option
+                      ? "border-[var(--og-orange)]/35 bg-[var(--og-orange)]/10 text-[var(--og-orange)]"
+                      : "border-[#0B32A0]/12 bg-white/45 text-[var(--og-blue)]/72 hover:border-[var(--og-orange)]/28 hover:text-[var(--og-blue)]"
+                  }`}
+                >
+                  <span className="relative top-px inline-block">
+                    {option === "all" ? "All Styles" : option}
+                  </span>
+                </button>
+              ))}
+              {hasFilters ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setProfile("all");
+                    setSelectedType("all");
+                    setSelectedColor("all");
+                  }}
+                  className="text-[11px] font-semibold text-[var(--og-muted)]/80 transition hover:text-[var(--og-orange)] md:ml-auto md:-translate-x-[5px] md:self-center"
+                >
+                  Clear ✕
+                </button>
+              ) : null}
             </div>
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-              {filtered.map(style => {
-                const heroImg = cardHeroImage(style, selectedColor);
-                return (
-                  <Link
-                    key={style.id}
-                    href={`/goods/hats/ready-made/${style.id.toLowerCase()}`}
-                    className="group overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/15 bg-[rgba(255,248,241,0.88)] transition hover:border-[var(--og-orange)] hover:shadow-lg"
-                  >
-                    <div className="relative aspect-square bg-white">
-                      {heroImg && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={heroImg}
-                          alt={style.name}
-                          className="h-full w-full object-contain p-6 transition duration-300 group-hover:scale-[1.04]"
-                        />
-                      )}
-                      <span className="absolute right-3 top-3 rounded-full bg-[#0B32A0]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--og-blue)]">
-                        {PROFILE_LABELS[style.profile]}
-                      </span>
-                    </div>
-                    <div className="p-5">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">#{style.id}</p>
-                      <h3 className="mt-1 text-xl font-semibold text-[var(--og-blue)]">{style.name}</h3>
-                      <p className="mt-1 text-sm text-[var(--og-muted)]">{style.tagline}</p>
-                      <p className="mt-2 text-xs text-[var(--og-muted)]">{style.colors.length} color{style.colors.length !== 1 ? "s" : ""}</p>
-                      <p className="mt-3 text-sm font-semibold text-[var(--og-orange)]">From $16.50 / hat →</p>
-                    </div>
-                  </Link>
-                );
-              })}
+          </div>
+        </div>
+
+        <div className="border-t border-[#0B32A0]/8 px-4 py-4 md:px-5">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start">
+            <p className="pt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)]/72 md:w-[4.75rem] md:shrink-0">
+              Color{selectedColor !== "all" ? ` · ${selectedColor}` : ""}
+            </p>
+            <div className="flex flex-1 flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setSelectedColor("all")}
+                className={`rounded-full border px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
+                  selectedColor === "all"
+                    ? "border-[var(--og-orange)]/35 bg-[var(--og-orange)]/10 text-[var(--og-orange)]"
+                    : "border-[#0B32A0]/12 bg-white/45 text-[var(--og-blue)]/72 hover:border-[var(--og-orange)]/28 hover:text-[var(--og-blue)]"
+                }`}
+              >
+                <span className="relative top-px inline-block">All Colors</span>
+              </button>
+              <div className="flex flex-wrap items-center gap-2.5 py-0.5">
+                {availableColors.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    title={option}
+                    aria-label={`Filter by ${option}`}
+                    onClick={() => setSelectedColor(option)}
+                    style={colorFilterSwatchStyle(option)}
+                    className={`h-7 w-7 shrink-0 rounded-full border border-[#1C1C1C]/12 shadow-sm transition ${
+                      selectedColor === option
+                        ? "ring-2 ring-[var(--og-orange)] ring-offset-2"
+                        : "hover:ring-2 hover:ring-[var(--og-orange)] hover:ring-offset-2"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
+
+      {filtered.length === 0 ? (
+        <div className="py-20 text-center text-sm text-[var(--og-muted)]">
+          No styles match those filters.{" "}
+          <button
+            type="button"
+            onClick={() => {
+              setProfile("all");
+              setSelectedType("all");
+              setSelectedColor("all");
+            }}
+            className="font-semibold text-[var(--og-orange)]"
+          >
+            Clear
+          </button>
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 2xl:grid-cols-3">
+          {filtered.map((style) => {
+            const heroImg = cardHeroImage(style, selectedColor !== "all" ? selectedColor : undefined);
+            const styleHref = `/goods/hats/quick-turn/${style.id.toLowerCase()}`;
+
+            return (
+              <article
+                key={style.id}
+                className="group relative overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[rgba(255,248,241,0.88)] transition hover:border-[#0B32A0] hover:shadow-lg"
+              >
+                <Link
+                  href={styleHref}
+                  aria-label={`Open ${style.name}`}
+                  className="absolute inset-0 z-10 rounded-[1.9rem]"
+                />
+                <div className="pointer-events-none">
+                  <div className="relative aspect-[4/3] bg-white">
+                    {heroImg ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={heroImg}
+                        alt={style.name}
+                        className="h-full w-full scale-[1.1] object-cover object-bottom transition duration-300 group-hover:scale-[1.13]"
+                      />
+                    ) : null}
+                    <span className="absolute right-3 top-3 rounded-full bg-[#0B32A0]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--og-blue)]">
+                      {PROFILE_LABELS[style.profile]}
+                    </span>
+                  </div>
+                </div>
+                <div className="pointer-events-none p-6">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">
+                    {style.id}
+                  </p>
+                  <h2 className="mt-1 text-2xl font-semibold leading-none text-[var(--og-blue)]">
+                    {style.name}
+                  </h2>
+                  <p className="mt-2 text-sm text-[var(--og-muted)]">
+                    {style.tagline}
+                  </p>
+                  <p className="mt-3 text-sm font-semibold text-[var(--og-orange)]">
+                    From {STARTING_PRICE} / hat
+                  </p>
+                  <Link
+                    href={styleHref}
+                    className="pointer-events-auto relative z-20 mt-5 inline-flex min-h-11 items-center justify-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[2px] hover:border-[var(--og-orange)] hover:bg-[var(--og-orange)] hover:text-white"
+                  >
+                    Customize
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

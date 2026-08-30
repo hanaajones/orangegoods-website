@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { Reveal } from "@/components/Reveal";
 
 type Step = {
+  stepLabel?: string;
   title: string;
   body: string;
   iconSrc?: string;
@@ -19,10 +20,11 @@ export function ProcessSteps({
   title,
   description,
   steps,
-  buttonHref = "/contact",
+  buttonHref,
   heroImage,
   heroImagePosition,
   heroOverlayClassName,
+  wrapperClassName = "bg-[#F7F4ED]",
 }: {
   eyebrow: string;
   title: string;
@@ -32,12 +34,13 @@ export function ProcessSteps({
   heroImage?: string;
   heroImagePosition?: string;
   heroOverlayClassName?: string;
+  wrapperClassName?: string;
 }) {
   const stepsRef = useRef<HTMLDivElement | null>(null);
   const stepsInView = useInView(stepsRef, { once: true, amount: 0.3 });
 
   return (
-    <Reveal className="bg-[#F7F4ED] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+    <Reveal className={`${wrapperClassName} px-4 py-12 md:px-8 md:py-16 lg:px-12`.trim()}>
       <section id="process" className="mx-auto max-w-6xl">
         {heroImage ? (
           <div className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0]/12">
@@ -118,6 +121,11 @@ export function ProcessSteps({
                   />
                 </motion.div>
               ) : null}
+              {step.stepLabel ? (
+                <p className="text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  {step.stepLabel}
+                </p>
+              ) : null}
               <h3 className="mt-4 text-center text-2xl font-semibold text-[var(--og-blue)]">
                 {step.title}
               </h3>
@@ -128,14 +136,16 @@ export function ProcessSteps({
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href={buttonHref}
-            className="font-body inline-flex min-h-11 items-center justify-center rounded-full border-2 border-[#0B32A0] bg-white px-7 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] shadow-[4px_4px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
-          >
-            START A PROJECT
-          </a>
-        </div>
+        {buttonHref ? (
+          <div className="mt-12 text-center">
+            <a
+              href={buttonHref}
+              className="font-body inline-flex min-h-11 items-center justify-center rounded-full border-2 border-[#0B32A0] bg-white px-7 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] shadow-[4px_4px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
+            >
+              START A PROJECT
+            </a>
+          </div>
+        ) : null}
       </section>
     </Reveal>
   );

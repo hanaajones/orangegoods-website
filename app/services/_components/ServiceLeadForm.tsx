@@ -33,6 +33,25 @@ const selectOptions = {
   designHelp: ["Yes", "No", "I'm not sure"],
   quantity: ["100-250", "250-500", "500-1,000", "1,000-2,000", "2,000-5,000", "5,000+"],
   timeline: ["ASAP", "1-2 weeks", "2-4 weeks", "1-2 months", "Not sure"],
+  goodsProductType: [
+    "Apparel",
+    "Headwear",
+    "Drinkware",
+    "Bags / Totes",
+    "Blankets",
+    "Accessories",
+    "Mixed merch run",
+    "Not sure yet",
+  ],
+  apparelProductType: [
+    "Tees",
+    "Hoodies / Fleece",
+    "Sweatpants",
+    "Polos / Work Shirts",
+    "Outerwear",
+    "Mixed apparel run",
+    "Not sure yet",
+  ],
   productType: ["Tees", "Hats", "Hoodies / Fleece", "Sweatpants", "Totes", "Mixed merch run", "Not sure yet"],
   embroideryProductType: [
     "Hats",
@@ -59,6 +78,7 @@ const selectOptions = {
     "Multiple placements",
     "Need help deciding",
   ],
+  decorationMethod: ["Screen printing", "Embroidery", "Mixed decoration", "Not sure yet"],
 };
 
 function RequiredLabel({
@@ -88,6 +108,14 @@ export function ServiceLeadForm({
   showPhone = true,
   showTimeline = true,
   showDesignHelp = true,
+  showProductTypeField = false,
+  productTypeLabel = "Product type",
+  productTypeOptions,
+  showBlankDirectionField = false,
+  blankDirectionLabel = "Blank direction",
+  showDecorationMethodField = false,
+  decorationMethodLabel = "Decoration method",
+  decorationMethodOptions = selectOptions.decorationMethod,
   showScreenPrintFields = false,
   showEmbroideryFields = false,
   showArtworkUpload = false,
@@ -105,6 +133,14 @@ export function ServiceLeadForm({
       showPhone={showPhone}
       showTimeline={showTimeline}
       showDesignHelp={showDesignHelp}
+      showProductTypeField={showProductTypeField}
+      productTypeLabel={productTypeLabel}
+      productTypeOptions={productTypeOptions}
+      showBlankDirectionField={showBlankDirectionField}
+      blankDirectionLabel={blankDirectionLabel}
+      showDecorationMethodField={showDecorationMethodField}
+      decorationMethodLabel={decorationMethodLabel}
+      decorationMethodOptions={decorationMethodOptions}
       showScreenPrintFields={showScreenPrintFields}
       showEmbroideryFields={showEmbroideryFields}
       showArtworkUpload={showArtworkUpload}
@@ -124,6 +160,14 @@ type ServiceLeadFormProps = {
   showPhone?: boolean;
   showTimeline?: boolean;
   showDesignHelp?: boolean;
+  showProductTypeField?: boolean;
+  productTypeLabel?: string;
+  productTypeOptions?: readonly string[];
+  showBlankDirectionField?: boolean;
+  blankDirectionLabel?: string;
+  showDecorationMethodField?: boolean;
+  decorationMethodLabel?: string;
+  decorationMethodOptions?: readonly string[];
   showScreenPrintFields?: boolean;
   showEmbroideryFields?: boolean;
   showArtworkUpload?: boolean;
@@ -141,6 +185,14 @@ function ServiceLeadFormFields({
   showPhone = true,
   showTimeline = true,
   showDesignHelp = true,
+  showProductTypeField = false,
+  productTypeLabel = "Product type",
+  productTypeOptions,
+  showBlankDirectionField = false,
+  blankDirectionLabel = "Blank direction",
+  showDecorationMethodField = false,
+  decorationMethodLabel = "Decoration method",
+  decorationMethodOptions = selectOptions.decorationMethod,
   showScreenPrintFields = false,
   showEmbroideryFields = false,
   showArtworkUpload = false,
@@ -150,14 +202,16 @@ function ServiceLeadFormFields({
   const [submitted, setSubmitted] = useState(false);
   const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
   const showServiceFields = showScreenPrintFields || showEmbroideryFields;
-  const productTypeOptions = showEmbroideryFields
-    ? selectOptions.embroideryProductType
-    : selectOptions.productType;
+  const resolvedProductTypeOptions =
+    productTypeOptions
+    ?? (showEmbroideryFields ? selectOptions.embroideryProductType : selectOptions.productType);
   const placementsLabel = showEmbroideryFields ? "Embroidery placements" : "Print locations";
   const placementsName = showEmbroideryFields ? "embroideryLocations" : "printLocations";
   const placementOptions = showEmbroideryFields
     ? selectOptions.embroideryLocations
     : selectOptions.printLocations;
+  const showQualificationFields =
+    showServiceFields || showProductTypeField || showBlankDirectionField || showDecorationMethodField;
 
   useEffect(() => {
     if (!captureAttributionFields) {
@@ -344,61 +398,87 @@ function ServiceLeadFormFields({
           ) : null}
         </div>
 
-        {showServiceFields ? (
+        {showQualificationFields ? (
           <div className="grid gap-5 lg:grid-cols-2">
-            <label className={labelClass}>
-              <RequiredLabel label="Product type" required />
-              <select
-                name="productType"
-                required
-                defaultValue=""
-                className={selectClass}
-                style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-              >
-                <option value="" disabled>
-                  Select
-                </option>
-                {productTypeOptions.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </label>
+            {showServiceFields || showProductTypeField ? (
+              <label className={labelClass}>
+                <RequiredLabel label={productTypeLabel} required />
+                <select
+                  name="productType"
+                  required
+                  defaultValue=""
+                  className={selectClass}
+                  style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {resolvedProductTypeOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
 
-            <label className={labelClass}>
-              <RequiredLabel label="Blank direction" required />
-              <select
-                name="blankDirection"
-                required
-                defaultValue=""
-                className={selectClass}
-                style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-              >
-                <option value="" disabled>
-                  Select
-                </option>
-                {selectOptions.blankDirection.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </label>
+            {showServiceFields || showBlankDirectionField ? (
+              <label className={labelClass}>
+                <RequiredLabel label={blankDirectionLabel} required />
+                <select
+                  name="blankDirection"
+                  required
+                  defaultValue=""
+                  className={selectClass}
+                  style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {selectOptions.blankDirection.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
 
-            <label className={labelClass}>
-              <RequiredLabel label={placementsLabel} required />
-              <select
-                name={placementsName}
-                required
-                defaultValue=""
-                className={selectClass}
-                style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-              >
-                <option value="" disabled>
-                  Select
-                </option>
-                {placementOptions.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </label>
+            {showDecorationMethodField ? (
+              <label className={labelClass}>
+                <RequiredLabel label={decorationMethodLabel} required />
+                <select
+                  name="decorationMethod"
+                  required
+                  defaultValue=""
+                  className={selectClass}
+                  style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {decorationMethodOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+
+            {showServiceFields ? (
+              <label className={labelClass}>
+                <RequiredLabel label={placementsLabel} required />
+                <select
+                  name={placementsName}
+                  required
+                  defaultValue=""
+                  className={selectClass}
+                  style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+                >
+                  <option value="" disabled>
+                    Select
+                  </option>
+                  {placementOptions.map((option) => (
+                    <option key={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
           </div>
         ) : null}
 

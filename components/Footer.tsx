@@ -3,6 +3,7 @@ import Image from "next/image";
 
 const footerLinks = [
   { label: "Contact", href: "/contact" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Catalogs", href: "/catalogs" },
   { label: "FAQ", href: "/faq" },
   { label: "Insights", href: "/insights" },
@@ -25,6 +26,12 @@ export function Footer() {
               Good Brands. <span className="text-[#FF4200]">Better Goods.</span>
             </p>
             <div className="flex w-full flex-col items-center gap-3 md:w-auto md:flex-row md:flex-wrap md:justify-center">
+              <Link
+                href="/contact"
+                className="font-body hidden items-center justify-center rounded-xl border-2 border-white bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-[#FF4200] transition hover:-translate-y-[3px] hover:bg-[#F7F4ED] md:inline-flex"
+              >
+                Start a Project
+              </Link>
               <a
                 href="/quiz"
                 className="font-body inline-flex w-full max-w-[16rem] items-center justify-center rounded-xl border-2 border-white bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-white transition hover:-translate-y-[3px] md:w-auto md:max-w-none"

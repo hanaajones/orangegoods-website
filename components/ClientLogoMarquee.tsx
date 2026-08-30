@@ -41,11 +41,13 @@ export function ClientLogoMarquee({
   logos,
   className = "",
   label,
+  labelClassName = "",
   trackClassName = "",
 }: {
   logos: Logo[];
   className?: string;
   label?: string;
+  labelClassName?: string;
   trackClassName?: string;
 }) {
   return (
@@ -55,7 +57,9 @@ export function ClientLogoMarquee({
       } ${className}`}
     >
       {label ? (
-        <p className="mb-5 text-center text-sm font-semibold uppercase tracking-[0.28em] text-[#1C1C1C]/50 md:mb-6">
+        <p
+          className={`mb-5 text-center text-sm font-semibold uppercase tracking-[0.28em] text-[#1C1C1C]/50 md:mb-6 ${labelClassName}`}
+        >
           {label}
         </p>
       ) : null}

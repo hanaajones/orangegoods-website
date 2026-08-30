@@ -36,6 +36,11 @@ const draftGroups = [
         note: "Direct apparel builder route for the AS Colour 5001 tee.",
       },
       {
+        label: "OG Crafted Apparel Builder",
+        href: "/build/og-crafted-apparel",
+        note: "Supplier-backed apparel builder draft modeled after the full custom hats builder.",
+      },
+      {
         label: "Apparel template",
         href: "/draft/apparel-template",
         note: "Draft goods category pattern.",

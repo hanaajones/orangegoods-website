@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 
 export const metadata = {
   title: "Legal — Orange Goods",
@@ -109,25 +110,27 @@ const sections = [
 
 export default function LegalPage() {
   return (
-    <main>
+    <main className="bg-[#F7F4ED] pb-24 md:pb-0">
       {/* Hero */}
-      <section className="bg-[#0B32A0] px-4 py-16 text-white md:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <p
-            className="text-sm font-semibold uppercase tracking-[0.28em] text-white/60"
-            style={{ fontFamily: "var(--font-accent)" }}
-          >
-            Orange Goods
-          </p>
-          <h1
-            className="mt-4 text-4xl font-extrabold uppercase tracking-tight md:text-6xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Legal
-          </h1>
-          <p className="mt-4 max-w-xl text-base leading-7 text-white/70">
-            Last updated: February 12, 2026. By accessing or using orangegoods.co, you agree to the following terms and policies
-          </p>
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+        <ParallaxHeroBackground
+          image="/images/gallery/faq-fish-at-sea-mg-6314.jpg"
+          position="center 42%"
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/42" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/62 via-[#1C1C1C]/46 to-[#1C1C1C]/20" />
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
+              Policies + Terms
+            </p>
+            <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+              Legal
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+              Last updated: February 12, 2026. By accessing or using orangegoods.co, you agree to the following terms and policies.
+            </p>
+          </div>
         </div>
       </section>
 

@@ -4,14 +4,36 @@ import path from "path";
 import { NextResponse } from "next/server";
 
 type ContactPayload = Record<string, unknown>;
+type DeliveryName =
+  | "stored"
+  | "hubspot"
+  | "jcore"
+  | "webhook"
+  | "internalEmail"
+  | "clientEmail"
+  | "slack";
+type DeliveryStatus = "delivered" | "duplicate" | "skipped" | "failed";
+type DeliveryResult = {
+  at: string;
+  detail?: string;
+  status: DeliveryStatus;
+};
+type RequestMeta = {
+  contentType: string;
+  forwardedFor: string;
+  hubspotutk: string;
+  origin: string;
+  realIp: string;
+  referer: string;
+  userAgent: string;
+};
+type DeliveryAttemptResult = {
+  detail?: string;
+  status: Exclude<DeliveryStatus, "failed">;
+};
 type JCoreBridgeResult = {
   delivered: boolean;
   duplicate: boolean;
-};
-type JCoreBridgeRequestMeta = {
-  forwardedFor?: string;
-  realIp?: string;
-  userAgent?: string;
 };
 type StoredUpload = {
   fieldName: string;
@@ -21,19 +43,54 @@ type StoredUpload = {
   mimeType: string;
   size: number;
 };
+type SubmissionRecord = {
+  deliveries: Partial<Record<DeliveryName, DeliveryResult>>;
+  id: string;
+  meta: RequestMeta;
+  payload: Record<string, string>;
+  submittedAt: string;
+  uploads: StoredUpload[];
+};
+type HubSpotContactRecord = {
+  id: string;
+  properties?: Record<string, string | null | undefined>;
+};
 
-const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL
-  ?? "http://127.0.0.1:3000/api/typeform-webhook";
+const CONTACT_UPLOADS_DIR = path.join(process.cwd(), "data", "contact-uploads");
+const CONTACT_SUBMISSIONS_DIR = path.join(process.cwd(), "data", "contact-submissions");
+const CONTACT_SUBMISSIONS_LOG = path.join(process.cwd(), "data", "contact-submissions.jsonl");
+const HUBSPOT_PRIVATE_APP_TOKEN = process.env.HUBSPOT_PRIVATE_APP_TOKEN ?? process.env.HUBSPOT_TOKEN ?? "";
+const HUBSPOT_API_BASE = "https://api.hubapi.com";
+const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL ?? "";
 const JCORE_TYPEFORM_BRIDGE_SECRET = process.env.JCORE_TYPEFORM_BRIDGE_SECRET ?? "";
+const JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS = Number(process.env.JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS ?? 15000);
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN ?? "";
 const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
-const OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL = process.env.OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL
-  ?? "C0AV6PMMFD3";
+const OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL = process.env.OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL ?? "C0AV6PMMFD3";
+const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "hello@orangegoods.co";
+const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL ?? "";
+const CONTACT_CONFIRMATION_SUBJECT = process.env.CONTACT_CONFIRMATION_SUBJECT ?? "We got your form";
+const CONTACT_DELIVERY_TIMEOUT_MS = Number(process.env.CONTACT_DELIVERY_TIMEOUT_MS ?? 4500);
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 const ALLOWED_UPLOAD_EXTENSIONS = new Set([".ai", ".eps", ".pdf", ".svg", ".zip", ".png", ".jpg", ".jpeg"]);
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
+}
+
+function normalizePayloadValue(value: unknown) {
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+
+  if (value && typeof value === "object") {
+    try {
+      return JSON.stringify(value, null, 2);
+    } catch {
+      return "";
+    }
+  }
+
+  return "";
 }
 
 function escapeHtml(value: string) {
@@ -56,7 +113,7 @@ function prettyLabel(key: string) {
 function truncate(value: string, maxLength: number) {
   const compact = value.replace(/\s+/g, " ").trim();
   if (compact.length <= maxLength) return compact;
-  return `${compact.slice(0, Math.max(0, maxLength - 1)).trim()}…`;
+  return `${compact.slice(0, Math.max(0, maxLength - 1)).trim()}...`;
 }
 
 function sanitizeFilename(filename: string) {
@@ -74,6 +131,73 @@ function getFileExtension(filename: string) {
   return path.extname(filename).toLowerCase();
 }
 
+function readCookieValue(cookieHeader: string, name: string) {
+  const prefix = `${name}=`;
+  const part = cookieHeader
+    .split(";")
+    .map((entry) => entry.trim())
+    .find((entry) => entry.startsWith(prefix));
+
+  return part ? decodeURIComponent(part.slice(prefix.length)) : "";
+}
+
+function splitName(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return {
+    firstname: parts[0] ?? "",
+    lastname: parts.slice(1).join(" "),
+  };
+}
+
+function hubspotHeaders() {
+  if (!HUBSPOT_PRIVATE_APP_TOKEN) {
+    throw new Error("HubSpot token is not configured.");
+  }
+
+  return {
+    Authorization: `Bearer ${HUBSPOT_PRIVATE_APP_TOKEN}`,
+    "Content-Type": "application/json",
+  } satisfies HeadersInit;
+}
+
+async function fetchWithTimeout(input: string, init: RequestInit, timeoutMs = CONTACT_DELIVERY_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    return await fetch(input, {
+      ...init,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error(`Request timed out after ${timeoutMs}ms`);
+    }
+
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function isHatBuilderSubmission(payload: Record<string, string>) {
+  return payload.source === "og-crafted-hat-builder";
+}
+
+function buildRequestMeta(request: Request): RequestMeta {
+  const cookieHeader = request.headers.get("cookie") ?? "";
+
+  return {
+    contentType: request.headers.get("content-type") ?? "",
+    forwardedFor: request.headers.get("x-forwarded-for") ?? "",
+    hubspotutk: readCookieValue(cookieHeader, "hubspotutk"),
+    origin: request.headers.get("origin") ?? "",
+    realIp: request.headers.get("x-real-ip") ?? "",
+    referer: request.headers.get("referer") ?? "",
+    userAgent: request.headers.get("user-agent") ?? "",
+  };
+}
+
 async function parseRequestPayload(request: Request, submissionId: string) {
   const contentType = request.headers.get("content-type") ?? "";
 
@@ -81,7 +205,7 @@ async function parseRequestPayload(request: Request, submissionId: string) {
     const formData = await request.formData();
     const payloadEntries: Array<[string, string]> = [];
     const uploads: StoredUpload[] = [];
-    const uploadDir = path.join(process.cwd(), "data", "contact-uploads", submissionId);
+    const uploadDir = path.join(CONTACT_UPLOADS_DIR, submissionId);
 
     for (const [key, value] of formData.entries()) {
       if (typeof value === "string") {
@@ -141,7 +265,7 @@ async function parseRequestPayload(request: Request, submissionId: string) {
 
   const payload = Object.fromEntries(
     Object.entries(body).flatMap(([key, value]) => {
-      const normalized = asString(value);
+      const normalized = normalizePayloadValue(value);
       return normalized ? [[key, normalized]] : [];
     }),
   ) as Record<string, string>;
@@ -149,8 +273,32 @@ async function parseRequestPayload(request: Request, submissionId: string) {
   return { payload, uploads: [] };
 }
 
-function isHatBuilderSubmission(payload: Record<string, string>) {
-  return payload.source === "og-crafted-hat-builder";
+function buildSubmissionRows(payload: Record<string, string>, uploads: StoredUpload[]) {
+  const payloadRows = Object.entries(payload)
+    .filter(([, value]) => value)
+    .map(([key, value]) => {
+      const formattedValue = escapeHtml(value).replaceAll("\n", "<br />");
+      return `<tr><td style="padding:8px 12px;border:1px solid #e7e1d5;font-weight:700;vertical-align:top;">${escapeHtml(prettyLabel(key))}</td><td style="padding:8px 12px;border:1px solid #e7e1d5;">${formattedValue}</td></tr>`;
+    });
+
+  const uploadRows = uploads.map((upload) => {
+    const detail = `${upload.originalName} (${upload.size} bytes)`;
+    return `<tr><td style="padding:8px 12px;border:1px solid #e7e1d5;font-weight:700;vertical-align:top;">Uploaded File</td><td style="padding:8px 12px;border:1px solid #e7e1d5;">${escapeHtml(detail)}<br /><span style="color:#666;">${escapeHtml(upload.relativePath)}</span></td></tr>`;
+  });
+
+  return [...payloadRows, ...uploadRows].join("");
+}
+
+function buildSubmissionSummary(payload: Record<string, string>, uploads: StoredUpload[]) {
+  const lines = Object.entries(payload)
+    .filter(([, value]) => value)
+    .map(([key, value]) => `${prettyLabel(key)}: ${value}`);
+
+  if (uploads.length) {
+    lines.push(`Uploaded files: ${uploads.map((upload) => upload.originalName).join(", ")}`);
+  }
+
+  return lines.join("\n");
 }
 
 function buildJCoreBridgeToken(payload: Record<string, string>) {
@@ -182,25 +330,25 @@ function buildJCoreTypeformPayload(payload: Record<string, string>) {
 
       if (key === "email") {
         return {
+          email: value,
           field: { id: fieldId, ref: key, type: "email" },
           type: "email",
-          email: value,
         };
       }
 
       if (key === "needBy") {
         return {
+          date: value,
           field: { id: fieldId, ref: key, type: "date" },
           type: "date",
-          date: value,
         };
       }
 
       const answerType = value.includes("\n") || value.length > 140 ? "long_text" : "text";
       return {
         field: { id: fieldId, ref: key, type: answerType },
-        type: answerType,
         text: value,
+        type: answerType,
       };
     });
 
@@ -208,25 +356,25 @@ function buildJCoreTypeformPayload(payload: Record<string, string>) {
     event_id: `website-contact-${Date.now()}`,
     event_type: "form_response",
     form_response: {
-      form_id: formId,
-      token: buildJCoreBridgeToken(payload),
-      submitted_at: submittedAt,
+      answers,
       definition: {
-        id: formId,
-        title,
         fields: answers.map((answer) => ({
           id: answer.field.id,
           ref: answer.field.ref,
           title: prettyLabel(answer.field.ref),
           type: answer.field.type,
         })),
+        id: formId,
+        title,
       },
+      form_id: formId,
       hidden: {
-        source: payload.source ?? "website-contact",
         intent: payload.intent ?? "",
         product: payload.product ?? "",
+        source: payload.source ?? "website-contact",
       },
-      answers,
+      submitted_at: submittedAt,
+      token: buildJCoreBridgeToken(payload),
     },
   };
 }
@@ -242,47 +390,33 @@ function buildTypeformSignature(rawBody: string) {
   return `sha256=${digest}`;
 }
 
-async function deliverViaResend(payload: Record<string, string>) {
+async function sendResendEmail(params: {
+  cc?: string[];
+  html: string;
+  replyTo?: string;
+  subject: string;
+  text: string;
+  to: string[];
+}) {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM_EMAIL;
+  if (!apiKey || !CONTACT_FROM_EMAIL) {
+    return { status: "skipped", detail: "Resend is not configured." } satisfies DeliveryAttemptResult;
+  }
 
-  if (!apiKey || !from) return false;
-
-  const to = process.env.CONTACT_TO_EMAIL ?? "hello@orangegoods.co";
-  const replyTo = payload.email || undefined;
-  const subjectBase = payload.source === "og-crafted-hat-builder"
-    ? "New OG Crafted hat build submission"
-    : "New Orange Goods contact submission";
-  const subject = payload.product ? `${subjectBase} · ${payload.product}` : subjectBase;
-  const rows = Object.entries(payload)
-    .filter(([, value]) => value)
-    .map(([key, value]) => {
-      const formattedValue = escapeHtml(value).replaceAll("\n", "<br />");
-      return `<tr><td style="padding:8px 12px;border:1px solid #e7e1d5;font-weight:700;vertical-align:top;">${escapeHtml(prettyLabel(key))}</td><td style="padding:8px 12px;border:1px solid #e7e1d5;">${formattedValue}</td></tr>`;
-    })
-    .join("");
-
-  const response = await fetch("https://api.resend.com/emails", {
+  const response = await fetchWithTimeout("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from,
-      to: [to],
-      cc: ["easton@orangegoods.co"],
-      ...(replyTo ? { reply_to: replyTo } : {}),
-      subject,
-      html: `
-        <div style="font-family:Arial,sans-serif;background:#f7f2ea;padding:24px;color:#1c1c1c;">
-          <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:24px;">
-            <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#ff4200;">Orange Goods website</p>
-            <h1 style="margin:0 0 20px;font-size:28px;line-height:1.1;color:#0b32a0;">${escapeHtml(subjectBase)}</h1>
-            <table style="width:100%;border-collapse:collapse;">${rows}</table>
-          </div>
-        </div>
-      `,
+      cc: params.cc,
+      from: CONTACT_FROM_EMAIL,
+      html: params.html,
+      reply_to: params.replyTo,
+      subject: params.subject,
+      text: params.text,
+      to: params.to,
     }),
   });
 
@@ -291,14 +425,183 @@ async function deliverViaResend(payload: Record<string, string>) {
     throw new Error(`Resend delivery failed: ${response.status} ${errorText}`);
   }
 
-  return true;
+  return { status: "delivered" } satisfies DeliveryAttemptResult;
 }
 
-async function deliverViaWebhook(payload: Record<string, string>) {
-  const webhookUrl = process.env.CONTACT_WEBHOOK_URL;
-  if (!webhookUrl) return false;
+async function deliverInternalEmail(
+  payload: Record<string, string>,
+  uploads: StoredUpload[],
+): Promise<DeliveryAttemptResult> {
+  const replyTo = payload.email || undefined;
+  const subjectBase = payload.source === "og-crafted-hat-builder"
+    ? "New OG Crafted hat build submission"
+    : "New Orange Goods website form";
+  const subject = payload.product ? `${subjectBase} · ${payload.product}` : subjectBase;
+  const rows = buildSubmissionRows(payload, uploads);
+  const summary = buildSubmissionSummary(payload, uploads);
 
-  const response = await fetch(webhookUrl, {
+  return sendResendEmail({
+    cc: ["easton@orangegoods.co"],
+    html: `
+      <div style="font-family:Arial,sans-serif;background:#f7f2ea;padding:24px;color:#1c1c1c;">
+        <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:24px;">
+          <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#ff4200;">Orange Goods website</p>
+          <h1 style="margin:0 0 10px;font-size:28px;line-height:1.1;color:#0b32a0;">We got a form.</h1>
+          <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#1c1c1c;">A new website form came in and is summarized below.</p>
+          <table style="width:100%;border-collapse:collapse;">${rows}</table>
+        </div>
+      </div>
+    `,
+    replyTo,
+    subject,
+    text: `We got a form.\n\nA new website form came in and is summarized below.\n\n${summary}`,
+    to: [CONTACT_TO_EMAIL],
+  });
+}
+
+async function deliverClientConfirmation(payload: Record<string, string>): Promise<DeliveryAttemptResult> {
+  if (!payload.email) {
+    return { status: "skipped", detail: "No client email provided." } satisfies DeliveryAttemptResult;
+  }
+
+  const firstName = payload.name ? splitName(payload.name).firstname : "";
+  const greetingName = firstName || "there";
+  const projectLabel = payload.product || payload.project || "your project";
+  const subject = payload.source === "og-crafted-hat-builder"
+    ? "We got your hat build request"
+    : CONTACT_CONFIRMATION_SUBJECT;
+
+  return sendResendEmail({
+    html: `
+      <div style="font-family:Arial,sans-serif;background:#f7f2ea;padding:24px;color:#1c1c1c;">
+        <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:32px;">
+          <p style="margin:0 0 10px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#ff4200;">Orange Goods</p>
+          <h1 style="margin:0 0 18px;font-size:30px;line-height:1.1;color:#0b32a0;">We got your form.</h1>
+          <p style="margin:0 0 14px;font-size:16px;line-height:1.7;">Hi ${escapeHtml(greetingName)},</p>
+          <p style="margin:0 0 14px;font-size:16px;line-height:1.7;">Thanks for reaching out about ${escapeHtml(projectLabel)}. We got your form and someone from Orange Goods will follow up within one business day.</p>
+          <p style="margin:0 0 14px;font-size:16px;line-height:1.7;">If you want to add references, artwork, or timing details in the meantime, just reply to this email.</p>
+          <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#555;">Orange Goods<br />hello@orangegoods.co</p>
+        </div>
+      </div>
+    `,
+    replyTo: CONTACT_TO_EMAIL,
+    subject,
+    text: `Hi ${greetingName},\n\nThanks for reaching out about ${projectLabel}. We got your form and someone from Orange Goods will follow up within one business day.\n\nIf you want to add references, artwork, or timing details in the meantime, just reply to this email.\n\nOrange Goods\nhello@orangegoods.co`,
+    to: [payload.email],
+  });
+}
+
+function buildHubSpotContactProperties(payload: Record<string, string>) {
+  const { firstname, lastname } = splitName(payload.name ?? "");
+
+  return Object.fromEntries(
+    Object.entries({
+      firstname,
+      lastname,
+      email: payload.email ?? "",
+      company: payload.company ?? "",
+      phone: payload.phone ?? "",
+    }).filter(([, value]) => value),
+  );
+}
+
+async function searchHubSpotContactByEmail(email: string) {
+  const response = await fetchWithTimeout(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/search`, {
+    method: "POST",
+    headers: hubspotHeaders(),
+    body: JSON.stringify({
+      filterGroups: [
+        {
+          filters: [
+            {
+              propertyName: "email",
+              operator: "EQ",
+              value: email,
+            },
+          ],
+        },
+      ],
+      properties: ["email", "firstname", "lastname", "company", "phone"],
+      limit: 1,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HubSpot contact search failed: ${response.status} ${errorText}`);
+  }
+
+  const body = (await response.json()) as { results?: HubSpotContactRecord[] };
+  return body.results?.[0] ?? null;
+}
+
+async function deliverViaHubSpot(
+  payload: Record<string, string>,
+  uploads: StoredUpload[],
+  requestMeta: RequestMeta,
+): Promise<DeliveryAttemptResult> {
+  void uploads;
+  void requestMeta;
+
+  if (!payload.email) {
+    return { status: "skipped", detail: "No email available for HubSpot contact sync." } satisfies DeliveryAttemptResult;
+  }
+
+  if (!HUBSPOT_PRIVATE_APP_TOKEN) {
+    return { status: "skipped", detail: "HubSpot token is not configured." } satisfies DeliveryAttemptResult;
+  }
+
+  const properties = buildHubSpotContactProperties(payload);
+  if (!Object.keys(properties).length) {
+    return { status: "skipped", detail: "No HubSpot contact properties were available." } satisfies DeliveryAttemptResult;
+  }
+
+  const existing = await searchHubSpotContactByEmail(payload.email);
+
+  if (existing?.id) {
+    const response = await fetchWithTimeout(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts/${existing.id}`, {
+      method: "PATCH",
+      headers: hubspotHeaders(),
+      body: JSON.stringify({ properties }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HubSpot contact update failed: ${response.status} ${errorText}`);
+    }
+
+    return { status: "delivered", detail: `Updated HubSpot contact ${existing.id}.` } satisfies DeliveryAttemptResult;
+  }
+
+  const response = await fetchWithTimeout(`${HUBSPOT_API_BASE}/crm/v3/objects/contacts`, {
+    method: "POST",
+    headers: hubspotHeaders(),
+    body: JSON.stringify({ properties }),
+  });
+
+  if (response.status === 409) {
+    const conflictContact = await searchHubSpotContactByEmail(payload.email);
+    if (conflictContact?.id) {
+      return { status: "duplicate", detail: `HubSpot contact ${conflictContact.id} already exists.` } satisfies DeliveryAttemptResult;
+    }
+  }
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HubSpot contact creation failed: ${response.status} ${errorText}`);
+  }
+
+  const created = (await response.json()) as HubSpotContactRecord;
+  return { status: "delivered", detail: `Created HubSpot contact ${created.id}.` } satisfies DeliveryAttemptResult;
+}
+
+async function deliverViaWebhook(payload: Record<string, string>): Promise<DeliveryAttemptResult> {
+  const webhookUrl = process.env.CONTACT_WEBHOOK_URL;
+  if (!webhookUrl) {
+    return { status: "skipped", detail: "CONTACT_WEBHOOK_URL is not configured." } satisfies DeliveryAttemptResult;
+  }
+
+  const response = await fetchWithTimeout(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -309,43 +612,54 @@ async function deliverViaWebhook(payload: Record<string, string>) {
     throw new Error(`Webhook delivery failed: ${response.status} ${errorText}`);
   }
 
-  return true;
+  return { status: "delivered" } satisfies DeliveryAttemptResult;
 }
 
 async function deliverViaJCore(
   payload: Record<string, string>,
-  requestMeta?: JCoreBridgeRequestMeta,
-) {
+  requestMeta: RequestMeta,
+): Promise<DeliveryAttemptResult> {
+  if (!JCORE_TYPEFORM_BRIDGE_URL) {
+    return { status: "skipped", detail: "J-Core bridge URL is not configured." } satisfies DeliveryAttemptResult;
+  }
+
+  if (!payload.email) {
+    return { status: "skipped", detail: "No email available for J-Core intake." } satisfies DeliveryAttemptResult;
+  }
+
   const body = JSON.stringify(buildJCoreTypeformPayload(payload));
   const signature = buildTypeformSignature(body);
-  const response = await fetch(JCORE_TYPEFORM_BRIDGE_URL, {
+  const response = await fetchWithTimeout(JCORE_TYPEFORM_BRIDGE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       ...(signature ? { "typeform-signature": signature } : {}),
-      ...(requestMeta?.forwardedFor ? { "x-forwarded-for": requestMeta.forwardedFor } : {}),
-      ...(requestMeta?.realIp ? { "x-real-ip": requestMeta.realIp } : {}),
-      ...(requestMeta?.userAgent ? { "user-agent": requestMeta.userAgent } : {}),
+      ...(requestMeta.forwardedFor ? { "x-forwarded-for": requestMeta.forwardedFor } : {}),
+      ...(requestMeta.realIp ? { "x-real-ip": requestMeta.realIp } : {}),
+      ...(requestMeta.userAgent ? { "user-agent": requestMeta.userAgent } : {}),
     },
     body,
-  });
+  }, JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS);
 
-  const data = await response.json().catch(() => ({})) as { ok?: boolean; duplicate?: boolean };
-
+  const data = (await response.json().catch(() => ({}))) as { duplicate?: boolean; ok?: boolean };
   if (!response.ok || !data.ok) {
     throw new Error(`J-Core bridge failed: ${response.status} ${JSON.stringify(data)}`);
   }
 
-  return {
+  const result: JCoreBridgeResult = {
     delivered: true,
     duplicate: Boolean(data.duplicate),
-  } satisfies JCoreBridgeResult;
+  };
+
+  return result.duplicate
+    ? { status: "duplicate", detail: "Submission already existed in J-Core." }
+    : { status: "delivered" };
 }
 
 function buildHatBuilderSlackMessage(payload: Record<string, string>) {
   const lines = ["*New OG Crafted hat build*"];
 
-  const contactLine = [payload.name, payload.company].filter(Boolean).join(" — ");
+  const contactLine = [payload.name, payload.company].filter(Boolean).join(" - ");
   if (contactLine) lines.push(contactLine);
   if (payload.email) lines.push(`*Email:* ${payload.email}`);
   if (payload.phone) lines.push(`*Phone:* ${payload.phone}`);
@@ -377,11 +691,18 @@ function buildHatBuilderSlackMessage(payload: Record<string, string>) {
   return truncate(lines.join("\n"), 2800);
 }
 
-async function deliverHatBuilderSlackNotification(payload: Record<string, string>) {
-  if (!SLACK_BOT_TOKEN) return false;
-  if (!isHatBuilderSubmission(payload)) return false;
+async function deliverHatBuilderSlackNotification(
+  payload: Record<string, string>,
+): Promise<DeliveryAttemptResult> {
+  if (!SLACK_BOT_TOKEN) {
+    return { status: "skipped", detail: "Slack bot token is not configured." } satisfies DeliveryAttemptResult;
+  }
 
-  const response = await fetch(SLACK_POST_MESSAGE_URL, {
+  if (!isHatBuilderSubmission(payload)) {
+    return { status: "skipped", detail: "Not a hat builder submission." } satisfies DeliveryAttemptResult;
+  }
+
+  const response = await fetchWithTimeout(SLACK_POST_MESSAGE_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${SLACK_BOT_TOKEN}`,
@@ -395,21 +716,60 @@ async function deliverHatBuilderSlackNotification(payload: Record<string, string
     }),
   });
 
-  const data = await response.json().catch(() => ({})) as {
-    ok?: boolean;
+  const data = (await response.json().catch(() => ({}))) as {
     error?: string;
+    ok?: boolean;
   };
-
   if (!response.ok || !data.ok) {
     throw new Error(`Slack notification failed: ${response.status} ${JSON.stringify(data)}`);
   }
 
-  return true;
+  return { status: "delivered" } satisfies DeliveryAttemptResult;
+}
+
+async function persistSubmissionRecord(record: SubmissionRecord) {
+  await fs.mkdir(CONTACT_SUBMISSIONS_DIR, { recursive: true });
+  const filePath = path.join(CONTACT_SUBMISSIONS_DIR, `${record.id}.json`);
+  await fs.writeFile(filePath, `${JSON.stringify(record, null, 2)}\n`, "utf8");
+}
+
+async function appendSubmissionSnapshot(record: SubmissionRecord) {
+  await fs.mkdir(path.dirname(CONTACT_SUBMISSIONS_LOG), { recursive: true });
+  await fs.appendFile(CONTACT_SUBMISSIONS_LOG, `${JSON.stringify(record)}\n`, "utf8");
+}
+
+async function setDeliveryResult(
+  record: SubmissionRecord,
+  name: DeliveryName,
+  status: DeliveryStatus,
+  detail?: string,
+) {
+  record.deliveries[name] = {
+    at: new Date().toISOString(),
+    ...(detail ? { detail } : {}),
+    status,
+  };
+  await persistSubmissionRecord(record);
+}
+
+async function runDelivery(
+  record: SubmissionRecord,
+  name: DeliveryName,
+  delivery: () => Promise<DeliveryAttemptResult>,
+) {
+  try {
+    const result = await delivery();
+    await setDeliveryResult(record, name, result.status, result.detail);
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    await setDeliveryResult(record, name, "failed", detail);
+  }
 }
 
 export async function POST(request: Request) {
   try {
     const submissionId = `contact_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const requestMeta = buildRequestMeta(request);
     const { payload, uploads } = await parseRequestPayload(request, submissionId);
 
     if (!payload) {
@@ -419,16 +779,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!payload.name || !payload.email) {
-      return NextResponse.json(
-        { ok: false, error: "Missing required contact fields." },
-        { status: 400 },
-      );
-    }
-
     if (
       payload.source === "og-crafted-hat-builder" &&
-      (!payload.company || !payload.phone || !payload.shippingAddress)
+      (!payload.company || !payload.email || !payload.name || !payload.phone || !payload.shippingAddress)
     ) {
       return NextResponse.json(
         { ok: false, error: "Missing required builder checkout fields." },
@@ -436,61 +789,46 @@ export async function POST(request: Request) {
       );
     }
 
-    const submission = {
+    const submission: SubmissionRecord = {
+      deliveries: {},
       id: submissionId,
-      submittedAt: new Date().toISOString(),
+      meta: requestMeta,
       payload,
+      submittedAt: new Date().toISOString(),
       uploads,
     };
 
-    const logFile = path.join(process.cwd(), "data", "contact-submissions.jsonl");
-    await fs.mkdir(path.dirname(logFile), { recursive: true });
-    await fs.appendFile(logFile, `${JSON.stringify(submission)}\n`, "utf8");
+    await setDeliveryResult(submission, "stored", "delivered", "Submission captured locally.");
 
-    const deliveries: string[] = ["stored"];
+    await runDelivery(submission, "hubspot", () => deliverViaHubSpot(payload, uploads, requestMeta));
+    await runDelivery(submission, "jcore", () => deliverViaJCore(payload, requestMeta));
+    await runDelivery(submission, "webhook", () => deliverViaWebhook(payload));
+    await runDelivery(submission, "internalEmail", () => deliverInternalEmail(payload, uploads));
+    await runDelivery(submission, "clientEmail", () => deliverClientConfirmation(payload));
 
-    const jcoreResult = await deliverViaJCore(payload, {
-      forwardedFor: request.headers.get("x-forwarded-for") ?? "",
-      realIp: request.headers.get("x-real-ip") ?? "",
-      userAgent: request.headers.get("user-agent") ?? "",
-    });
-    if (jcoreResult.delivered) {
-      deliveries.push("jcore");
+    const jcoreStatus = submission.deliveries.jcore?.status;
+    if (jcoreStatus !== "duplicate") {
+      await runDelivery(submission, "slack", () => deliverHatBuilderSlackNotification(payload));
+    } else {
+      await setDeliveryResult(submission, "slack", "skipped", "Skipped because J-Core marked the submission duplicate.");
     }
 
-    if (!jcoreResult.duplicate) {
-      try {
-        if (await deliverHatBuilderSlackNotification(payload)) {
-          deliveries.push("slack");
-        }
-      } catch (error) {
-        console.error("[Hat Builder Slack Notification Error]", error);
-      }
-    }
-
-    try {
-      if (await deliverViaWebhook(payload)) {
-        deliveries.push("webhook");
-      }
-    } catch (error) {
-      console.error("[Contact Webhook Delivery Error]", error);
-    }
-
-    try {
-      if (await deliverViaResend(payload)) {
-        deliveries.push("email");
-      }
-    } catch (error) {
-      console.error("[Contact Email Delivery Error]", error);
-    }
-
+    await appendSubmissionSnapshot(submission);
     console.log("[Contact Submission]", submission);
 
+    const deliveries = Object.entries(submission.deliveries)
+      .filter(([, result]) => result?.status === "delivered" || result?.status === "duplicate")
+      .map(([name]) => name);
+    const warnings = Object.entries(submission.deliveries)
+      .filter(([, result]) => result?.status === "failed")
+      .map(([name, result]) => `${name}: ${result?.detail ?? "delivery failed"}`);
+
     return NextResponse.json({
-      ok: true,
-      id: submission.id,
       deliveries,
+      id: submission.id,
       message: "Thanks. We will be in touch within 1 business day.",
+      ok: true,
+      warnings,
     });
   } catch (error) {
     console.error("[Contact Submission Error]", error);
@@ -502,6 +840,7 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+
     if (message.startsWith("Upload too large")) {
       return NextResponse.json(
         { ok: false, error: "Artwork file is too large. Please send a smaller file or share a link in the notes." },

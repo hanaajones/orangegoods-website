@@ -99,6 +99,19 @@ const builderFieldNames = new Set([
   "notes",
 ]);
 
+const contactFieldNames = new Set([
+  "name",
+  "company",
+  "email",
+  "phone",
+  "project",
+  "quantity",
+  "timeline",
+  "budget",
+  "designHelp",
+  "artwork",
+]);
+
 function ContactForm({
   submitted,
   submitting,
@@ -108,6 +121,8 @@ function ContactForm({
   projectDefault = "",
   designHelpDefault = "",
   hiddenFields = {},
+  hideQuantityField = false,
+  hideBudgetField = false,
 }: {
   submitted: boolean;
   submitting: boolean;
@@ -117,6 +132,8 @@ function ContactForm({
   projectDefault?: string;
   designHelpDefault?: string;
   hiddenFields?: Record<string, string>;
+  hideQuantityField?: boolean;
+  hideBudgetField?: boolean;
 }) {
   const isRounded = variant === "rounded";
   const formClass = isRounded
@@ -129,6 +146,13 @@ function ContactForm({
   const textareaClass = isRounded
     ? roundedTextareaClass
     : "border border-[#0B32A0]/20 bg-white px-4 py-3 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] placeholder:text-[#1C1C1C]/42 outline-none transition focus:border-[var(--og-orange)]";
+  const showQuantityField = !hideQuantityField;
+  const showBudgetField = !hideBudgetField;
+  const detailsGridClass = showQuantityField && showBudgetField
+    ? "grid gap-5 md:grid-cols-3"
+    : showQuantityField || showBudgetField
+      ? "grid gap-5 md:grid-cols-2"
+      : "grid gap-5";
 
   return (
     <form onSubmit={onSubmit} className={formClass}>
@@ -195,29 +219,31 @@ function ContactForm({
         />
       </label>
 
-      <div className="grid gap-5 md:grid-cols-3">
-        <label className={labelClass}>
-          <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
-            <RequiredLabel label="Quantity" required />
-            <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#1C1C1C]/52">
-              Minimum order 100 pieces
+      <div className={detailsGridClass}>
+        {showQuantityField ? (
+          <label className={labelClass}>
+            <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
+              <RequiredLabel label="Quantity" required />
+              <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#1C1C1C]/52">
+                Minimum order 100 pieces
+              </span>
             </span>
-          </span>
-          <select
-            name="quantity"
-            required
-            defaultValue=""
-            className={selectClass}
-            style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-          >
-            <option value="" disabled>
-              Select
-            </option>
-            {selectOptions.quantity.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </label>
+            <select
+              name="quantity"
+              required
+              defaultValue=""
+              className={selectClass}
+              style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+            >
+              <option value="" disabled>
+                Select
+              </option>
+              {selectOptions.quantity.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </label>
+        ) : null}
         <label className={labelClass}>
           <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
             <RequiredLabel label="Timeline" required />
@@ -240,27 +266,29 @@ function ContactForm({
             ))}
           </select>
         </label>
-        <label className={labelClass}>
-          <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
-            <RequiredLabel label="Budget Range" />
-            <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-transparent">
-              Minimum order 100 pieces
+        {showBudgetField ? (
+          <label className={labelClass}>
+            <span className="flex min-h-[2.9rem] flex-col justify-end gap-1">
+              <RequiredLabel label="Budget Range" />
+              <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-transparent">
+                Minimum order 100 pieces
+              </span>
             </span>
-          </span>
-          <select
-            name="budget"
-            defaultValue=""
-            className={selectClass}
-            style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
-          >
-            <option value="" disabled>
-              Select
-            </option>
-            {selectOptions.budget.map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </label>
+            <select
+              name="budget"
+              defaultValue=""
+              className={selectClass}
+              style={{ backgroundImage: `url("data:image/svg+xml,${selectArrowSvg}")` }}
+            >
+              <option value="" disabled>
+                Select
+              </option>
+              {selectOptions.budget.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </label>
+        ) : null}
       </div>
 
       <label className={labelClass}>
@@ -490,17 +518,40 @@ function ContactPageContent() {
   const program = searchParams.get("program") ?? "";
   const style = searchParams.get("style") ?? "";
   const styleName = searchParams.get("styleName") ?? "";
-  const quantity = searchParams.get("quantity") ?? "";
+  const quantity = searchParams.get("quantity") ?? searchParams.get("qty") ?? "";
   const projectSummary = searchParams.get("projectSummary") ?? "";
   const needsArtworkHelp = searchParams.get("needsArtworkHelp") ?? "";
   const source = searchParams.get("source") ?? "";
   const mode = searchParams.get("mode") ?? "";
-  const isBuilderCheckout = source === "og-crafted-hat-builder";
+  const isOgCraftedHatBuilder = source === "og-crafted-hat-builder";
+  const isOgCraftedApparelBuilder = source === "og-crafted-apparel-builder";
+  const isBuilderCheckout = isOgCraftedHatBuilder || isOgCraftedApparelBuilder;
+  const isQuickTurnBuilderHandoff = source === "quick-turn-hat-builder";
   const builderSummaryLines = projectSummary.split("\n").map((line) => line.trim()).filter(Boolean);
   const builderHiddenFields = Object.fromEntries(
     Array.from(searchParams.entries()).filter(([key]) => !builderFieldNames.has(key)),
   );
-  const builderBackHref = `/draft/product-style?${new URLSearchParams(builderHiddenFields).toString()}`;
+  const builderBackHref = isOgCraftedApparelBuilder
+    ? "/build/og-crafted-apparel"
+    : `/draft/product-style?${new URLSearchParams(builderHiddenFields).toString()}`;
+  const builderBackLabel = isOgCraftedApparelBuilder ? "Back to Apparel Builder" : "Back to Hat Builder";
+  const quickTurnBuilderHiddenFields = Object.fromEntries(
+    Array.from(searchParams.entries()).filter(([key]) => !contactFieldNames.has(key)),
+  );
+  const standardHiddenFields = {
+    ...(isQuickTurnBuilderHandoff ? quickTurnBuilderHiddenFields : {}),
+    intent: "contact",
+    pageName: "Contact Page",
+    pagePath: "/contact",
+    source: source || "contact-page",
+    ...(mode ? { mode } : {}),
+    ...(needsArtworkHelp ? { needsArtworkHelp } : {}),
+    ...(product ? { product } : {}),
+    ...(program ? { program } : {}),
+    ...(style ? { style } : {}),
+    ...(styleName ? { styleName } : {}),
+    ...(quantity ? { quantity } : {}),
+  };
 
   const projectDefault = projectSummary || [
     product ? `Product: ${product}` : "",
@@ -526,12 +577,10 @@ function ContactPageContent() {
     setSubmitError("");
 
     const formData = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
 
     const response = await fetch("/api/contact", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     if (!response.ok) {
@@ -585,7 +634,7 @@ function ContactPageContent() {
           </h1>
           {isBuilderCheckout ? (
             <p className="mt-5 max-w-2xl text-sm leading-7 text-white/78 md:text-base">
-              This is the checkout-style handoff for your custom hat build. We already have the selections. Add the final delivery and contact details here.
+              This is the checkout-style handoff for your build. We already have the selections. Add the final delivery and contact details here.
             </p>
           ) : null}
         </div>
@@ -603,7 +652,7 @@ function ContactPageContent() {
                 className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-blue)] transition hover:text-[var(--og-orange)]"
               >
                 <span aria-hidden="true">←</span>
-                <span>Back to Hat Builder</span>
+                <span>{builderBackLabel}</span>
               </Link>
               <BuilderCheckoutForm
                 submitted={submitted}
@@ -623,13 +672,9 @@ function ContactPageContent() {
               variant="rounded"
               projectDefault={projectDefault}
               designHelpDefault={needsArtworkHelp}
-              hiddenFields={{
-                ...(product ? { product } : {}),
-                ...(program ? { program } : {}),
-                ...(style ? { style } : {}),
-                ...(styleName ? { styleName } : {}),
-                ...(quantity ? { quantity } : {}),
-              }}
+              hiddenFields={standardHiddenFields}
+              hideQuantityField={isQuickTurnBuilderHandoff}
+              hideBudgetField={isQuickTurnBuilderHandoff}
             />
           )}
         </section>

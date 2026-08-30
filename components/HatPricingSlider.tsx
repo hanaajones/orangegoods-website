@@ -12,10 +12,8 @@ type QuantityTier = {
 
 export function HatPricingSlider({ tiers }: { tiers: QuantityTier[] }) {
   const highlightPills = [
-    "Built from scratch",
     "All-in delivered pricing",
     "Free shipping on every order",
-    "6-8 week turnaround",
   ];
 
   return (
