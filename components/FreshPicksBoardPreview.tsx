@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 
 type TrendTile = {
   title: string;
@@ -92,11 +92,11 @@ const trendTiles: TrendTile[] = [
   {
     title: "Rope hats for outdoor brands",
     note: "A rope detail gives a cap a little more personality without making the whole hat loud.",
-    image: "/images/product/hats/as-colour/1123-rope-cap-front.jpg",
+    image: "/images/product/hats/as-colour/as1123-surf-rope-cap-main.jpg",
     category: "Outdoor",
     tags: ["Hats", "Rope detail"],
     action: "See rope caps",
-    href: "/goods/hats/ready-made/1123",
+    href: "/goods/hats/quick-turn/1123",
     size: "small",
   },
   {
@@ -106,7 +106,7 @@ const trendTiles: TrendTile[] = [
     category: "Graphics",
     tags: ["Graphics", "Retail merch"],
     action: "Need artwork?",
-    href: "/design",
+    href: "/design/start",
     size: "medium",
   },
   {
@@ -149,6 +149,276 @@ const trendTiles: TrendTile[] = [
     href: "/insights/decoration-options-guide",
     size: "small",
   },
+  {
+    title: "Cafe aprons still feel useful",
+    note: "Restaurant merch works better when the piece actually belongs in service, not just on a shelf.",
+    image: "/images/gallery/banner-coffee-apron-2026-08-14.jpg",
+    category: "Restaurants",
+    tags: ["Aprons", "Staff merch"],
+    action: "Plan staff merch",
+    href: "/contact?intent=restaurant-staff-merch",
+    size: "medium",
+  },
+  {
+    title: "Coffee totes as the easy add-on",
+    note: "A simple tote can pull retail, gifting, and everyday use together when the art and blank are right.",
+    image: "/images/gallery/banner-coffee-tote-2026-08-14.jpg",
+    category: "Bags",
+    tags: ["Retail add-on", "Totes"],
+    action: "See bags",
+    href: "/goods/bags",
+    size: "small",
+  },
+  {
+    title: "Crewnecks for early call times",
+    note: "A clean crewneck can carry a coffee brand or event team farther than another throwaway tee.",
+    image: "/images/gallery/field-day-coffee-crewneck-2026-08-14.jpg",
+    category: "Apparel",
+    tags: ["Crewnecks", "Coffee"],
+    action: "Build a crewneck",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Premium houseware gifting",
+    note: "A tray, candle, or object piece can make a gifting program feel far more elevated than standard promo picks.",
+    image: "/images/gallery/houseware-oak-essentials-travertine-tray.jpg",
+    category: "Gifting",
+    tags: ["Houseware", "Premium gifting"],
+    action: "Plan gifting",
+    href: "/contact?intent=premium-gifting",
+    size: "large",
+  },
+  {
+    title: "Blankets can be the hero piece",
+    note: "For hospitality, retail, and welcome kits, a blanket gives the whole project more presence right away.",
+    image: "/images/gallery/stanford-medicine-blanket-2026-08-14.jpg",
+    category: "Gifting",
+    tags: ["Blankets", "Retail feel"],
+    action: "Source blankets",
+    href: "/goods/blankets",
+    size: "medium",
+  },
+  {
+    title: "Laptop sleeves beat another notebook",
+    note: "Useful tech pieces make branded kits feel more intentional and less like filler.",
+    image: "/images/gallery/stanford-medicine-laptop-sleeve-2026-08-14.jpg",
+    category: "Gifting",
+    tags: ["Tech", "Welcome kits"],
+    action: "Build a kit",
+    href: "/contact?intent=kit-build",
+    size: "small",
+  },
+  {
+    title: "Towel details sell the whole idea",
+    note: "A strong woven label and color story can make a towel feel like a real seasonal product, not a freebie.",
+    image: "/images/gallery/boatsetter-towel-detail-2026-08-14.jpg",
+    category: "Outdoor",
+    tags: ["Towels", "Coastal brands"],
+    action: "Source towels",
+    href: "/contact?intent=source-towels",
+    size: "medium",
+  },
+  {
+    title: "Event merch can still look premium",
+    note: "Brand activation gear lands better when the apparel, display, and gifting pieces all feel considered together.",
+    image: "/images/gallery/embroidery-k1-porsche-brand-activation.jpg",
+    category: "Events",
+    tags: ["Activations", "Premium"],
+    action: "Plan an activation",
+    href: "/contact?intent=brand-activation",
+    size: "large",
+  },
+  {
+    title: "Pouches are an easy add-on",
+    note: "Small soft goods can stretch a gifting or retail assortment without blowing up the whole budget.",
+    image: "/images/gallery/sundream-pouches-2026-08-14.jpg",
+    category: "Gifting",
+    tags: ["Pouches", "Retail add-ons"],
+    action: "Source accessories",
+    href: "/contact?intent=source-accessories",
+    size: "small",
+  },
+  {
+    title: "Bottles want better photography",
+    note: "Drinkware usually sells the idea faster when it is shown as a lifestyle piece instead of a plain product shot.",
+    image: "/images/gallery/goodonya-bamboo-bottles-detail-2026-08-14.jpg",
+    category: "Drinkware",
+    tags: ["Bottles", "Wellness"],
+    action: "See drinkware",
+    href: "/goods/drinkware",
+    size: "medium",
+  },
+  {
+    title: "Packaging can carry the mood",
+    note: "A good kit lands differently when the packaging is part of the concept instead of an afterthought.",
+    image: "/images/gallery/packaging-stanford-medicine-thinkhealth-craft-1.jpg",
+    category: "Gifting",
+    tags: ["Packaging", "Kits"],
+    action: "Talk packaging",
+    href: "/contact?intent=custom-packaging",
+    size: "medium",
+  },
+  {
+    title: "Outerwear for field teams",
+    note: "Jackets make sense when the team will actually wear them outside the office, not just for one group photo.",
+    image: "/images/gallery/embroidery-red-bull-jacket.jpg",
+    category: "Outdoor",
+    tags: ["Outerwear", "Team gear"],
+    action: "See apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Bandanas are back in the mix",
+    note: "They work best when the artwork is doing something specific and the piece feels tied to the brand world.",
+    image: "/images/gallery/accessories-royal-wine-bandana-image-1.jpg",
+    category: "Events",
+    tags: ["Bandanas", "Small add-ons"],
+    action: "Source accessories",
+    href: "/contact?intent=source-accessories",
+    size: "small",
+  },
+  {
+    title: "Backpacks for smarter team kits",
+    note: "A backpack can quietly carry a logo while making the full kit feel more useful and more valuable.",
+    image: "/images/gallery/embroidery-stanford-medicine-backpacks.jpg",
+    category: "Gifting",
+    tags: ["Backpacks", "Team kits"],
+    action: "Build a kit",
+    href: "/contact?intent=team-kit",
+    size: "large",
+  },
+  {
+    title: "Blankets for hospitality gifting",
+    note: "A good blanket can feel generous, retail-ready, and more memorable than another standard box insert.",
+    image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
+    category: "Gifting",
+    tags: ["Blankets", "Hospitality"],
+    action: "Source blankets",
+    href: "/goods/blankets",
+    size: "large",
+  },
+  {
+    title: "Milk glass mugs still work",
+    note: "For coffee, hospitality, and retail counters, a milk glass mug still feels softer and more collected than a generic tumbler.",
+    image: "/images/gallery/drinkware-verve-milk-glass-mug.jpg",
+    category: "Drinkware",
+    tags: ["Cafe", "Ceramics"],
+    action: "See drinkware",
+    href: "/goods/drinkware",
+    size: "medium",
+  },
+  {
+    title: "Felt patches warm up a cap fast",
+    note: "A felt patch can make a hat feel more tactile and more like a real piece of product than a flat logo hit.",
+    image: "/images/gallery/headwear-felt-patch-dscf7913.jpg",
+    category: "Hats",
+    tags: ["Patches", "Texture"],
+    action: "Compare decoration",
+    href: "/insights/decoration-options-guide",
+    size: "small",
+  },
+  {
+    title: "Board shorts for summer activations",
+    note: "They only make sense for the right brand moment, but when they fit, they can carry a whole seasonal story.",
+    image: "/images/gallery/board-shorts-high-st-deli-dsc01098-2.jpg",
+    category: "Outdoor",
+    tags: ["Boardshorts", "Summer"],
+    action: "Source boardshorts",
+    href: "/contact?intent=source-boardshorts",
+    size: "large",
+  },
+  {
+    title: "Back hit embroidery earns another look",
+    note: "A small front logo with a stronger back hit can make branded fleece feel way more considered.",
+    image: "/images/gallery/embroidery-verve-coffee-back-hits.jpg",
+    category: "Apparel",
+    tags: ["Embroidery", "Fleece"],
+    action: "See apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Printed neck labels feel retail",
+    note: "A neck print is a small detail, but it changes how the whole garment feels when someone picks it up.",
+    image: "/images/gallery/screen-printing-printed-neck-labels-mcalister-017.jpg",
+    category: "Graphics",
+    tags: ["Labels", "Retail details"],
+    action: "Need artwork?",
+    href: "/design/start",
+    size: "small",
+  },
+  {
+    title: "Puff print should stay selective",
+    note: "Used in one smart spot, puff can add dimension without making the whole piece feel novelty-driven.",
+    image: "/images/gallery/screen-printing-puff-print-img-7553.jpg",
+    category: "Graphics",
+    tags: ["Puff print", "Texture"],
+    action: "Compare decoration",
+    href: "/insights/decoration-options-guide",
+    size: "medium",
+  },
+  {
+    title: "Premium blanks do part of the work",
+    note: "Sometimes the best design move is picking the blank with the right weight, wash, and shape before adding anything else.",
+    image: "/images/gallery/screen-printing-premium-blanks-dscf4877.jpg",
+    category: "Apparel",
+    tags: ["Premium basics", "Blanks"],
+    action: "See apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Ceramic mugs beat another bottle sometimes",
+    note: "For cafes, desks, and gifting, a ceramic piece can feel more permanent than a sports-bottle default.",
+    image: "/images/gallery/drinkware-coastal-mugs-2026-08-13.jpg",
+    category: "Drinkware",
+    tags: ["Ceramics", "Desk merch"],
+    action: "See drinkware",
+    href: "/goods/drinkware",
+    size: "small",
+  },
+  {
+    title: "Totes with more art feel less promo",
+    note: "A tote gets stronger when the artwork uses scale, placement, and color instead of treating the bag like a flat handout.",
+    image: "/images/gallery/bags-boatsetter-tote-detail.jpg",
+    category: "Bags",
+    tags: ["Artwork scale", "Totes"],
+    action: "See bags",
+    href: "/goods/bags",
+    size: "medium",
+  },
+  {
+    title: "Beach towels want a full color story",
+    note: "The best towel programs feel designed edge to edge, not like a logo dropped onto a rectangle.",
+    image: "/images/gallery/accessories-apteka-towel2.jpg",
+    category: "Outdoor",
+    tags: ["Towels", "Color story"],
+    action: "Source towels",
+    href: "/contact?intent=source-towels",
+    size: "large",
+  },
+  {
+    title: "Sweatpants are back in the merch mix",
+    note: "A branded set lands harder when the pant feels just as considered as the hoodie or crewneck above it.",
+    image: "/images/gallery/screen-printing-high-st-deli-sweatpants-hsd-baywood-127-2.jpg",
+    category: "Apparel",
+    tags: ["Sets", "Fleece"],
+    action: "Build apparel",
+    href: "/goods/apparel",
+    size: "medium",
+  },
+  {
+    title: "Backpacks still beat cheap giveaway bags",
+    note: "If the audience will actually commute or travel with it, a backpack can carry a lot more long-term value.",
+    image: "/images/gallery/embroidery-stanford-medicine-backpacks.jpg",
+    category: "Gifting",
+    tags: ["Backpacks", "Utility"],
+    action: "Plan gifting",
+    href: "/contact?intent=premium-gifting",
+    size: "medium",
+  },
 ];
 
 function tileHeight(size: TrendTile["size"]) {
@@ -167,33 +437,39 @@ export function FreshPicksBoardPreview() {
 
   return (
     <main className="bg-[#F7F4ED] text-[var(--og-off-black)]">
-      <section className="border-t border-[#081E6F]/10 bg-white px-4 py-14 md:px-8 md:py-20 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
+        <ParallaxHeroBackground
+          image="/images/gallery/goods-hero-misc-dscf4876.jpg"
+          position="center 46%"
+        />
+        <div className="absolute inset-0 bg-[#1C1C1C]/32" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
+        <div className="relative mx-auto max-w-6xl">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF7F00]">
-                Fresh Picks
+              <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
+                Monthly Edit
               </p>
-              <h1 className="mt-3 max-w-4xl text-4xl leading-none text-[var(--og-blue)] md:text-5xl">
-                Our monthly fresh picks, on trend and always moving.
+              <h1 className="mt-3 max-w-4xl text-[2.8rem] uppercase leading-none text-[var(--og-orange)] md:mt-5 md:text-6xl lg:text-7xl">
+                Fresh Picks
               </h1>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-[#1C1C1C]/60">
-                Product ideas, graphics, and goods we would actually recommend.
+              <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+                A tighter monthly edit of product ideas, graphics, and goods that feel current, useful, and worth making.
+              </p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-white/62">
+                August 2026 issue
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap md:justify-end">
-            <Link
-              href="/contact"
-              className="inline-flex min-h-11 w-fit items-center justify-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-            >
-              Start a project
-            </Link>
-            <Link
-              href="/catalog"
-              className="inline-flex min-h-11 w-fit items-center justify-center rounded-lg border border-[var(--og-blue)] px-4 text-sm font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)] transition hover:bg-[var(--og-blue)] hover:text-white"
-            >
-              See full catalog
-            </Link>
+            <div className="flex flex-wrap gap-3 md:justify-end">
+              <Link href="/contact" className="btn-og inline-flex">
+                Start a project
+              </Link>
+              <Link
+                href="/catalog"
+                className="inline-flex min-h-11 items-center text-sm font-semibold uppercase tracking-[0.14em] text-white/82 transition hover:text-white"
+              >
+                View full catalog
+              </Link>
             </div>
           </div>
         </div>
@@ -220,19 +496,18 @@ export function FreshPicksBoardPreview() {
 
       <section className="px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
+          <div className="columns-2 gap-4 lg:columns-3 xl:columns-4">
             {visibleTiles.map((tile) => (
               <article
                 key={tile.title}
                 className="mb-4 break-inside-avoid overflow-hidden rounded-lg border border-[#081E6F]/12 bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)]"
               >
                 <div className={`relative ${tileHeight(tile.size)} bg-[#E4DFCD]`}>
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={tile.image}
                     alt={tile.title}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
+                    className="h-full w-full object-cover"
                   />
                   <div className="absolute left-3 top-3 rounded-full bg-[#FF7F00] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
                     {tile.category}
@@ -253,9 +528,9 @@ export function FreshPicksBoardPreview() {
                   </div>
                   <Link
                     href={tile.href}
-                    className="mt-4 inline-flex min-h-10 items-center rounded-lg border border-[#FF7F00] px-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#FF7F00] transition hover:bg-[#FF7F00] hover:text-white"
+                    className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-[0.14em] text-[#FF7F00] transition hover:text-[var(--og-blue)]"
                   >
-                    {tile.action}
+                    Explore pick →
                   </Link>
                 </div>
               </article>

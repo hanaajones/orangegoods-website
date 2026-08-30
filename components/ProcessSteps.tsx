@@ -1,10 +1,18 @@
+"use client";
+
 import Image from "next/image";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { Reveal } from "@/components/Reveal";
 
 type Step = {
+  stepLabel?: string;
   title: string;
   body: string;
-  numberClassName?: string;
+  iconSrc?: string;
+  iconWidth?: number;
+  iconHeight?: number;
+  iconClassName?: string;
 };
 
 export function ProcessSteps({
@@ -12,10 +20,11 @@ export function ProcessSteps({
   title,
   description,
   steps,
-  buttonHref = "/contact",
+  buttonHref,
   heroImage,
   heroImagePosition,
   heroOverlayClassName,
+  wrapperClassName = "bg-[#F7F4ED]",
 }: {
   eyebrow: string;
   title: string;
@@ -25,9 +34,13 @@ export function ProcessSteps({
   heroImage?: string;
   heroImagePosition?: string;
   heroOverlayClassName?: string;
+  wrapperClassName?: string;
 }) {
+  const stepsRef = useRef<HTMLDivElement | null>(null);
+  const stepsInView = useInView(stepsRef, { once: true, amount: 0.3 });
+
   return (
-    <Reveal className="bg-[#F7F4ED] px-4 pb-[52px] pt-[58px] md:px-8 md:pb-[52px] md:pt-[82px] lg:px-12">
+    <Reveal className={`${wrapperClassName} px-4 py-12 md:px-8 md:py-16 lg:px-12`.trim()}>
       <section id="process" className="mx-auto max-w-6xl">
         {heroImage ? (
           <div className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0]/12">
@@ -77,38 +90,62 @@ export function ProcessSteps({
             ) : null}
           </div>
         )}
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div ref={stepsRef} className="mt-8 grid gap-4 lg:grid-cols-3">
           {steps.map((step, index) => (
             <article
               key={step.title}
               className="rounded-[1.75rem] border border-[#D8CCB7] bg-white p-6 shadow-[0_16px_34px_rgba(11,50,160,0.06)]"
             >
-              <p
-                className={`text-sm font-semibold uppercase tracking-[0.22em] ${
-                  step.numberClassName ??
-                  (index % 2 === 0 ? "text-[var(--og-orange)]" : "text-[var(--og-blue)]")
-                }`}
-              >
-                {String(index + 1).padStart(2, "0")}
-              </p>
-              <h3 className="mt-4 text-2xl font-semibold text-[var(--og-blue)]">
+              {step.iconSrc ? (
+                <motion.div
+                  className="mb-4 flex h-14 items-center justify-center"
+                  initial={{ opacity: 0, y: 18, scale: 0.86 }}
+                  animate={
+                    stepsInView
+                      ? { opacity: 1, y: 0, scale: 1 }
+                      : { opacity: 0, y: 18, scale: 0.86 }
+                  }
+                  transition={{
+                    duration: 0.45,
+                    delay: index * 0.14,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  <Image
+                    src={step.iconSrc}
+                    alt=""
+                    aria-hidden="true"
+                    width={step.iconWidth ?? 120}
+                    height={step.iconHeight ?? 120}
+                    className={step.iconClassName ?? "h-10 w-auto"}
+                  />
+                </motion.div>
+              ) : null}
+              {step.stepLabel ? (
+                <p className="text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                  {step.stepLabel}
+                </p>
+              ) : null}
+              <h3 className="mt-4 text-center text-2xl font-semibold text-[var(--og-blue)]">
                 {step.title}
               </h3>
-              <p className="mt-2.5 text-base leading-7 text-[var(--og-muted)]">
+              <p className="mt-2.5 text-center text-base leading-7 text-[var(--og-muted)]">
                 {step.body}
               </p>
             </article>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <a
-            href={buttonHref}
-            className="font-noir-alt inline-flex min-h-11 items-center justify-center rounded-full border-2 border-[#0B32A0] bg-white px-7 py-3 text-sm font-bold uppercase tracking-[0.08em] text-[#0B32A0] shadow-[4px_4px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
-          >
-            START A PROJECT
-          </a>
-        </div>
+        {buttonHref ? (
+          <div className="mt-12 text-center">
+            <a
+              href={buttonHref}
+              className="font-body inline-flex min-h-11 items-center justify-center rounded-full border-2 border-[#0B32A0] bg-white px-7 py-3 text-sm font-semibold uppercase tracking-[0.08em] text-[#0B32A0] shadow-[4px_4px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
+            >
+              START A PROJECT
+            </a>
+          </div>
+        ) : null}
       </section>
     </Reveal>
   );

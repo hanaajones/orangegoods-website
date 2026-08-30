@@ -1,19 +1,212 @@
 // ── Pricing engine ────────────────────────────────────────────────────────────
 
-// Jol print rates (1-color screen print, includes $0.50 flash)
+export type PrintCat = "base" | "fleece" | "jacket";
+export type CatalogFrontDecoration = "screenPrint" | "embroidery";
+export type CatalogSpecialtyPrintUpgrade = "Water-Based Ink" | "Discharge Print" | "Puff Print";
+export type CatalogPackagingUpgrade = "Printed neck label" | "Woven label" | "Folded + poly bagged";
+
+type JolColorCount = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+
+type JolTier = {
+  min: number;
+  max: number | null;
+  rates: Record<JolColorCount, number>;
+};
+
+const JOL_SCREEN_PRINT_TIERS: JolTier[] = [
+  { min: 1, max: 23, rates: { 1: 4.75, 2: 5.0, 3: 5.35, 4: 5.5, 5: 5.75, 6: 6.0, 7: 6.5, 8: 7.0 } },
+  { min: 24, max: 47, rates: { 1: 3.15, 2: 3.35, 3: 3.55, 4: 3.65, 5: 3.8, 6: 3.95, 7: 4.3, 8: 4.6 } },
+  { min: 48, max: 95, rates: { 1: 2.45, 2: 2.65, 3: 2.9, 4: 3.15, 5: 3.5, 6: 3.8, 7: 4.2, 8: 4.9 } },
+  { min: 96, max: 143, rates: { 1: 2.3, 2: 2.4, 3: 2.65, 4: 2.9, 5: 3.1, 6: 3.4, 7: 3.8, 8: 4.5 } },
+  { min: 144, max: 287, rates: { 1: 2.1, 2: 2.3, 3: 2.55, 4: 2.75, 5: 2.9, 6: 3.1, 7: 3.5, 8: 4.25 } },
+  { min: 288, max: 503, rates: { 1: 1.75, 2: 2.0, 3: 2.2, 4: 2.3, 5: 2.5, 6: 2.65, 7: 2.95, 8: 3.45 } },
+  { min: 504, max: 791, rates: { 1: 1.6, 2: 1.7, 3: 1.9, 4: 2.05, 5: 2.25, 6: 2.45, 7: 2.55, 8: 2.85 } },
+  { min: 792, max: 1199, rates: { 1: 1.5, 2: 1.75, 3: 1.8, 4: 1.9, 5: 2.0, 6: 2.15, 7: 2.3, 8: 2.75 } },
+  { min: 1200, max: 1999, rates: { 1: 1.4, 2: 1.6, 3: 1.75, 4: 1.8, 5: 1.9, 6: 2.0, 7: 2.1, 8: 2.4 } },
+  { min: 2000, max: 2499, rates: { 1: 1.25, 2: 1.4, 3: 1.5, 4: 1.7, 5: 1.8, 6: 1.85, 7: 1.9, 8: 2.1 } },
+];
+
+export const JOL_SETUP_SCREEN_COST = 25;
+export const JOL_SETUP_FILM_COST = 10;
+export const JOL_FLASH_CURE_PRICE = 0.5;
+export const JOL_FLEECE_OR_SLEEVE_PRICE = 0.25;
+export const JOL_SPECIALTY_INK_PRICE = 0.75;
+export const JOL_CUSTOMER_SUPPLIED_GOODS_PRICE = 0.25;
+export const JOL_PRINT_MARKUP_MULTIPLIER = 1.1;
+export const CATALOG_EMBROIDERY_UNIT_PRICE = 6;
+
 export const jolRates: Record<number, number> = {
   100: 2.30, 250: 2.10, 500: 1.75, 1000: 1.50, 1500: 1.40, 2000: 1.25,
 };
-// Screen amortized ($50 setup / qty)
+
 export const screens: Record<number, number> = {
   100: 0.50, 250: 0.20, 500: 0.10, 1000: 0.05, 1500: 0.0333, 2000: 0.025,
 };
-// Flat margins
+
 export const margins: Record<number, number> = {
   100: 3.00, 250: 2.75, 500: 2.50, 1000: 2.50, 1500: 2.50, 2000: 2.50,
 };
 
-export type PrintCat = 'base' | 'fleece' | 'jacket';
+export const CATALOG_PACKAGING_PRICES: Record<CatalogPackagingUpgrade, number> = {
+  "Printed neck label": 2,
+  "Woven label": 3.5,
+  "Folded + poly bagged": 1,
+};
+
+function roundToQuarter(value: number) {
+  return Math.round(value * 4) / 4;
+}
+
+function clampColorCount(colorCount: number): JolColorCount {
+  return Math.max(1, Math.min(8, Math.round(colorCount || 1))) as JolColorCount;
+}
+
+function getMarginForQty(qty: number) {
+  if (qty >= 2000) return margins[2000];
+  if (qty >= 1500) return margins[1500];
+  if (qty >= 1000) return margins[1000];
+  if (qty >= 500) return margins[500];
+  if (qty >= 250) return margins[250];
+  return margins[100];
+}
+
+function getJolTier(qty: number) {
+  return JOL_SCREEN_PRINT_TIERS.find((tier) => qty >= tier.min && (tier.max === null || qty <= tier.max))
+    ?? JOL_SCREEN_PRINT_TIERS[JOL_SCREEN_PRINT_TIERS.length - 1];
+}
+
+export function getJolPrintRate(qty: number, colorCount: number) {
+  return getJolTier(qty).rates[clampColorCount(colorCount)];
+}
+
+export function getJolSetupAmortizedPerUnit(qty: number, totalScreenColors: number) {
+  return ((JOL_SETUP_SCREEN_COST + JOL_SETUP_FILM_COST) * Math.max(0, totalScreenColors)) / Math.max(qty, 1);
+}
+
+type JolLocationPriceInput = {
+  qty: number;
+  colorCount: number;
+  printCat: PrintCat;
+  isSleeveOrSide?: boolean;
+};
+
+export function calculateJolScreenPrintLocationUnitPrice({
+  qty,
+  colorCount,
+  printCat,
+  isSleeveOrSide = false,
+}: JolLocationPriceInput) {
+  const catUpcharge = printCat === "fleece" ? JOL_FLEECE_OR_SLEEVE_PRICE : printCat === "jacket" ? 0.75 : 0;
+  const placementUpcharge = isSleeveOrSide ? JOL_FLEECE_OR_SLEEVE_PRICE : 0;
+  const printRate = getJolPrintRate(qty, colorCount);
+  const setupAmortization = getJolSetupAmortizedPerUnit(qty, clampColorCount(colorCount));
+
+  return (printRate + JOL_FLASH_CURE_PRICE + catUpcharge + placementUpcharge) * JOL_PRINT_MARKUP_MULTIPLIER + setupAmortization;
+}
+
+export type CatalogBuilderPricingInput = {
+  blank: number;
+  blankMarkup: number;
+  printCat: PrintCat;
+  qty: number;
+  frontDecoration: CatalogFrontDecoration;
+  frontColors?: number;
+  backPrintColors?: number;
+  sidePrintColors?: number;
+  printUpgrade?: CatalogSpecialtyPrintUpgrade | null;
+  packagingUpgrades?: CatalogPackagingUpgrade[];
+  rush?: boolean;
+  customerSuppliedGoods?: boolean;
+};
+
+export type CatalogBuilderPricingBreakdown = {
+  baseUnitPrice: number;
+  addOnUnitPrice: number;
+  unitPrice: number;
+  frontDecorationUnitPrice: number;
+  frontExtraColorUnitPrice: number;
+  backPrintUnitPrice: number;
+  sidePrintUnitPrice: number;
+  specialtyUpgradeUnitPrice: number;
+  packagingUnitPrice: number;
+  rushUnitPrice: number;
+  customerSuppliedGoodsUnitPrice: number;
+  marginUnitPrice: number;
+};
+
+export function calculateCatalogBuilderPricing({
+  blank,
+  blankMarkup,
+  printCat,
+  qty,
+  frontDecoration,
+  frontColors = 1,
+  backPrintColors = 0,
+  sidePrintColors = 0,
+  printUpgrade = null,
+  packagingUpgrades = [],
+  rush = false,
+  customerSuppliedGoods = false,
+}: CatalogBuilderPricingInput): CatalogBuilderPricingBreakdown {
+  const marginUnitPrice = getMarginForQty(qty);
+  const baseBlankUnitPrice = blank + blankMarkup;
+  const hasFrontScreenPrint = frontDecoration === "screenPrint" && frontColors > 0;
+  const frontBasePrintUnitPrice = hasFrontScreenPrint
+    ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: 1, printCat })
+    : 0;
+  const frontFullPrintUnitPrice = hasFrontScreenPrint
+    ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: frontColors, printCat })
+    : 0;
+  const frontExtraColorUnitPrice = hasFrontScreenPrint
+    ? Math.max(0, frontFullPrintUnitPrice - frontBasePrintUnitPrice)
+    : 0;
+  const frontDecorationUnitPrice = frontDecoration === "embroidery"
+    ? CATALOG_EMBROIDERY_UNIT_PRICE
+    : frontBasePrintUnitPrice;
+  const backPrintUnitPrice = backPrintColors > 0
+    ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: backPrintColors, printCat })
+    : 0;
+  const sidePrintUnitPrice = sidePrintColors > 0
+    ? calculateJolScreenPrintLocationUnitPrice({ qty, colorCount: sidePrintColors, printCat, isSleeveOrSide: true })
+    : 0;
+  const screenPrintedPlacements =
+    (hasFrontScreenPrint ? 1 : 0) +
+    (backPrintColors > 0 ? 1 : 0) +
+    (sidePrintColors > 0 ? 1 : 0);
+  const specialtyUpgradeUnitPrice = printUpgrade ? JOL_SPECIALTY_INK_PRICE * screenPrintedPlacements : 0;
+  const packagingUnitPrice = packagingUpgrades.reduce(
+    (total, label) => total + (CATALOG_PACKAGING_PRICES[label] ?? 0),
+    0
+  );
+  const rushUnitPrice = rush ? 3 : 0;
+  const customerSuppliedGoodsUnitPrice = customerSuppliedGoods ? JOL_CUSTOMER_SUPPLIED_GOODS_PRICE : 0;
+
+  const baseUnitPrice = roundToQuarter(baseBlankUnitPrice + frontDecorationUnitPrice + marginUnitPrice);
+  const addOnUnitPrice = roundToQuarter(
+    frontExtraColorUnitPrice +
+      backPrintUnitPrice +
+      sidePrintUnitPrice +
+      specialtyUpgradeUnitPrice +
+      packagingUnitPrice +
+      rushUnitPrice +
+      customerSuppliedGoodsUnitPrice
+  );
+
+  return {
+    baseUnitPrice,
+    addOnUnitPrice,
+    unitPrice: roundToQuarter(baseUnitPrice + addOnUnitPrice),
+    frontDecorationUnitPrice: roundToQuarter(frontDecorationUnitPrice),
+    frontExtraColorUnitPrice: roundToQuarter(frontExtraColorUnitPrice),
+    backPrintUnitPrice: roundToQuarter(backPrintUnitPrice),
+    sidePrintUnitPrice: roundToQuarter(sidePrintUnitPrice),
+    specialtyUpgradeUnitPrice: roundToQuarter(specialtyUpgradeUnitPrice),
+    packagingUnitPrice: roundToQuarter(packagingUnitPrice),
+    rushUnitPrice: roundToQuarter(rushUnitPrice),
+    customerSuppliedGoodsUnitPrice: roundToQuarter(customerSuppliedGoodsUnitPrice),
+    marginUnitPrice: roundToQuarter(marginUnitPrice),
+  };
+}
 
 export function calcPrice(
   blank: number,
@@ -21,14 +214,14 @@ export function calcPrice(
   printCat: PrintCat,
   qty: number
 ): number {
-  const catUpcharge =
-    printCat === 'fleece' ? 0.25 : printCat === 'jacket' ? 0.75 : 0;
-  const sell =
-    (blank + blankMarkup) +
-    (jolRates[qty] + 0.50 + 0.25 + catUpcharge) * 1.10 +
-    screens[qty] +
-    margins[qty];
-  return Math.round(sell * 4) / 4; // round to nearest $0.25
+  return calculateCatalogBuilderPricing({
+    blank,
+    blankMarkup,
+    printCat,
+    qty,
+    frontDecoration: "screenPrint",
+    frontColors: 1,
+  }).unitPrice;
 }
 
 export const QTY_OPTIONS = [100, 250, 500, 1000, 1500, 2000] as const;
@@ -49,7 +242,7 @@ export const ADDONS: Record<AddonKey, { label: string; price: number }> = {
   extraColor:     { label: 'Additional print color',         price: 1.00 },
   backPrint:      { label: 'Back print',                     price: 3.00 },
   waterBasedPuff: { label: 'Water-based / puff ink',         price: 1.00 },
-  embroidery:     { label: 'Embroidery (instead of print)',  price: 3.00 },
+  embroidery:     { label: 'Embroidery (instead of print)',  price: CATALOG_EMBROIDERY_UNIT_PRICE },
   neckLabel:      { label: 'Printed neck label',             price: 2.00 },
   wovenLabel:     { label: 'Woven label',                    price: 3.50 },
   polybagged:     { label: 'Polybagged + folded',            price: 1.00 },

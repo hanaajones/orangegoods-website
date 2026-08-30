@@ -365,11 +365,11 @@ const caseStudies: CaseStudy[] = [
   },
   {
     slug: "goodonya-glass-bottle-production",
-    client: "GoodOnYa",
+    client: "Goodonya",
     category: "Drinkware",
     headline: "Reusable drinkware shown at the point where it becomes real.",
     deck:
-      "GoodOnYa's glass bottle project is strongest as a production-proof case study: clear decoration, real materials, caps, cartons, and the finished print visible before delivery.",
+      "Goodonya's glass bottle project is strongest as a production-proof case study: clear decoration, real materials, caps, cartons, and the finished print visible before delivery.",
     heroImage: "/images/gallery/drinkware-goodoonya1.jpg",
     heroPosition: "center 42%",
     accentImage: "/images/gallery/drinkware-goodoonya2.jpg",

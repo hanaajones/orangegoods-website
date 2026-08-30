@@ -2,6 +2,8 @@ import catalogRaw from "@/lib/as-colour-hats.json";
 import type { ReadyMadeHatStyle, HatColor } from "@/components/ShoppableReadyMadeHat";
 import type { HatMeta } from "@/components/ReadyMadeHatGrid";
 
+export type { HatMeta } from "@/components/ReadyMadeHatGrid";
+
 type RawCatalog = Record<string, { colors: Record<string, Record<string, string>> }>;
 const catalog = catalogRaw as RawCatalog;
 

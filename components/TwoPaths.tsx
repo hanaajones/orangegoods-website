@@ -187,7 +187,7 @@ export function TwoPaths({ items, title }: { items: PathItem[]; title: string })
         <p className="mt-6 text-center text-sm text-[#1C1C1C]/45">
           Not sure which is right? Either path works — we&apos;ll sort out the details together.
           {" "}
-          <a href="/about" className="text-[#FF4200] hover:underline">Learn about OG Crafted vs Ready Made →</a>
+          <a href="/about" className="text-[#FF4200] hover:underline">Learn about Full Custom vs Quick Turn →</a>
         </p>
       </section>
     </Reveal>

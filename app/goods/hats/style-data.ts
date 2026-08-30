@@ -1,13 +1,26 @@
+export type HatStyleImage = {
+  src: string;
+  label: string;
+  imagePosition?: string;
+};
+
 export type HatStyle = {
   slug: string;
   model: string;
   title: string;
   description: string;
+  selectorDescription: string;
   image: string;
+  gallery?: HatStyleImage[];
   imagePosition?: string;
   closure: string;
   profile: string;
   bestFor: string;
+};
+
+const sharedDetailGalleryImage: HatStyleImage = {
+  src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og-crafted-shared-detail-mg-9416.jpg",
+  label: "Detail view",
 };
 
 export const hatStyles = [
@@ -16,7 +29,14 @@ export const hatStyles = [
     model: "OG 100",
     title: "Dad Hat",
     description: "Relaxed 6-panel, everyday fit.",
-    image: "/images/product/hats/og100-dad-hat-brown-front.jpg",
+    selectorDescription: "6-panel, low profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
     imagePosition: "center 50%",
     closure: "Strapback",
     profile: "Low profile",
@@ -25,9 +45,16 @@ export const hatStyles = [
   {
     slug: "og-110-five-panel-unstructured-hat",
     model: "OG 110",
-    title: "5-panel unstructured hat",
+    title: "Standard Cap",
     description: "Clean 5-panel shape with a laid-back feel.",
-    image: "/images/product/hats/og110-five-panel-brown-front.jpg",
+    selectorDescription: "5-panel, unstructured, mid profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
     imagePosition: "center 50%",
     closure: "Strapback",
     profile: "Mid profile",
@@ -38,10 +65,17 @@ export const hatStyles = [
     model: "OG 120",
     title: "Coast Cap",
     description: "Soft low-profile shape with a laid-back feel.",
-    image: "/images/product/hat-lifestyle-hero.jpg",
-    imagePosition: "center 44%",
+    selectorDescription: "6-panel, low profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 48%",
     closure: "Strapback",
-    profile: "Low profile",
+    profile: "Mid profile",
     bestFor: "Casual retail programs",
   },
   {
@@ -49,8 +83,15 @@ export const hatStyles = [
     model: "OG 130",
     title: "Setter Cap",
     description: "A sharper 5-panel with more structure.",
-    image: "/images/product/hat-bucket-hero.jpg",
-    imagePosition: "center 45%",
+    selectorDescription: "5-panel, structured, mid profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 50%",
     closure: "Snapback",
     profile: "Mid profile",
     bestFor: "Structured front-logo builds",
@@ -60,7 +101,14 @@ export const hatStyles = [
     model: "OG 140",
     title: "Surf Trucker",
     description: "Relaxed trucker built for lifestyle brands.",
-    image: "/images/product/hats/og140-surf-trucker-brown-front.jpg",
+    selectorDescription: "trucker, mid profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-front-updated.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-front-updated.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
     imagePosition: "center 50%",
     closure: "Snapback",
     profile: "Mid profile",
@@ -71,8 +119,15 @@ export const hatStyles = [
     model: "OG 150",
     title: "Stock Trucker",
     description: "Classic mesh-back trucker with more presence.",
-    image: "/images/product/hat-lifestyle-secondary.jpg",
-    imagePosition: "center 48%",
+    selectorDescription: "trucker, mesh back, mid profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 50%",
     closure: "Snapback",
     profile: "Mid profile",
     bestFor: "Events and larger merch runs",
@@ -82,19 +137,33 @@ export const hatStyles = [
     model: "OG 160",
     title: "Field Trucker",
     description: "More structured front with extra logo room.",
-    image: "/images/product/hats/og160-retro-trucker-front.jpg",
-    imagePosition: "center 42%",
+    selectorDescription: "trucker, structured front, low profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 50%",
     closure: "Snapback",
-    profile: "High profile",
+    profile: "Low profile",
     bestFor: "Bolder front decoration",
   },
   {
     slug: "og-170-foam-trucker",
     model: "OG 170",
-    title: "Foam Trucker",
+    title: "Foamie Trucker",
     description: "High-profile trucker that makes more of a statement.",
-    image: "/images/product/hats/og170-foam-trucker-front.jpg",
-    imagePosition: "center 44%",
+    selectorDescription: "foam trucker, high profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 50%",
     closure: "Snapback",
     profile: "High profile",
     bestFor: "Louder promotional drops",
@@ -104,8 +173,15 @@ export const hatStyles = [
     model: "OG 180",
     title: "Trail Cap",
     description: "Camper-style shape with an outdoor lean.",
-    image: "/images/product/hats/as-colour/1104-nylon-cap-front.jpg",
-    imagePosition: "center 48%",
+    selectorDescription: "camper, low profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 52%",
     closure: "Clip closure",
     profile: "Low profile",
     bestFor: "Outdoor and active use",
@@ -115,8 +191,15 @@ export const hatStyles = [
     model: "OG 190",
     title: "Highline Cap",
     description: "Structured high-profile cap with a stronger crown.",
-    image: "/images/product/hats/feb-highline-navy-front.jpg",
-    imagePosition: "center 46%",
+    selectorDescription: "structured cap, high profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-back.jpg", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 50%",
     closure: "Snapback",
     profile: "High profile",
     bestFor: "Retail-style structured builds",
@@ -126,10 +209,17 @@ export const hatStyles = [
     model: "OG 200",
     title: "Perform Cap",
     description: "Lighter, more technical, and built for movement.",
-    image: "/images/product/hats/feb-perform-black-front.jpg",
-    imagePosition: "center 44%",
+    selectorDescription: "performance cap, mid profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-side.png", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-back.png", label: "Back view" },
+      sharedDetailGalleryImage,
+    ],
+    imagePosition: "center 50%",
     closure: "Clip closure",
-    profile: "Low profile",
+    profile: "Mid profile",
     bestFor: "Technical and sport programs",
   },
   {
@@ -137,17 +227,34 @@ export const hatStyles = [
     model: "OG 210",
     title: "Bucket Hat",
     description: "A custom bucket built for summer drops and events.",
-    image: "/images/gallery/hat-client-bucket-brown.jpg",
+    selectorDescription: "bucket hat, high profile",
+    image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-front.jpg",
+    gallery: [
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-front.jpg", label: "Front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-inside.jpg", label: "Inside view" },
+      sharedDetailGalleryImage,
+    ],
     imagePosition: "center 48%",
     closure: "Fitted",
-    profile: "Bucket",
+    profile: "High profile",
     bestFor: "Event kits and seasonal drops",
   },
 ] satisfies HatStyle[];
 
-export const featuredHatStyles = hatStyles.filter((style) =>
-  ["OG 100", "OG 110", "OG 140"].includes(style.model)
-);
+export const featuredHatStyles = [
+  { slug: "og-100-dad-hat" },
+  { slug: "og-110-five-panel-unstructured-hat", title: "Standard Cap" },
+  { slug: "og-140-surf-trucker" },
+  { slug: "og-170-foam-trucker" },
+  { slug: "og-190-highline-cap" },
+  { slug: "og-210-bucket-hat" },
+].flatMap(({ slug, title }) => {
+    const style = hatStyles.find((item) => item.slug === slug);
+
+    if (!style) return [];
+
+    return [title ? { ...style, title } : style];
+  });
 
 export function getHatStyleBySlug(slug: string) {
   return hatStyles.find((style) => style.slug === slug);

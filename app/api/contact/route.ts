@@ -759,7 +759,6 @@ async function appendSubmissionSnapshotSafely(record: SubmissionRecord) {
     console.error("[Contact Submission Snapshot Error]", error);
   }
 }
-
 async function setDeliveryResult(
   record: SubmissionRecord,
   name: DeliveryName,

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 type HomepageGoodsSlide = {
   src: string;
   position?: string;
+  scale?: number;
 };
 
 export function HomepageGoodsSlideshow({
@@ -41,6 +42,8 @@ export function HomepageGoodsSlideshow({
           style={{
             opacity: index === current ? 1 : 0,
             objectPosition: slide.position ?? "center",
+            transform: `scale(${slide.scale ?? 1})`,
+            transformOrigin: "center",
             transition: `opacity ${transitionMs}ms ease-in-out`,
           }}
         />

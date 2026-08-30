@@ -3,7 +3,14 @@
 .next-*
 .next_*
 .next.*
+.env.local
+.env*.local
 node_modules
 npm-debug.log*
 tsconfig.tsbuildinfo
 test-results/
+data/contact-submissions.jsonl
+data/contact-submissions/
+data/contact-uploads/
+data/ss-activewear/
+data/as-colour-source/

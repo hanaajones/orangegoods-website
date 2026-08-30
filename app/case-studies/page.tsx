@@ -139,11 +139,11 @@ const featuredCaseStudies = [
   },
   {
     slug: "goodonya-glass-bottle-production",
-    client: "GoodOnYa",
+    client: "Goodonya",
     category: "Drinkware",
     headline: "Clear drinkware with production-floor proof.",
     summary:
-      "GoodOnYa's glass bottle project is a useful case study because the photos show the product becoming real: decoration on clear glass, caps staged for assembly, and a production environment that makes the print, scale, and finish easy to understand.",
+      "Goodonya's glass bottle project is a useful case study because the photos show the product becoming real: decoration on clear glass, caps staged for assembly, and a production environment that makes the print, scale, and finish easy to understand.",
     image: "/images/gallery/drinkware-goodoonya1.jpg",
     secondaryImage: "/images/gallery/drinkware-goodoonya2.jpg",
     imagePosition: "center 42%",
@@ -812,7 +812,7 @@ export default function CaseStudiesPage() {
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/44" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/78 via-[#1C1C1C]/50 to-[#1C1C1C]/12" />
-        <div className="relative mx-auto grid max-w-6xl gap-10 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/74">
               Real Work
@@ -827,25 +827,14 @@ export default function CaseStudiesPage() {
               A closer look at real Orange Goods projects: the product choices, visual direction,
               and production details that make branded goods feel worth keeping.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact" className="btn-og inline-flex">
-                Start a Project
-              </Link>
-              <Link href="/gallery" className="btn-og-white inline-flex">
-                View Gallery
-              </Link>
-            </div>
           </div>
-
-          <div className="grid gap-3 rounded-[1.75rem] border border-white/18 bg-white/10 p-4 backdrop-blur">
-            {["Strategy before swag", "Better blanks first", "Proof-led production"].map((item) => (
-              <div
-                key={item}
-                className="rounded-[1.15rem] border border-white/14 bg-white/10 px-4 py-3 text-sm font-semibold uppercase tracking-[0.14em] text-white/86"
-              >
-                {item}
-              </div>
-            ))}
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
+            <Link href="/contact" className="btn-og inline-flex">
+              Start a Project
+            </Link>
+            <Link href="/gallery" className="btn-og-white inline-flex">
+              View Gallery
+            </Link>
           </div>
         </div>
       </section>

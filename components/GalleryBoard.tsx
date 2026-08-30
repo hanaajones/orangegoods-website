@@ -13,28 +13,44 @@ const CATEGORIES = [
   { key: "socks",      label: "Socks" },
 ] as const;
 
-function buildGalleryEmailHref(item: GalleryItem) {
-  const subject = encodeURIComponent(`I like this ${item.product}`);
-  const body = encodeURIComponent(
-    [
-      "Hi Orange Goods,",
-      "",
-      `I like this piece from your gallery and want to make something similar: ${item.product}.`,
-      `Client/brand reference: ${item.client}.`,
-      `Category: ${item.category}.`,
-      "",
-      "Can you help me put together something along these lines?",
-    ].join("\n"),
-  );
+function buildGalleryContactHref(item: GalleryItem) {
+  const projectSummary = [
+    `I like the ${item.product} piece from your gallery and want to make something similar.`,
+    `Client/brand reference: ${item.client}.`,
+    `Category: ${item.category}.`,
+    "",
+    "Can you help me put together something along these lines?",
+  ].join("\n");
 
-  return `mailto:hello@orangegoods.co?subject=${subject}&body=${body}`;
+  return `/contact?${new URLSearchParams({
+    projectSummary,
+    source: "gallery",
+    product: item.product,
+  }).toString()}`;
 }
 
 export function GalleryBoard({ items }: { items: GalleryItem[] }) {
   const [active, setActive] = useState<"all" | GalleryItem["category"]>("all");
-  const [lightbox, setLightbox] = useState<GalleryItem | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const filtered = active === "all" ? items : items.filter((i) => i.category === active);
+  const lightbox = lightboxIndex === null ? null : filtered[lightboxIndex] ?? null;
+
+  function closeLightbox() {
+    setLightboxIndex(null);
+  }
+
+  function stepLightbox(direction: "prev" | "next") {
+    setLightboxIndex((current) => {
+      if (current === null || filtered.length === 0) return current;
+
+      if (direction === "prev") {
+        return current === 0 ? filtered.length - 1 : current - 1;
+      }
+
+      return current === filtered.length - 1 ? 0 : current + 1;
+    });
+  }
 
   return (
     <section className="px-4 py-10 md:px-8 lg:px-12">
@@ -58,11 +74,11 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
 
       {/* Masonry grid */}
       <div className="mx-auto max-w-6xl columns-2 gap-3 md:columns-3 lg:columns-4">
-        {filtered.map((item) => (
+        {filtered.map((item, index) => (
           <button
             key={`${item.src}-${item.client}`}
             type="button"
-            onClick={() => setLightbox(item)}
+            onClick={() => setLightboxIndex(index)}
             className="group relative mb-3 block w-full overflow-hidden rounded-[1.25rem] bg-[#e4dfcd]"
             style={{ breakInside: "avoid" }}
           >
@@ -97,41 +113,78 @@ export function GalleryBoard({ items }: { items: GalleryItem[] }) {
           <button
             type="button"
             aria-label="Close"
-            onClick={() => setLightbox(null)}
-            className="absolute inset-0 bg-black/85 backdrop-blur-sm"
+            onClick={closeLightbox}
+            className="absolute inset-0 bg-white/92 backdrop-blur-sm"
           />
           {/* Card */}
-          <div className="relative z-10 w-full max-w-3xl overflow-hidden rounded-[2rem] bg-[#1a1512]">
+          <div className="relative z-10 w-full max-w-5xl overflow-hidden rounded-[2rem] border border-[#081E6F]/10 bg-white shadow-[0_30px_80px_rgba(8,30,111,0.18)]">
             {/* Close */}
             <button
               type="button"
-              onClick={() => setLightbox(null)}
-              className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+              onClick={closeLightbox}
+              className="absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border border-[#081E6F]/10 bg-white/92 text-[var(--og-blue)] shadow-[0_10px_24px_rgba(8,30,111,0.14)] transition hover:bg-[#F7F4ED]"
               aria-label="Close"
             >
               ✕
             </button>
-            {/* Image */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={lightbox.src}
-              alt={`${lightbox.client} — ${lightbox.product}`}
-              className="max-h-[80vh] w-full object-contain"
-            />
+            <div className="grid items-center gap-3 px-4 pt-6 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-5 sm:px-6 md:px-8">
+              <button
+                type="button"
+                onClick={() => stepLightbox("prev")}
+                className="hidden h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200] sm:flex"
+                aria-label="Previous photo"
+              >
+                ‹
+              </button>
+              <div className="flex h-[24rem] items-center justify-center overflow-hidden rounded-[1.5rem] sm:h-[30rem] lg:h-[34rem]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={lightbox.src}
+                  alt={`${lightbox.client} — ${lightbox.product}`}
+                  className="max-h-full w-auto max-w-full rounded-[1.5rem] object-contain"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => stepLightbox("next")}
+                className="hidden h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200] sm:flex"
+                aria-label="Next photo"
+              >
+                ›
+              </button>
+            </div>
+            <div className="mt-4 flex items-center justify-center gap-2 px-6 sm:hidden">
+              <button
+                type="button"
+                onClick={() => stepLightbox("prev")}
+                className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+                aria-label="Previous photo"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                onClick={() => stepLightbox("next")}
+                className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+                aria-label="Next photo"
+              >
+                ›
+              </button>
+            </div>
             {/* Caption */}
             <div className="px-6 py-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">
                 {lightbox.client}
               </p>
-              <p className="mt-1 text-base font-semibold text-white">
+              <p className="mt-1 text-base font-semibold text-[var(--og-blue)]">
                 {lightbox.product}
               </p>
               <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="max-w-xl text-sm leading-6 text-white/70">
+                <p className="max-w-xl text-sm leading-6 text-[#4b4b4b]">
                   Like this one? Email us and we&apos;ll help you make something similar.
                 </p>
                 <a
-                  href={buildGalleryEmailHref(lightbox)}
+                  href={buildGalleryContactHref(lightbox)}
                   className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:bg-[#ff8f1f]"
                 >
                   Email Us About This Piece

@@ -1,9 +1,9 @@
-import { ApparelTemplatePreview } from "@/components/ApparelTemplatePreview";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Apparel Template Preview - Orange Goods",
 };
 
 export default function ApparelTemplateDraftPage() {
-  return <ApparelTemplatePreview />;
+  redirect("/goods/apparel/styles");
 }

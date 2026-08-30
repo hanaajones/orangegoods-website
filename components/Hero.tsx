@@ -57,16 +57,8 @@ export function Hero() {
             <Link
               href="/contact"
               className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
-              style={{ fontFamily: "var(--font-noir-alt)" }}
             >
               START A PROJECT
-            </Link>
-            <Link
-              href="/build"
-              className="inline-flex items-center rounded-xl border-2 border-[#0B32A0] px-7 py-3.5 text-sm font-semibold text-[#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#0B32A0] hover:text-white"
-              style={{ fontFamily: "var(--font-noir-alt)" }}
-            >
-              BUILD ONLINE
             </Link>
           </div>
         </div>
@@ -86,16 +78,8 @@ export function Hero() {
             <Link
               href="/contact"
               className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
-              style={{ fontFamily: "var(--font-noir-alt)" }}
             >
               START A PROJECT
-            </Link>
-            <Link
-              href="/build"
-              className="inline-flex items-center rounded-xl border border-white/80 bg-white/10 px-5 py-3 text-xs font-semibold text-white backdrop-blur-sm"
-              style={{ fontFamily: "var(--font-noir-alt)" }}
-            >
-              BUILD ONLINE
             </Link>
           </div>
         </div>

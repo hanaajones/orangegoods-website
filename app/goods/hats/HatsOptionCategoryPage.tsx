@@ -8,6 +8,7 @@ type HatsOptionCategoryPageProps = {
   title: string;
   description: string;
   cards: HatsOptionCard[];
+  compactCards?: boolean;
 };
 
 export function HatsOptionCategoryPage({
@@ -15,6 +16,7 @@ export function HatsOptionCategoryPage({
   title,
   description,
   cards,
+  compactCards = false,
 }: HatsOptionCategoryPageProps) {
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
@@ -44,21 +46,26 @@ export function HatsOptionCategoryPage({
       <section className="px-6 py-4 md:px-12">
         <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-3">
           {cards.map((card) => (
-            <article
-              key={card.title}
-              className="overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-white shadow-[8px_8px_0px_#0B32A0]"
+            <a
+              key={`${card.title}-${card.href ?? card.image}`}
+              href={card.href ?? undefined}
+              target={card.openInNewTab ? "_blank" : undefined}
+              rel={card.openInNewTab ? "noreferrer" : undefined}
+              className={`group isolate block overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-white shadow-[8px_8px_0px_#0B32A0] transition ${
+                card.href ? "hover:-translate-y-1" : ""
+              }`}
             >
-              <div className="relative aspect-[4/5] bg-[#d8c3aa]">
+              <div className={`relative overflow-hidden bg-[#d8c3aa] ${compactCards ? "aspect-[4/3]" : "aspect-[4/5]"}`}>
                 <Image
                   src={card.image}
                   alt={card.title}
                   fill
                   sizes="(min-width: 1024px) 30vw, 100vw"
-                  className="object-cover scale-[1.08]"
+                  className={`object-cover ${card.imageScaleClass ?? "scale-[1.08]"}`}
                   style={{ objectPosition: card.imagePosition }}
                 />
               </div>
-              <div className="p-6">
+              <div className={`relative z-10 bg-white ${compactCards ? "p-5" : "p-6"}`}>
                 <h2 className="text-3xl font-semibold leading-none text-[var(--og-blue)]">
                   {card.title}
                 </h2>
@@ -75,8 +82,13 @@ export function HatsOptionCategoryPage({
                     </span>
                   ))}
                 </div>
+                {card.href ? (
+                  <p className="mt-5 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition group-hover:text-[var(--og-orange)]">
+                    Open swatch deck
+                  </p>
+                ) : null}
               </div>
-            </article>
+            </a>
           ))}
         </div>
       </section>

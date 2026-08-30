@@ -1,43 +1,7 @@
 import Link from "next/link";
-import { GoodsCatalogGrid } from "@/components/GoodsCatalogGrid";
-import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
+import { ServiceLeadForm } from "@/app/services/_components/ServiceLeadForm";
 import { Reveal } from "@/components/Reveal";
 import { GoodsUseCaseRotator } from "@/components/GoodsUseCaseRotator";
-import {
-  CATALOG_PRODUCTS,
-  CATEGORY_LABELS,
-  CATEGORY_ORDER,
-  calcPrice,
-} from "@/data/catalog";
-
-const catalogImageFallback =
-  "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif";
-
-const catalogProductImages: Record<string, string> = {
-  "bella-canvas-3001": "/images/product/apparel-tshirt-secondary.jpg",
-  "gildan-8000": "/images/gallery/apparel-gts-synergy.jpg",
-  "comfort-colors-1717": "/images/product/apparel-tshirt-hero.jpg",
-  "la-apparel-1801": "/images/gallery/apparel-verve-gd-tee2.jpg",
-  "lane-seven-ls16005gd": "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_072.jpg",
-  "as-colour-5101": "/images/product/apparel-hoodie-front.jpg",
-  "as-colour-5100": "/images/gallery/apparel-686-hoodie-front.jpg",
-  "bella-canvas-3719": "/images/gallery/apparel-686-hoodie-back.jpg",
-  "comfort-colors-1566": "/images/product/apparel-hoodie-front.jpg",
-  "as-colour-5120": "/images/product/apparel-hoodie-front.jpg",
-  "as-colour-5120-crew": "/images/gallery/apparel-686-hoodie-detail.jpg",
-  "as-colour-5921": "/images/gallery/apparel-686-hoodie-front.jpg",
-  "as-colour-5942": "/images/product/apparel-hoodie-front.jpg",
-  "as-colour-5933": "/images/gallery/apparel-686-hoodie-back.jpg",
-  "as-colour-5903": "/images/gallery/apparel-686-hoodie-detail.jpg",
-  "as-colour-4001": "/images/product/apparel-tshirt-secondary.jpg",
-  "as-colour-4030": "/images/product/apparel-tshirt-hero.jpg",
-  "as-colour-4072": "/images/gallery/apparel-verve-gd-tee.jpg",
-  "as-colour-4007": "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg",
-  "as-colour-5026": "/images/product/apparel-tshirt-secondary.jpg",
-  "as-colour-5520": "/images/gallery/apparel-686-hoodie-front.jpg",
-  exp54lwp: "/images/gallery/apparel-686-hoodie-back.jpg",
-  "as-colour-5522": "/images/gallery/apparel-686-hoodie-detail.jpg",
-};
 
 type CategoryCard = {
   name: string;
@@ -53,7 +17,7 @@ type CategoryCard = {
 const categories: CategoryCard[] = [
   {
     name: "Headwear",
-    description: "Ready-made blanks, OG Crafted hats, beanies, buckets, rope caps, and more.",
+    description: "Quick-turn blanks, Full Custom hats, beanies, buckets, rope caps, and more.",
     href: "/goods/hats",
     image: "/images/product/hat-lifestyle-hero.jpg",
     className: "lg:col-span-2 lg:min-h-[22rem]",
@@ -80,7 +44,7 @@ const categories: CategoryCard[] = [
   {
     name: "Towels",
     description: "Beach towels, golf towels, gym towels, event towels, and summer drops.",
-    href: "#catalog",
+    href: "/contact",
     image: "/images/product/accessories-towel-hero.jpg",
     className: "lg:min-h-[20rem]",
     imagePosition: "center 54%",
@@ -96,7 +60,7 @@ const categories: CategoryCard[] = [
   {
     name: "Blankets",
     description: "Upcycled Mexican blankets, plush throws, jacquard blankets, and anything ready to get kept.",
-    href: "#catalog",
+    href: "/goods/blankets",
     image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg",
     className: "lg:col-span-2 lg:min-h-[20rem]",
     imagePosition: "center 50%",
@@ -104,7 +68,7 @@ const categories: CategoryCard[] = [
   {
     name: "Bandanas",
     description: "Print-forward bandanas for events, restaurants, pets, and retail moments.",
-    href: "#catalog",
+    href: "/contact",
     image: "/images/gallery/accessories-royal-wine-bandana-image-1.jpg",
     className: "lg:min-h-[24rem]",
     imagePosition: "center 52%",
@@ -128,7 +92,7 @@ const categories: CategoryCard[] = [
   {
     name: "Patches",
     description: "Woven, embroidered, chenille, felt, PVC, leather, and printed patches.",
-    href: "#catalog",
+    href: "/contact",
     image: "/images/gallery/patches-og-oval-quality-logo-dscf2869.jpg",
     className: "lg:col-span-2 lg:min-h-[17rem]",
     imagePosition: "center 56%",
@@ -136,7 +100,7 @@ const categories: CategoryCard[] = [
   {
     name: "Board Shorts",
     description: "Resort, surf, beach, and event programs with a more lifestyle feel.",
-    href: "#catalog",
+    href: "/contact",
     image: "/images/gallery/board-shorts-high-st-deli-dsc01098-2.jpg",
     className: "lg:min-h-[19rem]",
     imagePosition: "45% 100%",
@@ -145,7 +109,7 @@ const categories: CategoryCard[] = [
   {
     name: "Accessories",
     description: "Laptop sleeves, pouches, small goods, add-ons, and useful extras.",
-    href: "#catalog",
+    href: "/goods/accessories",
     image: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",
     className: "lg:min-h-[19rem]",
     imagePosition: "center 52%",
@@ -162,8 +126,6 @@ const categories: CategoryCard[] = [
   },
 ];
 
-const featuredCatalogProducts = CATALOG_PRODUCTS;
-
 const useCaseWords = [
   "events",
   "activations",
@@ -173,58 +135,38 @@ const useCaseWords = [
   "launches",
 ];
 
-function getCatalogProductImage(slug: string) {
-  return catalogProductImages[slug] || catalogImageFallback;
-}
-
 export default function GoodsPage() {
-  const catalogFilters = [
-    { key: "all", label: "All" },
-    ...CATEGORY_ORDER.map((category) => ({
-      key: category,
-      label: CATEGORY_LABELS[category],
-    })),
-  ];
-
-  const catalogItems = featuredCatalogProducts.map((product) => ({
-    slug: product.slug,
-    href: `/catalog/${product.slug}`,
-    category: product.category,
-    categoryLabel: CATEGORY_LABELS[product.category],
-    name: product.name,
-    description: product.description,
-    image: getCatalogProductImage(product.slug),
-    fromPrice: calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
-  }));
-
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
-        <ParallaxHeroBackground
-          image="/images/gallery/goods-hero-misc-dscf4876.jpg"
-          position="center 48%"
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/gallery/goods-hero-misc-dscf4876.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: "center 48%" }}
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/32" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            We Make It All
-          </p>
-          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Quality Custom Goods
-          </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-            Everything your brand wears, carries, drinks from, gifts, ships, and remembers, made with better taste and tighter guidance.
-          </p>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
-            Most custom programs start at 100 pieces.
-          </p>
-          <div className="mt-8">
-            <Link
-              href="#catalog"
-              className="btn-og-white inline-flex"
-            >
-              View Entire Catalog
+        <div className="relative mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div>
+            <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
+              We Make It All
+            </p>
+            <h1 className="mt-3 max-w-3xl font-display text-[2.8rem] uppercase leading-none text-[var(--og-orange)] md:mt-5 md:text-6xl lg:text-7xl">
+              Quality Custom Goods
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
+              Everything your brand wears, carries, drinks from, gifts, ships, and remembers, made with better taste and tighter guidance.
+            </p>
+            <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
+              Most custom programs start at 100 pieces.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
+            <Link href="/contact" className="btn-og-white inline-flex">
+              Start a Project
             </Link>
           </div>
         </div>
@@ -234,9 +176,11 @@ export default function GoodsPage() {
         <section className="mx-auto max-w-6xl">
           <div className="mb-7 max-w-3xl">
             <div>
-              <h2 className="flex flex-col text-4xl leading-none text-[var(--og-blue)] md:flex-row md:flex-nowrap md:items-center md:gap-1.5 md:text-5xl">
-                We create merch for
-                <GoodsUseCaseRotator words={useCaseWords} />
+              <h2 className="font-display text-4xl leading-none text-[var(--og-blue)] md:text-5xl">
+                <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-1 sm:flex-nowrap sm:whitespace-nowrap">
+                  <span className="whitespace-nowrap">We create merch for</span>
+                  <GoodsUseCaseRotator words={useCaseWords} />
+                </span>
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-[#1C1C1C]/60">
                 From concept to delivery. We&apos;ll source the highest quality product at the best price.
@@ -261,7 +205,7 @@ export default function GoodsPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C]/82 via-[#1C1C1C]/28 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-5">
-                  <h2 className="text-2xl leading-tight text-white md:text-3xl">
+                  <h2 className="font-display text-2xl leading-tight text-white md:text-3xl">
                     {category.name}
                   </h2>
                   <p className="mt-2 max-w-sm text-sm leading-5 text-white/75">
@@ -311,7 +255,7 @@ export default function GoodsPage() {
                 <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF4200]">
                   Why Orange Goods
                 </p>
-                <h2 className="mt-3 text-4xl leading-none text-white md:text-5xl lg:text-6xl">
+                <h2 className="mt-3 font-display text-4xl leading-none text-white md:text-5xl lg:text-6xl">
                   Better Guidance.
                   <br />
                   Better Goods.
@@ -327,35 +271,66 @@ export default function GoodsPage() {
         </div>
       </section>
 
-      <section id="catalog" className="scroll-mt-24 relative overflow-hidden bg-[#1C1C1C] text-white md:scroll-mt-28">
-        <div className="relative min-h-[24rem] md:min-h-[29rem]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg"
-            alt="High Street Deli branded goods displayed together on shelves"
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: "center 48%" }}
-          />
-          <div className="absolute inset-0 bg-[#1C1C1C]/32" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/58 via-[#1C1C1C]/42 to-[#1C1C1C]/14" />
-          <div className="relative mx-auto max-w-6xl px-4 py-16 md:px-8 md:py-24 lg:px-12">
-            <h2 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-              Explore the Catalog
-            </h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-              A closer look at the goods we recommend most, with guidance on product,
-              decoration, materials, and finish.
-            </p>
+      <Reveal className="bg-[#F7F4ED] px-4 pb-16 md:px-8 md:pb-24 lg:px-12">
+        <section
+          id="start-project"
+          className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/14 bg-[linear-gradient(180deg,#FFF8F1_0%,#FFFDF8_100%)] p-4 shadow-[0_24px_80px_rgba(8,30,111,0.08)] md:grid-cols-[0.94fr_1.06fr] md:p-5"
+        >
+          <div className="relative min-h-[26rem] overflow-hidden rounded-[1.7rem] border border-[#0B32A0]/12 bg-[#1234A6]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/gallery/goods-hero-misc-dscf4876.jpg"
+              alt="A mix of custom branded goods shown as the closing image for the goods page"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: "center 48%" }}
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,30,111,0.12)_0%,rgba(8,30,111,0.26)_42%,rgba(8,30,111,0.86)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.24em] text-[#FFB38E]">
+                Get a Quote
+              </p>
+              <h2 className="mt-3 font-display text-4xl uppercase leading-none md:text-5xl">
+                Ready to build the right goods program?
+              </h2>
+              <p className="mt-4 max-w-lg font-body text-sm leading-7 text-white/84 md:text-base">
+                Share the product lane, quantity, timeline, and any logo or artwork context so we
+                can point you toward the right category and next step faster.
+              </p>
+            </div>
           </div>
-        </div>
 
-        <div className="bg-white px-4 py-14 md:px-8 md:py-20 lg:px-12">
-          <GoodsCatalogGrid
-            filters={catalogFilters}
-            items={catalogItems}
+          <ServiceLeadForm
+            title="Get a Quote"
+            description="We will follow up with recommended product directions, decoration options, and a clear next step."
+            projectDefault=""
+            projectLabel="What kind of goods are you looking for?"
+            projectPlaceholder="Tell us what you want to make: hats, apparel, bags, drinkware, blankets, accessories, mixed goods, quantity split, budget notes, artwork context, or anything else that helps us quote the right direction."
+            hiddenFields={{
+              source: "goods-page",
+              product: "goods",
+              intent: "landing-page-inquiry",
+            }}
+            captureAttributionFields
+            submitLabel="Get a Quote"
+            showPhone={false}
+            showTimeline
+            showProductTypeField
+            productTypeLabel="What are you interested in?"
+            productTypeOptions={[
+              "Apparel",
+              "Headwear",
+              "Drinkware",
+              "Bags / Totes",
+              "Blankets",
+              "Accessories",
+              "Mixed merch run",
+              "Not sure yet",
+            ]}
+            showDesignHelp={false}
+            showArtworkUpload
           />
-        </div>
-      </section>
+        </section>
+      </Reveal>
     </main>
   );
 }

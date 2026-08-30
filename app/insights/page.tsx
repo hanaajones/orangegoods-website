@@ -9,6 +9,8 @@ type InsightsPageProps = {
   searchParams?: Promise<{ page?: string }>;
 };
 
+export const dynamic = "force-dynamic";
+
 function getPageHref(page: number) {
   return page <= 1 ? "/insights" : `/insights?page=${page}`;
 }

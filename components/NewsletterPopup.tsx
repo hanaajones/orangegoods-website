@@ -1,15 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "og_newsletter_dismissed";
-const DELAY_MS = 8000; // show after 8s
+const STORAGE_KEY = "og_quiz_popup_dismissed_v1";
+const DELAY_MS = process.env.NODE_ENV === "production" ? 8000 : 1500;
 
 export function NewsletterPopup() {
   const [visible, setVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -21,24 +19,6 @@ export function NewsletterPopup() {
   function dismiss() {
     localStorage.setItem(STORAGE_KEY, "1");
     setVisible(false);
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-    setLoading(true);
-    try {
-      // Fire-and-forget to J-Core; fails silently — we still show success
-      await fetch("https://hooks.orangegoods.co/api/newsletter-signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "website-popup" }),
-      }).catch(() => null);
-    } finally {
-      setLoading(false);
-      setSubmitted(true);
-      localStorage.setItem(STORAGE_KEY, "1");
-    }
   }
 
   if (!visible) return null;
@@ -70,66 +50,41 @@ export function NewsletterPopup() {
         </button>
 
         <div className="px-10 pb-10 pt-10">
-          {!submitted ? (
-            <>
-              {/* Headline */}
-              <h2
-                className="text-4xl uppercase leading-tight text-[#FF4200] md:text-5xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Get $150 off your first order
-              </h2>
+          <p className="font-accent text-sm uppercase tracking-[0.22em] text-[#081E6F]">
+            Need a starting point?
+          </p>
+          <h2
+            className="mt-3 text-4xl uppercase leading-tight text-[#FF4200] md:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Take the 30-second quiz
+          </h2>
 
-              <p className="mt-4 text-lg leading-7 text-[#1C1C1C]/70">
-                Sign up and we&apos;ll apply it to your project
-              </p>
+          <p className="mt-4 max-w-lg text-lg leading-7 text-[#1C1C1C]/70">
+            Tell us what you are making and we&apos;ll point you toward the right product lane,
+            material feel, and next step.
+          </p>
 
-              <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
-                  required
-                  className="rounded-xl border border-[#1C1C1C]/15 bg-[#F3EFE7] px-5 py-4 text-base text-[#1C1C1C] placeholder-[#1C1C1C]/40 outline-none focus:border-[#FF4200]"
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="btn-og w-full justify-center py-4 text-base"
-                >
-                  {loading ? "CLAIMING…" : "CLAIM MY $150"}
-                </button>
-              </form>
+          <div className="mt-8 flex flex-col gap-4">
+            <Link
+              href="/quiz"
+              onClick={dismiss}
+              className="btn-og w-full justify-center py-4 text-base"
+            >
+              START THE QUIZ
+            </Link>
+            <Link
+              href="/contact"
+              onClick={dismiss}
+              className="inline-flex items-center justify-center text-sm font-medium uppercase tracking-[0.18em] text-[#081E6F] transition hover:text-[#FF4200]"
+            >
+              Skip and start a project
+            </Link>
+          </div>
 
-              <p className="mt-5 text-sm text-[#1C1C1C]/40">
-                Valid on orders 100+ pieces. One per customer
-              </p>
-            </>
-          ) : (
-            <div className="py-6 text-center">
-              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[#FF4200]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2
-                className="text-3xl uppercase text-[#FF4200]"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                You&apos;re in
-              </h2>
-              <p className="mt-3 text-base text-[#1C1C1C]/60">
-                Mention this when you start your project
-              </p>
-              <button
-                onClick={dismiss}
-                className="btn-og mt-8 w-full justify-center"
-              >
-                START A PROJECT
-              </button>
-            </div>
-          )}
+          <p className="mt-5 text-sm text-[#1C1C1C]/40">
+            Best for people who know the goal but not the exact product yet.
+          </p>
         </div>
       </div>
     </>

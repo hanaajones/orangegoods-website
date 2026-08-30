@@ -212,7 +212,7 @@ export function ProductCategories() {
                 </h3>
                 <p className="mt-1.5 text-sm leading-5 text-white/70">{cat.description}</p>
                 <span
-                  className="font-noir-alt mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/45 bg-white/10 px-3 py-1.5 text-xs font-medium normal-case tracking-normal text-white backdrop-blur-sm transition group-hover:border-white group-hover:bg-white group-hover:text-[#FF4200]"
+                  className="font-body mt-4 inline-flex items-center gap-1.5 rounded-full border border-white/45 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-white backdrop-blur-sm transition group-hover:border-white group-hover:bg-white group-hover:text-[#FF4200]"
                 >
                   Explore
                 </span>

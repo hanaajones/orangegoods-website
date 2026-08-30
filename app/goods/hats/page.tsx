@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { HatBuildAccordion } from "@/components/HatBuildAccordion";
+import { HatPageStickyNav } from "@/components/HatPageStickyNav";
 import { HatPricingSlider } from "@/components/HatPricingSlider";
+import { HomepageGoodsSlideshow } from "@/components/HomepageGoodsSlideshow";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 import {
@@ -18,48 +20,30 @@ import {
   hatProcess,
 } from "@/lib/content";
 
-const startHatsHref = "/contact";
+const hatsBuilderHref = "/build/og-crafted-hats";
+const featuredStyleStartingPrice = "$13.00";
 
 const quantityTiers = [
   {
-    label: "100",
+    label: "100 hats",
     base: "$13.00",
-    note: "Best place to start",
-    href: "/contact?product=hats&program=og-crafted&quantity=100",
+    href: hatsBuilderHref,
   },
   {
-    label: "250",
+    label: "250 hats",
     base: "$12.50",
-    note: "A little more breathing room",
-    href: "/contact?product=hats&program=og-crafted&quantity=250",
+    href: hatsBuilderHref,
   },
   {
-    label: "500",
+    label: "500 hats",
     base: "$11.50",
     badge: "Great value",
-    note: "The sweet spot for price",
-    href: "/contact?product=hats&program=og-crafted&quantity=500",
+    href: hatsBuilderHref,
   },
   {
-    label: "1,000",
+    label: "1000 hats",
     base: "$10.50",
-    note: "Best public volume tier",
-    href: "/contact?product=hats&program=og-crafted&quantity=1000",
-  },
-];
-
-const flowCards = [
-  {
-    title: "Send the direction",
-    body: "Send the brand, quantity, and timeline.",
-  },
-  {
-    title: "Approve the build",
-    body: "We dial in style, fabric, and decoration.",
-  },
-  {
-    title: "We run the project",
-    body: "One team handles production and delivery.",
+    href: hatsBuilderHref,
   },
 ];
 
@@ -67,18 +51,111 @@ const decorationPreviewOptions = [
   {
     ...decorationOptions.find((option) => option.title === "Flat embroidery")!,
     title: "Embroidery",
-    imagePosition: "center 48%",
+    imagePosition: "54% 58%",
+    imageScaleClass: "scale-[1.5] group-hover:scale-[1.53]",
   },
   {
     ...decorationOptions.find((option) => option.title === "Patch")!,
-    imagePosition: "center 48%",
+    imagePosition: "46% 54%",
+    imageScaleClass: "scale-[1.47] group-hover:scale-[1.5]",
   },
   {
     title: "Printed",
     description: "Printed decoration options.",
     image: "/images/gallery/headwear-printed-mg-6778.jpg",
-    imagePosition: "center 48%",
+    imagePosition: "52% 52%",
+    imageScaleClass: "scale-[1.46] group-hover:scale-[1.49]",
     details: [],
+  },
+];
+
+const fabricPreviewOptions = fabricOptions.map((option, index) => ({
+  ...option,
+  imageScaleClass:
+    index < 3
+      ? "-translate-y-[10px] scale-[1.08] group-hover:-translate-y-[10px] group-hover:scale-[1.11]"
+      : option.imageScaleClass,
+}));
+
+const heroShowcaseSlides = [
+  {
+    src: "/images/gallery/headwear-customize-detail-mg-2672.jpg",
+    position: "center 62%",
+  },
+  {
+    src: "/images/gallery/headwear-fabric-swatches-mg-9430.jpg",
+    position: "center 50%",
+  },
+  {
+    src: "/images/gallery/headwear-interior-label-img-7638.jpg",
+    position: "center 50%",
+  },
+];
+
+const quickTurnHighlights = [
+  {
+    label: "Base",
+    value: "Premium blanks with your decoration",
+  },
+  {
+    label: "Timing",
+    value: "2-3 week turnaround",
+  },
+  {
+    label: "Finish",
+    value: "Decorated locally",
+  },
+];
+
+const brandConfidenceWordmarkClassName =
+  "text-[0.95rem] font-semibold uppercase tracking-[0.18em] text-[#1C1C1C] md:text-[1rem]";
+
+const brandConfidenceCards = [
+  {
+    name: "Verve Coffee",
+    image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
+    imagePosition: "center 44%",
+    logoType: "wordmark" as const,
+    wordmark: "Verve Coffee",
+    wordmarkClassName: brandConfidenceWordmarkClassName,
+  },
+  {
+    name: "Grateful Dead",
+    image: "/images/gallery/hat-grateful-dead-img-7444-2.jpg",
+    imagePosition: "center 55%",
+    logoType: "wordmark" as const,
+    wordmark: "Grateful Dead",
+    wordmarkClassName: brandConfidenceWordmarkClassName,
+  },
+  {
+    name: "Bread Head",
+    image: "/images/gallery/hat-bread-head-tezza-3828.jpg",
+    imagePosition: "center bottom",
+    logoType: "wordmark" as const,
+    wordmark: "Bread Head",
+    wordmarkClassName: brandConfidenceWordmarkClassName,
+  },
+];
+
+const hatProcessVisuals = [
+  {
+    mediaType: "image" as const,
+    image: "/images/gallery/headwear-brief-direction-mg-9422-v2.jpg",
+    imagePosition: "center 58%",
+    accent: "Share your direction",
+  },
+  {
+    mediaType: "image" as const,
+    image: "/images/gallery/headwear-mockups-approval-bread-head-2026-07-30-005357.png",
+    imagePosition: "center 48%",
+    imageScaleClass: "scale-[1.03]",
+    accent: "Review the details",
+  },
+  {
+    mediaType: "video" as const,
+    image: "/images/gallery/headwear-production-delivery-gatt-hat-3.mp4",
+    imagePosition: "center center",
+    accent: "Production to delivery",
   },
 ];
 
@@ -138,13 +215,14 @@ function OptionPathCard({
                     (option.title === "Embroidery" ||
                       option.title === "Patch" ||
                       option.title === "Printed");
-                  const imageScaleClass = isDecorationPreview
+                  const defaultImageScaleClass = isDecorationPreview
                     ? "scale-[1.43] group-hover:scale-[1.46]"
                     : "scale-[1.08] group-hover:scale-[1.11]";
+                  const imageScaleClass = option.imageScaleClass ?? defaultImageScaleClass;
 
                   return (
                 <article className="overflow-hidden rounded-[1.35rem] border-[3px] border-[#0B32A0] bg-white transition group-hover:-translate-y-[2px] group-hover:border-[var(--og-orange)]">
-                  <div className="relative aspect-[5/4] bg-[#d8c3aa]">
+                  <div className="relative aspect-[5/4] overflow-hidden bg-[#d8c3aa]">
                     <Image
                       src={option.image}
                       alt={option.title}
@@ -154,7 +232,7 @@ function OptionPathCard({
                       style={{ objectPosition: option.imagePosition }}
                     />
                   </div>
-                  <div className="flex min-h-[84px] items-center justify-center px-4 py-4 text-center">
+                  <div className="relative z-10 flex min-h-[84px] items-center justify-center bg-white px-4 py-4 text-center">
                     <h3 className="font-noir-alt text-[15px] font-bold uppercase leading-tight tracking-[0.12em] text-[#0B32A0]">
                       {option.title}
                     </h3>
@@ -188,7 +266,7 @@ function OptionPathCard({
                       alt={option.title}
                       fill
                       sizes="(min-width: 1024px) 416px, (min-width: 768px) 400px, 368px"
-                      className="object-cover scale-[1.08] transition duration-300 group-hover:scale-[1.11]"
+                      className={`object-cover transition duration-300 ${option.imageScaleClass ?? "scale-[1.08] group-hover:scale-[1.11]"}`}
                       style={{ objectPosition: option.imagePosition }}
                     />
                   </div>
@@ -217,12 +295,12 @@ function OptionPathCard({
                     alt={option.title}
                     fill
                     sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
-                    className="object-cover scale-[1.08] transition duration-300 group-hover:scale-[1.11]"
+                    className={`object-cover transition duration-300 ${option.imageScaleClass ?? "scale-[1.08] group-hover:scale-[1.11]"}`}
                     style={{ objectPosition: option.imagePosition }}
                   />
                 </div>
                 <div className="px-2 pb-1 pt-4 text-center">
-                  <h3 className="text-lg font-semibold uppercase leading-tight tracking-[0.04em] text-[#1C1C1C] md:text-[1.38rem]">
+                  <h3 className="text-lg font-semibold uppercase leading-tight tracking-[0.04em] text-[#0B32A0] md:text-[1.38rem]">
                     {option.title}
                   </h3>
                 </div>
@@ -235,10 +313,13 @@ function OptionPathCard({
       <div className="mt-6 flex justify-center">
         <Link
           href={href}
-          className="inline-flex min-h-10 items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[#1C1C1C] transition hover:text-[var(--og-orange)]"
+          className="group inline-flex min-h-10 items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-[#1C1C1C] transition hover:text-[var(--og-orange)]"
         >
           {cta}
-          <span aria-hidden="true" className="text-[var(--og-orange)]">
+          <span
+            aria-hidden="true"
+            className="text-[var(--og-orange)] transition-transform duration-200 group-hover:translate-x-1"
+          >
             →
           </span>
         </Link>
@@ -285,13 +366,13 @@ export default function HatsPage() {
           position="center 40%"
           speed={0.1}
         />
-        <div className="absolute inset-0 bg-[#1C1C1C]/34" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/60 via-[#1C1C1C]/42 to-[#1C1C1C]/16" />
+        <div className="absolute inset-0 bg-[#1C1C1C]/46" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/72 via-[#1C1C1C]/54 to-[#1C1C1C]/26" />
         <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            OG Crafted
+          <p className="hidden text-sm font-semibold uppercase tracking-[0.28em] text-white/75 md:block">
+            Full Custom
           </p>
-          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
+          <h1 className="mt-3 max-w-3xl text-[2.8rem] uppercase leading-none text-[var(--og-orange)] md:mt-5 md:text-6xl lg:text-7xl">
             Custom Hats
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
@@ -299,45 +380,27 @@ export default function HatsPage() {
             and closure.
           </p>
           <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
-            100+ hats per style. 6-8 week lead time.
+            100+ hats per style. 6-8 week turnaround.
           </p>
         </div>
       </section>
 
-      <div className="sticky top-[5.75rem] z-30 border-y border-[#0B32A0]/20 bg-[rgba(251,247,241,0.92)] px-4 py-3 backdrop-blur md:px-8 lg:px-12">
-        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto">
-          {hatAnchorLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="inline-flex min-h-10 shrink-0 items-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+      <HatPageStickyNav mode="og-crafted" links={hatAnchorLinks} />
 
       <Reveal className="px-4 py-10 md:px-8 lg:px-12">
         <section id="overview" className="mx-auto max-w-6xl">
           <article className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] text-white">
             <div className="absolute inset-0">
-              <Image
-                src="/images/gallery/headwear-reel-life-gear-boat-2.jpg"
-                alt="Custom hats photographed on the water"
-                fill
-                sizes="100vw"
-                className="object-cover"
-                style={{ objectPosition: "center 42%" }}
+              <HomepageGoodsSlideshow
+                slides={heroShowcaseSlides}
+                intervalMs={3200}
+                transitionMs={550}
               />
             </div>
             <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(72,72,72,0.72),rgba(28,28,28,0.52))]" />
             <div className="relative p-8 md:p-10">
               <div>
-                <span className="inline-flex rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
-                  OG Crafted
-                </span>
-                <h3 className="mt-4 text-4xl font-semibold leading-none md:text-5xl">
+                <h3 className="text-4xl font-semibold leading-none md:text-5xl">
                   Customize every detail
                 </h3>
                 <p className="mt-4 max-w-2xl text-lg leading-7 text-white/82">
@@ -356,45 +419,49 @@ export default function HatsPage() {
             </div>
           </article>
 
-          <div className="mt-5 grid gap-5 lg:grid-cols-[0.72fr_1.28fr]">
-            <div className="relative min-h-[16rem] overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/15 bg-[#d9c5ae]">
-              <Image
-                src="/images/product/hat-lifestyle-hero.jpg"
-                alt="Orange Goods ready-made hats"
-                fill
-                sizes="(min-width: 1024px) 30vw, 100vw"
-                className="object-cover"
-                style={{ objectPosition: "center 42%" }}
-              />
-            </div>
-            <div className="rounded-[1.75rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
-                Need it sooner?
-              </p>
-              <h3 className="mt-3 text-3xl font-semibold leading-tight text-[#1C1C1C]">
-                Start with a premium blank.
-              </h3>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                {[
-                  "Premium blanks with your decoration",
-                  "2-3 week turnaround",
-                  "Less customization",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-[1.15rem] border border-[#0B32A0]/10 bg-[rgba(255,248,241,0.88)] p-4 text-sm leading-6 text-[var(--og-muted)]"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-              <Link
-                href="/goods/hats/ready-made"
-                className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1C1C1C] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 pb-8 pt-3 md:px-8 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <HatBuildAccordion />
+        </section>
+      </Reveal>
+
+      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
+              Trusted by brands you know
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
+              A few examples of how a logo, the right shape, and thoughtful details come together
+              on finished hats.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {brandConfidenceCards.map((card) => (
+              <article
+                key={card.name}
+                className="relative overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-[#d8c3aa]"
               >
-                See ready-made hats
-              </Link>
-            </div>
+                <div className="relative aspect-[4/5]">
+                  <Image
+                    src={card.image}
+                    alt={card.name}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover"
+                    style={{ objectPosition: card.imagePosition }}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(28,28,28,0.18),rgba(28,28,28,0.02)_42%,rgba(28,28,28,0.34))]" />
+                  <div className="absolute left-5 top-5 rounded-full bg-white/92 px-4 py-3 shadow-[0_16px_32px_rgba(20,20,20,0.14)] backdrop-blur-sm">
+                    <span className={card.wordmarkClassName}>{card.wordmark}</span>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
       </Reveal>
@@ -403,102 +470,78 @@ export default function HatsPage() {
         <section id="pricing" className="mx-auto max-w-6xl">
           <SectionHeader
             eyebrow="Pricing"
-            title="Choose your hat quantity"
+            title="Straightforward Pricing"
           />
 
           <HatPricingSlider tiers={quantityTiers} />
 
-          <HatBuildAccordion />
-
-          <div className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                  How it moves
-                </p>
-                <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
-                  Keep it simple.
-                </h3>
-              </div>
-              <p className="max-w-xl text-sm leading-6 text-[var(--og-muted)]">
-                We help narrow the choices and run the project.
-              </p>
-            </div>
-
-            <div className="mt-6 grid gap-3 lg:grid-cols-3">
-              {flowCards.map((card, index) => (
+          <div id="styles" className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
+            <SectionHeader
+              eyebrow="Styles"
+              title="Start with the right shape"
+              description="Pick the silhouette here, then refine the rest inside the builder."
+            />
+            <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+              {featuredHatStyles.map((style) => (
                 <article
-                  key={card.title}
-                  className="rounded-[1.35rem] border border-[#0B32A0]/12 bg-[rgba(255,248,241,0.72)] p-5"
+                  key={style.slug}
+                  className="group relative overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[rgba(255,248,241,0.88)] transition hover:border-[#0B32A0] hover:shadow-lg"
                 >
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </p>
-                  <h4 className="mt-3 text-2xl font-semibold leading-tight text-[#1C1C1C]">
-                    {card.title}
-                  </h4>
-                  <p className="mt-3 text-sm leading-6 text-[var(--og-muted)]">
-                    {card.body}
-                  </p>
+                  <Link
+                    href={`${hatsBuilderHref}?hatStyle=${encodeURIComponent(style.slug)}`}
+                    aria-label={`Open ${style.title}`}
+                    className="absolute inset-0 z-10 rounded-[1.9rem]"
+                  />
+                  <div className="pointer-events-none">
+                    <div className="relative aspect-[4/3] bg-white">
+                      <Image
+                        src={style.image}
+                        alt={style.title}
+                        fill
+                        sizes="(min-width: 1536px) 28vw, (min-width: 768px) 44vw, 100vw"
+                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        style={{ objectPosition: style.imagePosition }}
+                      />
+                      <span className="absolute right-3 top-3 rounded-full bg-[#0B32A0]/10 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--og-blue)]">
+                        {style.profile}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="pointer-events-none p-6">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--og-orange)]">
+                      {style.model}
+                    </p>
+                    <h3 className="mt-1 text-2xl font-semibold leading-none text-[var(--og-blue)]">
+                      {style.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-[var(--og-muted)]">
+                      {style.description}
+                    </p>
+                    <p className="mt-3 text-sm font-semibold text-[var(--og-orange)]">
+                      From {featuredStyleStartingPrice} / hat
+                    </p>
+                    <div className="mt-5 flex items-center gap-2 pt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
+                      <span>Customize this hat</span>
+                      <span
+                        aria-hidden="true"
+                        className="text-[var(--og-orange)] transition-transform duration-200 group-hover:translate-x-1"
+                      >
+                        →
+                      </span>
+                    </div>
+                  </div>
                 </article>
               ))}
             </div>
-          </div>
-        </section>
-      </Reveal>
 
-      <Reveal className="px-4 py-8 md:px-8 lg:px-12">
-        <section id="styles" className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Styles"
-            title="Start with the shape"
-            description="Pick the silhouette first."
-          />
-
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {featuredHatStyles.map((card) => (
+            <div className="mt-8 flex justify-center">
               <Link
-                key={card.slug}
-                href={`/goods/hats/styles/${card.slug}`}
-                className="group block"
+                href="/goods/hats/styles"
+                className="inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
-                <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-white shadow-[0_18px_50px_rgba(8,30,111,0.07)] transition group-hover:-translate-y-[2px] group-hover:border-[#0B32A0]">
-                  <div className="relative aspect-[16/10] bg-[#d9c5ae]">
-                    <Image
-                      src={card.image}
-                      alt={card.title}
-                      fill
-                      sizes="(min-width: 768px) 50vw, 100vw"
-                      className="object-cover transition duration-300 group-hover:scale-[1.03]"
-                      style={{ objectPosition: card.imagePosition }}
-                    />
-                  </div>
-                  <div className="p-6">
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                      {card.model}
-                    </p>
-                    <h3 className="mt-2 text-3xl font-semibold leading-none text-[#1C1C1C]">
-                      {card.title}
-                    </h3>
-                    <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                      {card.description}
-                    </p>
-                    <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-[#0B32A0] transition group-hover:text-[var(--og-orange)]">
-                      Order this style →
-                    </p>
-                  </div>
-                </article>
+                See all styles
               </Link>
-            ))}
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/goods/hats/styles"
-              className="inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#1C1C1C] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
-            >
-              See all styles
-            </Link>
+            </div>
           </div>
         </section>
       </Reveal>
@@ -507,7 +550,7 @@ export default function HatsPage() {
         <OptionPathCard
           id="decoration-methods"
           title="Choose your decoration"
-          description="See the branding methods in one place, then click through to the full page."
+          description="Compare the main decoration options here, then click through to see the full set."
           href="/goods/hats/decoration"
           cta="See all decoration methods"
           options={decorationPreviewOptions}
@@ -521,10 +564,10 @@ export default function HatsPage() {
         <OptionPathCard
           id="fabric"
           title="Choose your fabric"
-          description="Fabric changes the feel fast. Click through to see the options grouped more clearly."
+          description="Fabric sets the tone fast. Click through to compare the options more clearly."
           href="/goods/hats/fabric"
           cta="See all fabric options"
-          options={fabricOptions}
+          options={fabricPreviewOptions}
           horizontal
           fullBleed
           previewCount={3}
@@ -535,7 +578,7 @@ export default function HatsPage() {
         <OptionPathCard
           id="closure"
           title="Choose your closure"
-          description="Back closures change the feel too. See the main options, then click through for the full set."
+          description="Closure changes the feel fast. Click through to compare the full set."
           href="/goods/hats/closure"
           cta="See all closure options"
           options={closureOptions}
@@ -549,7 +592,7 @@ export default function HatsPage() {
         <OptionPathCard
           id="addons"
           title="Choose your add-ons"
-          description="Interior hits, extra embroidery, and finishing details live on their own page too."
+          description="Interior hits, extra embroidery, and finishing details all live here. Click through to see the full set."
           href="/goods/hats/add-ons"
           cta="See all add-ons"
           options={addOnOptions}
@@ -561,17 +604,60 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="process" className="mx-auto max-w-6xl">
-          <SectionHeader
-            eyebrow="Process"
-            title="How it works."
-            description="A simple path from idea to delivery."
-          />
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-semibold leading-tight text-[var(--og-blue)] md:text-5xl">
+              Simple process
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
+              A simple path from idea to delivery.
+            </p>
+          </div>
           <div className="mt-8 grid gap-4 lg:grid-cols-3">
             {hatProcess.map((step, index) => (
               <article
                 key={step.title}
-                className="rounded-[1.75rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-6"
+                className="overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)]"
               >
+                <div className="relative aspect-[5/4] overflow-hidden bg-[#d8c3aa]">
+                  {hatProcessVisuals[index]?.mediaType === "video" ? (
+                    <video
+                      autoPlay
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                      style={{
+                        objectPosition:
+                          hatProcessVisuals[index]?.imagePosition ?? "center 52%",
+                      }}
+                    >
+                      <source
+                        src={hatProcessVisuals[index]?.image}
+                        type="video/mp4"
+                      />
+                    </video>
+                  ) : (
+                    <Image
+                      src={hatProcessVisuals[index]?.image ?? "/images/gallery/headwear-customize-detail-mg-2672.jpg"}
+                      alt={step.title}
+                      fill
+                      sizes="(min-width: 1024px) 30vw, 100vw"
+                      className={`object-cover ${hatProcessVisuals[index]?.imageScaleClass ?? ""}`}
+                      style={{
+                        objectPosition:
+                          hatProcessVisuals[index]?.imagePosition ?? "center 52%",
+                      }}
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(28,28,28,0.12),rgba(28,28,28,0.03)_45%,rgba(28,28,28,0.34))]" />
+                  <div className="absolute left-4 top-4 rounded-full bg-white/92 px-3 py-2 shadow-[0_14px_28px_rgba(20,20,20,0.14)] backdrop-blur-sm">
+                    <span className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[#0B32A0]">
+                      {hatProcessVisuals[index]?.accent}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
                 <p
                   className={`text-sm font-semibold uppercase tracking-[0.22em] ${
                     index % 2 === 0 ? "text-[var(--og-orange)]" : "text-[var(--og-blue)]"
@@ -579,12 +665,13 @@ export default function HatsPage() {
                 >
                   {String(index + 1).padStart(2, "0")}
                 </p>
-                <h3 className="mt-4 text-2xl font-semibold text-[#1C1C1C]">
+                <h3 className="mt-4 text-2xl font-semibold text-[#0B32A0]">
                   {step.title}
                 </h3>
                 <p className="mt-4 text-base leading-7 text-[var(--og-muted)]">
                   {step.body}
                 </p>
+                </div>
               </article>
             ))}
           </div>
@@ -593,9 +680,54 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="faq" className="mx-auto max-w-6xl">
+          <div className="mb-8 grid gap-5 lg:grid-cols-[0.72fr_1.28fr]">
+            <div className="relative min-h-[16rem] overflow-hidden rounded-[1.75rem] border border-[#0B32A0]/15 bg-[#d9c5ae]">
+              <Image
+                src="/images/product/hat-lifestyle-hero.jpg"
+                alt="Orange Goods quick-turn hats"
+                fill
+                sizes="(min-width: 1024px) 30vw, 100vw"
+                className="object-cover"
+                style={{ objectPosition: "center 42%" }}
+              />
+            </div>
+            <div className="rounded-[1.75rem] border border-[#0B32A0]/15 bg-[linear-gradient(180deg,rgba(255,255,255,1),rgba(255,247,238,0.98))] p-6 shadow-[0_22px_52px_rgba(11,50,160,0.08)] md:p-7">
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--og-orange)]">
+                Need it sooner?
+              </p>
+              <h3 className="mt-3 text-3xl font-semibold leading-tight text-[#0B32A0]">
+                Start with a premium blank.
+              </h3>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-[var(--og-muted)]">
+                Keep the retail feel, skip the longer custom build. Quick Turn starts
+                with a better blank and moves fast.
+              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                {quickTurnHighlights.map((item) => (
+                  <div
+                    key={item.value}
+                    className="min-h-[7.25rem] rounded-[1.25rem] border border-[#0B32A0]/12 bg-white px-4 py-4 shadow-[0_12px_26px_rgba(11,50,160,0.06)]"
+                  >
+                    <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                      {item.label}
+                    </p>
+                    <p className="mt-3 max-w-[12rem] text-base font-medium leading-6 text-[#0B32A0]">
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <Link
+                href="/goods/hats/quick-turn"
+                className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
+              >
+                See quick turn hats
+              </Link>
+            </div>
+          </div>
           <SectionHeader
             eyebrow="FAQ"
-            title="Good to know before you start."
+            title="Common Questions"
           />
           <div className="mt-8 grid gap-3">
             {hatFaqs.map((faq) => (
@@ -603,11 +735,21 @@ export default function HatsPage() {
                 key={faq.question}
                 className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
               >
-                <summary className="cursor-pointer text-lg font-semibold text-[#1C1C1C]">
+                <summary className="cursor-pointer text-lg font-semibold text-[#0B32A0]">
                   {faq.question}
                 </summary>
                 <p className="mt-3 text-base leading-7 text-[var(--og-muted)]">
-                  {faq.answer}
+                  {faq.answer}{" "}
+                  {faq.question === "What file formats do you need?" ? (
+                    <Link
+                      href="/design"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-semibold text-[#0B32A0] underline decoration-[0.08em] underline-offset-4"
+                    >
+                      We can help
+                    </Link>
+                  ) : null}
                 </p>
               </details>
             ))}
@@ -618,8 +760,11 @@ export default function HatsPage() {
       <CTASection
         title="Ready to start your hat project?"
         description="Send the style, quantity, and timeline. We will take it from there."
-        buttonLabel="Start a Project"
-        buttonHref={startHatsHref}
+        buttonLabel="Customize your hat"
+        buttonHref="/goods/hats/styles"
+        backgroundImage="/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg"
+        backgroundImagePosition="center 32%"
+        showImageOverlay={false}
       />
     </main>
   );

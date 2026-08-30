@@ -9,35 +9,176 @@ import { useState } from "react";
 const startProjectHref = "/contact";
 const buildOnlineHref = "/build";
 const showBuildOnlineNav = false;
+const goodsMenuPreviewScale = 1.04;
+
+type GoodsMenuPreview = {
+  image: string;
+  position: string;
+  scale?: number;
+};
+type PreviewMenuLink = {
+  href: string;
+  image?: string;
+  label: string;
+  note?: string;
+  position?: string;
+  scale?: number;
+};
+
+function getGoodsMenuPreview({ image, position, scale }: GoodsMenuPreview) {
+  return { image, position, scale: scale ?? goodsMenuPreviewScale };
+}
+
 const products = [
-  { label: "Hats", href: "/goods/hats", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif" },
-  { label: "Apparel", href: "/build/products/as-colour-5001", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif" },
-  { label: "Drinkware", href: "/goods/drinkware", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_18.avif" },
-  { label: "Bags + Totes", href: "/goods/bags", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_19.avif" },
-  { label: "Accessories", href: "/goods/accessories", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },
-  { label: "Socks", href: "/goods/socks", image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_20.avif" },
+  { label: "Hats", href: "/goods/hats", image: "/images/gallery/hat-bread-head-tezza-3828.jpg", position: "center bottom" },
+  { label: "Apparel", href: "/goods/apparel/styles", image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg", position: "center 50%" },
+  { label: "Drinkware", href: "/goods/drinkware", image: "/images/gallery/drinkware-layla-stacked-mugs-img-7776-2026-08-20.jpg", position: "center 64%" },
+  { label: "Bags + Totes", href: "/goods/bags", image: "/images/gallery/totes-bags-boatsetter-dscf3148.jpg", position: "center 50%" },
+  { label: "Accessories", href: "/goods/accessories", image: "/images/gallery/accessories-bandana-lalo-trio.png", position: "center 32%" },
+  { label: "Blankets", href: "/goods/blankets", image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg", position: "center 50%" },
 ];
 
-const serviceLinks = [
-  { label: "Embroidery", href: "/services/embroidery", note: "" },
-  { label: "Screen Printing", href: "/services/screen-printing", note: "Quick turnaround products, 2–3 weeks" },
+const goodsMenuDefaultPreview = getGoodsMenuPreview({
+  image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
+  position: "center 50%",
+});
+
+const goodsStartLinks: PreviewMenuLink[] = [
+  {
+    label: "Browse All Styles",
+    href: "/goods/all",
+    note: "Search across categories in one place",
+    image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
+    position: "center 50%",
+  },
+  {
+    label: "Find My Goods",
+    href: "/quiz",
+    note: "Get pointed to the right lane",
+    image: "/images/gallery/faq-infinity-house-totes-img6732-r01-019a.jpg",
+    position: "center 44%",
+  },
+  {
+    label: "Start a Project",
+    href: "/contact",
+    note: "Talk with us about the right path",
+    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+    position: "center 48%",
+  },
 ];
 
-const customLinks = [
-  { label: "Our Process", href: "/#process" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "FAQ", href: "/faq" },
+const customizeMenuDefaultPreview = getGoodsMenuPreview({
+  image: "/images/gallery/full-custom-high-st-deli-button-up-5.png",
+  position: "center 52%",
+});
+
+const customizeProducts: PreviewMenuLink[] = [
+  {
+    label: "Hats",
+    href: "/goods/hats/styles",
+    image: "/images/gallery/hat-bread-head-tezza-3828.jpg",
+    position: "center bottom",
+  },
+  {
+    label: "Beanies",
+    href: "/build/og-crafted-beanies?style=as-colour-1107-cuff-beanie",
+    image: "/images/gallery/headwear-fish-at-sea-beanie-img-4864.jpg",
+    position: "center 52%",
+  },
+  {
+    label: "Shirts",
+    href: "/goods/apparel/styles",
+    image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg",
+    position: "center 52%",
+    scale: 1.08,
+  },
+  {
+    label: "Hoodies",
+    href: "/goods/apparel/styles",
+    image: "/images/gallery/apparel-686-hoodie-front.jpg",
+    position: "center 42%",
+  },
+  {
+    label: "Outerwear",
+    href: "/goods/outerwear",
+    image: "/images/gallery/outerwear-high-st-deli-puffer-mg-2257.jpg",
+    position: "left 46%",
+    scale: 1.14,
+  },
+  {
+    label: "Socks",
+    href: "/goods/socks",
+    image: "/images/product/socks-lifestyle.jpg",
+    position: "center 56%",
+  },
+  {
+    label: "Bags",
+    href: "/goods/bags",
+    image: "/images/gallery/totes-bags-boatsetter-dscf3148.jpg",
+    position: "center 50%",
+  },
+  {
+    label: "Quick Turn Hats",
+    href: "/goods/hats/quick-turn",
+    image: "/images/gallery/headwear-quick-turn-reel-life-gear-film-10.jpg",
+    position: "center 46%",
+  },
 ];
 
-const howItWorksLinks = [
-  { label: "Ready Made", href: "/services#ready-made" },
-  { label: "OG Crafted", href: "/services#og-crafted" },
-  { label: "Find My Goods", href: "/quiz" },
+const customizeWorkflowLinks: PreviewMenuLink[] = [
+  {
+    label: "Browse All Styles",
+    href: "/goods/all",
+    note: "Filter by category, color, price, fit, and more",
+    image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
+    position: "center 50%",
+  },
+  {
+    label: "Find My Goods",
+    href: "/quiz",
+    note: "Get pointed to the right lane",
+    image: "/images/gallery/faq-infinity-house-totes-img6732-r01-019a.jpg",
+    position: "center 44%",
+  },
+  {
+    label: "Start a Project",
+    href: "/contact",
+    note: "Talk with us about the right path",
+    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+    position: "center 48%",
+  },
+];
+
+const customLinks: PreviewMenuLink[] = [
+  {
+    label: "Gallery",
+    href: "/gallery",
+    image: "/images/gallery/case-studies-small-waves-boat-2s5a1947.jpg",
+    position: "center 72%",
+  },
+  {
+    label: "FAQ",
+    href: "/faq",
+    image: "/images/gallery/faq-infinity-house-totes-img6732-r01-019a.jpg",
+    position: "center 44%",
+  },
+  {
+    label: "Case Studies",
+    href: "/case-studies",
+    image: "/images/gallery/case-studies-small-waves-boat-2s5a1947.jpg",
+    position: "center 72%",
+  },
+  {
+    label: "Insights",
+    href: "/insights",
+    image: "/images/gallery/design-built-production-dscf1585.jpg",
+    position: "center 42%",
+  },
 ];
 
 const aboutLinks = [
   { label: "About", href: "/about" },
-  { label: "OG Crafted vs Ready Made", href: "/about/og-crafted-vs-ready-made" },
+  { label: "Our Process", href: "/our-process" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
@@ -63,14 +204,30 @@ function MenuLink({
   href,
   children,
   disabled = false,
+  onMouseEnter,
+  onMouseMove,
+  onPointerEnter,
+  onPointerMove,
+  onFocus,
 }: {
   href: string;
   children: ReactNode;
   disabled?: boolean;
+  onMouseEnter?: () => void;
+  onMouseMove?: () => void;
+  onPointerEnter?: () => void;
+  onPointerMove?: () => void;
+  onFocus?: () => void;
 }) {
   if (disabled) {
     return (
-      <span className="flex min-h-10 items-center justify-between rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1C1C]/40">
+      <span
+        className="flex min-h-10 w-full items-center justify-between rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1C1C]/40"
+        onMouseEnter={onMouseEnter}
+        onMouseMove={onMouseMove}
+        onPointerEnter={onPointerEnter}
+        onPointerMove={onPointerMove}
+      >
         {children}
         <span className="text-[0.65rem]">Soon</span>
       </span>
@@ -80,20 +237,106 @@ function MenuLink({
   return (
     <Link
       href={href}
-      className="flex min-h-10 items-center rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1C1C] transition hover:bg-[#1C1C1C]/8 hover:text-[#FF4200]"
+      onMouseEnter={onMouseEnter}
+      onMouseMove={onMouseMove}
+      onPointerEnter={onPointerEnter}
+      onPointerMove={onPointerMove}
+      onFocus={onFocus}
+      className="flex min-h-10 w-full items-center rounded-2xl px-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1C1C] transition hover:bg-[#1C1C1C]/8 hover:text-[#FF4200]"
     >
       {children}
     </Link>
   );
 }
 
+function MobileMenuArrow({
+  expanded = false,
+}: {
+  expanded?: boolean;
+}) {
+  return (
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className={`h-4 w-4 ${expanded ? "rotate-90" : ""}`}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M9 6l6 6-6 6" />
+      </svg>
+    </span>
+  );
+}
+
+function MobileMenuPlusButton({
+  expanded = false,
+}: {
+  expanded?: boolean;
+}) {
+  return (
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 12h12" />
+        {expanded ? null : <path d="M12 6v12" />}
+      </svg>
+    </span>
+  );
+}
+
+function MobileMenuCloseButton() {
+  return (
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M6 6l12 12" />
+        <path d="M18 6L6 18" />
+      </svg>
+    </span>
+  );
+}
+
 export function Nav() {
   const pathname = usePathname();
-  const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
-  const [hoveredProduct, setHoveredProduct] = useState(products[0].image);
+  const [activeMenu, setActiveMenu] = useState<"goods" | "customize" | "about" | null>(null);
+  const [hoveredProduct, setHoveredProduct] = useState(goodsMenuDefaultPreview);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileExpandedMenu, setMobileExpandedMenu] = useState<"goods" | "customize" | "about" | null>(null);
   const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
   const hideMobileBottomCtas = pathname === "/quiz" || pathname.startsWith("/quiz/");
+  const setGoodsPreview = (preview?: GoodsMenuPreview) => {
+    setHoveredProduct(preview ? getGoodsMenuPreview(preview) : goodsMenuDefaultPreview);
+  };
+  const getGoodsPreviewHandlers = (preview?: GoodsMenuPreview) => {
+    const showPreview = () => setGoodsPreview(preview);
+    return {
+      onMouseEnter: showPreview,
+      onMouseMove: showPreview,
+      onPointerEnter: showPreview,
+      onPointerMove: showPreview,
+      onFocus: showPreview,
+    };
+  };
 
   const scheduleClose = () => {
     if (closeTimer[0]) clearTimeout(closeTimer[0]);
@@ -102,6 +345,16 @@ export function Nav() {
 
   const cancelClose = () => {
     if (closeTimer[0]) clearTimeout(closeTimer[0]);
+  };
+
+  const openGoodsMenu = () => {
+    setGoodsPreview();
+    setActiveMenu("goods");
+  };
+
+  const openCustomizeMenu = () => {
+    setGoodsPreview(customizeMenuDefaultPreview);
+    setActiveMenu("customize");
   };
 
   return (
@@ -115,18 +368,30 @@ export function Nav() {
         />
       )}
 
-      <header className="sticky top-0 z-40">
+      <div className="flex min-h-8 items-center justify-center bg-[var(--og-dark-blue)] px-4 pb-2 pt-[12px] text-center md:px-8">
+        <p
+          className="text-[12px] leading-none text-white md:text-[1rem]"
+          style={{ fontFamily: "var(--font-accent)" }}
+        >
+          Guaranteed Fresh
+        </p>
+      </div>
+
+      <header className="sticky top-0 z-40 -mb-px bg-[#FF4200] pb-px">
         <div
           className="relative"
           onMouseLeave={scheduleClose}
           onMouseEnter={cancelClose}
         >
-          <div className="flex items-center bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:px-8">
+          <div className="relative flex items-center justify-center bg-[#FF4200] px-4 py-[22px] shadow-[0_4px_24px_rgba(255,66,0,0.25)] md:justify-between md:px-8">
             {/* Mobile hamburger */}
             <button
               type="button"
-              onClick={() => setMobileOpen(true)}
-              className="inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl text-xl font-semibold text-white md:hidden"
+              onClick={() => {
+                setMobileExpandedMenu(null);
+                setMobileOpen(true);
+              }}
+              className="absolute left-4 inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl text-[1.625rem] font-semibold text-white md:hidden"
               aria-label="Open menu"
             >
               ☰
@@ -137,29 +402,41 @@ export function Nav() {
               <img
                 src="/logos/OrangeGoods_Logo_Main_Horizontal_Orange.svg"
                 alt="Orange Goods"
-                className="h-9 w-auto md:h-10"
+                className="h-10 w-auto md:h-10"
               />
             </Link>
             {/* Nav — centered */}
             <nav className="hidden flex-1 items-center justify-center gap-10 md:flex">
               <button
                 type="button"
-                onMouseEnter={() => setActiveMenu("custom")}
-                onClick={() => setActiveMenu(activeMenu === "custom" ? null : "custom")}
+                onMouseEnter={openGoodsMenu}
+                onClick={() => {
+                  if (activeMenu === "goods") {
+                    setActiveMenu(null);
+                    return;
+                  }
+
+                  openGoodsMenu();
+                }}
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 GOODS <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </button>
-              {showBuildOnlineNav ? (
-                <button
-                  type="button"
-                  onMouseEnter={() => setActiveMenu("build")}
-                  onClick={() => setActiveMenu(activeMenu === "build" ? null : "build")}
-                  className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
-                >
-                  BUILD ONLINE <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-              ) : null}
+              <button
+                type="button"
+                onMouseEnter={openCustomizeMenu}
+                onClick={() => {
+                  if (activeMenu === "customize") {
+                    setActiveMenu(null);
+                    return;
+                  }
+
+                  openCustomizeMenu();
+                }}
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
+              >
+                CUSTOMIZE <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+              </button>
               <Link
                 href="/design"
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
@@ -167,22 +444,10 @@ export function Nav() {
                 DESIGN
               </Link>
               <Link
-                href="/shop"
-                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
-              >
-                SHOP OG
-              </Link>
-              <Link
                 href="/fresh-picks"
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 FRESH PICKS
-              </Link>
-              <Link
-                href="/gallery"
-                className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
-              >
-                GALLERY
               </Link>
               <button
                 type="button"
@@ -195,24 +460,6 @@ export function Nav() {
             </nav>
             {/* Right group: icons + CTA */}
             <div className="hidden shrink-0 items-center gap-1 md:flex">
-              <Link
-                href="/portal"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white transition hover:bg-white/15"
-                aria-label="My account"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </Link>
-              <Link
-                href="/cart"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/15"
-                aria-label="Cart"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </Link>
               <Link
                 href={startProjectHref}
                 className="btn-og-white inline-flex items-center rounded-xl px-5 py-3 text-sm font-bold uppercase tracking-[0.1em] text-[#FF4200]"
@@ -231,122 +478,174 @@ export function Nav() {
               onMouseEnter={cancelClose}
             />
             <div
-              className="absolute left-1/2 top-[calc(100%+0.75rem)] hidden min-h-[320px] w-[60vw] -translate-x-1/2 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
+              className="absolute left-1/2 top-[calc(100%+0.75rem)] hidden w-[calc(100vw-3rem)] max-w-[68rem] -translate-x-1/2 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
               onMouseEnter={cancelClose}
             >
-              {activeMenu === "custom" ? (
-                <div className="grid gap-3 md:grid-cols-[1.4fr_0.9fr_0.9fr_0.9fr]">
-                  {/* Col 1: Photo */}
-                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
-                    <Image
-                      src={hoveredProduct}
-                      alt="Orange Goods product"
-                      fill
-                      sizes="260px"
-                      className="object-cover transition-opacity duration-300"
-                    />
-                  </div>
-                  {/* Col 2: Products */}
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Products
-                    </p>
-                    <div className="grid gap-1">
-                      <MenuLink href="/goods">View All</MenuLink>
-                      {products.map((item) => (
-                        <div key={item.label} onMouseEnter={() => setHoveredProduct(item.image)}>
-                          <MenuLink href={item.href}>{item.label}</MenuLink>
-                        </div>
-                      ))}
+              {activeMenu === "goods" ? (
+                <div className="flex flex-col gap-4">
+                  <div className="grid gap-3 md:grid-cols-[1.15fr_0.8fr_0.95fr_0.8fr]">
+                    <div className="relative h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae]">
+                      <Image
+                        key={hoveredProduct.image}
+                        src={hoveredProduct.image}
+                        alt="Orange Goods product preview"
+                        fill
+                        sizes="(min-width: 768px) 18vw, 100vw"
+                        className="object-cover transition-[opacity,transform] duration-300"
+                        style={{ objectPosition: hoveredProduct.position, transform: `scale(${hoveredProduct.scale ?? 1})` }}
+                      />
                     </div>
-                  </div>
-                  {/* Col 3: How It Works */}
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      How It Works
-                    </p>
-                    <div className="grid gap-1">
-                      {howItWorksLinks.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
-                      ))}
+                    <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Products
+                      </p>
+                      <div className="grid gap-1">
+                        <MenuLink href="/goods" {...getGoodsPreviewHandlers()}>
+                          View all
+                        </MenuLink>
+                        {products.map((item) => (
+                          <MenuLink
+                            key={item.label}
+                            href={item.href}
+                            {...getGoodsPreviewHandlers(item)}
+                          >
+                            {item.label}
+                          </MenuLink>
+                        ))}
+                      </div>
                     </div>
-                    <p className="px-3 pb-2 pt-5 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Ready Made Services
-                    </p>
-                    <div className="grid gap-1">
-                      {serviceLinks.map((item) => (
-                        <div key={item.label}>
-                          <MenuLink href={item.href}>{item.label}</MenuLink>
-                          {item.note && <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p>}
-                        </div>
-                      ))}
+                    <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Start Here
+                      </p>
+                      <div className="grid gap-1">
+                        {goodsStartLinks.map((item) => (
+                          <div
+                            key={item.label}
+                            {...getGoodsPreviewHandlers(
+                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                            )}
+                          >
+                            <MenuLink
+                              href={item.href}
+                              {...getGoodsPreviewHandlers(
+                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                              )}
+                            >
+                              {item.label}
+                            </MenuLink>
+                            {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  {/* Col 4: Explore */}
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Explore
-                    </p>
-                    <div className="grid gap-1">
-                      {customLinks.map((item) => (
-                        <MenuLink key={item.label} href={item.href}>{item.label}</MenuLink>
-                      ))}
-                      <MenuLink href="/case-studies">Case Studies</MenuLink>
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      <Link href={startProjectHref} className="btn-og">Start a Project</Link>
+                    <div className="flex flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Explore
+                      </p>
+                      <div className="grid gap-1">
+                        {customLinks.map((item) => (
+                          <div
+                            key={item.label}
+                            {...getGoodsPreviewHandlers(
+                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                            )}
+                          >
+                            <MenuLink
+                              href={item.href}
+                              {...getGoodsPreviewHandlers(
+                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                              )}
+                            >
+                              {item.label}
+                            </MenuLink>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-auto flex flex-col gap-2 px-3 pt-8">
+                        <Link href={startProjectHref} className="btn-og justify-center">Start a Project</Link>
+                        <Link
+                          href="/quiz"
+                          className="font-body inline-flex items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
+                        >
+                          Merch Quiz
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
               ) : null}
 
-              {activeMenu === "build" ? (
-                <div className="grid gap-3 md:grid-cols-[1.4fr_0.9fr_0.9fr_0.9fr]">
-                  {/* Col 1: Photo */}
-                  <div className="relative min-h-[14rem] overflow-hidden rounded-[1.5rem] bg-[#e0c7ad]">
-                    <Image
-                      src={products[0].image}
-                      alt="Orange Goods"
-                      fill
-                      sizes="300px"
-                      className="object-cover"
-                    />
-
-                  </div>
-                  {/* Col 2: Products */}
-                  <div>
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Products
-                    </p>
-                    <div className="grid gap-1">
-                      {["Hats", "Apparel", "Drinkware", "Bags + Totes", "Accessories", "Socks"].map((label) => (
-                        <MenuLink key={label} href={buildOnlineHref}>{label}</MenuLink>
-                      ))}
+              {activeMenu === "customize" ? (
+                <div className="flex flex-col gap-4">
+                  <div className="grid gap-3 md:grid-cols-[1.08fr_1.35fr_0.88fr]">
+                    <div className="relative h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae]">
+                      <Image
+                        key={hoveredProduct.image}
+                        src={hoveredProduct.image}
+                        alt="Orange Goods customization preview"
+                        fill
+                        sizes="(min-width: 768px) 18vw, 100vw"
+                        className="object-cover transition-[opacity,transform] duration-300"
+                        style={{ objectPosition: hoveredProduct.position, transform: `scale(${hoveredProduct.scale ?? 1})` }}
+                      />
                     </div>
-                  </div>
-                  {/* Col 3: How It Works */}
-                  <div>
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      How It Works
-                    </p>
-                    <div className="grid gap-1">
-                      <MenuLink href="/services#ready-made">Ready Made</MenuLink>
-                      <MenuLink href="/services#og-crafted">OG Crafted</MenuLink>
-                      <MenuLink href="/quiz">Find My Goods</MenuLink>
+                    <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Products
+                      </p>
+                      <div className="grid gap-x-3 gap-y-2 md:grid-cols-2">
+                        {customizeProducts.map((item) => (
+                          <div
+                            key={item.label}
+                            {...getGoodsPreviewHandlers(
+                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                            )}
+                          >
+                            <MenuLink
+                              href={item.href}
+                              {...getGoodsPreviewHandlers(
+                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                              )}
+                            >
+                              {item.label}
+                            </MenuLink>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  {/* Col 4: Explore */}
-                  <div>
-                    <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                      Explore
-                    </p>
-                    <div className="grid gap-1">
-                      <MenuLink href="/faq">FAQ</MenuLink>
-                      <MenuLink href="/gallery">Gallery</MenuLink>
-                      <MenuLink href="/case-studies">Case Studies</MenuLink>
-                    </div>
-                    <div className="mt-3">
-                      <Link href={buildOnlineHref} className="btn-og">Start Building</Link>
+                    <div className="flex flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                        Start Here
+                      </p>
+                      <div className="grid gap-1">
+                        {customizeWorkflowLinks.map((item) => (
+                          <div
+                            key={item.label}
+                            {...getGoodsPreviewHandlers(
+                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                            )}
+                          >
+                            <MenuLink
+                              href={item.href}
+                              {...getGoodsPreviewHandlers(
+                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                              )}
+                            >
+                              {item.label}
+                            </MenuLink>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-auto flex flex-col gap-2 px-3 pt-8">
+                        <Link href={startProjectHref} className="btn-og justify-center">Start a Project</Link>
+                        <Link
+                          href="/goods/all"
+                          className="font-body inline-flex items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
+                        >
+                          Browse All Styles
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -358,7 +657,7 @@ export function Nav() {
                     <Link
                       key={card.title}
                       href={card.href}
-                      className="group relative block min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae] transition hover:-translate-y-0.5 hover:border-[#FF4200]"
+                      className="group relative block h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae] transition hover:-translate-y-0.5 hover:border-[#FF4200]"
                     >
                       <Image
                         src={card.image}
@@ -386,7 +685,7 @@ export function Nav() {
                     </Link>
                   ))}
 
-                  <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 p-4">
+                  <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 p-4">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       About Orange Goods
                     </p>
@@ -411,50 +710,138 @@ export function Nav() {
       </header>
 
       {mobileOpen ? (
-        <div className="fixed inset-0 z-50 bg-[var(--og-cream)] p-4 md:hidden">
-          <div className="flex items-center justify-between">
+        <div className="fixed inset-0 z-50 bg-[var(--og-blue)] p-4 md:hidden">
+          <div className="flex items-center">
             <button
               type="button"
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-[#0B32A0]/20 text-2xl text-[var(--og-blue)]"
+              onClick={() => {
+                setMobileExpandedMenu(null);
+                setMobileOpen(false);
+              }}
+              className="inline-flex items-center justify-center"
               aria-label="Close menu"
             >
-              X
+              <MobileMenuCloseButton />
             </button>
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className="text-sm font-black tracking-[0.24em] text-[var(--og-blue)]"
-            >
-              ORANGE GOODS
-            </Link>
-            <Link
-              href={startProjectHref}
-              className="inline-flex min-h-10 items-center rounded-xl bg-[var(--og-orange)] px-4 text-xs font-semibold uppercase tracking-[0.1em] text-white"
-            >
-              Start
-            </Link>
           </div>
           <nav className="mt-12 grid gap-3">
+            <div className="border-b border-white/25 pb-3">
+              <button
+                type="button"
+                onClick={() => setMobileExpandedMenu(mobileExpandedMenu === "goods" ? null : "goods")}
+                className="flex min-h-16 w-full items-center justify-between text-3xl font-black tracking-[-0.02em] text-white"
+              >
+                <span>GOODS</span>
+                <MobileMenuPlusButton expanded={mobileExpandedMenu === "goods"} />
+              </button>
+              {mobileExpandedMenu === "goods" ? (
+                <div className="grid gap-2 pb-2">
+                  <Link
+                    href="/goods"
+                    onClick={() => setMobileOpen(false)}
+                    className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                  >
+                    View all goods
+                  </Link>
+                  <Link
+                    href="/gallery"
+                    onClick={() => setMobileOpen(false)}
+                    className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                  >
+                    Gallery
+                  </Link>
+                  {products.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="border-b border-white/25 pb-3">
+              <button
+                type="button"
+                onClick={() => setMobileExpandedMenu(mobileExpandedMenu === "customize" ? null : "customize")}
+                className="flex min-h-16 w-full items-center justify-between text-3xl font-black tracking-[-0.02em] text-white"
+              >
+                <span>CUSTOMIZE</span>
+                <MobileMenuPlusButton expanded={mobileExpandedMenu === "customize"} />
+              </button>
+              {mobileExpandedMenu === "customize" ? (
+                <div className="grid gap-2 pb-2">
+                  {customizeProducts.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                  <div className="mt-2 border-t border-white/15 pt-2">
+                    <div className="grid gap-2">
+                      {customizeWorkflowLinks.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="text-base font-semibold uppercase tracking-[0.14em] text-white/70"
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
             {[
-              { label: "GOODS", href: "/#paths" },
-              ...(showBuildOnlineNav ? [{ label: "BUILD ONLINE", href: buildOnlineHref }] : []),
               { label: "DESIGN", href: "/design" },
-              { label: "SHOP OG", href: "/shop" },
               { label: "FRESH PICKS", href: "/fresh-picks" },
-              { label: "GALLERY", href: "/gallery" },
-              { label: "ABOUT", href: "/about" },
             ].map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex min-h-16 items-center justify-between border-b border-[#0B32A0]/20 text-3xl font-black tracking-[-0.02em] text-[var(--og-blue)]"
+                className="flex min-h-16 items-center justify-between border-b border-white/25 text-3xl font-black tracking-[-0.02em] text-white"
               >
                 {item.label}
-                <span className="text-[var(--og-orange)]">-&gt;</span>
+                <MobileMenuArrow />
               </Link>
             ))}
+
+            <div className="border-b border-white/25 pb-3">
+              <button
+                type="button"
+                onClick={() => setMobileExpandedMenu(mobileExpandedMenu === "about" ? null : "about")}
+                className="flex min-h-16 w-full items-center justify-between text-3xl font-black tracking-[-0.02em] text-white"
+              >
+                <span>ABOUT</span>
+                <MobileMenuPlusButton expanded={mobileExpandedMenu === "about"} />
+              </button>
+              {mobileExpandedMenu === "about" ? (
+                <div className="grid gap-2 pb-2">
+                  {aboutLinks.map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           </nav>
         </div>
       ) : null}

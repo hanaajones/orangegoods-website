@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 
 type FeaturedPhoto = {
@@ -95,8 +95,19 @@ function getOrderedPhotos(activeIndex: number) {
 
 export function FeaturedPhotoCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const orderedPhotos = getOrderedPhotos(activeIndex);
   const activePhoto = featuredPhotos[activeIndex];
+
+  useEffect(() => {
+    if (isPaused) return;
+
+    const intervalId = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % featuredPhotos.length);
+    }, 4500);
+
+    return () => window.clearInterval(intervalId);
+  }, [isPaused]);
 
   function goToNext() {
     setActiveIndex((current) => (current + 1) % featuredPhotos.length);
@@ -108,7 +119,14 @@ export function FeaturedPhotoCarousel() {
 
   return (
     <Reveal className="bg-[#F3EFE7] px-4 pb-[106px] pt-[86px] md:px-8 md:pb-[130px] md:pt-[110px] lg:px-12">
-      <section className="mx-auto max-w-6xl" aria-label="Featured Orange Goods work">
+      <section
+        className="mx-auto max-w-6xl"
+        aria-label="Featured Orange Goods work"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onFocusCapture={() => setIsPaused(true)}
+        onBlurCapture={() => setIsPaused(false)}
+      >
         <div className="mb-6 flex items-end justify-between gap-4 md:mb-8">
           <div className="relative flex items-start">
             <p className="font-accent pr-10 text-3xl font-normal leading-none text-[#FF4200] md:pr-14 md:text-5xl">
