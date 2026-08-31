@@ -18,11 +18,6 @@ export type HatStyle = {
   bestFor: string;
 };
 
-const sharedDetailGalleryImage: HatStyleImage = {
-  src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og-crafted-shared-detail-mg-9416.jpg",
-  label: "Detail view",
-};
-
 export const hatStyles = [
   {
     slug: "og-100-dad-hat",
@@ -33,9 +28,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og100-cypress-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Strapback",
@@ -51,9 +45,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og110-walnut-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Strapback",
@@ -65,13 +58,12 @@ export const hatStyles = [
     model: "OG 120",
     title: "Coast Cap",
     description: "Soft low-profile shape with a laid-back feel.",
-    selectorDescription: "6-panel, low profile",
+    selectorDescription: "coast cap, default bill is slightly curved",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og120-black-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 48%",
     closure: "Strapback",
@@ -83,13 +75,12 @@ export const hatStyles = [
     model: "OG 130",
     title: "Setter Cap",
     description: "A sharper 5-panel with more structure.",
-    selectorDescription: "5-panel, structured, mid profile",
+    selectorDescription: "setter cap, default bill is slightly curved",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og130-navy-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -105,9 +96,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-front-updated.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-front-updated.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og140-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -123,9 +113,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og150-khaki-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -137,13 +126,12 @@ export const hatStyles = [
     model: "OG 160",
     title: "Field Trucker",
     description: "More structured front with extra logo room.",
-    selectorDescription: "trucker, structured front, low profile",
+    selectorDescription: "field trucker, default bill is slightly curved",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og160-white-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -155,13 +143,12 @@ export const hatStyles = [
     model: "OG 170",
     title: "Foamie Trucker",
     description: "High-profile trucker that makes more of a statement.",
-    selectorDescription: "foam trucker, high profile",
+    selectorDescription: "foam trucker, default bill is slightly curved",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og170-navy-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -177,9 +164,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og180-black-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 52%",
     closure: "Clip closure",
@@ -191,13 +177,12 @@ export const hatStyles = [
     model: "OG 190",
     title: "Highline Cap",
     description: "Structured high-profile cap with a stronger crown.",
-    selectorDescription: "structured cap, high profile",
+    selectorDescription: "structured cap, default bill is slightly curved",
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-side.jpg", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-side.jpg", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og190-walnut-back.jpg", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Snapback",
@@ -213,9 +198,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-side.png", label: "Side view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-side.png", label: "3/4 front view" },
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og200-perform-back.png", label: "Back view" },
-      sharedDetailGalleryImage,
     ],
     imagePosition: "center 50%",
     closure: "Clip closure",
@@ -231,8 +215,8 @@ export const hatStyles = [
     image: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-front.jpg",
     gallery: [
       { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-front.jpg", label: "Front view" },
-      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-inside.jpg", label: "Inside view" },
-      sharedDetailGalleryImage,
+      { src: "/images/product/hats/as-colour/1176-bucket-hat-main.jpg", label: "3/4 front view" },
+      { src: "/images/product/hats/og-crafted-styles/2026-07-uploaded/og210-walnut-inside.jpg", label: "Interior view" },
     ],
     imagePosition: "center 48%",
     closure: "Fitted",

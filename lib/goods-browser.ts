@@ -3,8 +3,10 @@ import {
   buildApparelStyleCatalogItems,
   type ApparelCatalogStyleItem,
 } from "@/lib/apparel-styles";
+import { AS_COLOUR_TOTES, type AsColourToteStyle } from "@/lib/as-colour-totes";
 import { BEANIE_STYLES, type BeanieStyle } from "@/lib/beanie-styles";
-import { READY_MADE_HATS, type HatMeta } from "@/lib/ready-made-hats";
+import { addQuickTurnReadyMadeHatShippingIncludedPrice } from "@/lib/quick-turn-shipping";
+import { getReadyMadeHatBrowserImages, READY_MADE_HATS, type HatMeta } from "@/lib/ready-made-hats";
 
 export type GoodsBrowserCategory =
   | "hats"
@@ -13,6 +15,7 @@ export type GoodsBrowserCategory =
   | "blankets"
   | "drinkware"
   | "bags"
+  | "totes"
   | "accessories"
   | "socks";
 
@@ -32,6 +35,7 @@ export type GoodsBrowserItem = {
   href: string;
   ctaLabel: string;
   image: string;
+  hoverImage?: string;
   imagePosition?: string;
   imageAspectClass?: string;
   brand?: string;
@@ -43,6 +47,7 @@ export type GoodsBrowserItem = {
   colors: GoodsBrowserColor[];
   fromPrice?: number;
   priceLabel?: string;
+  turnaroundLabel?: string;
   searchText: string;
 };
 
@@ -53,6 +58,7 @@ export const GOODS_BROWSER_CATEGORY_LABELS: Record<GoodsBrowserCategory, string>
   blankets: "Blankets",
   drinkware: "Drinkware",
   bags: "Bags",
+  totes: "Tote Bags",
   accessories: "Accessories",
   socks: "Socks",
 };
@@ -62,9 +68,48 @@ export const GOODS_BROWSER_PRODUCTION_PATH_LABELS: Record<GoodsBrowserProduction
   "quick-turn": "Quick Turn",
 };
 
+export function hasCustomizerPage(item: GoodsBrowserItem) {
+  return (
+    item.href.startsWith("/build/") ||
+    item.href.startsWith("/goods/beanies/") ||
+    item.href.startsWith("/goods/hats/quick-turn/") ||
+    item.id.startsWith("quick-turn-tote:")
+  );
+}
+
+function joinSentenceParts(parts: Array<string | undefined>) {
+  const cleanedParts = parts
+    .map((part) => part?.trim().replace(/[.!?\s]+$/g, ""))
+    .filter((part): part is string => Boolean(part) && part !== "—");
+
+  if (cleanedParts.length === 0) return "";
+  return `${cleanedParts.join(". ")}.`;
+}
+
 function buildApparelSpecs(style: ApparelCatalogStyleItem) {
   const fit = style.fit ? `${style.fit} fit` : "";
-  return [fit, style.weight, style.material].filter(Boolean).join(". ") + ".";
+  return joinSentenceParts([fit, style.weight, style.material]);
+}
+
+function getApparelPriceUnitLabel(style: ApparelCatalogStyleItem) {
+  const title = style.title.toLowerCase();
+
+  if (style.family === "hoodies") return "hoodie";
+  if (style.family === "bottoms") {
+    if (title.includes("track short") || title.includes("sweat short") || title.includes("sweatshort")) {
+      return "sweatshort";
+    }
+
+    if (title.includes("track pant") || title.includes("sweat pant") || title.includes("sweatpant") || title.includes("jogger")) {
+      return "sweatpant";
+    }
+
+    if (title.includes("short")) return "short";
+    if (title.includes("pant")) return "pant";
+  }
+
+  if (style.family === "outerwear") return "jacket";
+  return "shirt";
 }
 
 function getHatType(style: HatStyle) {
@@ -80,8 +125,14 @@ function getHatType(style: HatStyle) {
   return "Cap";
 }
 
+const FULL_CUSTOM_HAT_BROWSER_SUFFIX =
+  "Made from scratch with your choice of fabric, trims, colors, decoration, and stitching";
+
 function buildHatSpecs(style: HatStyle) {
-  return [style.profile, style.closure, style.bestFor].filter(Boolean).join(". ") + ".";
+  const buildOverview =
+    style.selectorDescription.charAt(0).toUpperCase() + style.selectorDescription.slice(1);
+
+  return joinSentenceParts([buildOverview, style.bestFor, FULL_CUSTOM_HAT_BROWSER_SUFFIX]);
 }
 
 function buildApparelItem(style: ApparelCatalogStyleItem): GoodsBrowserItem {
@@ -89,7 +140,7 @@ function buildApparelItem(style: ApparelCatalogStyleItem): GoodsBrowserItem {
     id: `apparel:${style.slug}`,
     kind: "style",
     category: "apparel",
-    productionPath: "full-custom",
+    productionPath: "quick-turn",
     categoryLabel: GOODS_BROWSER_CATEGORY_LABELS.apparel,
     title: style.title,
     subtitle: style.brand,
@@ -97,6 +148,7 @@ function buildApparelItem(style: ApparelCatalogStyleItem): GoodsBrowserItem {
     href: `/build/og-crafted-apparel?style=${encodeURIComponent(style.slug)}`,
     ctaLabel: "Customize",
     image: style.image,
+    hoverImage: style.hoverImage,
     imageAspectClass: "aspect-[4/4.4]",
     brand: style.brand,
     typeLabel: style.family === "long-sleeves"
@@ -115,7 +167,8 @@ function buildApparelItem(style: ApparelCatalogStyleItem): GoodsBrowserItem {
     material: style.material,
     colors: style.colors,
     fromPrice: style.fromPrice,
-    priceLabel: `From $${style.fromPrice.toFixed(2)} / piece with printing`,
+    priceLabel: `From $${style.fromPrice.toFixed(2)} / ${getApparelPriceUnitLabel(style)}`,
+    turnaroundLabel: style.timeline,
     searchText: [
       style.brand,
       style.name,
@@ -125,6 +178,8 @@ function buildApparelItem(style: ApparelCatalogStyleItem): GoodsBrowserItem {
       style.fit,
       style.weight,
       style.material,
+      "quick turn",
+      "premium blanks",
       "apparel",
       "tee",
       "fleece",
@@ -138,12 +193,12 @@ function buildBeanieItem(style: BeanieStyle): GoodsBrowserItem {
     id: `beanie:${style.slug}`,
     kind: "style",
     category: "beanies",
-    productionPath: "full-custom",
+    productionPath: "quick-turn",
     categoryLabel: GOODS_BROWSER_CATEGORY_LABELS.beanies,
     title: style.title,
     subtitle: style.model,
     description: style.description,
-    href: `/build/og-crafted-beanies?style=${encodeURIComponent(style.slug)}`,
+    href: `/goods/beanies/${encodeURIComponent(style.slug)}`,
     ctaLabel: "Customize",
     image: style.image,
     imagePosition: style.imagePosition,
@@ -153,13 +208,19 @@ function buildBeanieItem(style: BeanieStyle): GoodsBrowserItem {
     fit: style.fit,
     material: style.material,
     decorationOptions: style.decorationOptions,
-    colors: [],
+    colors: style.colors.map((color) => color.name),
+    fromPrice: style.fromPrice,
+    priceLabel: `From $${style.fromPrice.toFixed(2)} / beanie`,
+    turnaroundLabel: "2-3 weeks",
     searchText: [
       style.model,
       style.title,
       style.typeLabel,
       style.fit,
       style.material,
+      ...style.colors.map((color) => color.name),
+      "quick turn",
+      "premium blanks",
       "beanie",
       "beanies",
       "headwear",
@@ -171,6 +232,8 @@ function buildBeanieItem(style: BeanieStyle): GoodsBrowserItem {
 
 function buildHatItem(style: HatStyle): GoodsBrowserItem {
   const typeLabel = getHatType(style);
+  const frontImage = style.gallery?.[0];
+  const hoverImage = style.gallery?.find((image) => image.src !== (frontImage?.src ?? style.image))?.src;
 
   return {
     id: `hat:${style.slug}`,
@@ -183,14 +246,16 @@ function buildHatItem(style: HatStyle): GoodsBrowserItem {
     description: buildHatSpecs(style),
     href: `/build/og-crafted-hats?hatStyle=${encodeURIComponent(style.slug)}`,
     ctaLabel: "Customize",
-    image: style.image,
-    imagePosition: style.imagePosition,
+    image: frontImage?.src ?? style.image,
+    hoverImage,
+    imagePosition: frontImage?.imagePosition ?? style.imagePosition,
     imageAspectClass: "aspect-[4/3]",
     typeLabel,
     fit: style.profile,
     colors: [],
     fromPrice: 13,
     priceLabel: "From $13.00 / hat",
+    turnaroundLabel: "6-8 weeks",
     searchText: [
       style.model,
       style.title,
@@ -218,12 +283,14 @@ function getQuickTurnHatType(style: HatMeta) {
 }
 
 function buildQuickTurnHatSpecs(style: HatMeta) {
-  return [style.crown, style.closure, style.fabricDesc].filter(Boolean).join(". ") + ".";
+  return joinSentenceParts([style.crown, style.closure, style.fabric]);
 }
 
 function buildQuickTurnHatItem(style: HatMeta): GoodsBrowserItem {
-  const heroColor = style.colors.find((color) => color.front || color.back || color.side || color.turn);
   const typeLabel = getQuickTurnHatType(style);
+  const subtitle = `AS Colour ${style.id.toUpperCase()}`;
+  const { primaryImage, hoverImage } = getReadyMadeHatBrowserImages(style.id);
+  const fromPrice = addQuickTurnReadyMadeHatShippingIncludedPrice(16.5);
 
   return {
     id: `quick-turn-hat:${style.id.toLowerCase()}`,
@@ -232,24 +299,21 @@ function buildQuickTurnHatItem(style: HatMeta): GoodsBrowserItem {
     productionPath: "quick-turn",
     categoryLabel: GOODS_BROWSER_CATEGORY_LABELS.hats,
     title: style.name,
-    subtitle: "Quick Turn Hats",
+    subtitle,
     description: buildQuickTurnHatSpecs(style),
     href: `/goods/hats/quick-turn/${style.id.toLowerCase()}`,
-    ctaLabel: "View style",
-    image:
-      heroColor?.front ??
-      heroColor?.back ??
-      heroColor?.side ??
-      heroColor?.turn ??
-      "/images/gallery/headwear-quick-turn-reel-life-gear-film-10.jpg",
+    ctaLabel: "Customize",
+    image: primaryImage ?? "/images/gallery/headwear-quick-turn-reel-life-gear-film-10.jpg",
+    hoverImage,
     imageAspectClass: "aspect-[4/3]",
     brand: "AS Colour",
     typeLabel,
     fit: style.profile === "high" ? "High Profile" : style.profile === "mid" ? "Mid Profile" : "Low Profile",
     material: style.fabric,
     colors: style.allColors,
-    fromPrice: 16.5,
-    priceLabel: "From $16.50 / hat with decoration",
+    fromPrice,
+    priceLabel: `From $${fromPrice.toFixed(2)} / hat`,
+    turnaroundLabel: "2-3 weeks",
     searchText: [
       style.id,
       style.name,
@@ -266,6 +330,47 @@ function buildQuickTurnHatItem(style: HatMeta): GoodsBrowserItem {
       "premium blanks",
       "hats",
       "headwear",
+    ].join(" ").toLowerCase(),
+  };
+}
+
+function buildQuickTurnToteItem(style: AsColourToteStyle & { fromPrice: number }): GoodsBrowserItem {
+  return {
+    id: `quick-turn-tote:${style.id}`,
+    kind: "style",
+    category: "totes",
+    productionPath: "quick-turn",
+    categoryLabel: GOODS_BROWSER_CATEGORY_LABELS.totes,
+    title: style.name,
+    subtitle: `AS Colour ${style.id}`,
+    description: style.description,
+    href: `/build/og-crafted-totes?style=${encodeURIComponent(style.id)}`,
+    ctaLabel: "Customize",
+    image: style.image,
+    imageAspectClass: "aspect-square",
+    brand: "AS Colour",
+    typeLabel: style.typeLabel,
+    material: style.fabric,
+    colors: style.colors,
+    fromPrice: style.fromPrice,
+    priceLabel: `From $${style.fromPrice.toFixed(2)} / tote`,
+    turnaroundLabel: "2-3 weeks",
+    searchText: [
+      style.id,
+      style.name,
+      style.typeLabel,
+      style.description,
+      style.fabric,
+      style.size,
+      ...style.colors,
+      "quick turn",
+      "ready made",
+      "premium blanks",
+      "tote",
+      "tote bag",
+      "bags",
+      "carry goods",
+      "as colour",
     ].join(" ").toLowerCase(),
   };
 }
@@ -383,6 +488,9 @@ export function buildGoodsBrowserItems() {
   const beanieItems = BEANIE_STYLES.map(buildBeanieItem);
   const hatItems = hatStyles.map(buildHatItem);
   const quickTurnHatItems = READY_MADE_HATS.map(buildQuickTurnHatItem);
+  const quickTurnToteItems = AS_COLOUR_TOTES.map(buildQuickTurnToteItem);
 
-  return [...hatItems, ...quickTurnHatItems, ...beanieItems, ...apparelItems, ...entryItems];
+  return [...hatItems, ...quickTurnHatItems, ...quickTurnToteItems, ...beanieItems, ...apparelItems, ...entryItems].filter(
+    hasCustomizerPage,
+  );
 }

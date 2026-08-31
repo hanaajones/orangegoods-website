@@ -14,7 +14,7 @@ export default function QuickTurnHatsBuildPage() {
         experienceVariant="immersive"
         pageTitle=""
         pageDescription=""
-        pageBackHref="/goods/hats/quick-turn"
+        pageBackHref="/goods/all?productionPath=quick-turn&category=hats"
         pageBackLabel="Back to quick turn hats"
       />
     </Suspense>

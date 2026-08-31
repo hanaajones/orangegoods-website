@@ -1,6 +1,6 @@
 // ── Pricing engine ────────────────────────────────────────────────────────────
 
-export type PrintCat = "base" | "fleece" | "jacket";
+export type PrintCat = "base" | "fleece" | "jacket" | "bag";
 export type CatalogFrontDecoration = "screenPrint" | "embroidery";
 export type CatalogSpecialtyPrintUpgrade = "Water-Based Ink" | "Discharge Print" | "Puff Print";
 export type CatalogPackagingUpgrade = "Printed neck label" | "Woven label" | "Folded + poly bagged";
@@ -30,6 +30,7 @@ export const JOL_SETUP_SCREEN_COST = 25;
 export const JOL_SETUP_FILM_COST = 10;
 export const JOL_FLASH_CURE_PRICE = 0.5;
 export const JOL_FLEECE_OR_SLEEVE_PRICE = 0.25;
+export const JOL_BAG_OR_ACCESSORIES_PRICE = 0.75;
 export const JOL_SPECIALTY_INK_PRICE = 0.75;
 export const JOL_CUSTOMER_SUPPLIED_GOODS_PRICE = 0.25;
 export const JOL_PRINT_MARKUP_MULTIPLIER = 1.1;
@@ -96,7 +97,12 @@ export function calculateJolScreenPrintLocationUnitPrice({
   printCat,
   isSleeveOrSide = false,
 }: JolLocationPriceInput) {
-  const catUpcharge = printCat === "fleece" ? JOL_FLEECE_OR_SLEEVE_PRICE : printCat === "jacket" ? 0.75 : 0;
+  const catUpcharge =
+    printCat === "fleece"
+      ? JOL_FLEECE_OR_SLEEVE_PRICE
+      : printCat === "jacket" || printCat === "bag"
+        ? JOL_BAG_OR_ACCESSORIES_PRICE
+        : 0;
   const placementUpcharge = isSleeveOrSide ? JOL_FLEECE_OR_SLEEVE_PRICE : 0;
   const printRate = getJolPrintRate(qty, colorCount);
   const setupAmortization = getJolSetupAmortizedPerUnit(qty, clampColorCount(colorCount));

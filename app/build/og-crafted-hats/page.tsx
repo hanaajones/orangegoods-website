@@ -14,7 +14,7 @@ export default function OGCraftedHatsBuildPage() {
         experienceVariant="immersive"
         pageTitle=""
         pageDescription=""
-        pageBackHref="/goods/hats"
+        pageBackHref="/goods/all?productionPath=full-custom&category=hats"
         pageBackLabel="Back to hats"
       />
     </Suspense>

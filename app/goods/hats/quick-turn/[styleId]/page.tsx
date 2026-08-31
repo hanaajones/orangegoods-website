@@ -24,11 +24,12 @@ export default async function QuickTurnStylePage({ params }: { params: Promise<{
       <ProductStylePreview
         initialMode="ready"
         lockedMode="ready"
+        experienceVariant="immersive"
         initialReadyMadeStyleId={styleId}
         readyMadeRouteBase="/goods/hats/quick-turn"
         pageTitle=""
         pageDescription=""
-        pageBackHref="/goods/hats/quick-turn"
+        pageBackHref="/goods/all?productionPath=quick-turn&category=hats"
         pageBackLabel="All Quick Turn Hats"
       />
     </Suspense>

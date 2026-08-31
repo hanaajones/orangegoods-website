@@ -16,6 +16,7 @@ type GoodsMenuPreview = {
   position: string;
   scale?: number;
 };
+
 type PreviewMenuLink = {
   href: string;
   image?: string;
@@ -36,6 +37,7 @@ const products = [
   { label: "Bags + Totes", href: "/goods/bags", image: "/images/gallery/totes-bags-boatsetter-dscf3148.jpg", position: "center 50%" },
   { label: "Accessories", href: "/goods/accessories", image: "/images/gallery/accessories-bandana-lalo-trio.png", position: "center 32%" },
   { label: "Blankets", href: "/goods/blankets", image: "/images/gallery/blankets-sundream-jarritos-1013-2.jpg", position: "center 50%" },
+  { label: "Socks", href: "/goods/socks", image: "/images/product/socks-lifestyle.jpg", position: "center 56%" },
 ];
 
 const goodsMenuDefaultPreview = getGoodsMenuPreview({
@@ -43,125 +45,66 @@ const goodsMenuDefaultPreview = getGoodsMenuPreview({
   position: "center 50%",
 });
 
-const goodsStartLinks: PreviewMenuLink[] = [
+const serviceLinks = [
   {
-    label: "Browse All Styles",
-    href: "/goods/all",
-    note: "Search across categories in one place",
-    image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
+    label: "Embroidery",
+    href: "/services/embroidery",
+    note: "",
+    image: "/images/gallery/embroidery-mega-menu-machine-dscf1583.jpg",
     position: "center 50%",
   },
   {
-    label: "Find My Goods",
-    href: "/quiz",
-    note: "Get pointed to the right lane",
-    image: "/images/gallery/faq-infinity-house-totes-img6732-r01-019a.jpg",
+    label: "Screen Printing",
+    href: "/services/screen-printing",
+    note: "Quick turn decoration • 2-3 weeks",
+    image: "/images/gallery/screen-printing-mega-menu-synergy.jpg",
     position: "center 44%",
   },
-  {
-    label: "Start a Project",
-    href: "/contact",
-    note: "Talk with us about the right path",
-    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
-    position: "center 48%",
-  },
-];
-
-const customizeMenuDefaultPreview = getGoodsMenuPreview({
-  image: "/images/gallery/full-custom-high-st-deli-button-up-5.png",
-  position: "center 52%",
-});
-
-const customizeProducts: PreviewMenuLink[] = [
-  {
-    label: "Hats",
-    href: "/goods/hats/styles",
-    image: "/images/gallery/hat-bread-head-tezza-3828.jpg",
-    position: "center bottom",
-  },
-  {
-    label: "Beanies",
-    href: "/build/og-crafted-beanies?style=as-colour-1107-cuff-beanie",
-    image: "/images/gallery/headwear-fish-at-sea-beanie-img-4864.jpg",
-    position: "center 52%",
-  },
-  {
-    label: "Shirts",
-    href: "/goods/apparel/styles",
-    image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg",
-    position: "center 52%",
-    scale: 1.08,
-  },
-  {
-    label: "Hoodies",
-    href: "/goods/apparel/styles",
-    image: "/images/gallery/apparel-686-hoodie-front.jpg",
-    position: "center 42%",
-  },
-  {
-    label: "Outerwear",
-    href: "/goods/outerwear",
-    image: "/images/gallery/outerwear-high-st-deli-puffer-mg-2257.jpg",
-    position: "left 46%",
-    scale: 1.14,
-  },
-  {
-    label: "Socks",
-    href: "/goods/socks",
-    image: "/images/product/socks-lifestyle.jpg",
-    position: "center 56%",
-  },
-  {
-    label: "Bags",
-    href: "/goods/bags",
-    image: "/images/gallery/totes-bags-boatsetter-dscf3148.jpg",
-    position: "center 50%",
-  },
-  {
-    label: "Quick Turn Hats",
-    href: "/goods/hats/quick-turn",
-    image: "/images/gallery/headwear-quick-turn-reel-life-gear-film-10.jpg",
-    position: "center 46%",
-  },
-];
-
-const customizeWorkflowLinks: PreviewMenuLink[] = [
-  {
-    label: "Browse All Styles",
-    href: "/goods/all",
-    note: "Filter by category, color, price, fit, and more",
-    image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
-    position: "center 50%",
-  },
-  {
-    label: "Find My Goods",
-    href: "/quiz",
-    note: "Get pointed to the right lane",
-    image: "/images/gallery/faq-infinity-house-totes-img6732-r01-019a.jpg",
-    position: "center 44%",
-  },
-  {
-    label: "Start a Project",
-    href: "/contact",
-    note: "Talk with us about the right path",
-    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
-    position: "center 48%",
-  },
-];
-
-const customLinks: PreviewMenuLink[] = [
   {
     label: "Gallery",
     href: "/gallery",
     image: "/images/gallery/case-studies-small-waves-boat-2s5a1947.jpg",
     position: "center 72%",
   },
+];
+
+const customizeLinks: PreviewMenuLink[] = [
+  {
+    label: "Customize All",
+    href: "/goods/all",
+    note: "Browse every customizable product in one place",
+    image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
+    position: "center 50%",
+  },
+];
+
+const goodsStartLinks: PreviewMenuLink[] = [
+  { label: "Full Custom", href: "/services/full-custom" },
+  { label: "Embroidery", href: "/services/embroidery" },
+  { label: "Screen Printing", href: "/services/screen-printing" },
+  { label: "Gallery", href: "/gallery" },
+];
+
+const fullCustomLinks: PreviewMenuLink[] = [
+  {
+    label: "Full Custom",
+    href: "/services/full-custom",
+    note: "Built from scratch • 4-8+ weeks",
+    image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+    position: "center 44%",
+  },
+];
+
+const customLinks: PreviewMenuLink[] = [
   {
     label: "FAQ",
     href: "/faq",
     image: "/images/gallery/faq-infinity-house-totes-img6732-r01-019a.jpg",
     position: "center 44%",
   },
+];
+
+const exploreLinks: PreviewMenuLink[] = [
   {
     label: "Case Studies",
     href: "/case-studies",
@@ -175,6 +118,11 @@ const customLinks: PreviewMenuLink[] = [
     position: "center 42%",
   },
 ];
+
+const startProjectPreview = getGoodsMenuPreview({
+  image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+  position: "center 48%",
+});
 
 const aboutLinks = [
   { label: "About", href: "/about" },
@@ -318,25 +266,12 @@ function MobileMenuCloseButton() {
 
 export function Nav() {
   const pathname = usePathname();
-  const [activeMenu, setActiveMenu] = useState<"goods" | "customize" | "about" | null>(null);
+  const [activeMenu, setActiveMenu] = useState<"custom" | "build" | "about" | null>(null);
   const [hoveredProduct, setHoveredProduct] = useState(goodsMenuDefaultPreview);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileExpandedMenu, setMobileExpandedMenu] = useState<"goods" | "customize" | "about" | null>(null);
+  const [mobileExpandedMenu, setMobileExpandedMenu] = useState<"goods" | "about" | null>(null);
   const closeTimer = useState<ReturnType<typeof setTimeout> | null>(null);
   const hideMobileBottomCtas = pathname === "/quiz" || pathname.startsWith("/quiz/");
-  const setGoodsPreview = (preview?: GoodsMenuPreview) => {
-    setHoveredProduct(preview ? getGoodsMenuPreview(preview) : goodsMenuDefaultPreview);
-  };
-  const getGoodsPreviewHandlers = (preview?: GoodsMenuPreview) => {
-    const showPreview = () => setGoodsPreview(preview);
-    return {
-      onMouseEnter: showPreview,
-      onMouseMove: showPreview,
-      onPointerEnter: showPreview,
-      onPointerMove: showPreview,
-      onFocus: showPreview,
-    };
-  };
 
   const scheduleClose = () => {
     if (closeTimer[0]) clearTimeout(closeTimer[0]);
@@ -347,14 +282,24 @@ export function Nav() {
     if (closeTimer[0]) clearTimeout(closeTimer[0]);
   };
 
-  const openGoodsMenu = () => {
-    setGoodsPreview();
-    setActiveMenu("goods");
+  const openCustomMenu = () => {
+    setHoveredProduct(goodsMenuDefaultPreview);
+    setActiveMenu("custom");
   };
 
-  const openCustomizeMenu = () => {
-    setGoodsPreview(customizeMenuDefaultPreview);
-    setActiveMenu("customize");
+  const showPreview = (preview?: GoodsMenuPreview) => {
+    setHoveredProduct(preview ? getGoodsMenuPreview(preview) : goodsMenuDefaultPreview);
+  };
+
+  const getPreviewHandlers = (preview?: GoodsMenuPreview) => {
+    const activatePreview = () => showPreview(preview);
+    return {
+      onMouseEnter: activatePreview,
+      onMouseMove: activatePreview,
+      onPointerEnter: activatePreview,
+      onPointerMove: activatePreview,
+      onFocus: activatePreview,
+    };
   };
 
   return (
@@ -409,34 +354,25 @@ export function Nav() {
             <nav className="hidden flex-1 items-center justify-center gap-10 md:flex">
               <button
                 type="button"
-                onMouseEnter={openGoodsMenu}
+                onMouseEnter={openCustomMenu}
                 onClick={() => {
-                  if (activeMenu === "goods") {
+                  if (activeMenu === "custom") {
                     setActiveMenu(null);
                     return;
                   }
 
-                  openGoodsMenu();
+                  openCustomMenu();
                 }}
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
                 GOODS <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
               </button>
-              <button
-                type="button"
-                onMouseEnter={openCustomizeMenu}
-                onClick={() => {
-                  if (activeMenu === "customize") {
-                    setActiveMenu(null);
-                    return;
-                  }
-
-                  openCustomizeMenu();
-                }}
+              <Link
+                href="/goods/all"
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
               >
-                CUSTOMIZE <svg xmlns="http://www.w3.org/2000/svg" className="ml-1 inline h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-              </button>
+                CUSTOMIZE
+              </Link>
               <Link
                 href="/design"
                 className="font-[family-name:var(--font-display)] text-xl tracking-[0.1em] text-white transition hover:text-[#FF7F00] active:text-[#FF7F00]"
@@ -481,7 +417,7 @@ export function Nav() {
               className="absolute left-1/2 top-[calc(100%+0.75rem)] hidden w-[calc(100vw-3rem)] max-w-[68rem] -translate-x-1/2 rounded-[2rem] border-[3px] border-[#0B32A0] bg-[#F3EFE7] p-5 text-[#1C1C1C] shadow-[0_28px_60px_rgba(0,0,0,0.12)] md:block"
               onMouseEnter={cancelClose}
             >
-              {activeMenu === "goods" ? (
+              {activeMenu === "custom" ? (
                 <div className="flex flex-col gap-4">
                   <div className="grid gap-3 md:grid-cols-[1.15fr_0.8fr_0.95fr_0.8fr]">
                     <div className="relative h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae]">
@@ -495,41 +431,38 @@ export function Nav() {
                         style={{ objectPosition: hoveredProduct.position, transform: `scale(${hoveredProduct.scale ?? 1})` }}
                       />
                     </div>
-                    <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                    <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                       <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                         Products
                       </p>
                       <div className="grid gap-1">
-                        <MenuLink href="/goods" {...getGoodsPreviewHandlers()}>
+                        <MenuLink href="/goods" {...getPreviewHandlers()}>
                           View all
                         </MenuLink>
                         {products.map((item) => (
                           <MenuLink
                             key={item.label}
                             href={item.href}
-                            {...getGoodsPreviewHandlers(item)}
+                            {...getPreviewHandlers({ image: item.image, position: item.position, scale: item.scale ?? 1 })}
                           >
                             {item.label}
                           </MenuLink>
                         ))}
                       </div>
                     </div>
-                    <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                    <div className="rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                       <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                        Start Here
+                        Customize
                       </p>
                       <div className="grid gap-1">
-                        {goodsStartLinks.map((item) => (
-                          <div
-                            key={item.label}
-                            {...getGoodsPreviewHandlers(
-                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
-                            )}
-                          >
+                        {customizeLinks.map((item) => (
+                          <div key={item.label}>
                             <MenuLink
                               href={item.href}
-                              {...getGoodsPreviewHandlers(
-                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                              {...getPreviewHandlers(
+                                item.image
+                                  ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale ?? 1 }
+                                  : undefined,
                               )}
                             >
                               {item.label}
@@ -538,112 +471,90 @@ export function Nav() {
                           </div>
                         ))}
                       </div>
+                      <div className="mt-4 border-t border-[#0B32A0]/10 pt-4">
+                        <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
+                          Services
+                        </p>
+                        <div className="grid gap-1">
+                          {fullCustomLinks.map((item) => (
+                            <div key={item.label}>
+                              <MenuLink
+                                href={item.href}
+                                {...getPreviewHandlers(
+                                  item.image
+                                    ? { image: item.image, position: item.position ?? "center 50%", scale: 1 }
+                                    : undefined,
+                                )}
+                              >
+                                {item.label}
+                              </MenuLink>
+                              {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="mt-4 border-t border-[#0B32A0]/10 pt-4">
+                        <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#1C1C1C]/46">
+                          Quick Turn
+                        </p>
+                        <div className="grid gap-1">
+                          {serviceLinks.map((item) => (
+                            <div key={item.label}>
+                              <MenuLink
+                                href={item.href}
+                                {...getPreviewHandlers(
+                                  item.image
+                                    ? { image: item.image, position: item.position ?? "center 50%", scale: 1 }
+                                    : undefined,
+                                )}
+                              >
+                                {item.label}
+                              </MenuLink>
+                              {item.note ? <p className="px-3 text-[10px] text-[#1C1C1C]/40">{item.note}</p> : null}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
+                    <div className="flex min-h-full flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
                       <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                         Explore
                       </p>
                       <div className="grid gap-1">
                         {customLinks.map((item) => (
-                          <div
+                          <MenuLink
                             key={item.label}
-                            {...getGoodsPreviewHandlers(
-                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
+                            href={item.href}
+                            {...getPreviewHandlers(
+                              item.image
+                                ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale ?? 1 }
+                                : undefined,
                             )}
                           >
-                            <MenuLink
-                              href={item.href}
-                              {...getGoodsPreviewHandlers(
-                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
-                              )}
-                            >
-                              {item.label}
-                            </MenuLink>
-                          </div>
+                            {item.label}
+                          </MenuLink>
+                        ))}
+                        {exploreLinks.map((item) => (
+                          <MenuLink
+                            key={item.label}
+                            href={item.href}
+                            {...getPreviewHandlers(
+                              item.image
+                                ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale ?? 1 }
+                                : undefined,
+                            )}
+                          >
+                            {item.label}
+                          </MenuLink>
                         ))}
                       </div>
-                      <div className="mt-auto flex flex-col gap-2 px-3 pt-8">
-                        <Link href={startProjectHref} className="btn-og justify-center">Start a Project</Link>
+                      <div className="mt-auto flex flex-col gap-3 px-3 pt-8">
                         <Link
-                          href="/quiz"
-                          className="font-body inline-flex items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
+                          href={startProjectHref}
+                          {...getPreviewHandlers(startProjectPreview)}
+                          className="btn-og justify-center"
                         >
-                          Merch Quiz
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
-
-              {activeMenu === "customize" ? (
-                <div className="flex flex-col gap-4">
-                  <div className="grid gap-3 md:grid-cols-[1.08fr_1.35fr_0.88fr]">
-                    <div className="relative h-full min-h-[15rem] overflow-hidden rounded-[1.5rem] border-[3px] border-[#0B32A0] bg-[#d9c5ae]">
-                      <Image
-                        key={hoveredProduct.image}
-                        src={hoveredProduct.image}
-                        alt="Orange Goods customization preview"
-                        fill
-                        sizes="(min-width: 768px) 18vw, 100vw"
-                        className="object-cover transition-[opacity,transform] duration-300"
-                        style={{ objectPosition: hoveredProduct.position, transform: `scale(${hoveredProduct.scale ?? 1})` }}
-                      />
-                    </div>
-                    <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                      <p className="px-3 pb-3 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                        Products
-                      </p>
-                      <div className="grid gap-x-3 gap-y-2 md:grid-cols-2">
-                        {customizeProducts.map((item) => (
-                          <div
-                            key={item.label}
-                            {...getGoodsPreviewHandlers(
-                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
-                            )}
-                          >
-                            <MenuLink
-                              href={item.href}
-                              {...getGoodsPreviewHandlers(
-                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
-                              )}
-                            >
-                              {item.label}
-                            </MenuLink>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 px-4 pb-4 pt-5">
-                      <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
-                        Start Here
-                      </p>
-                      <div className="grid gap-1">
-                        {customizeWorkflowLinks.map((item) => (
-                          <div
-                            key={item.label}
-                            {...getGoodsPreviewHandlers(
-                              item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
-                            )}
-                          >
-                            <MenuLink
-                              href={item.href}
-                              {...getGoodsPreviewHandlers(
-                                item.image ? { image: item.image, position: item.position ?? "center 50%", scale: item.scale } : undefined,
-                              )}
-                            >
-                              {item.label}
-                            </MenuLink>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-auto flex flex-col gap-2 px-3 pt-8">
-                        <Link href={startProjectHref} className="btn-og justify-center">Start a Project</Link>
-                        <Link
-                          href="/goods/all"
-                          className="font-body inline-flex items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 py-[0.7rem] text-base font-semibold uppercase tracking-[0.08em] text-[var(--og-blue)] transition hover:-translate-y-[3px] hover:bg-[var(--og-blue)] hover:text-white"
-                        >
-                          Browse All Styles
+                          Start a Project
                         </Link>
                       </div>
                     </div>
@@ -743,39 +654,7 @@ export function Nav() {
                   >
                     View all goods
                   </Link>
-                  <Link
-                    href="/gallery"
-                    onClick={() => setMobileOpen(false)}
-                    className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
-                  >
-                    Gallery
-                  </Link>
                   {products.map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="text-base font-semibold uppercase tracking-[0.14em] text-white/85"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-
-            <div className="border-b border-white/25 pb-3">
-              <button
-                type="button"
-                onClick={() => setMobileExpandedMenu(mobileExpandedMenu === "customize" ? null : "customize")}
-                className="flex min-h-16 w-full items-center justify-between text-3xl font-black tracking-[-0.02em] text-white"
-              >
-                <span>CUSTOMIZE</span>
-                <MobileMenuPlusButton expanded={mobileExpandedMenu === "customize"} />
-              </button>
-              {mobileExpandedMenu === "customize" ? (
-                <div className="grid gap-2 pb-2">
-                  {customizeProducts.map((item) => (
                     <Link
                       key={item.label}
                       href={item.href}
@@ -787,7 +666,7 @@ export function Nav() {
                   ))}
                   <div className="mt-2 border-t border-white/15 pt-2">
                     <div className="grid gap-2">
-                      {customizeWorkflowLinks.map((item) => (
+                      {goodsStartLinks.map((item) => (
                         <Link
                           key={item.label}
                           href={item.href}
@@ -802,6 +681,15 @@ export function Nav() {
                 </div>
               ) : null}
             </div>
+
+            <Link
+              href="/goods/all"
+              onClick={() => setMobileOpen(false)}
+              className="flex min-h-16 items-center justify-between border-b border-white/25 text-3xl font-black tracking-[-0.02em] text-white"
+            >
+              CUSTOMIZE
+              <MobileMenuArrow />
+            </Link>
 
             {[
               { label: "DESIGN", href: "/design" },

@@ -10,6 +10,21 @@ import {
   type CatalogSpecialtyPrintUpgrade,
 } from "@/data/catalog";
 import { READY_MADE_HATS, READY_MADE_HATS_BY_ID } from "@/lib/ready-made-hats";
+import {
+  CustomizerPageHeader,
+  getCustomizerTopBadgeAsset,
+  immersiveCustomizerGhostLinkClass,
+  immersiveCustomizerHeaderClass,
+  immersiveCustomizerHelperTextClass,
+  immersiveCustomizerLabelTextClass,
+  immersiveCustomizerPageClass,
+  immersiveCustomizerProcessCardClass,
+  immersiveCustomizerSecondarySelectedOptionClass,
+  immersiveCustomizerShellCardClass,
+  immersiveCustomizerUnselectedOptionClass,
+} from "@/components/MasterCustomizerShell";
+import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
+import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -59,6 +74,25 @@ type RelatedProductCard = {
 
 type ReadyMadeStyle = (typeof READY_MADE_HATS)[number];
 type ReadyMadeColor = ReadyMadeStyle["colors"][number];
+
+function DiagonalArrowIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 16 16"
+      fill="none"
+      className={className}
+    >
+      <path
+        d="M4 12L12 4M6 4H12V10"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 const modes: Record<ModeKey, {
   label: string;
@@ -324,6 +358,33 @@ const catalogQtyMarks = [
   { value: 2000, label: "2,000", tick: false },
 ];
 
+const PANTONE_SWATCHES = [
+  { name: "Pantone White", hex: "#F5F4F0" },
+  { name: "Pantone Black C", hex: "#2D2926" },
+  { name: "Pantone Cool Gray 11 C", hex: "#53565A" },
+  { name: "Pantone Warm Gray 8 C", hex: "#A8998A" },
+  { name: "Pantone 123 C", hex: "#FFC72C" },
+  { name: "Pantone 7406 C", hex: "#F2A900" },
+  { name: "Pantone 165 C", hex: "#FF671F" },
+  { name: "Pantone 172 C", hex: "#FA4616" },
+  { name: "Pantone Orange 021 C", hex: "#FE5000" },
+  { name: "Pantone 185 C", hex: "#E4002B" },
+  { name: "Pantone 186 C", hex: "#C8102E" },
+  { name: "Pantone 200 C", hex: "#BA0C2F" },
+  { name: "Pantone 295 C", hex: "#003A70" },
+  { name: "Pantone 286 C", hex: "#0033A0" },
+  { name: "Pantone 7687 C", hex: "#1D428A" },
+  { name: "Pantone 2728 C", hex: "#0047BB" },
+  { name: "Pantone 3252 C", hex: "#00B5E2" },
+  { name: "Pantone 3268 C", hex: "#00C7B1" },
+  { name: "Pantone 347 C", hex: "#009A44" },
+  { name: "Pantone 356 C", hex: "#007A33" },
+  { name: "Pantone 5535 C", hex: "#1D3C34" },
+  { name: "Pantone 4625 C", hex: "#4F2C1D" },
+  { name: "Pantone 871 C", hex: "#84754E" },
+  { name: "Pantone 877 C", hex: "#8A8D8F" },
+] as const;
+
 const buildQtyMarks = [
   { value: 100, label: "100", tick: false },
   { value: 250, label: "250", tick: true },
@@ -482,6 +543,7 @@ const hatMaterialOptions = [
 const hatAdditionalDecorationOptions = [
   "Branded taping",
   "Closure label",
+  "Engraved clasp",
   "Brim rope",
   "Contrast fabric",
   "Stripe trim",
@@ -560,11 +622,15 @@ function defaultHatClosureForStyle(style: HatStyle): (typeof hatClosureOptions)[
 function defaultHatBrimCurveForStyle(style: HatStyle): (typeof hatBrimCurveOptions)[number] {
   switch (style.slug) {
     case "og-100-dad-hat":
-    case "og-120-coast-cap":
       return "Curved";
     case "og-110-five-panel-unstructured-hat":
+    case "og-120-coast-cap":
+    case "og-130-setter-cap":
     case "og-140-surf-trucker":
     case "og-150-stock-trucker":
+    case "og-160-field-trucker":
+    case "og-170-foam-trucker":
+    case "og-190-highline-cap":
     case "og-200-perform-cap":
       return "Slight curve";
     default:
@@ -724,6 +790,98 @@ function addDays(date: Date, days: number) {
   return next;
 }
 
+function normalizePantoneLabel(value: string) {
+  return value
+    .trim()
+    .toUpperCase()
+    .replace(/^PMS\s+/, "")
+    .replace(/^PANTONE\s+/, "")
+    .replace(/\s+/g, " ");
+}
+
+function findPantoneByName(value: string) {
+  const normalized = normalizePantoneLabel(value);
+  if (!normalized) return null;
+
+  const direct = PANTONE_SWATCHES.find((pantone) => normalizePantoneLabel(pantone.name) === normalized);
+  if (direct) return direct;
+
+  return PANTONE_SWATCHES.find((pantone) => {
+    const pantoneLabel = normalizePantoneLabel(pantone.name);
+    return pantoneLabel.endsWith(normalized) || normalized.endsWith(pantoneLabel.replace(/^PANTONE\s+/, ""));
+  }) ?? null;
+}
+
+function hexToRgb(hex: string) {
+  const cleaned = hex.replace("#", "");
+  if (cleaned.length !== 6) return null;
+
+  const red = Number.parseInt(cleaned.slice(0, 2), 16);
+  const green = Number.parseInt(cleaned.slice(2, 4), 16);
+  const blue = Number.parseInt(cleaned.slice(4, 6), 16);
+
+  if ([red, green, blue].some(Number.isNaN)) return null;
+  return { red, green, blue };
+}
+
+function findClosestPantoneByHex(hex: string) {
+  const target = hexToRgb(hex);
+  if (!target) return null;
+
+  return PANTONE_SWATCHES.reduce<(typeof PANTONE_SWATCHES)[number] | null>((closest, pantone) => {
+    const rgb = hexToRgb(pantone.hex);
+    if (!rgb) return closest;
+
+    const distance = (
+      (target.red - rgb.red) ** 2 +
+      (target.green - rgb.green) ** 2 +
+      (target.blue - rgb.blue) ** 2
+    );
+
+    if (!closest) return pantone;
+
+    const closestRgb = hexToRgb(closest.hex);
+    if (!closestRgb) return pantone;
+
+    const closestDistance = (
+      (target.red - closestRgb.red) ** 2 +
+      (target.green - closestRgb.green) ** 2 +
+      (target.blue - closestRgb.blue) ** 2
+    );
+
+    return distance < closestDistance ? pantone : closest;
+  }, null);
+}
+
+function HexColorPicker({
+  value,
+  onChange,
+  ariaLabel,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  ariaLabel: string;
+}) {
+  return (
+    <label className="group relative flex h-11 cursor-pointer items-center gap-2.5 rounded-lg border border-[#081E6F]/15 bg-[#F5F7FC] px-3 transition hover:border-[#0B32A0]">
+      <span
+        className="h-5 w-5 shrink-0 rounded-md border border-[#081E6F]/15"
+        style={{ backgroundColor: value }}
+      />
+      <span className="min-w-0 flex-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#0B32A0]">
+        Pick hex
+      </span>
+      <input
+        type="color"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        aria-label={ariaLabel}
+        className="absolute inset-0 cursor-pointer opacity-0"
+      />
+    </label>
+  );
+}
+
 function formatLongDate(date: Date) {
   return new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -737,6 +895,11 @@ function formatShortDate(date: Date) {
   const day = date.getDate();
   const year = String(date.getFullYear()).slice(-2);
   return `${month}/${day}/${year}`;
+}
+
+function capitalizeFirstCharacter(value: string) {
+  if (!value) return value;
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function parseListParam(value: string | null) {
@@ -827,8 +990,9 @@ export function ProductStylePreview({
   const [hatAdditionalDecorations, setHatAdditionalDecorations] = useState<string[]>([]);
   const [sampleType, setSampleType] = useState<"none" | "pp" | "proto">("none");
   const [sampleDelivery, setSampleDelivery] = useState<"photo" | "shipped">("photo");
-  const [threadFinish, setThreadFinish] = useState<"matte" | "shiny">("matte");
+  const [threadFinish, setThreadFinish] = useState<"matte" | "shiny">("shiny");
   const [embroideryColor, setEmbroideryColor] = useState("");
+  const [embroideryHex, setEmbroideryHex] = useState("#0B32A0");
   const [customDecoration, setCustomDecoration] = useState("");
   const [additionalCallouts, setAdditionalCallouts] = useState("");
   const [catalogRush, setCatalogRush] = useState(false);
@@ -843,7 +1007,7 @@ export function ProductStylePreview({
 
   const activeMode = modes[mode];
   const isHatBuilderMode = mode === "build" || mode === "crafted";
-  const summaryBreadcrumbLabel = mode === "crafted" ? "hats" : activeMode.label;
+  const isImmersiveExperience = experienceVariant === "immersive" && (mode === "crafted" || mode === "ready");
   const summaryEyebrow = mode === "crafted" ? "" : activeMode.eyebrow;
   const selectedReadyMadeStyle = READY_MADE_HATS.find((style) => style.id.toLowerCase() === readyMadeStyleId) ?? READY_MADE_HATS[0];
   const selectedReadyMadeColor = selectedReadyMadeStyle?.colors[readyMadeColorIndex] ?? selectedReadyMadeStyle?.colors[0];
@@ -863,8 +1027,24 @@ export function ProductStylePreview({
     : mode === "ready" && selectedReadyMadeStyle
       ? selectedReadyMadeStyle.name
       : activeMode.title;
+  const customizerNavigation = isImmersiveExperience
+    ? buildCustomizerNavigation({
+      category: "hats",
+      productionPath: mode === "crafted" ? "full-custom" : mode === "ready" ? "quick-turn" : null,
+      currentLabel: summaryTitle,
+      returnTo: searchParams.get("returnTo"),
+      fallbackHref: pageBackHref,
+      fallbackLabel: pageBackLabel,
+    })
+    : null;
+  const topBadgeLabel = isImmersiveExperience
+    ? getCustomizerProductionPathLabel(mode === "crafted" ? "full-custom" : mode === "ready" ? "quick-turn" : null)
+    : null;
+  const topBadgeAsset = getCustomizerTopBadgeAsset(topBadgeLabel ?? undefined);
   const showBuilderSecondaryCta = mode === "ready" || mode === "build" || mode === "crafted";
   const selectedHatStyle = hatStyles.find((style) => style.slug === hatStyleSlug) ?? hatStyles[0];
+  const formattedHatSelectorDescription = capitalizeFirstCharacter(selectedHatStyle.selectorDescription);
+  const summaryDescription = activeMode.description;
   const showCraftedRelatedStyles = mode === "crafted";
   const showReadyMadeRelatedStyles = mode === "ready";
   const isBucketHatStyle = selectedHatStyle.title === "Bucket Hat";
@@ -908,21 +1088,19 @@ export function ProductStylePreview({
   const showDecorationIncludedPill = mode === "ready" || mode === "crafted";
   const showLiveCalculator = mode !== "shop";
   const hasPageHeaderContent = Boolean(pageKicker || pageTitle || pageDescription);
-  const isImmersiveExperience = experienceVariant === "immersive" && (mode === "crafted" || mode === "ready");
+  const useHatStickySummaryLayout = isHatBuilderMode || mode === "ready";
+  const useSingleColumnFrontDecorationOptions = isHatBuilderMode || mode === "ready";
   const shellCardClass = isImmersiveExperience
-    ? "rounded-lg border border-[#081E6F]/12 bg-white p-6 shadow-[0_24px_70px_rgba(8,30,111,0.08)]"
-    : "rounded-lg border border-[#081E6F]/12 bg-white p-5 shadow-[0_18px_55px_rgba(8,30,111,0.07)]";
+    ? immersiveCustomizerShellCardClass
+    : "rounded-lg border border-[#081E6F]/12 bg-white p-5 shadow-[0_14px_34px_rgba(28,28,28,0.06)]";
   const processCardClass = isImmersiveExperience
-    ? "rounded-lg border border-[#081E6F]/12 bg-[linear-gradient(180deg,#FFF9F2_0%,#F7F4ED_100%)] p-5 text-[var(--og-blue)] shadow-[0_16px_40px_rgba(8,30,111,0.07)]"
+    ? immersiveCustomizerProcessCardClass
     : "rounded-lg border border-[#081E6F]/12 bg-[#F7F4ED] p-4 text-[var(--og-blue)] shadow-[0_12px_35px_rgba(8,30,111,0.06)]";
-  const selectedOptionClass = isImmersiveExperience
-    ? "border-[#FF4200] bg-[#FF4200] text-white shadow-[0_12px_28px_rgba(255,66,0,0.2)]"
-    : "border-[var(--og-blue)] bg-[var(--og-blue)] text-white";
   const secondarySelectedOptionClass = isImmersiveExperience
-    ? "border-[#0B32A0] bg-[#0B32A0] text-white shadow-[0_12px_28px_rgba(11,50,160,0.18)]"
+    ? immersiveCustomizerSecondarySelectedOptionClass
     : "border-[var(--og-blue)] bg-[var(--og-blue)] text-white";
   const unselectedOptionClass = isImmersiveExperience
-    ? "border-[#081E6F]/12 bg-[#FBF7F1] text-[var(--og-blue)] hover:border-[#FF4200]"
+    ? immersiveCustomizerUnselectedOptionClass
     : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]";
   const optionSubActiveClass = isImmersiveExperience ? "text-white/80" : "text-white/75";
   const secondaryOptionSubActiveClass = isImmersiveExperience ? "text-white/78" : "text-white/75";
@@ -937,10 +1115,11 @@ export function ProductStylePreview({
   const inputSizeClass = isImmersiveExperience
     ? "h-12 rounded-xl px-4 text-base"
     : "h-11 rounded-lg px-3 text-sm";
-  const helperTextClass = isImmersiveExperience ? "text-sm leading-6 text-[#8a8a8a]" : "text-xs leading-5 text-[#8a8a8a]";
+  const helperTextClass = isImmersiveExperience ? immersiveCustomizerHelperTextClass : "text-xs leading-5 text-[#8a8a8a]";
   const labelTextClass = isImmersiveExperience
-    ? "text-[13px] font-semibold uppercase tracking-[0.16em] text-[#6b6b6b]"
+    ? immersiveCustomizerLabelTextClass
     : "text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]";
+  const standaloneLabelTextClass = `mb-3 ${labelTextClass}`;
   const activeMedia = useMemo<PreviewMediaItem[]>(() => {
     if (mode === "ready" && selectedReadyMadeStyle && selectedReadyMadeColor) {
       const currentGallery = readyMadeGalleryPhotos(selectedReadyMadeColor);
@@ -1100,12 +1279,19 @@ export function ProductStylePreview({
   const techPackNote = isHatBuilderMode || mode === "ready"
     ? "where we build out the details"
     : undefined;
+  const productionNote = isHatBuilderMode || mode === "ready"
+    ? "where your order gets made"
+    : undefined;
+  const shippingNote = isHatBuilderMode || mode === "ready"
+    ? "when it heads your way"
+    : undefined;
   const timelineItems = [
     { label: "Tech pack", note: techPackNote, value: "2 days" },
     ...(sampleType !== "none" ? [{ label: "Sample production", value: "2 weeks" }] : []),
     ...(sampleType !== "none" && sampleDelivery === "shipped" ? [{ label: "Sample shipping", value: "1 week" }] : []),
     {
       label: "Production",
+      note: productionNote,
       value: mode === "ready"
         ? (readyMadeUsesPatchTimeline ? "3 to 4 weeks + sewing" : "1 to 2 weeks")
         : mode === "catalog"
@@ -1114,6 +1300,7 @@ export function ProductStylePreview({
     },
     {
       label: "Shipping",
+      note: shippingNote,
       value: mode === "ready"
         ? "1-4 days"
         : mode === "catalog"
@@ -1178,6 +1365,7 @@ export function ProductStylePreview({
   const requestedSampleDelivery = searchParams.get("sampleDelivery");
   const requestedThreadFinish = searchParams.get("threadFinish");
   const requestedEmbroideryColor = searchParams.get("embroideryColor");
+  const requestedEmbroideryHex = searchParams.get("embroideryHex");
   const requestedCustomDecoration = searchParams.get("customDecoration")
     ?? (searchParams.get("decoration") === "other" ? searchParams.get("additionalCallouts") : null);
   const requestedAdditionalCallouts = searchParams.get("additionalCallouts");
@@ -1202,6 +1390,8 @@ export function ProductStylePreview({
   const frontDecorationSummaryLabel = decoration === "other"
     ? (customDecoration.trim() || "Other decoration")
     : (activeDecorationOptions.find((option) => option.id === decoration)?.label ?? decoration);
+  const normalizedEmbroideryHex = /^#[0-9A-Fa-f]{6}$/.test(embroideryHex) ? embroideryHex.toUpperCase() : "";
+  const embroideryColorSummary = [embroideryColor.trim(), normalizedEmbroideryHex].filter(Boolean).join(" · ");
   const apparelSizeBreakdownSummary = apparelSizeOptions
     .map((size) => ({ size, qty: apparelSizeBreakdown[size] }))
     .filter((item) => item.qty > 0)
@@ -1239,7 +1429,6 @@ export function ProductStylePreview({
     mode === "catalog" ? `Print upgrades: ${catalogPrintAddOnSummary}` : "",
     mode === "catalog" ? `Packaging upgrades: ${catalogPackagingSummary}` : "",
     mode === "catalog" ? `Rush delivery: ${catalogRush ? "Yes" : "No"}` : "",
-    mode === "ready" && selectedReadyMadeStyle ? `Blank details: ${selectedReadyMadeStyle.crown} · ${selectedReadyMadeStyle.closure}` : "",
     isHatBuilderMode ? `Fabric: ${[hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ")}` : "",
     isHatBuilderMode ? `Closure: ${closureSummaryLabel}` : "",
     isHatBuilderMode && !isBucketHatStyle ? `Brim curve: ${hatBrimCurve}` : "",
@@ -1249,7 +1438,7 @@ export function ProductStylePreview({
     (isHatBuilderMode || mode === "ready") ? `Side decoration: ${sideDecoration === "embroidery" ? "Embroidery" : "None"}` : "",
     isHatBuilderMode && hatAdditionalDecorations.length > 0 ? `Additional decorations: ${hatAdditionalDecorations.join(", ")}` : "",
     (mode !== "catalog" || showCatalogEmbroideryFields) ? `Embroidery thread finish: ${threadFinish}` : "",
-    (mode !== "catalog" || showCatalogEmbroideryFields) && embroideryColor ? `Embroidery color: ${embroideryColor}` : "",
+    (mode !== "catalog" || showCatalogEmbroideryFields) && embroideryColorSummary ? `Embroidery color: ${embroideryColorSummary}` : "",
     needsArtworkHelp ? "Artwork help: Yes" : "",
     customDecoration ? `Custom decoration: ${customDecoration}` : "",
     additionalCallouts ? `${mode === "catalog" ? "Order notes" : "Additional notes"}: ${additionalCallouts}` : "",
@@ -1304,6 +1493,7 @@ export function ProductStylePreview({
     rush: mode === "catalog" ? (catalogRush ? "Yes" : "No") : "",
     threadFinish,
     embroideryColor,
+    embroideryHex: normalizedEmbroideryHex,
     customDecoration,
     additionalCallouts,
     needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
@@ -1317,6 +1507,15 @@ export function ProductStylePreview({
   const primaryCtaLabel = showBuilderSecondaryCta && !isCustomQuote
     ? "Submit order for review"
     : activeMode.cta;
+  const submitNextSteps = isCustomQuote
+    ? [
+        "We review your build and follow up with the right quote.",
+        "Nothing moves forward until you approve the details.",
+      ]
+    : [
+        "We review and follow up within 1 business day.",
+        "Final quote and timing confirmed before production.",
+      ];
 
   function toggleLocation(label: string) {
     setSelectedLocations((current) => {
@@ -1463,11 +1662,16 @@ export function ProductStylePreview({
   }, [isHatBuilderMode, maxQty, qty, requestedQty]);
 
   useEffect(() => {
-    const validDecorationIds = activeDecorationOptions.map((option) => option.id) as typeof decoration[];
-    if (!validDecorationIds.includes(decoration)) {
+    const validDecorationIds = new Set<typeof decoration>(
+      activeDecorationOptions.map((option) => option.id as typeof decoration)
+    );
+    if (mode === "ready" || isHatBuilderMode) {
+      validDecorationIds.add("other");
+    }
+    if (!validDecorationIds.has(decoration)) {
       setDecoration(mode === "catalog" ? "screenPrint" : "embroidery");
     }
-  }, [activeDecorationOptions, decoration, mode]);
+  }, [activeDecorationOptions, decoration, isHatBuilderMode, mode]);
 
   useEffect(() => {
     if (mode === "catalog" && requestedDecoration === null) {
@@ -1605,6 +1809,14 @@ export function ProductStylePreview({
       setEmbroideryColor(requestedEmbroideryColor);
     }
 
+    if (
+      requestedEmbroideryHex
+      && /^#[0-9A-Fa-f]{6}$/.test(requestedEmbroideryHex)
+      && requestedEmbroideryHex.toUpperCase() !== embroideryHex.toUpperCase()
+    ) {
+      setEmbroideryHex(requestedEmbroideryHex.toUpperCase());
+    }
+
     if (requestedCustomDecoration !== null && requestedCustomDecoration !== customDecoration) {
       setCustomDecoration(requestedCustomDecoration);
     }
@@ -1625,6 +1837,7 @@ export function ProductStylePreview({
     customDecoration,
     decoration,
     embroideryColor,
+    embroideryHex,
     hatClosure,
     hatColorCallout,
     hatMaterial,
@@ -1638,6 +1851,7 @@ export function ProductStylePreview({
     requestedBackDecoration,
     requestedDecoration,
     requestedEmbroideryColor,
+    requestedEmbroideryHex,
     requestedFabricColor,
     requestedHatAdditionalDecorations,
     requestedHatBrimCurve,
@@ -1835,8 +2049,8 @@ export function ProductStylePreview({
   }
 
   return (
-    <main className="bg-[#F7F4ED] text-[var(--og-off-black)]">
-      <section className="border-b border-[#081E6F]/10 bg-white">
+    <main className={isImmersiveExperience ? immersiveCustomizerPageClass : "bg-[#F7F4ED] text-[var(--og-off-black)]"}>
+      <section className={isImmersiveExperience ? immersiveCustomizerHeaderClass : "border-b border-[#081E6F]/10 bg-white"}>
         <div
           className={`${
             hasPageHeaderContent
@@ -1846,73 +2060,122 @@ export function ProductStylePreview({
               : "flex justify-start px-6 pt-6 pb-3 md:px-12"
           }`}
         >
-          {pageBackHref && pageBackLabel ? (
-            <Link
-              href={pageBackHref}
-              className={`inline-flex items-center gap-1.5 text-sm font-semibold transition ${
-                hasPageHeaderContent
-                  ? "w-fit text-[var(--og-blue)] hover:text-[var(--og-orange)]"
-                  : "text-[var(--og-blue)] hover:text-[var(--og-orange)]"
-              }`}
-            >
-              ← {pageBackLabel}
-            </Link>
-          ) : null}
-          {hasPageHeaderContent ? (
-            <div className={`flex flex-col gap-3 md:flex-row md:items-end md:justify-between ${isImmersiveExperience ? "md:gap-8" : ""}`}>
-              <div>
-                {pageKicker ? (
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                    {pageKicker}
-                  </p>
-                ) : null}
-                {pageTitle ? (
-                  <h1 className={`mt-2 leading-none text-[var(--og-blue)] ${isImmersiveExperience ? "text-4xl md:text-6xl" : "text-3xl md:text-5xl"}`}>
-                    {pageTitle}
-                  </h1>
-                ) : null}
-              </div>
-              {pageDescription ? (
-                <p className={`max-w-xl text-[#4b4b4b] ${isImmersiveExperience ? "text-base leading-7" : "text-sm leading-6"}`}>
-                  {pageDescription}
-                </p>
+          {isImmersiveExperience ? (
+            <>
+              <CustomizerPageHeader
+                backHref={customizerNavigation?.backHref ?? pageBackHref ?? "/goods/all"}
+                backLabel={customizerNavigation?.backLabel ?? pageBackLabel ?? "Back to all goods"}
+                eyebrow={pageKicker}
+                title={pageTitle}
+                description={pageDescription}
+              />
+
+              {lockedMode ? null : (
+                <div className="space-y-3">
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {availableModes.map((key) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setMode(key)}
+                        className={`min-h-10 shrink-0 rounded-lg border px-4 text-sm font-semibold transition ${
+                          mode === key
+                            ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                            : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                        }`}
+                      >
+                        {modeLabelOverrides[key] ?? modes[key].label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {previewLinks.length > 0 ? (
+                    <div className="flex flex-wrap gap-3">
+                      {previewLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className={immersiveCustomizerGhostLinkClass}
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {(customizerNavigation?.backHref ?? pageBackHref) ? (
+                <Link
+                  href={customizerNavigation?.backHref ?? pageBackHref ?? "/goods/all"}
+                  className={`inline-flex items-center gap-1.5 text-sm font-semibold transition ${
+                    hasPageHeaderContent
+                      ? "w-fit text-[var(--og-blue)] hover:text-[var(--og-orange)]"
+                      : "text-[var(--og-blue)] hover:text-[var(--og-orange)]"
+                  }`}
+                >
+                  ← {customizerNavigation?.backLabel ?? pageBackLabel ?? "Back to all goods"}
+                </Link>
               ) : null}
-            </div>
-          ) : null}
-
-          {lockedMode ? null : (
-            <div className="space-y-3">
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {availableModes.map((key) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => setMode(key)}
-                    className={`min-h-10 shrink-0 rounded-lg border px-4 text-sm font-semibold transition ${
-                      mode === key
-                        ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
-                        : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
-                    }`}
-                  >
-                    {modeLabelOverrides[key] ?? modes[key].label}
-                  </button>
-                ))}
-              </div>
-
-              {previewLinks.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
-                  {previewLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="inline-flex min-h-10 items-center rounded-lg border border-dashed border-[#081E6F]/20 bg-[#F7F4ED] px-4 text-sm font-semibold text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+              {hasPageHeaderContent ? (
+                <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                  <div>
+                    {pageKicker ? (
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                        {pageKicker}
+                      </p>
+                    ) : null}
+                    {pageTitle ? (
+                      <h1 className="mt-2 text-3xl leading-none text-[var(--og-blue)] md:text-5xl">
+                        {pageTitle}
+                      </h1>
+                    ) : null}
+                  </div>
+                  {pageDescription ? (
+                    <p className="max-w-xl text-sm leading-6 text-[#4b4b4b]">
+                      {pageDescription}
+                    </p>
+                  ) : null}
                 </div>
               ) : null}
-            </div>
+
+              {lockedMode ? null : (
+                <div className="space-y-3">
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {availableModes.map((key) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setMode(key)}
+                        className={`min-h-10 shrink-0 rounded-lg border px-4 text-sm font-semibold transition ${
+                          mode === key
+                            ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                            : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                        }`}
+                      >
+                        {modeLabelOverrides[key] ?? modes[key].label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {previewLinks.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {previewLinks.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="inline-flex min-h-10 items-center rounded-lg border border-dashed border-[#081E6F]/20 bg-[#F7F4ED] px-4 text-sm font-semibold text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)]"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -2027,25 +2290,43 @@ export function ProductStylePreview({
 
           <aside className="space-y-3 lg:self-start">
             <div className={shellCardClass}>
-              <nav className="flex flex-wrap gap-1 text-xs text-[#6b6b6b]">
-                <span>Goods</span>
-                <span>/</span>
-                <span>{summaryBreadcrumbLabel}</span>
-                <span>/</span>
-                <span className="font-semibold text-[var(--og-blue)]">{summaryTitle}</span>
-              </nav>
+              <CustomizerBreadcrumbs
+                items={customizerNavigation?.breadcrumbs ?? [{ label: "Goods" }, { label: "Hats" }, { label: summaryTitle }]}
+                className="flex flex-wrap gap-1 text-xs text-[#6b6b6b]"
+              />
 
               <div className="mt-5">
-                {summaryEyebrow ? (
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                    {summaryEyebrow}
-                  </p>
-                ) : null}
-                <h2 className={`mt-2 leading-none text-[var(--og-blue)] ${isImmersiveExperience ? "text-5xl" : "text-4xl"}`}>
-                  {summaryTitle}
-                </h2>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    {summaryEyebrow ? (
+                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
+                        {summaryEyebrow}
+                      </p>
+                    ) : null}
+                    <h2 className={`mt-2 leading-none text-[var(--og-blue)] ${isImmersiveExperience ? "text-5xl" : "text-4xl"}`}>
+                      {summaryTitle}
+                    </h2>
+                  </div>
+
+                  {isImmersiveExperience && topBadgeLabel ? (
+                    topBadgeAsset ? (
+                      <Image
+                        src={topBadgeAsset.src}
+                        alt={topBadgeAsset.alt}
+                        width={topBadgeAsset.width}
+                        height={topBadgeAsset.height}
+                        className="h-10 w-auto shrink-0"
+                        priority
+                      />
+                    ) : (
+                      <span className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-[#0B32A0]/14 bg-[#EFF4FF] px-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B32A0]">
+                        {topBadgeLabel}
+                      </span>
+                    )
+                  ) : null}
+                </div>
                 <p className={isImmersiveExperience ? "mt-3 text-base leading-7 text-[#4b4b4b]" : "mt-3 text-sm leading-6 text-[#4b4b4b]"}>
-                  {activeMode.description}
+                  {summaryDescription}
                 </p>
                 {mode === "shop" && (
                   <div className="mt-5 flex flex-col gap-4 border-t border-[#081E6F]/10 pt-5 sm:flex-row sm:items-end sm:justify-between">
@@ -2209,12 +2490,12 @@ export function ProductStylePreview({
                     >
                       {hatStyles.map((style) => (
                         <option key={style.slug} value={style.slug}>
-                          {`${style.model} - ${style.title} - ${style.selectorDescription}`}
+                          {`${style.model} - ${style.title} - ${capitalizeFirstCharacter(style.selectorDescription)}`}
                         </option>
                       ))}
                     </select>
                     <p className={isImmersiveExperience ? "mt-2 text-sm leading-6 text-[#8a8a8a]" : "mt-2 text-xs leading-5 text-[#8a8a8a]"}>
-                      {selectedHatStyle.selectorDescription} · {selectedHatStyle.bestFor}
+                      {formattedHatSelectorDescription} · {selectedHatStyle.bestFor}
                     </p>
                   </div>
                 )}
@@ -2251,7 +2532,7 @@ export function ProductStylePreview({
                 {mode !== "shop" && mode !== "catalog" && (
                   <div>
                     <div className="mb-3 flex items-center justify-between gap-3">
-                      <p className={labelTextClass}>
+                      <p className={isImmersiveExperience ? "text-[11px] font-medium uppercase tracking-[0.12em] text-[#7a7a7a]" : labelTextClass}>
                         Quantity (100-piece minimum)
                       </p>
                       <div className="flex items-center gap-2">
@@ -2272,7 +2553,7 @@ export function ProductStylePreview({
                         className="pointer-events-none absolute top-0 z-10"
                         style={qtyTooltipPosition}
                       >
-                        <span className={`inline-flex min-h-7 whitespace-nowrap font-semibold text-white shadow-[0_10px_24px_rgba(8,30,111,0.16)] ${isImmersiveExperience ? "rounded-full bg-[#FF4200] px-4 py-1.5 text-xs" : "rounded-full bg-[var(--og-blue)] px-3 py-1 text-[11px]"}`}>
+                        <span className={`inline-flex min-h-7 whitespace-nowrap font-semibold text-white ${isImmersiveExperience ? "rounded-full bg-[#FF4200] px-4 py-1.5 text-xs shadow-[0_10px_24px_rgba(255,66,0,0.18)]" : "rounded-full bg-[var(--og-blue)] px-3 py-1 text-[11px]"}`}>
                           {basePriceLabel}
                         </span>
                       </div>
@@ -2371,7 +2652,7 @@ export function ProductStylePreview({
                           className="pointer-events-none absolute top-0 z-10"
                           style={qtyTooltipPosition}
                         >
-                          <span className="inline-flex min-h-7 whitespace-nowrap rounded-full bg-[var(--og-blue)] px-3 py-1 text-[11px] font-semibold text-white shadow-[0_10px_24px_rgba(8,30,111,0.16)]">
+                          <span className="inline-flex min-h-7 whitespace-nowrap rounded-full bg-[var(--og-blue)] px-3 py-1 text-[11px] font-semibold text-white">
                             {basePriceLabel}
                           </span>
                         </div>
@@ -2431,9 +2712,9 @@ export function ProductStylePreview({
                     <p className={`mb-3 ${helperTextClass}`}>
                       {mode === "catalog"
                         ? "Keep the main decoration simple here, then layer in print upgrades or extra placements below."
-                        : "Not sure? We&apos;ll help guide you into the right decoration."}
+                        : "Not sure? We'll help guide you into the right decoration."}
                     </p>
-                    <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
+                    <div className={`grid ${useSingleColumnFrontDecorationOptions ? "grid-cols-1" : "grid-cols-2"} ${optionGridGapClass}`}>
                       {activeDecorationOptions
                         .filter((option) => option.id !== "other")
                         .map((option) => (
@@ -2443,7 +2724,7 @@ export function ProductStylePreview({
                           onClick={() => setDecoration(option.id)}
                           className={`${optionCardSizeClass} border text-left transition ${
                             decoration === option.id
-                              ? selectedOptionClass
+                              ? secondarySelectedOptionClass
                               : unselectedOptionClass
                           }`}
                         >
@@ -2465,7 +2746,7 @@ export function ProductStylePreview({
                           onClick={() => setDecoration("other")}
                           className={`${optionCardSizeClass} border text-left transition ${
                             decoration === "other"
-                              ? selectedOptionClass
+                              ? secondarySelectedOptionClass
                               : unselectedOptionClass
                           }`}
                         >
@@ -2495,22 +2776,23 @@ export function ProductStylePreview({
                           onChange={(event) => setCustomDecoration(event.target.value)}
                           placeholder="Tell us the decoration method you want"
                           rows={2}
-                          className="w-full rounded-lg border border-[#081E6F]/15 px-3 py-3 text-sm font-semibold text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                          className="w-full rounded-lg border border-[#081E6F]/15 px-3 py-3 text-sm font-normal text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
                         />
                         <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
                           {mode === "catalog"
                             ? "Tell us if you want something like patches, hem labels, hang tags, or another specialty print finish."
-                            : "Tell us the decoration method you want. Not sure what&apos;s right? Tell us what you&apos;re after and we&apos;ll help guide you."}
+                            : "Tell us the decoration method you want. Not sure what's right? Tell us what you're after and we'll help guide you."}
                         </p>
                       </div>
                     )}
                     <a
-                      href="/insights/decoration-options-guide"
+                      href={mode === "ready" || isHatBuilderMode ? "/goods/hats/decoration" : "/insights/decoration-options-guide"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`mt-3 inline-flex w-full items-center justify-center border border-[#081E6F]/15 text-center font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)] ${isImmersiveExperience ? "min-h-12 rounded-xl bg-[#FBF7F1] px-5 text-sm" : "min-h-10 rounded-lg bg-white px-4 text-xs"}`}
+                      className={`mt-3 inline-flex w-full items-center justify-center gap-2 border border-[#081E6F]/15 text-center font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)] ${isImmersiveExperience ? "min-h-12 rounded-xl bg-[#FBF7F1] px-5 text-sm" : "min-h-10 rounded-lg bg-white px-4 text-xs"}`}
                     >
-                      Learn more about decoration options
+                      <span>See decoration methods</span>
+                      <DiagonalArrowIcon className={isImmersiveExperience ? "h-4 w-4" : "h-3.5 w-3.5"} />
                     </a>
                   </div>
                 )}
@@ -2708,7 +2990,7 @@ export function ProductStylePreview({
 
                 {isHatBuilderMode && (
                   <div>
-                    <p className={labelTextClass}>
+                    <p className={standaloneLabelTextClass}>
                       Fabric
                     </p>
                     <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
@@ -2733,7 +3015,7 @@ export function ProductStylePreview({
                         onClick={() => setWashedFabric((current) => !current)}
                         className={`border text-left transition ${isImmersiveExperience ? "rounded-xl p-4" : "rounded-lg p-3"} ${
                           washedFabric
-                            ? "border-[#0B32A0] bg-[#F5F7FC] text-[var(--og-blue)] shadow-[0_10px_24px_rgba(11,50,160,0.08)]"
+                            ? "border-[#0B32A0] bg-[#F5F7FC] text-[var(--og-blue)]"
                             : unselectedOptionClass
                         }`}
                       >
@@ -2758,9 +3040,10 @@ export function ProductStylePreview({
                         href="/goods/hats/fabric"
                         target="_blank"
                         rel="noreferrer"
-                        className={`mt-3 inline-flex w-full items-center justify-center border border-[#081E6F]/15 text-center font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)] ${isImmersiveExperience ? "min-h-12 rounded-xl bg-[#FBF7F1] px-5 text-sm" : "min-h-10 rounded-lg bg-white px-4 text-xs"}`}
+                        className={`mt-3 inline-flex w-full items-center justify-center gap-2 border border-[#081E6F]/15 text-center font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:border-[var(--og-orange)] hover:text-[var(--og-orange)] ${isImmersiveExperience ? "min-h-12 rounded-xl bg-[#FBF7F1] px-5 text-sm" : "min-h-10 rounded-lg bg-white px-4 text-xs"}`}
                       >
-                        See fabric and color options
+                        <span>See fabric and color options</span>
+                        <DiagonalArrowIcon className={isImmersiveExperience ? "h-4 w-4" : "h-3.5 w-3.5"} />
                       </a>
                     </div>
                   </div>
@@ -2842,7 +3125,7 @@ export function ProductStylePreview({
 
                 {isHatBuilderMode && !isBucketHatStyle && (
                   <div>
-                    <p className={labelTextClass}>
+                    <p className={standaloneLabelTextClass}>
                       Brim curve
                     </p>
                     <div className={`grid grid-cols-3 ${optionGridGapClass}`}>
@@ -2877,13 +3160,13 @@ export function ProductStylePreview({
 
                 {(isHatBuilderMode || mode === "ready") && (
                   <div>
-                    <p className={labelTextClass}>
+                    <p className={standaloneLabelTextClass}>
                       Back decoration
                     </p>
                     <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
                       {([
-                        { id: "none", label: "None" },
-                        { id: "embroidery", label: mode === "ready" ? "Embroidery +$4.50" : "Embroidery +$1.00" },
+                        { id: "none", label: "None", price: null },
+                        { id: "embroidery", label: "Embroidery", price: mode === "ready" ? 4.5 : 1 },
                       ] as const).map((option) => (
                         <button
                           key={option.id}
@@ -2895,7 +3178,14 @@ export function ProductStylePreview({
                               : unselectedOptionClass
                           }`}
                         >
-                          {option.label}
+                          <span className="block">{option.label}</span>
+                          {option.price !== null ? (
+                            <span className={`mt-0.5 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px]"} ${
+                              backDecoration === option.id ? secondaryOptionSubActiveClass : optionSubInactiveClass
+                            }`}>
+                              +${option.price.toFixed(2)}
+                            </span>
+                          ) : null}
                         </button>
                       ))}
                     </div>
@@ -2904,13 +3194,13 @@ export function ProductStylePreview({
 
                 {(isHatBuilderMode || mode === "ready") && (
                   <div>
-                    <p className={labelTextClass}>
+                    <p className={standaloneLabelTextClass}>
                       Side decoration
                     </p>
                     <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
                       {([
-                        { id: "none", label: "None" },
-                        { id: "embroidery", label: mode === "ready" ? "Embroidery +$4.50" : "Embroidery +$1.00" },
+                        { id: "none", label: "None", price: null },
+                        { id: "embroidery", label: "Embroidery", price: mode === "ready" ? 4.5 : 1 },
                       ] as const).map((option) => (
                         <button
                           key={option.id}
@@ -2922,7 +3212,14 @@ export function ProductStylePreview({
                               : unselectedOptionClass
                           }`}
                         >
-                          {option.label}
+                          <span className="block">{option.label}</span>
+                          {option.price !== null ? (
+                            <span className={`mt-0.5 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px]"} ${
+                              sideDecoration === option.id ? secondaryOptionSubActiveClass : optionSubInactiveClass
+                            }`}>
+                              +${option.price.toFixed(2)}
+                            </span>
+                          ) : null}
                         </button>
                       ))}
                     </div>
@@ -3028,11 +3325,11 @@ export function ProductStylePreview({
 
                 {mode !== "shop" && showCatalogEmbroideryFields && (
                   <div>
-                    <p className={labelTextClass}>
+                    <p className={standaloneLabelTextClass}>
                       {mode === "catalog" ? "Embroidery finish" : "Embroidery thread finish"}
                     </p>
                     <div className="grid grid-cols-2 gap-2">
-                      {(["matte", "shiny"] as const).map((finish) => (
+                      {(["shiny", "matte"] as const).map((finish) => (
                         <button
                           key={finish}
                           type="button"
@@ -3055,35 +3352,58 @@ export function ProductStylePreview({
                     <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                       Embroidery color
                     </label>
-                    <input
-                      type="text"
-                      value={embroideryColor}
-                      onChange={(event) => setEmbroideryColor(event.target.value)}
-                      placeholder="e.g. Ivory, PMS 165, tonal navy"
-                      className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-normal text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
-                    />
+                    <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(110px,0.42fr)]">
+                      <input
+                        type="text"
+                        value={embroideryColor}
+                        onChange={(event) => {
+                          const nextValue = event.target.value;
+                          const pantoneMatch = findPantoneByName(nextValue);
+                          setEmbroideryColor(nextValue);
+                          if (pantoneMatch) {
+                            setEmbroideryHex(pantoneMatch.hex);
+                          }
+                        }}
+                        placeholder="Pantone, color name, or notes"
+                        className="h-11 w-full rounded-lg border border-[#081E6F]/15 px-3 text-sm font-normal text-[var(--og-blue)] placeholder:text-[#8a8a8a] focus:border-[var(--og-blue)] focus:outline-none"
+                      />
+                      <HexColorPicker
+                        value={embroideryHex}
+                        onChange={(value) => {
+                          const closestPantone = findClosestPantoneByHex(value);
+                          setEmbroideryHex(value.toUpperCase());
+                          setEmbroideryColor(closestPantone?.name ?? value.toUpperCase());
+                        }}
+                        ariaLabel="Embroidery color hex"
+                      />
+                    </div>
+                    <p className="mt-2 text-[11px] leading-5 text-[#8a8a8a]">
+                      Enter a Pantone or thread note, or pick the closest hex and we&apos;ll match the embroidery thread from there.
+                    </p>
                   </div>
                 )}
 
                 {isHatBuilderMode && (
                   <div>
-                    <p className={labelTextClass}>
+                    <p className={standaloneLabelTextClass}>
                       Additional decorations
                     </p>
-                    <div className={`grid ${optionGridGapClass} md:grid-cols-3`}>
+                    <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
                       {hatAdditionalDecorationOptions.map((option) => (
                         <button
                           key={option}
                           type="button"
                           onClick={() => toggleHatAdditionalDecoration(option)}
-                          className={`border text-left transition ${isImmersiveExperience ? "rounded-xl p-4" : "rounded-lg p-3"} ${
+                          className={`${smallOptionSizeClass} border font-semibold transition ${
                             hatAdditionalDecorations.includes(option)
                               ? secondarySelectedOptionClass
                               : unselectedOptionClass
                           }`}
                         >
-                          <span className={isImmersiveExperience ? "block text-base font-semibold" : "block text-sm font-semibold"}>{option}</span>
-                          <span className={`mt-1 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px]"} ${hatAdditionalDecorations.includes(option) ? secondaryOptionSubActiveClass : optionSubInactiveClass}`}>
+                          <span className="block">{option}</span>
+                          <span className={`mt-0.5 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px]"} ${
+                            hatAdditionalDecorations.includes(option) ? secondaryOptionSubActiveClass : optionSubInactiveClass
+                          }`}>
                             +$1.00
                           </span>
                         </button>
@@ -3097,11 +3417,11 @@ export function ProductStylePreview({
                     <label className="mb-3 block text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                       {mode === "catalog" ? "Order notes" : "Additional notes"}
                     </label>
-                    <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
-                      {mode === "catalog"
-                        ? "Flag placements, patch ideas, hang tags, hem labels, packaging requests, or anything else we should build around."
-                        : "Anything else to flag beyond your decoration notes? Tell us here."}
-                    </p>
+                    {mode === "catalog" ? (
+                      <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
+                        Flag placements, patch ideas, hang tags, hem labels, packaging requests, or anything else we should build around.
+                      </p>
+                    ) : null}
                     <textarea
                       value={additionalCallouts}
                       onChange={(event) => setAdditionalCallouts(event.target.value)}
@@ -3115,8 +3435,14 @@ export function ProductStylePreview({
                 )}
 
                 {mode !== "shop" && (
-                  <div className={`border border-dashed border-[#081E6F]/25 ${isImmersiveExperience ? "rounded-xl bg-[#FFF6ED] p-5" : "rounded-lg bg-[#F7F4ED] p-4"}`}>
-                    <div className="flex flex-col gap-3">
+                  <div
+                    className={
+                      isHatBuilderMode
+                        ? `${isImmersiveExperience ? "rounded-xl border border-[#081E6F]/10 bg-[#FFF9F2] p-5 shadow-[0_12px_28px_rgba(8,30,111,0.04)]" : "rounded-lg border border-[#081E6F]/10 bg-white p-4"}`
+                        : `border border-dashed border-[#081E6F]/18 ${isImmersiveExperience ? "rounded-xl bg-[#F6F8FC] p-5" : "rounded-lg bg-[#F8FAFD] p-4"}`
+                    }
+                  >
+                    <div className="flex flex-col gap-4">
                       <div>
                         <p className={labelTextClass}>
                           Upload your logo
@@ -3142,7 +3468,7 @@ export function ProductStylePreview({
                             needsArtworkHelp
                               ? isImmersiveExperience
                                 ? "bg-[#F5F7FC] text-[var(--og-blue)] ring-2 ring-[#0B32A0]"
-                                : "bg-[#F7F4ED] text-[var(--og-blue)] ring-2 ring-[var(--og-blue)]"
+                                : "bg-[#F5F7FC] text-[var(--og-blue)] ring-2 ring-[var(--og-blue)]"
                               : "bg-white text-[var(--og-blue)] ring-1 ring-[#081E6F]/15 hover:ring-[var(--og-orange)] hover:text-[var(--og-orange)]"
                           }`}
                         >
@@ -3157,7 +3483,7 @@ export function ProductStylePreview({
                           >
                             &#10003;
                           </span>
-                          Need Artwork?
+                          <span className="whitespace-nowrap">Need Artwork?</span>
                         </button>
                       </div>
                       <p className={isImmersiveExperience ? "text-base leading-7 text-[#4b4b4b]" : "text-sm leading-6 text-[#4b4b4b]"}>
@@ -3299,7 +3625,7 @@ export function ProductStylePreview({
 
           {showLiveCalculator && (
             <aside className={`lg:sticky lg:self-start xl:col-start-3 xl:self-start ${isImmersiveExperience ? "lg:top-28" : "lg:top-32"}`}>
-              <div className={shellCardClass}>
+              <div className={`${shellCardClass} ${useHatStickySummaryLayout ? "lg:flex lg:max-h-[calc(100vh-8.5rem)] lg:flex-col lg:overflow-hidden" : ""}`}>
                 <div>
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
@@ -3308,7 +3634,7 @@ export function ProductStylePreview({
                   </div>
                 </div>
 
-                <div className="mt-5 space-y-3 text-sm">
+                <div className={`mt-6 text-sm ${isHatBuilderMode ? "rounded-[1rem] border border-[#081E6F]/10 bg-[#FBF7F1]/65" : "space-y-3"} ${useHatStickySummaryLayout ? "lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-1" : ""}`}>
                   {[
                     { label: "Units", value: qty.toLocaleString() },
                     ...(mode === "catalog"
@@ -3325,7 +3651,7 @@ export function ProductStylePreview({
                           { label: "Packaging upgrades", value: catalogPackagingSummary },
                           { label: "Rush delivery", value: catalogRush ? "Yes" : "No" },
                           ...(showCatalogEmbroideryFields ? [{ label: "Embroidery finish", value: threadFinish === "matte" ? "Matte" : "Shiny" }] : []),
-                          ...(showCatalogEmbroideryFields && embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
+                          ...(showCatalogEmbroideryFields && embroideryColorSummary ? [{ label: "Embroidery color", value: embroideryColorSummary }] : []),
                           ...(needsArtworkHelp ? [{ label: "Artwork help", value: "Yes" }] : []),
                           ...(customDecoration.trim() && decoration === "other" ? [{ label: "Other decoration", value: customDecoration.trim() }] : []),
                           ...(additionalCallouts.trim() ? [{ label: "Order notes", value: additionalCallouts.trim() }] : []),
@@ -3335,10 +3661,9 @@ export function ProductStylePreview({
                       ? [
                           { label: "Hat style", value: `${selectedReadyMadeStyle.id} ${selectedReadyMadeStyle.name}` },
                           { label: "Color", value: selectedColorLabel },
-                          { label: "Blank details", value: `${selectedReadyMadeStyle.crown} · ${selectedReadyMadeStyle.closure}` },
                           { label: "Front decoration", value: frontDecorationSummaryLabel },
                           { label: "Embroidery thread finish", value: threadFinish === "matte" ? "Matte" : "Shiny" },
-                          ...(embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
+                          ...(embroideryColorSummary ? [{ label: "Embroidery color", value: embroideryColorSummary }] : []),
                           { label: "Back decoration", value: backDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Side decoration", value: sideDecoration === "embroidery" ? "Embroidery" : "None" },
                           ...(needsArtworkHelp ? [{ label: "Artwork help", value: "Yes" }] : []),
@@ -3355,7 +3680,7 @@ export function ProductStylePreview({
                           { label: "Sample", value: sampleSummaryLabel },
                           { label: "Front decoration", value: frontDecorationSummaryLabel },
                           { label: "Embroidery thread finish", value: threadFinish === "matte" ? "Matte" : "Shiny" },
-                          ...(embroideryColor.trim() ? [{ label: "Embroidery color", value: embroideryColor.trim() }] : []),
+                          ...(embroideryColorSummary ? [{ label: "Embroidery color", value: embroideryColorSummary }] : []),
                           { label: "Back decoration", value: backDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Side decoration", value: sideDecoration === "embroidery" ? "Embroidery" : "None" },
                           { label: "Additional decorations", value: hatAdditionalDecorations.length > 0 ? hatAdditionalDecorations.join(", ") : "None" },
@@ -3369,10 +3694,33 @@ export function ProductStylePreview({
                     { label: "Selected options", value: selectedOptionsLabel },
                     { label: "Turnaround", value: turnAroundLabel },
                     ...(isHatBuilderMode ? [{ label: "Estimated delivery date", value: estimatedDeliveryShortLabel }] : []),
-                  ].map((row) => (
-                    <div key={row.label} className="grid grid-cols-[1fr_auto] items-baseline gap-4">
-                      <span className={isImmersiveExperience ? "text-[15px] text-[#6b6b6b]" : "text-[#6b6b6b]"}>{row.label}</span>
-                      <span className={isImmersiveExperience ? "text-right text-[15px] font-semibold text-[#171717]" : "text-right font-semibold text-[#171717]"}>{row.value}</span>
+                  ].map((row, index) => (
+                    <div
+                      key={row.label}
+                      className={`grid grid-cols-[minmax(0,1fr)_auto] ${
+                        isHatBuilderMode
+                          ? `gap-3 px-3.5 py-2 ${index > 0 ? "border-t border-[#081E6F]/10" : ""}`
+                          : "gap-4 rounded-[1.1rem] px-4 py-3"
+                      }`}
+                    >
+                      <span
+                        className={
+                          isHatBuilderMode
+                            ? "text-[9px] uppercase tracking-[0.1em] text-[#7a7a7a]"
+                            : "text-[12px] uppercase tracking-[0.12em] text-[#7a7a7a]"
+                        }
+                      >
+                        {row.label}
+                      </span>
+                      <span
+                        className={
+                          isHatBuilderMode
+                            ? "text-right text-[12px] font-semibold leading-5 text-[#171717]"
+                            : "text-right text-[15px] font-semibold text-[#171717]"
+                        }
+                      >
+                        {row.value}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -3404,11 +3752,21 @@ export function ProductStylePreview({
                     >
                       Request Custom Quote
                     </a>
-                    <p className="mt-3 text-center text-xs leading-5 text-[#6b6b6b]">
-                      {mode === "ready"
-                        ? "We’ll review your selections and come back with a custom quote for 1,500+ hats."
-                        : "We’ll review your selections and come back with a custom quote for 5,000+ pieces."}
-                    </p>
+                    <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                        Next steps
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                        {mode === "ready"
+                          ? "We review your selections and come back with the right quote for 1,500+ hats."
+                          : "We review your selections and come back with the right quote for 5,000+ pieces."}
+                      </p>
+                      {submitNextSteps.map((step) => (
+                        <p key={step} className="text-xs leading-5 text-[#4b4b4b]">
+                          {step}
+                        </p>
+                      ))}
+                    </div>
                   </>
                 ) : (
                   showBuilderSecondaryCta ? (
@@ -3419,9 +3777,16 @@ export function ProductStylePreview({
                       >
                         {primaryCtaLabel}
                       </a>
-                      <p className="mt-3 text-center text-xs leading-5 text-[#6b6b6b]">
-                        Send us your build for review. Final quote is confirmed after review.
-                      </p>
+                      <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                          Next steps
+                        </p>
+                        {submitNextSteps.map((step) => (
+                          <p key={step} className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                            {step}
+                          </p>
+                        ))}
+                      </div>
                     </>
                   ) : (
                     <button
@@ -3432,14 +3797,12 @@ export function ProductStylePreview({
                     </button>
                   )
                 )}
-                {!showBuilderSecondaryCta || isCustomQuote ? (
-                  <a
-                    href={questionsHref}
-                    className="mt-3 block text-center text-xs font-semibold text-[#777] underline-offset-4 transition hover:text-[var(--og-blue)] hover:underline"
-                  >
-                    Have Questions? Talk to our team.
-                  </a>
-                ) : null}
+                <a
+                  href={questionsHref}
+                  className="mt-3 flex min-h-11 w-full items-center justify-center rounded-lg border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[var(--og-blue)] transition hover:border-[var(--og-blue)] hover:bg-[#F7F9FC]"
+                >
+                  Talk to our team
+                </a>
               </div>
             </aside>
           )}

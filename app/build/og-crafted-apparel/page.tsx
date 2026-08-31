@@ -18,6 +18,7 @@ export default function OGCraftedApparelBuildPage() {
     <Suspense fallback={null}>
       <ApparelBuilderPreview
         styles={styles}
+        showPageHero={false}
         draftLinks={[]}
       />
     </Suspense>

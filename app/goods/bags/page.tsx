@@ -210,6 +210,7 @@ const bagFaqs = [
 export default function BagsPage() {
   return (
     <>
+      <div id="as-colour-totes" />
       <ProductCategoryPage
         title="Custom Bags + Totes"
         subhead="Canvas totes, boat totes, backpacks, and carry goods built to feel useful, specific, and worth keeping beyond the first handoff."

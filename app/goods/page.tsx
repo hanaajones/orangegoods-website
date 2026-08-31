@@ -134,6 +134,7 @@ const useCaseWords = [
   "teams",
   "launches",
 ];
+const customizeHref = "/goods/all";
 
 export default function GoodsPage() {
   return (
@@ -167,6 +168,12 @@ export default function GoodsPage() {
           <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
             <Link href="/contact" className="btn-og-white inline-flex">
               Start a Project
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex items-center justify-center rounded-xl border-2 border-white/72 bg-white/10 px-6 py-3 text-sm font-semibold uppercase tracking-[0.1em] text-white transition hover:-translate-y-[2px] hover:border-white hover:bg-white hover:text-[var(--og-blue)]"
+            >
+              Customize
             </Link>
           </div>
         </div>
@@ -222,7 +229,7 @@ export default function GoodsPage() {
           <div className="mt-8 flex flex-col gap-5 rounded-[1.5rem] border border-[#d4c5ae] bg-white px-5 py-5 md:px-6 md:py-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF4200]">
-                This is just a taste
+                Here is just a taste
               </p>
               <p className="mt-2 text-xs leading-5 text-[#1C1C1C]/62 md:text-sm md:leading-6">
                 We make far more than what you see here.
@@ -232,7 +239,13 @@ export default function GoodsPage() {
               href="/contact"
               className="btn-og inline-flex min-h-12 w-fit shrink-0 items-center justify-center"
             >
-              Start a custom project
+              Start a Project
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex min-h-12 w-fit shrink-0 items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 text-sm font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:-translate-y-[2px] hover:bg-[var(--og-blue)] hover:text-white"
+            >
+              Customize
             </Link>
           </div>
         </section>

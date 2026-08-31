@@ -143,6 +143,7 @@ type ProductCategoryPageProps = {
 };
 
 const contactHref = "/contact";
+const customizeHref = "/goods/all";
 
 function normalizeItem(item: string | ContentItem): ContentItem {
   return typeof item === "string" ? { title: item } : item;
@@ -419,6 +420,12 @@ export function ProductCategoryPage({
           <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
             <Link href={contactHref} className="btn-og-white">
               Start a Project
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex items-center justify-center rounded-xl border-2 border-white/72 bg-white/10 px-6 py-3 text-sm font-semibold uppercase tracking-[0.1em] text-white transition hover:-translate-y-[2px] hover:border-white hover:bg-white hover:text-[var(--og-blue)]"
+            >
+              Customize
             </Link>
           </div>
         </div>
@@ -853,6 +860,12 @@ export function ProductCategoryPage({
             </div>
             <Link href={contactHref} className="btn-og shrink-0">
               Start a Project
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex shrink-0 items-center justify-center rounded-xl border-2 border-white/72 bg-transparent px-6 py-3 text-sm font-semibold uppercase tracking-[0.1em] text-white transition hover:-translate-y-[2px] hover:border-white hover:bg-white hover:text-[#1C1C1C]"
+            >
+              Customize
             </Link>
           </div>
         </section>

@@ -1,5 +1,6 @@
 import supplierCatalogRaw from "@/data/ss-activewear/latest.catalog.json";
 import { CATALOG_PRODUCTS, calcPrice, type CatalogProduct } from "@/data/catalog";
+import { addQuickTurnApparelShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 
 export type ApparelCatalogFamily =
   | "tees"
@@ -37,6 +38,7 @@ export type ApparelCatalogStyleItem = {
   brand: ApparelCatalogBrand;
   colors: ApparelCatalogColor[];
   image: string;
+  hoverImage?: string;
   title: string;
   description: string;
   fit: string;
@@ -172,8 +174,7 @@ function normalizeBrand(brandName: string): ApparelCatalogBrand {
   return "Other";
 }
 
-function timelineForProduct(product: CatalogProduct) {
-  if (product.category === "outerwear") return "3-4 weeks";
+function timelineForProduct() {
   return "2-3 weeks";
 }
 
@@ -183,6 +184,30 @@ function familyForProduct(product: CatalogProduct, title: string): ApparelCatalo
   }
 
   return FAMILY_BY_CATEGORY[product.category as Extract<CatalogProduct["category"], keyof typeof FAMILY_BY_CATEGORY>];
+}
+
+function isLaneSevenStyle(style: SupplierCatalogStyle) {
+  return style.brandName === "Lane Seven";
+}
+
+function normalizeVariantGalleryImages(
+  style: SupplierCatalogStyle,
+  galleryImages: Array<{ label: string; url: string }> | undefined,
+) {
+  const images = (galleryImages ?? []).filter((image) => Boolean(image?.url));
+  if (!isLaneSevenStyle(style)) return images;
+
+  return images.filter((image) => !image.label.toLowerCase().includes("model"));
+}
+
+function getHoverImageForStyle(style: SupplierCatalogStyle) {
+  for (const variant of style.variants) {
+    const primary = variant.imageUrl ?? style.imageUrl ?? style.styleImageUrl ?? null;
+    const alternate = normalizeVariantGalleryImages(style, variant.galleryImages).find((image) => image.url !== primary);
+    if (alternate?.url) return alternate.url;
+  }
+
+  return undefined;
 }
 
 export function buildApparelStyleCatalogItems(): ApparelCatalogStyleItem[] {
@@ -205,15 +230,19 @@ export function buildApparelStyleCatalogItems(): ApparelCatalogStyleItem[] {
         brand: normalizeBrand(style.brandName),
         colors,
         image: style.imageUrl ?? style.styleImageUrl ?? DEFAULT_APPAREL_IMAGE,
+        hoverImage: getHoverImageForStyle(style),
         title: style.title,
         description: product.description,
         fit: product.fit,
         weight: product.weight,
         material: product.material,
-        timeline: timelineForProduct(product),
+        timeline: timelineForProduct(),
         name: product.name,
         fullName: product.fullName,
-        fromPrice: style.minPiecePrice ?? calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
+        fromPrice: addQuickTurnApparelShippingIncludedPrice(
+          style.minPiecePrice ?? calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
+          product.printCat,
+        ),
       } satisfies ApparelCatalogStyleItem;
     })
     .filter((style): style is ApparelCatalogStyleItem => style !== null)
@@ -231,7 +260,7 @@ export function buildApparelBuilderStyles(): ApparelBuilderDataStyle[] {
           const key = variant.colorName.trim();
           if (!key) return map;
 
-          const nextImages = (variant.galleryImages ?? []).filter((image) => Boolean(image?.url));
+          const nextImages = normalizeVariantGalleryImages(style, variant.galleryImages);
 
           if (!map.has(key)) {
             map.set(key, {
@@ -286,8 +315,11 @@ export function buildApparelBuilderStyles(): ApparelBuilderDataStyle[] {
         printCat: product.printCat,
         blank: product.blank,
         blankMarkup: product.blankMarkup,
-        timeline: timelineForProduct(product),
-        priceFrom: style.minPiecePrice ?? product.blank + product.blankMarkup,
+        timeline: timelineForProduct(),
+        priceFrom: addQuickTurnApparelShippingIncludedPrice(
+          style.minPiecePrice ?? product.blank + product.blankMarkup,
+          product.printCat,
+        ),
         sizes: style.sizes ?? [],
         colors,
       } satisfies ApparelBuilderDataStyle;

@@ -111,8 +111,7 @@ const PRODUCT_BY_SLUG: Record<string, CatalogProduct> = Object.fromEntries(
   CATALOG_PRODUCTS.map((product) => [product.slug, product])
 );
 
-function timelineForFamily(family: Exclude<FamilyKey, "all">) {
-  if (family === "outerwear") return "3-4 weeks";
+function timelineForFamily() {
   return "2-3 weeks";
 }
 
@@ -312,7 +311,7 @@ export function QuickTurnApparelStyleGrid({
                     From ${fromPrice.toFixed(2)} / piece
                   </p>
                   <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--og-blue)]/60">
-                    {style.timeline ?? timelineForFamily(style.family)}
+                    {style.timeline ?? timelineForFamily()}
                   </p>
                   <Link
                     href={href}

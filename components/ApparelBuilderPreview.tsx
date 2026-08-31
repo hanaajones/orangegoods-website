@@ -4,6 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
+import {
+  CustomizerPageHeader,
+  immersiveCustomizerGhostLinkClass,
+  immersiveCustomizerInsetPanelClass,
+  immersiveCustomizerLabelTextClass,
+  immersiveCustomizerProcessCardClass,
+  immersiveCustomizerSelectInputClass,
+  immersiveCustomizerShellCardClass,
+  immersiveCustomizerSummaryLabelClass,
+  immersiveCustomizerTextInputClass,
+  getCustomizerTopBadgeAsset,
+  MasterCustomizerShell,
+} from "@/components/MasterCustomizerShell";
+import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import {
   CATALOG_PACKAGING_PRICES,
   calculateCatalogBuilderPricing,
@@ -11,6 +26,7 @@ import {
   type CatalogSpecialtyPrintUpgrade,
   type PrintCat,
 } from "@/data/catalog";
+import { QUICK_TURN_FREE_SHIPPING_LABEL, addQuickTurnApparelShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 
 type BuilderColor = {
   name: string;
@@ -221,7 +237,6 @@ function formatShortDate(date: Date) {
 }
 
 function estimatedDeliveryWindow(style: ApparelBuilderStyle) {
-  if (style.timeline === "3-4 weeks") return { startDays: 26, endDays: 35 };
   if (style.timeline === "2-4 weeks") return { startDays: 19, endDays: 35 };
   return { startDays: 19, endDays: 28 };
 }
@@ -376,9 +391,11 @@ function HexColorPicker({
 export function ApparelBuilderPreview({
   styles,
   draftLinks,
+  showPageHero = true,
 }: {
   styles: ApparelBuilderStyle[];
   draftLinks: Array<{ label: string; href: string }>;
+  showPageHero?: boolean;
 }) {
   const searchParams = useSearchParams();
   const requestedStyleSlug = searchParams.get("style") ?? searchParams.get("styleSlug");
@@ -498,7 +515,8 @@ export function ApparelBuilderPreview({
     rush: false,
     customerSuppliedGoods: false,
   });
-  const estimatedTotal = pricing.unitPrice * pricedQuantity;
+  const shippingIncludedUnitPrice = addQuickTurnApparelShippingIncludedPrice(pricing.unitPrice, selectedStyle.printCat);
+  const estimatedTotal = shippingIncludedUnitPrice * pricedQuantity;
   const selectedFamilyLabel = CATEGORY_LABELS[selectedStyle.category];
   const visibleColorLabel = hoveredColorName ?? selectedColor?.name ?? "Select a color";
   const deliveryWindow = estimatedDeliveryWindow(selectedStyle);
@@ -507,7 +525,7 @@ export function ApparelBuilderPreview({
   const estimatedDeliveryLabel = `${formatLongDate(estimatedDeliveryStart)} - ${formatLongDate(estimatedDeliveryEnd)}`;
   const estimatedDeliveryShortLabel = `${formatShortDate(estimatedDeliveryStart)} - ${formatShortDate(estimatedDeliveryEnd)}`;
   const baseUnitPrice = selectedStyle.blank + selectedStyle.blankMarkup;
-  const selectedOptionsUnitPrice = Math.max(pricing.unitPrice - baseUnitPrice, 0);
+  const selectedOptionsUnitPrice = Math.max(shippingIncludedUnitPrice - baseUnitPrice, 0);
   const basePriceLabel = money(baseUnitPrice);
   const selectedOptionsLabel = selectedOptionsUnitPrice > 0 ? `+${money(selectedOptionsUnitPrice)}` : "Included";
   const sleevePlacementLabel = sleevePrintSide === "left" ? "Left sleeve" : "Right sleeve";
@@ -530,12 +548,12 @@ export function ApparelBuilderPreview({
     "Premium blank",
     "Size run",
     "Setup costs",
-    "Shipping",
+    QUICK_TURN_FREE_SHIPPING_LABEL,
   ];
   const timelineItems = [
     {
-      label: "Tech pack",
-      note: "where we build out the details",
+      label: "Order review",
+      note: "quote, artwork, and final scope check",
       value: "1-2 days",
     },
     { label: "Production", value: timelineLabel(selectedStyle) },
@@ -548,16 +566,16 @@ export function ApparelBuilderPreview({
     },
     {
       title: "Dial in decoration",
-      detail: "We use this build to scope the right print method, placements, and finish upgrades for the piece you chose.",
+      detail: "Use the live build to scope the right print method, placements, and finish upgrades for the actual blank you picked.",
     },
     {
       title: "Review + production",
-      detail: "Once the quote and mockup are approved, we move into production and keep the delivery timing tied to the selected blank.",
+      detail: "Once the quote and mockup are approved, we move into production and keep the timing tied to the selected blank and decoration lane.",
     },
   ];
   const projectSummary = [
     `Product: ${selectedStyle.fullName}`,
-    "Program: Full Custom Apparel",
+    "Program: Quick Turn Apparel",
     `Category: ${selectedFamilyLabel}`,
     `Color: ${selectedColor?.name ?? "Not selected"}`,
     `Quantity: ${pricedQuantity}`,
@@ -570,7 +588,7 @@ export function ApparelBuilderPreview({
     `Packaging: ${packaging.length > 0 ? packaging.join(", ") : "None"}`,
     brandColorSummary ? `Brand colors: ${brandColorSummary}` : "",
     `Timeline: ${timelineLabel(selectedStyle)}`,
-    `Estimated unit price: ${money(pricing.unitPrice)}`,
+    `Estimated unit price: ${money(shippingIncludedUnitPrice)}`,
     `Estimated total: ${money(estimatedTotal)}`,
     artworkName ? `Artwork file: ${artworkName}` : "",
     needsArtworkHelp ? "Needs artwork help: Yes" : "",
@@ -581,7 +599,7 @@ export function ApparelBuilderPreview({
     intent: "apparel-quote",
     source: "og-crafted-apparel-builder",
     product: selectedStyle.fullName,
-    mode: "Full Custom Apparel",
+    mode: "Quick Turn Apparel",
     category: selectedFamilyLabel,
     color: selectedColor?.name ?? "",
     qty: String(pricedQuantity),
@@ -597,70 +615,61 @@ export function ApparelBuilderPreview({
     packaging: packaging.join(", "),
     brandColors: brandColorSummary,
     timeline: timelineLabel(selectedStyle),
-    estimatedUnitPrice: money(pricing.unitPrice),
+    estimatedUnitPrice: money(shippingIncludedUnitPrice),
     estimatedTotal: money(estimatedTotal),
     projectSummary,
     additionalCallouts: notes.trim(),
     logoFile: artworkName,
     needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
   });
-  const selectInputClass = "h-12 w-full appearance-none rounded-[1rem] border border-[#0B32A0]/12 bg-[#F5F7FC] bg-[length:14px_14px] bg-[right_1rem_center] bg-no-repeat px-4 pr-11 text-[15px] font-semibold text-[#0B32A0] transition focus:border-[#FF4200] focus:outline-none";
-  const textInputClass = "min-h-12 rounded-[1rem] border border-[#0B32A0]/12 bg-[#F5F7FC] px-4 text-[15px] font-medium text-[#0B32A0] outline-none transition placeholder:text-[#8a8a8a] focus:border-[#FF4200]";
+  const selectInputClass = immersiveCustomizerSelectInputClass;
+  const textInputClass = immersiveCustomizerTextInputClass;
   const neutralOptionClass = "border-[#0B32A0]/12 bg-[#F5F7FC] text-[#0B32A0] hover:border-[#FF4200] hover:shadow-[0_12px_24px_rgba(8,30,111,0.08)]";
-  const primarySelectedOptionClass = "border-[#FF4200] bg-[#FF4200] text-white shadow-[0_16px_32px_rgba(255,66,0,0.18)]";
-  const secondarySelectedOptionClass = "border-[#0B32A0] bg-[#0B32A0] text-white shadow-[0_16px_32px_rgba(11,50,160,0.16)]";
-  const tintedSecondarySelectedOptionClass = "border-[#0B32A0] bg-[#EAF0FF] text-[#0B32A0] shadow-[0_12px_24px_rgba(11,50,160,0.1)]";
+  const secondarySelectedOptionClass = "border-[#0B32A0] bg-[#0B32A0] text-white";
+  const frontDecorationSelectedOptionClass = secondarySelectedOptionClass;
+  const tintedSecondarySelectedOptionClass = "border-[#0B32A0] bg-[#EAF0FF] text-[#0B32A0]";
   const disabledOptionClass = "cursor-not-allowed border-[#0B32A0]/10 bg-[#EEF1F6] text-[#0B32A0]/35";
-  const panelClass = "rounded-[1.6rem] border border-[#081E6F]/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,253,0.94)_100%)] p-6 shadow-[0_20px_60px_rgba(8,30,111,0.08)]";
-  const warmPanelClass = "rounded-[1.6rem] border border-[#081E6F]/10 bg-[linear-gradient(180deg,#FBF8F1_0%,#F3EEE4_100%)] p-5 shadow-[0_18px_42px_rgba(8,30,111,0.06)]";
-  const insetPanelClass = "rounded-[1.35rem] border border-[#0B32A0]/10 bg-[linear-gradient(180deg,#F8FAFD_0%,#F1F4FA_100%)] p-5";
-  const sectionEyebrowClass = "text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b6b6b]";
-  const summaryLabelClass = "text-[12px] uppercase tracking-[0.12em] text-[#7a7a7a]";
-  const summaryValueClass = "text-right text-[15px] font-semibold text-[#171717]";
+  const panelClass = immersiveCustomizerShellCardClass;
+  const warmPanelClass = immersiveCustomizerProcessCardClass;
+  const insetPanelClass = immersiveCustomizerInsetPanelClass;
+  const sectionEyebrowClass = immersiveCustomizerLabelTextClass;
+  const summaryLabelClass = immersiveCustomizerSummaryLabelClass;
+  const summaryTitle = selectedStyle.fullName.startsWith(`${selectedStyle.name} — `)
+    ? selectedStyle.fullName.slice(selectedStyle.name.length + 3)
+    : selectedStyle.fullName;
+  const navigation = buildCustomizerNavigation({
+    category: "apparel",
+    productionPath: "quick-turn",
+    currentLabel: summaryTitle,
+    returnTo: searchParams.get("returnTo"),
+  });
+  const topBadgeLabel = getCustomizerProductionPathLabel("quick-turn");
+  const topBadgeAsset = getCustomizerTopBadgeAsset(topBadgeLabel ?? undefined);
 
   return (
-    <main className="bg-[linear-gradient(180deg,#F5F1E8_0%,#EFF3F9_48%,#F5F1E8_100%)] text-[#1C1C1C]">
-      <section className="border-b border-[#081E6F]/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,249,252,0.96)_100%)]">
-        <div className="mx-auto flex max-w-[96rem] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-          <Link
-            href="/goods/apparel/styles"
-            className="inline-flex w-fit items-center gap-1.5 text-base font-semibold text-[#0B32A0] transition hover:text-[#FF4200]"
-          >
-            ← Back to apparel styles
-          </Link>
-
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF4200]">
-                Draft builder
-              </p>
-              <h1 className="mt-3 text-4xl leading-none text-[#0B32A0] md:text-6xl">
-                Full Custom Apparel
-              </h1>
-            </div>
-            <p className="max-w-2xl text-base leading-7 text-[#4b4b4b]">
-              Same builder structure as full custom hats, now loaded with the live supplier-backed apparel catalog so blank, color, and pricing decisions start from real garments.
-            </p>
-          </div>
-
-          {draftLinks.length > 0 ? (
-            <div className="flex flex-wrap gap-3">
-              {draftLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="inline-flex min-h-12 items-center rounded-[1rem] border border-dashed border-[#081E6F]/20 bg-[#F5F7FC] px-5 text-sm font-semibold text-[#0B32A0] transition hover:border-[#FF4200] hover:text-[#FF4200]"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
-
-      <section className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-[96rem] gap-6 xl:grid-cols-[minmax(0,1.04fr)_minmax(380px,460px)_minmax(320px,360px)]">
+    <MasterCustomizerShell
+      compactHeader={!showPageHero}
+      header={(
+        <CustomizerPageHeader
+          backHref={navigation.backHref}
+          backLabel={navigation.backLabel}
+          eyebrow={showPageHero ? "Quick Turn" : undefined}
+          title={showPageHero ? "Quick Turn Apparel" : undefined}
+          description={showPageHero ? "Build quick-turn apparel around premium blanks, cleaner decoration decisions, and the same tighter customizer rhythm used across the approved hats flow." : undefined}
+        >
+          {showPageHero && draftLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={immersiveCustomizerGhostLinkClass}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </CustomizerPageHeader>
+      )}
+      gridClassName="xl:grid-cols-[minmax(0,1.04fr)_minmax(380px,460px)_minmax(320px,360px)]"
+    >
           <div className="space-y-6">
             <div className="grid gap-5">
               {selectedColorImages.map((image, index) => (
@@ -731,37 +740,38 @@ export function ApparelBuilderPreview({
 
           <aside className="space-y-4 lg:self-start">
             <div className={panelClass}>
-              <nav className="flex flex-wrap gap-1.5 text-xs uppercase tracking-[0.12em] text-[#6b6b6b]">
-                <span>Goods</span>
-                <span>/</span>
-                <span>Apparel</span>
-                <span>/</span>
-                <span className="font-semibold text-[#0B32A0]">{selectedStyle.name}</span>
-              </nav>
+              <CustomizerBreadcrumbs items={navigation.breadcrumbs} />
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#FF4200]">
-                  Selected blank
-                </p>
-                <h2 className="mt-2 text-5xl leading-none text-[#0B32A0]">
-                  {selectedStyle.name}
-                </h2>
-                <p className="mt-4 text-[15px] leading-7 text-[#4b4b4b]">
-                  {selectedStyle.fullName} · {selectedFamilyLabel} · {selectedStyle.fit} fit
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
-                    {selectedStyle.weight}
-                  </span>
-                  <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
-                    {selectedStyle.material}
-                  </span>
-                  <span className="rounded-full border border-[#FF4200]/16 bg-[#FFF4ED] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FF4200]">
-                    From {money(selectedStyle.priceFrom)}/unit
-                  </span>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#FF4200]">
+                      {selectedStyle.name}
+                    </p>
+                    <h2 className="mt-2 text-5xl leading-none text-[#0B32A0]">
+                      {summaryTitle}
+                    </h2>
+                  </div>
+
+                  {topBadgeLabel ? (
+                    topBadgeAsset ? (
+                      <Image
+                        src={topBadgeAsset.src}
+                        alt={topBadgeAsset.alt}
+                        width={topBadgeAsset.width}
+                        height={topBadgeAsset.height}
+                        className="h-10 w-auto shrink-0"
+                        priority
+                      />
+                    ) : (
+                      <span className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-[#0B32A0]/14 bg-[#EFF4FF] px-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B32A0]">
+                        {topBadgeLabel}
+                      </span>
+                    )
+                  ) : null}
                 </div>
-                <p className="mt-5 text-[15px] leading-7 text-[#4b4b4b]">
-                  {selectedStyle.description}
+                <p className="mt-3 text-base leading-7 text-[#4b4b4b]">
+                  A tighter quick-turn apparel build around premium blanks, real colorways, and only the decoration decisions that actually matter.
                 </p>
               </div>
             </div>
@@ -785,7 +795,24 @@ export function ApparelBuilderPreview({
                     ))}
                   </select>
                   <p className="mt-3 text-sm leading-6 text-[#8a8a8a]">
-                    {selectedStyle.brand} · {selectedStyle.weight} · {timelineLabel(selectedStyle)}
+                    {selectedStyle.fullName} · {selectedFamilyLabel} · {selectedStyle.fit} fit
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                      {selectedStyle.brand}
+                    </span>
+                    <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                      {selectedStyle.weight}
+                    </span>
+                    <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                      {selectedStyle.material}
+                    </span>
+                    <span className="rounded-full border border-[#FF4200]/16 bg-[#FFF4ED] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FF4200]">
+                      From {money(selectedStyle.priceFrom)}/unit
+                    </span>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-7 text-[#4b4b4b]">
+                    {selectedStyle.description}
                   </p>
                 </div>
 
@@ -889,8 +916,8 @@ export function ApparelBuilderPreview({
                           className="pointer-events-none absolute top-0 z-10"
                           style={sliderPositionStyle(quantityTierIndex, QUANTITY_MARKS.length)}
                         >
-                          <span className="inline-flex min-h-8 whitespace-nowrap rounded-full bg-[#0B32A0] px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-[0_10px_24px_rgba(8,30,111,0.16)]">
-                            {money(pricing.unitPrice)}/unit
+                          <span className="inline-flex min-h-8 whitespace-nowrap rounded-full bg-[#0B32A0] px-3.5 py-1.5 text-[11px] font-semibold text-white">
+                            {money(shippingIncludedUnitPrice)}/unit
                           </span>
                         </div>
                         <input
@@ -940,7 +967,7 @@ export function ApparelBuilderPreview({
                         onClick={() => setFrontDecoration(option.id)}
                         className={`min-h-[5rem] rounded-[1.2rem] border px-4 py-3 text-left transition duration-200 ${
                           frontDecoration === option.id
-                            ? primarySelectedOptionClass
+                            ? frontDecorationSelectedOptionClass
                             : neutralOptionClass
                         }`}
                       >
@@ -1395,6 +1422,9 @@ export function ApparelBuilderPreview({
                   <p className="mb-3 text-sm leading-6 text-[#8a8a8a]">
                     Flag placements, Pantones, packaging requests, or anything else we should build around.
                   </p>
+                  <p className="mb-3 text-sm leading-6 text-[#8a8a8a]">
+                    Need to split this across different colors or styles? Leave a note and we&apos;ll reach out.
+                  </p>
                   <textarea
                     value={notes}
                     onChange={(event) => setNotes(event.target.value)}
@@ -1430,7 +1460,7 @@ export function ApparelBuilderPreview({
           </aside>
 
           <aside className="xl:sticky xl:top-24 xl:self-start">
-            <div className={`${panelClass} overflow-hidden`}>
+            <div className={`${panelClass} overflow-hidden xl:flex xl:max-h-[calc(100vh-8.5rem)] xl:flex-col`}>
               <div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
@@ -1442,7 +1472,7 @@ export function ApparelBuilderPreview({
                 </div>
               </div>
 
-              <div className="mt-6 space-y-3.5 text-sm">
+              <div className="mt-6 rounded-[1rem] border border-[#081E6F]/10 bg-[#FBF7F1]/65 text-sm xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:pr-1">
                 {[
                   { label: "Product", value: selectedStyle.name },
                   { label: "Color", value: selectedColor?.name ?? "Not selected" },
@@ -1461,28 +1491,31 @@ export function ApparelBuilderPreview({
                   { label: "Selected options", value: selectedOptionsLabel },
                   { label: "Turnaround", value: timelineLabel(selectedStyle) },
                   { label: "Estimated delivery date", value: estimatedDeliveryShortLabel },
-                ].map((row) => (
-                  <div key={row.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-4 rounded-[1rem] bg-[#F7F9FC] px-4 py-3">
+                ].map((row, index) => (
+                  <div
+                    key={row.label}
+                    className={`grid grid-cols-[minmax(0,1fr)_auto] gap-3 px-3.5 py-2 ${index > 0 ? "border-t border-[#081E6F]/10" : ""}`}
+                  >
                     <span className={summaryLabelClass}>{row.label}</span>
-                    <span className={summaryValueClass}>{row.value}</span>
+                    <span className="text-right text-[12px] font-semibold leading-5 text-[#171717]">{row.value}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-6 rounded-[1.3rem] border border-[#081E6F]/10 bg-[linear-gradient(180deg,#F8F2EA_0%,#FDFDFD_100%)] p-5">
+              <div className="mt-5 border-t border-[#081E6F]/10 pt-5">
                 <div className="mb-3 flex items-end justify-between gap-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                     Unit price
                   </p>
-                  <p className="text-2xl font-semibold leading-none text-[#0B32A0]">
-                    {money(pricing.unitPrice)}
+                  <p className="text-xl font-semibold leading-none text-[#0B32A0]">
+                    {money(shippingIncludedUnitPrice)}
                   </p>
                 </div>
                 <div className="flex items-end justify-between gap-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                     Total
                   </p>
-                  <p className="text-4xl font-semibold leading-none text-[#FF4200]">
+                  <p className="text-3xl font-semibold leading-none text-[#FF4200]">
                     {money(estimatedTotal)}
                   </p>
                 </div>
@@ -1490,27 +1523,26 @@ export function ApparelBuilderPreview({
 
               <Link
                 href={`/contact?${handoffParams.toString()}`}
-                className="mt-6 flex min-h-14 w-full items-center justify-center rounded-[1.1rem] bg-[#FF4200] px-6 text-center text-[15px] font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255,66,0,0.24)]"
+                className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[#FF4200] px-5 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
               >
                 Submit order for review
               </Link>
-              <p className="mt-4 text-center text-sm leading-6 text-[#6b6b6b]">
-                Send us your build for review. Final quote is confirmed after review.
-              </p>
+              <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                  Next steps
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  Send us your build for review and we&apos;ll confirm final pricing, decoration guidance, and delivery timing.
+                </p>
+              </div>
               <Link
-                href={`/contact?${new URLSearchParams({
-                  intent: "apparel-human-help",
-                  product: selectedStyle.fullName,
-                  projectSummary,
-                }).toString()}`}
-                className="mt-4 block text-center text-sm font-semibold text-[#777] underline-offset-4 transition hover:text-[#0B32A0] hover:underline"
+                href={`/contact?${handoffParams.toString()}`}
+                className="mt-3 flex min-h-11 w-full items-center justify-center rounded-lg border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[#0B32A0] transition hover:border-[#0B32A0] hover:bg-[#F7F9FC]"
               >
-                Have Questions? Talk to our team.
+                Talk to our team
               </Link>
             </div>
           </aside>
-        </div>
-      </section>
-    </main>
+    </MasterCustomizerShell>
   );
 }
