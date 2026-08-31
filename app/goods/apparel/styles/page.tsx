@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 import { CTASection } from "@/components/CTASection";
 import { ContactPromptSection } from "@/components/ContactPromptSection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
@@ -89,12 +90,14 @@ export default function ApparelStylesPage() {
       </section>
 
       <section id="styles-catalog" className="pt-8 md:pt-10">
-        <AllGoodsBrowser
-          items={items}
-          lockedCategory="apparel"
-          className="mx-auto w-full max-w-[min(1760px,calc(100vw-1rem))] px-3 pb-10 md:px-6 xl:px-8"
-          searchPlaceholder="Search apparel styles, brands, fit, or fabric"
-        />
+        <Suspense fallback={<div className="mx-auto w-full max-w-[min(1760px,calc(100vw-1rem))] px-3 pb-10 md:px-6 xl:px-8" />}>
+          <AllGoodsBrowser
+            items={items}
+            lockedCategory="apparel"
+            className="mx-auto w-full max-w-[min(1760px,calc(100vw-1rem))] px-3 pb-10 md:px-6 xl:px-8"
+            searchPlaceholder="Search apparel styles, brands, fit, or fabric"
+          />
+        </Suspense>
       </section>
 
       <section className="px-4 py-12 md:px-8 md:py-16 lg:px-12">

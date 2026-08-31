@@ -211,8 +211,8 @@ function getHoverImageForStyle(style: SupplierCatalogStyle) {
 }
 
 export function buildApparelStyleCatalogItems(): ApparelCatalogStyleItem[] {
-  return SUPPLIER_CATALOG.styles
-    .map((style) => {
+  const items = SUPPLIER_CATALOG.styles
+    .map<ApparelCatalogStyleItem | null>((style) => {
       const product = PRODUCT_BY_SLUG[style.styleSlug];
       if (!product || !isSupportedCategory(product.category)) return null;
 
@@ -245,8 +245,9 @@ export function buildApparelStyleCatalogItems(): ApparelCatalogStyleItem[] {
         ),
       } satisfies ApparelCatalogStyleItem;
     })
-    .filter((style): style is ApparelCatalogStyleItem => style !== null)
-    .sort((left, right) => left.fullName.localeCompare(right.fullName));
+    .filter((style): style is ApparelCatalogStyleItem => style !== null);
+
+  return items.sort((left, right) => left.fullName.localeCompare(right.fullName));
 }
 
 export function buildApparelBuilderStyles(): ApparelBuilderDataStyle[] {

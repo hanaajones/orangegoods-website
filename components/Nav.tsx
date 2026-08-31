@@ -26,11 +26,16 @@ type PreviewMenuLink = {
   scale?: number;
 };
 
+type PreviewMenuItem = PreviewMenuLink & {
+  image: string;
+  position: string;
+};
+
 function getGoodsMenuPreview({ image, position, scale }: GoodsMenuPreview) {
   return { image, position, scale: scale ?? goodsMenuPreviewScale };
 }
 
-const products = [
+const products: PreviewMenuItem[] = [
   { label: "Hats", href: "/goods/hats", image: "/images/gallery/hat-bread-head-tezza-3828.jpg", position: "center bottom" },
   { label: "Apparel", href: "/goods/apparel/styles", image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg", position: "center 50%" },
   { label: "Drinkware", href: "/goods/drinkware", image: "/images/gallery/drinkware-layla-stacked-mugs-img-7776-2026-08-20.jpg", position: "center 64%" },
@@ -45,7 +50,7 @@ const goodsMenuDefaultPreview = getGoodsMenuPreview({
   position: "center 50%",
 });
 
-const serviceLinks = [
+const serviceLinks: PreviewMenuItem[] = [
   {
     label: "Embroidery",
     href: "/services/embroidery",
