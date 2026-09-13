@@ -14,12 +14,16 @@ import {
   type ServiceProjectCarouselItem,
 } from "../_components/ServiceProjectCarousel";
 import { ServiceSnapCarousel } from "../_components/ServiceSnapCarousel";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Embroidery - Orange Goods",
   description:
     "Fast custom embroidery for brands that need premium goods, clean stitching, and a simple quote path.",
-};
+  path: "/services/embroidery",
+  image: "/images/gallery/embroidery-premium-cap-mg-6879.jpg",
+  imageAlt: "Custom embroidery by Orange Goods",
+});
 
 const processSteps = [
   {
@@ -381,6 +385,8 @@ export default function EmbroideryPage() {
               alt="OG"
               width={136}
               height={136}
+              loading="eager"
+              unoptimized
               className="h-[1.45em] w-[1.45em] object-contain"
             />
             <span>for embroidery</span>
@@ -416,6 +422,8 @@ export default function EmbroideryPage() {
                     alt={reason.iconAlt}
                     fill
                     sizes="48px"
+                    loading="eager"
+                    unoptimized
                     className="object-contain"
                   />
                 </div>
@@ -568,20 +576,26 @@ export default function EmbroideryPage() {
                   wrapClassName: "bg-white",
                   imageClassName: "h-[6.3rem] w-auto",
                 },
-              ].map((brand) => (
-                <article
-                  key={brand.name}
-                  className={`flex min-h-[9.5rem] items-center justify-center rounded-[1.5rem] border border-[#0B32A0]/12 p-6 shadow-[4px_4px_0px_#0B32A0] ${brand.wrapClassName}`}
-                >
-                  <Image
-                    src={brand.src}
-                    alt={brand.name}
-                    width={brand.width}
-                    height={brand.height}
-                    className={brand.imageClassName}
-                  />
-                </article>
-              ))}
+              ].map((brand) => {
+                const isSvg = brand.src.endsWith(".svg");
+
+                return (
+                  <article
+                    key={brand.name}
+                    className={`flex min-h-[9.5rem] items-center justify-center rounded-[1.5rem] border border-[#0B32A0]/12 p-6 shadow-[4px_4px_0px_#0B32A0] ${brand.wrapClassName}`}
+                  >
+                    <Image
+                      src={brand.src}
+                      alt={brand.name}
+                      width={brand.width}
+                      height={brand.height}
+                      loading={isSvg ? "eager" : undefined}
+                      unoptimized={isSvg}
+                      className={brand.imageClassName}
+                    />
+                  </article>
+                );
+              })}
             </div>
 
             <p className="text-sm leading-6 text-[#676767]">

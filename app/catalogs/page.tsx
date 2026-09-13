@@ -2,12 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Catalogs - Orange Goods",
   description:
     "Browse Orange Goods catalogs and guides, then open or download the PDFs that match your project.",
-};
+  path: "/catalogs",
+  image: "/images/gallery/goods-hero-misc-dscf4876.jpg",
+  imageAlt: "Orange Goods catalogs and guides",
+});
 
 const catalogs = [
   {

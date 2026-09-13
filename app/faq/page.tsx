@@ -3,6 +3,17 @@ import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { StructuredData } from "@/components/StructuredData";
+import { buildFaqStructuredData, buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "FAQ — Orange Goods",
+  description:
+    "Answers to common Orange Goods questions about minimums, timing, full custom versus quick turn, proofs, shipping, and getting a project started.",
+  path: "/faq",
+  image: "/images/gallery/faq-fish-at-sea-mg-6314.jpg",
+  imageAlt: "Orange Goods FAQ custom merch example",
+});
 
 const sections = [
   {
@@ -154,9 +165,19 @@ const nextSteps = [
   },
 ];
 
+const faqStructuredData = buildFaqStructuredData(
+  sections.flatMap((section) =>
+    section.questions.map((item) => ({
+      question: item.question,
+      answer: item.answer,
+    })),
+  ),
+);
+
 export default function FaqPage() {
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
+      <StructuredData id="faq-structured-data" data={faqStructuredData} />
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         <ParallaxHeroBackground
           image="/images/gallery/packaging-stanford-medicine-thinkhealth-craft-1.jpg"

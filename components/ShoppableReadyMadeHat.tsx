@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { QUICK_TURN_FREE_SHIPPING_LABEL, addQuickTurnReadyMadeHatShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 
 // ── Color hex map ─────────────────────────────────────────────────────────
 const COLOR_HEX: Record<string, string> = {
@@ -77,10 +78,10 @@ export type ReadyMadeHatStyle = {
 
 // ── Pricing ───────────────────────────────────────────────────────────────
 const QTY_TIERS = [
-  { qty: 100,  label: "100",   price: 16.50 },
-  { qty: 250,  label: "250",   price: 15.50 },
-  { qty: 500,  label: "500",   price: 14.50 },
-  { qty: 1000, label: "1,000", price: 13.50 },
+  { qty: 100,  label: "100",   price: addQuickTurnReadyMadeHatShippingIncludedPrice(16.50) },
+  { qty: 250,  label: "250",   price: addQuickTurnReadyMadeHatShippingIncludedPrice(15.50) },
+  { qty: 500,  label: "500",   price: addQuickTurnReadyMadeHatShippingIncludedPrice(14.50) },
+  { qty: 1000, label: "1,000", price: addQuickTurnReadyMadeHatShippingIncludedPrice(13.50) },
 ];
 
 function priceForQty(qty: number) {
@@ -110,7 +111,7 @@ export function ShoppableReadyMadeHat({ style, recommendedStyles }: {
   const [embStyle, setEmbStyle]       = useState<"none" | "puff" | "chain">("none");
   const [backEmb, setBackEmb]         = useState(false);
   const [sideEmb, setSideEmb]         = useState(false);
-  const [threadFinish, setThreadFinish] = useState<"matte" | "shiny">("matte");
+  const [threadFinish, setThreadFinish] = useState<"matte" | "shiny">("shiny");
   const [embColor, setEmbColor]       = useState("");
   const [logoFile, setLogoFile]       = useState<File | null>(null);
   const [tab, setTab]                 = useState<"details" | "fit" | "fabric">("details");
@@ -402,14 +403,14 @@ export function ShoppableReadyMadeHat({ style, recommendedStyles }: {
             <div className="pt-5">
               <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#1C1C1C]">Thread Finish</p>
               <div className="grid grid-cols-2 gap-2">
-                {(["matte", "shiny"] as const).map(f => (
+                {(["shiny", "matte"] as const).map(f => (
                   <button key={f} type="button" onClick={() => setThreadFinish(f)}
                     className={`rounded-xl border py-3 text-center text-xs font-semibold uppercase tracking-[0.12em] transition ${
                       threadFinish === f
                         ? "border-2 border-[var(--og-blue)] text-[var(--og-blue)]"
                         : "border border-[var(--og-blue)]/15 text-[var(--og-blue)]/50 hover:border-[var(--og-blue)]/40"
                     }`}>
-                    {f === "matte" ? "Matte" : "Shiny"}
+                    {f === "shiny" ? "Shiny" : "Matte"}
                   </button>
                 ))}
               </div>
@@ -475,7 +476,7 @@ export function ShoppableReadyMadeHat({ style, recommendedStyles }: {
                 }`}>
                   {timeline} production
                 </span>
-                <span className="text-xs text-[var(--og-muted)]">Free digitizing · $40 flat-rate shipping</span>
+                <span className="text-xs text-[var(--og-muted)]">Free digitizing · {QUICK_TURN_FREE_SHIPPING_LABEL}</span>
               </div>
             </div>
 
@@ -591,7 +592,7 @@ export function ShoppableReadyMadeHat({ style, recommendedStyles }: {
                     )}
                   </div>
                   <p className="px-1 text-sm font-medium text-[#1C1C1C]">{s.name}</p>
-                  <p className="px-1 text-sm text-[#1C1C1C]/50">From $16.50</p>
+                  <p className="px-1 text-sm text-[#1C1C1C]/50">From ${addQuickTurnReadyMadeHatShippingIncludedPrice(16.5).toFixed(2)}</p>
                 </a>
               );
             })}

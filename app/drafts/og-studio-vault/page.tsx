@@ -6,8 +6,8 @@ const draftGroups = [
     title: "Parked from public view",
     items: [
       {
-        label: "Build Online intake",
-        href: "/build",
+        label: "Create intake",
+        href: "/create",
         note: "Removed from homepage. Keep here for review only.",
       },
       {
@@ -31,14 +31,14 @@ const draftGroups = [
         note: "Shared builder and product detail preview.",
       },
       {
-        label: "AS Colour 5001 Builder",
-        href: "/build/products/as-colour-5001",
-        note: "Direct apparel builder route for the AS Colour 5001 tee.",
+        label: "AS Colour 5026 Builder",
+        href: "/create/apparel/as-colour-5026",
+        note: "Direct apparel builder route for the AS Colour 5026 tee.",
       },
       {
         label: "OG Crafted Apparel Builder",
-        href: "/build/og-crafted-apparel",
-        note: "Supplier-backed apparel builder draft modeled after the full custom hats builder.",
+        href: "/create/apparel/quick-turn",
+        note: "Supplier-backed quick-turn apparel builder modeled after the shared hats builder rhythm.",
       },
       {
         label: "Apparel template",

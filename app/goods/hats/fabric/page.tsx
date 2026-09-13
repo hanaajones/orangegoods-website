@@ -1,10 +1,14 @@
 import { HatsOptionCategoryPage } from "../HatsOptionCategoryPage";
 import { fabricOptions } from "../options-data";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Hat Fabric Options — Orange Goods",
   description: "Explore fabric directions for custom Orange Goods hats.",
-};
+  path: "/goods/hats/fabric",
+  image: "/images/gallery/headwear-fabric-color-mg-9423.jpg",
+  imageAlt: "Custom hat fabric options",
+});
 
 export default function HatsFabricPage() {
   const topAnchoredTitles = new Set([

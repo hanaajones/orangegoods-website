@@ -3,25 +3,39 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const STORAGE_KEY = "og_quiz_popup_dismissed_v1";
-const DELAY_MS = process.env.NODE_ENV === "production" ? 8000 : 1500;
+const STORAGE_KEY = "og_quiz_popup_dismissed_v3";
+const SESSION_SEEN_KEY = "og_quiz_popup_session_seen_v1";
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const DELAY_MS = IS_PRODUCTION ? 8000 : 300;
+
+const POPUP_ENABLED = false;
 
 export function NewsletterPopup() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (!POPUP_ENABLED) return;
     if (typeof window === "undefined") return;
-    if (localStorage.getItem(STORAGE_KEY)) return;
+    if (!window.matchMedia("(min-width: 1024px)").matches) return;
+
+    if (IS_PRODUCTION) {
+      if (localStorage.getItem(STORAGE_KEY)) return;
+      if (sessionStorage.getItem(SESSION_SEEN_KEY)) return;
+
+      sessionStorage.setItem(SESSION_SEEN_KEY, "1");
+    }
     const t = setTimeout(() => setVisible(true), DELAY_MS);
     return () => clearTimeout(t);
   }, []);
 
   function dismiss() {
-    localStorage.setItem(STORAGE_KEY, "1");
+    if (IS_PRODUCTION) {
+      localStorage.setItem(STORAGE_KEY, "1");
+    }
     setVisible(false);
   }
 
-  if (!visible) return null;
+  if (!POPUP_ENABLED || !visible) return null;
 
   return (
     <>
@@ -34,7 +48,7 @@ export function NewsletterPopup() {
 
       {/* Modal */}
       <div
-        className="fixed inset-x-4 bottom-6 z-[90] mx-auto max-w-xl rounded-2xl bg-white shadow-2xl md:bottom-auto md:left-1/2 md:top-1/2 md:inset-x-auto md:-translate-x-1/2 md:-translate-y-1/2"
+        className="fixed left-1/2 top-1/2 z-[90] w-[min(100%-2rem,36rem)] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white shadow-2xl"
         role="dialog"
         aria-modal="true"
       >
@@ -49,20 +63,19 @@ export function NewsletterPopup() {
           </svg>
         </button>
 
-        <div className="px-10 pb-10 pt-10">
+        <div className="px-8 pb-9 pt-9 sm:px-11 sm:pb-11 sm:pt-11">
           <p className="font-accent text-sm uppercase tracking-[0.22em] text-[#081E6F]">
             Need a starting point?
           </p>
           <h2
-            className="mt-3 text-4xl uppercase leading-tight text-[#FF4200] md:text-5xl"
+            className="mt-3 whitespace-nowrap text-[clamp(1rem,4vw,2.2rem)] uppercase leading-[0.96] tracking-[-0.02em] text-[#FF4200]"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Take the 30-second quiz
+            Take our 30-second quiz
           </h2>
 
           <p className="mt-4 max-w-lg text-lg leading-7 text-[#1C1C1C]/70">
-            Tell us what you are making and we&apos;ll point you toward the right product lane,
-            material feel, and next step.
+            Pick what you like and we&apos;ll point you toward the best fit.
           </p>
 
           <div className="mt-8 flex flex-col gap-4">
@@ -81,10 +94,6 @@ export function NewsletterPopup() {
               Skip and start a project
             </Link>
           </div>
-
-          <p className="mt-5 text-sm text-[#1C1C1C]/40">
-            Best for people who know the goal but not the exact product yet.
-          </p>
         </div>
       </div>
     </>

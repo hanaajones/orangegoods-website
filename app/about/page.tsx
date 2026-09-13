@@ -7,12 +7,16 @@ import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
 import { logos, startProjectHref } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "About - Orange Goods",
   description:
     "Orange Goods is a founder-led custom merch studio built on product taste, production experience, and clear communication.",
-};
+  path: "/about",
+  image: "/images/gallery/about-team-hana-headshot-2026-08-13.jpg",
+  imageAlt: "Orange Goods team",
+});
 
 const trustPoints = [
   {
@@ -25,6 +29,8 @@ const trustPoints = [
         aria-hidden="true"
         width={294}
         height={288}
+        loading="eager"
+        unoptimized
         className="h-12 w-auto"
       />
     ),
@@ -39,6 +45,8 @@ const trustPoints = [
         aria-hidden="true"
         width={183}
         height={238}
+        loading="eager"
+        unoptimized
         className="h-12 w-auto"
       />
     ),
@@ -53,6 +61,8 @@ const trustPoints = [
         aria-hidden="true"
         width={262}
         height={277}
+        loading="eager"
+        unoptimized
         className="h-12 w-auto"
       />
     ),
@@ -331,7 +341,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal className="bg-[#F7F4ED] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+      <Reveal className="bg-[#F7F4ED] px-4 pt-12 pb-6 md:px-8 md:pt-16 md:pb-8 lg:px-12">
         <section className="mx-auto max-w-6xl rounded-[2rem] border border-[#DCCDB8] bg-white p-6 md:p-8 lg:p-10">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
@@ -380,7 +390,7 @@ export default function AboutPage() {
         </section>
       </Reveal>
 
-      <Reveal className="bg-[#F7F4ED] px-4 py-12 md:px-8 md:py-16 lg:px-12">
+      <Reveal className="bg-[#F7F4ED] px-4 pt-6 pb-12 md:px-8 md:pt-8 md:pb-16 lg:px-12">
         <section className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-[#E5D6C2] p-6 md:p-8 lg:p-10">
           <video
             autoPlay

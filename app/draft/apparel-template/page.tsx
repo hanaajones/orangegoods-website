@@ -5,5 +5,5 @@ export const metadata = {
 };
 
 export default function ApparelTemplateDraftPage() {
-  redirect("/goods/apparel/styles");
+  redirect("/goods/apparel/quick-turn");
 }

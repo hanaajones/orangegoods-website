@@ -27,6 +27,10 @@ export default function QuizPage() {
     ((isResults ? totalSteps : step + 1) / totalSteps) * 100,
     100,
   );
+  const quizCardClass =
+    "mx-auto flex w-full max-w-5xl min-h-[calc(100svh-8.75rem)] flex-col rounded-[2rem] border-[3px] border-[#0B32A0] bg-white p-6 shadow-[0_24px_60px_rgba(11,50,160,0.08)] md:min-h-[700px] md:p-10 lg:p-12";
+  const quizHeaderMetaClass =
+    "inline-flex min-h-8 items-center justify-center gap-1 rounded-full border-[2px] border-[#0B32A0] bg-white px-2.5 text-[0.58rem] font-semibold uppercase tracking-[0.1em] text-[#0B32A0] shadow-[2px_2px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]";
 
   function selectAnswer(questionId: MainQuizQuestionId, option: string) {
     setAnswers((current) => ({ ...current, [questionId]: option }));
@@ -55,9 +59,9 @@ export default function QuizPage() {
 
   return (
     <main className="min-h-screen bg-[#F7F4ED] text-[var(--og-off-black)]">
-      <div className="fixed left-0 top-0 z-20 h-1 w-full bg-[#1C1C1C]/10">
+      <div className="fixed left-0 top-[6.875rem] z-20 h-1 w-full bg-[#1C1C1C]/10 md:top-[6.25rem]">
         <div
-          className="h-full bg-[var(--og-orange)] transition-all duration-500 ease-out"
+          className="h-full bg-[#0B32A0] transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -65,49 +69,58 @@ export default function QuizPage() {
       {!isLeadStep && !isResults && currentQuestion ? (
         <section
           key={currentQuestion.id}
-          className="flex min-h-screen animate-[quizStep_0.28s_ease-out] items-center px-4 py-16 md:px-8 md:py-20"
+          className="flex animate-[quizStep_0.28s_ease-out] items-start px-4 pb-4 pt-4 md:min-h-screen md:items-center md:px-8 md:py-20"
         >
-          <div className="mx-auto w-full max-w-5xl rounded-[2rem] border-[3px] border-[#0B32A0] bg-white p-6 shadow-[0_24px_60px_rgba(11,50,160,0.08)] md:p-10 lg:p-12">
+          <div className={quizCardClass}>
             <div className="mb-8 flex min-h-11 items-start justify-between gap-4">
               <div className="flex flex-col items-start gap-2">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]">
-                  30-second merch quiz
+                <p className="text-sm font-semibold uppercase leading-[1.1] tracking-[0.28em] text-[#FF7F00]">
+                  <span className="block">30 second</span>
+                  <span className="mt-1 block">Merch quiz</span>
                 </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2 pt-1">
                 {step > 0 ? (
                   <button
                     type="button"
                     onClick={goBack}
                     title="Go to previous page"
-                    className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-[3px] border-[#0B32A0] bg-white px-4 text-sm font-semibold uppercase tracking-[0.14em] text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+                    className={quizHeaderMetaClass}
                     aria-label="Go to previous page"
                   >
-                    <span aria-hidden="true" className="text-2xl leading-none">
+                    <span aria-hidden="true" className="text-sm leading-none">
                       ‹
                     </span>
-                    <span>Go back</span>
+                    <span>Back</span>
                   </button>
-                ) : null}
-              </div>
-              <div className="pt-1">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-[#1C1C1C]/42">
+                ) : (
+                  <span className={`${quizHeaderMetaClass} invisible`} aria-hidden="true">
+                    <span className="text-sm leading-none">‹</span>
+                    <span>Back</span>
+                  </span>
+                )}
+                <p className="whitespace-nowrap font-body text-xs font-semibold uppercase tracking-[0.18em] text-[#1C1C1C]/42">
                   {currentQuestion.eyebrow}
                 </p>
               </div>
             </div>
 
-            <div className="translate-y-0 opacity-100 transition duration-300 ease-out">
+            <div className="min-h-[7.25rem] translate-y-0 opacity-100 transition duration-300 ease-out md:min-h-[8.5rem]">
               <h1
-                className="max-w-4xl text-[2.1rem] uppercase leading-[0.92] text-[var(--og-blue)] md:text-[3.9rem]"
+                className={[
+                  "max-w-4xl text-[2.1rem] uppercase leading-[0.92] text-[var(--og-blue)] md:text-[3.9rem]",
+                  currentQuestion.id === "quantity" ? "whitespace-nowrap" : "",
+                ].join(" ")}
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {currentQuestion.title}
               </h1>
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-[#1C1C1C]/68 md:text-xl">
+              <p className="mt-4 max-w-2xl text-lg leading-7 text-[#1C1C1C]/68 md:text-xl">
                 {currentQuestion.subtext}
               </p>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-3 md:gap-5">
+            <div className="mt-auto grid grid-cols-2 gap-3 pt-7 md:gap-5">
               {currentQuestion.options.map((option) => {
                 const selected = answers[currentQuestion.id] === option;
                 return (
@@ -138,47 +151,47 @@ export default function QuizPage() {
           </div>
         </section>
       ) : isLeadStep ? (
-        <section className="flex min-h-screen animate-[quizStep_0.28s_ease-out] items-center px-4 py-16 md:px-8 md:py-20">
-          <div className="mx-auto w-full max-w-5xl rounded-[2rem] border-[3px] border-[#0B32A0] bg-white p-6 shadow-[0_24px_60px_rgba(11,50,160,0.08)] md:p-10 lg:p-12">
+        <section className="flex animate-[quizStep_0.28s_ease-out] items-start px-4 pb-4 pt-4 md:min-h-screen md:items-center md:px-8 md:py-20">
+          <div className={quizCardClass}>
             <div className="mb-8 flex min-h-11 items-start justify-between gap-4">
               <div className="flex flex-col items-start gap-2">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#FF7F00]">
-                  30-second merch quiz
+                <p className="text-sm font-semibold uppercase leading-[1.1] tracking-[0.28em] text-[#FF7F00]">
+                  <span className="block">30 second</span>
+                  <span className="mt-1 block">Merch quiz</span>
                 </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-2 pt-1">
                 <button
                   type="button"
                   onClick={goBack}
                   title="Go to previous page"
-                  className="mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-full border-[3px] border-[#0B32A0] bg-white px-4 text-sm font-semibold uppercase tracking-[0.14em] text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+                  className={quizHeaderMetaClass}
                   aria-label="Go to previous page"
                 >
-                  <span aria-hidden="true" className="text-2xl leading-none">
+                  <span aria-hidden="true" className="text-sm leading-none">
                     ‹
                   </span>
-                  <span>Go back</span>
+                  <span>Back</span>
                 </button>
-              </div>
-              <div className="pt-1">
-                <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-[#1C1C1C]/42">
+                <p className="whitespace-nowrap font-body text-xs font-semibold uppercase tracking-[0.18em] text-[#1C1C1C]/42">
                   One last thing
                 </p>
               </div>
             </div>
 
-            <div className="translate-y-0 opacity-100 transition duration-300 ease-out">
+            <div className="min-h-[7.25rem] translate-y-0 opacity-100 transition duration-300 ease-out md:min-h-[8.5rem]">
               <h1
                 className="max-w-4xl text-[2.8rem] uppercase leading-[0.9] text-[var(--og-blue)] md:text-[5.1rem]"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 Ready to see your results?
-                <br />
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-[#1C1C1C]/68 md:text-xl">
                 Drop in your name and email to see your results on the next page, and we will send you a copy too.
               </p>
             </div>
 
-            <form onSubmit={viewResults} className="mt-10 max-w-3xl">
+            <form onSubmit={viewResults} className="mt-auto max-w-3xl pt-4">
               <div className="grid gap-4 md:grid-cols-2 md:gap-5">
                 <label className="flex flex-col gap-2">
                   <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#1C1C1C]/42">

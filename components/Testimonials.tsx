@@ -21,20 +21,26 @@ export function Testimonials({
         </div>
         <div className="overflow-hidden bg-white py-7">
           <div className="animate-marquee flex w-max items-center gap-16 px-10">
-            {[...logos, ...logos, ...logos, ...logos].map((logo, i) => (
-              <div
-                key={`${logo.name}-${i}`}
-                className="relative h-12 w-40 flex-none opacity-[0.72] grayscale transition hover:opacity-100 hover:grayscale-0"
-              >
-                <Image
-                  src={logo.image}
-                  alt={logo.name}
-                  fill
-                  sizes="160px"
-                  className="object-contain"
-                />
-              </div>
-            ))}
+            {[...logos, ...logos, ...logos, ...logos].map((logo, i) => {
+              const isSvg = logo.image.endsWith(".svg");
+
+              return (
+                <div
+                  key={`${logo.name}-${i}`}
+                  className="relative h-12 w-40 flex-none opacity-[0.72] grayscale transition hover:opacity-100 hover:grayscale-0"
+                >
+                  <Image
+                    src={logo.image}
+                    alt={logo.name}
+                    fill
+                    sizes="160px"
+                    loading={isSvg ? "eager" : undefined}
+                    unoptimized={isSvg}
+                    className="object-contain"
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

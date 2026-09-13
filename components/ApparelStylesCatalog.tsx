@@ -616,7 +616,7 @@ export function ApparelStylesCatalog({
             ) : (
               <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3 3xl:grid-cols-4">
                 {visibleStyles.map((style) => {
-                  const href = `/build/og-crafted-apparel?style=${encodeURIComponent(style.slug)}`;
+                  const href = `/create/apparel/${encodeURIComponent(style.slug)}`;
                   const visibleSwatches = style.colors.slice(0, 5);
                   const hiddenColorCount = Math.max(style.colors.length - visibleSwatches.length, 0);
 

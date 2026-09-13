@@ -1,239 +1,489 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
+import {
+  CustomizerPageHeader,
+  immersiveCustomizerGhostLinkClass,
+  immersiveCustomizerHelperTextClass,
+  immersiveCustomizerInsetPanelClass,
+  immersiveCustomizerLabelTextClass,
+  immersiveCustomizerProcessCardClass,
+  immersiveCustomizerSecondarySelectedOptionClass,
+  immersiveCustomizerShellCardClass,
+  immersiveCustomizerSummaryLabelClass,
+  immersiveCustomizerSummaryValueClass,
+  immersiveCustomizerUnselectedOptionClass,
+  MasterCustomizerShell,
+} from "@/components/MasterCustomizerShell";
+import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import { BEANIE_STYLES, getBeanieStyleBySlug } from "@/lib/beanie-styles";
+import { addProjectCartItem, getProjectCartItem } from "@/lib/project-cart";
+import { QUICK_TURN_FREE_SHIPPING_LABEL } from "@/lib/quick-turn-shipping";
 
 const QUANTITY_OPTIONS = [100, 250, 500, 1000];
-const shellCardClass = "rounded-[1.75rem] border border-[#081E6F]/12 bg-white/96 p-6 shadow-[0_24px_70px_rgba(8,30,111,0.08)]";
-const processCardClass =
-  "rounded-[1.5rem] border border-[#081E6F]/12 bg-[linear-gradient(180deg,#FFF9F2_0%,#F7F4ED_100%)] p-5 text-[#0B32A0] shadow-[0_16px_40px_rgba(8,30,111,0.07)]";
-const labelTextClass = "text-[13px] font-semibold uppercase tracking-[0.16em] text-[#6b6b6b]";
-const blueSelectedOptionClass =
-  "border-[#0B32A0] bg-[#0B32A0] text-white shadow-[0_12px_28px_rgba(11,50,160,0.18)]";
-const orangeSelectedOptionClass =
-  "border-[#FF4200] bg-[#FF4200] text-white shadow-[0_12px_28px_rgba(255,66,0,0.2)]";
-const unselectedOptionClass = "border-[#081E6F]/12 bg-[#FBF7F1] text-[#0B32A0] hover:border-[#0B50D0]";
+const shellCardClass = immersiveCustomizerShellCardClass;
+const processCardClass = immersiveCustomizerProcessCardClass;
+const insetPanelClass = immersiveCustomizerInsetPanelClass;
+const labelTextClass = immersiveCustomizerLabelTextClass;
+const helperTextClass = immersiveCustomizerHelperTextClass;
+const summaryLabelClass = immersiveCustomizerSummaryLabelClass;
+const summaryValueClass = immersiveCustomizerSummaryValueClass;
+const blueSelectedOptionClass = immersiveCustomizerSecondarySelectedOptionClass;
+const unselectedOptionClass = immersiveCustomizerUnselectedOptionClass;
+const selectArrowSvg = `url("data:image/svg+xml,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 20 20' fill='none'><path d='M5 7.5L10 12.5L15 7.5' stroke='%230B32A0' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+)}")`;
 
-export function BeanieBuilderPreview() {
+type BeanieBuilderPreviewProps = {
+  lockedStyleSlug?: string;
+  pageBackHref?: string;
+  pageBackLabel?: string;
+  showPageHero?: boolean;
+};
+
+type SavedBeanieCartConfig = {
+  additionalNotes?: string;
+  artworkName?: string;
+  basePath?: string;
+  colorName?: string;
+  decoration?: string;
+  kind: "beanie";
+  needsArtworkHelp?: boolean;
+  quantity?: string;
+  styleSlug?: string;
+};
+
+function swatchBorderClass(hex?: string) {
+  if (!hex) return "border-[#081E6F]/10";
+  const normalized = hex.toLowerCase();
+  return normalized === "#ffffff" || normalized === "#e4e0d4" || normalized === "#d1cdca" || normalized === "#e4e4e6"
+    ? "border-[#081E6F]/16"
+    : "border-transparent";
+}
+
+function sliderPositionStyle(index: number, total: number, thumbSizePx = 16) {
+  if (total <= 1) {
+    return {
+      left: `${thumbSizePx / 2}px`,
+      transform: "translateX(-50%)",
+    };
+  }
+
+  const percent = (index / (total - 1)) * 100;
+
+  return {
+    left: `calc(${percent}% * (100% - ${thumbSizePx}px) / 100% + ${thumbSizePx / 2}px)`,
+    transform: "translateX(-50%)",
+  };
+}
+
+function clampQuantity(value: number) {
+  return Math.min(5000, Math.max(100, value));
+}
+
+export function BeanieBuilderPreview(props: BeanieBuilderPreviewProps) {
   const searchParams = useSearchParams();
-  const initialStyle = getBeanieStyleBySlug(searchParams.get("style"));
+  const requestedStyleSlug = props.lockedStyleSlug ?? searchParams.get("style") ?? "";
+  const returnTo = searchParams.get("returnTo") ?? "";
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const resetKey = `${requestedStyleSlug}::${returnTo}::${projectCartItemId}`;
+
+  return <BeanieBuilderPreviewContent key={resetKey} {...props} />;
+}
+
+function BeanieBuilderPreviewContent({
+  lockedStyleSlug,
+  pageBackHref = "/goods/all",
+  pageBackLabel = "Back to all goods",
+  showPageHero: showPageHeroOverride,
+}: BeanieBuilderPreviewProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const requestedStyleSlug = lockedStyleSlug ?? searchParams.get("style");
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId");
+  const initialStyle = getBeanieStyleBySlug(requestedStyleSlug);
   const [selectedStyleSlug, setSelectedStyleSlug] = useState(initialStyle.slug);
+  const [selectedColorName, setSelectedColorName] = useState(initialStyle.colors[0]?.name ?? "");
   const [decoration, setDecoration] = useState(initialStyle.decorationOptions[0] ?? "Embroidery");
   const [quantity, setQuantity] = useState(100);
+  const [qtyInput, setQtyInput] = useState("100");
   const [needsArtworkHelp, setNeedsArtworkHelp] = useState(false);
+  const [logoFileName, setLogoFileName] = useState("");
+  const [additionalNotes, setAdditionalNotes] = useState("");
+  const hydratedCartItemIdRef = useRef<string | null>(null);
 
   const selectedStyle = useMemo(
-    () => BEANIE_STYLES.find((style) => style.slug === selectedStyleSlug) ?? BEANIE_STYLES[0],
-    [selectedStyleSlug],
+    () =>
+      BEANIE_STYLES.find((style) => style.slug === (lockedStyleSlug ?? selectedStyleSlug)) ?? BEANIE_STYLES[0],
+    [lockedStyleSlug, selectedStyleSlug],
   );
+  const selectedColor =
+    selectedStyle.colors.find((color) => color.name === selectedColorName) ?? selectedStyle.colors[0];
+  const showStyleChooser = !lockedStyleSlug;
+  const showPageHero = showPageHeroOverride ?? !lockedStyleSlug;
+  const quantityTierIndex =
+    QUANTITY_OPTIONS.reduce(
+      (bestIndex, option, index) =>
+        Math.abs(option - quantity) < Math.abs(QUANTITY_OPTIONS[bestIndex] - quantity) ? index : bestIndex,
+      0,
+    ) ?? 0;
+  const qtyTooltipPosition = sliderPositionStyle(quantityTierIndex, QUANTITY_OPTIONS.length);
 
-  const estimatedUnitPriceLabel = decoration === "Woven Label" ? "Custom quote" : "From $8.00 / beanie";
+  const estimatedUnitPriceLabel =
+    decoration === "Woven Label"
+      ? "Custom quote"
+      : `From $${selectedStyle.fromPrice.toFixed(2)} / beanie`;
+  const estimatedDeliveryLabel = decoration === "Woven Label" ? "Custom quote" : "2-3 weeks";
   const timelineItems = [
-    { label: "Style + decoration", value: "You are here now" },
+    { label: "Style + color", value: "You are here now" },
     { label: "Artwork review", value: "1-2 business days" },
     { label: "Sampling + approval", value: "Optional" },
-    { label: "Production", value: decoration === "Woven Label" ? "Custom quote" : "3-5 weeks" },
+    { label: "Production", value: decoration === "Woven Label" ? "Custom quote" : "2-3 weeks" },
     { label: "Shipping", value: "1-4 days" },
   ];
-  const includedItems = ["AS Colour beanie blank", decoration, "Size run", "Shipping"];
+  const includedItems = [
+    "AS Colour beanie blank",
+    selectedColor?.name ?? "Selected color",
+    decoration,
+    QUICK_TURN_FREE_SHIPPING_LABEL,
+  ];
   const orderProcessSteps = [
     { title: "Choose the beanie", detail: "Start with the right knit, fit, and overall silhouette." },
+    { title: "Pick the color", detail: "Lock in the colorway that fits the brand and the season." },
     { title: "Set the decoration", detail: "Dial in embroidery, patch, or woven-label direction." },
-    { title: "Review + quote", detail: "We confirm artwork, pricing, and the cleanest production path." },
   ];
   const projectSummary = [
     "Product: Beanies",
-    "Program: Full Custom",
+    "Program: Quick Turn",
     `Beanie style: ${selectedStyle.model} ${selectedStyle.title}`,
+    selectedColor ? `Color: ${selectedColor.name}` : "",
     `Decoration: ${decoration}`,
     `Quantity: ${quantity.toLocaleString()}`,
     `Fit: ${selectedStyle.fit}`,
     `Material: ${selectedStyle.material}`,
+    logoFileName ? `Artwork file: ${logoFileName}` : "",
     needsArtworkHelp ? "Artwork help: Yes" : "",
+    additionalNotes.trim() ? `Notes: ${additionalNotes.trim()}` : "",
   ]
     .filter(Boolean)
     .join("\n");
 
-  const submitHref = `/contact?${new URLSearchParams({
-    intent: "submit-build",
-    source: "og-crafted-beanie-builder",
-    product: "Beanies",
-    mode: "Full Custom",
-    style: selectedStyle.model,
-    styleName: selectedStyle.title,
-    qty: String(quantity),
-    decoration,
-    material: selectedStyle.material,
-    fit: selectedStyle.fit,
-    needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
-    projectSummary,
-  }).toString()}`;
+  const navigation = buildCustomizerNavigation({
+    category: "beanies",
+    productionPath: "quick-turn",
+    currentLabel: selectedStyle.title,
+    returnTo: searchParams.get("returnTo"),
+    fallbackHref: pageBackHref.includes("?") ? pageBackHref : undefined,
+    fallbackLabel: pageBackHref.includes("?") ? pageBackLabel : undefined,
+  });
+  const topBadgeLabel = getCustomizerProductionPathLabel("quick-turn");
+
+  useEffect(() => {
+    if (!projectCartItemId || hydratedCartItemIdRef.current === projectCartItemId) return;
+
+    const savedItem = getProjectCartItem(projectCartItemId);
+    const configuration = savedItem?.configuration as SavedBeanieCartConfig | undefined;
+    if (!configuration || configuration.kind !== "beanie") return;
+
+    const nextStyle = getBeanieStyleBySlug(configuration.styleSlug ?? requestedStyleSlug ?? "");
+    const nextColorName = nextStyle.colors.some((color) => color.name === configuration.colorName)
+      ? configuration.colorName ?? ""
+      : nextStyle.colors[0]?.name ?? "";
+    const nextDecoration = nextStyle.decorationOptions.includes(configuration.decoration ?? "")
+      ? configuration.decoration ?? "Embroidery"
+      : nextStyle.decorationOptions[0] ?? "Embroidery";
+    const nextQuantity = clampQuantity(Number(configuration.quantity) || 100);
+
+    hydratedCartItemIdRef.current = projectCartItemId;
+    setSelectedStyleSlug(nextStyle.slug);
+    setSelectedColorName(nextColorName);
+    setDecoration(nextDecoration);
+    setQuantity(nextQuantity);
+    setQtyInput(String(nextQuantity));
+    setNeedsArtworkHelp(Boolean(configuration.needsArtworkHelp));
+    setLogoFileName(configuration.artworkName ?? "");
+    setAdditionalNotes(configuration.additionalNotes ?? "");
+  }, [projectCartItemId]);
+
+  function handleAddToProject() {
+    const targetCartId = projectCartItemId ?? `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    addProjectCartItem({
+      artworkName: logoFileName,
+      configuration: {
+        additionalNotes: additionalNotes.trim() || undefined,
+        artworkName: logoFileName || undefined,
+        basePath: pathname,
+        colorName: selectedColor?.name ?? "",
+        decoration,
+        kind: "beanie",
+        needsArtworkHelp,
+        quantity: String(quantity),
+        schemaVersion: 1,
+        styleSlug: selectedStyle.slug,
+      },
+      editHref: `${pathname}?cartEdit=${encodeURIComponent(targetCartId)}&style=${encodeURIComponent(selectedStyle.slug)}&returnTo=%2Fcart`,
+      id: targetCartId,
+      kind: "beanie",
+      needsArtworkHelp,
+      product: "Beanies",
+      program: "Quick Turn",
+      quantity: String(quantity),
+      source: "quick-turn-beanie-builder",
+      summaryLines: projectSummary.split("\n").filter(Boolean),
+      title: `${selectedStyle.model} ${selectedStyle.title}`,
+    });
+    window.location.assign("/cart");
+  }
+
+  function handleStyleChange(nextSlug: string) {
+    const nextStyle = BEANIE_STYLES.find((style) => style.slug === nextSlug) ?? BEANIE_STYLES[0];
+    setSelectedStyleSlug(nextStyle.slug);
+    setSelectedColorName(nextStyle.colors[0]?.name ?? "");
+    setDecoration(nextStyle.decorationOptions[0] ?? "Embroidery");
+  }
+
+  function handleQtySlider(value: string) {
+    const nextIndex = Number(value);
+    const nextQuantity = QUANTITY_OPTIONS[nextIndex] ?? QUANTITY_OPTIONS[0];
+    setQuantity(nextQuantity);
+    setQtyInput(String(nextQuantity));
+  }
+
+  function handleQtyInput(rawValue: string) {
+    const digitsOnly = rawValue.replace(/[^\d]/g, "");
+    setQtyInput(digitsOnly);
+    if (!digitsOnly) return;
+    setQuantity(clampQuantity(Number(digitsOnly)));
+  }
 
   return (
-    <main className="bg-[linear-gradient(180deg,#F8F5EE_0%,#F2ECE2_48%,#EEE6DA_100%)] text-[#1C1C1C]">
-      <section className="border-b border-[#081E6F]/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.97)_0%,rgba(247,244,237,0.94)_100%)]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-          <Link
-            href="/goods/all"
-            className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-[#0B32A0] transition hover:text-[#FF4200]"
-          >
-            ← Back to all goods
-          </Link>
-
-          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#FF4200]">
-                Draft builder
-              </p>
-              <h1 className="mt-3 text-[2.85rem] leading-[0.92] tracking-[-0.04em] text-[#0B32A0] md:text-[5.25rem]">
-                Full Custom Beanies
-              </h1>
-            </div>
-            <p className="max-w-2xl text-base leading-7 text-[#4b4b4b] md:text-lg">
-              Same builder rhythm as the other custom pages, but kept wider and roomier so the beanie flow still feels like a proper experience.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <span className="inline-flex min-h-11 items-center rounded-xl border border-dashed border-[#081E6F]/20 bg-[#F4EEDF] px-4 text-sm font-semibold text-[#0B32A0]">
-              AS Colour beanie builder
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-[92rem] gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(390px,450px)_minmax(290px,330px)]">
-          <div className="space-y-6 xl:max-w-[39rem]">
-            <div className="relative aspect-[4/4.6] overflow-hidden rounded-[1.75rem] border border-[#081E6F]/10 bg-white shadow-[0_26px_70px_rgba(8,30,111,0.08)]">
-              <Image
-                src={selectedStyle.image}
-                alt={selectedStyle.title}
-                fill
-                sizes="(min-width: 1280px) 34vw, 100vw"
-                className="object-cover"
-                style={selectedStyle.imagePosition ? { objectPosition: selectedStyle.imagePosition } : undefined}
-              />
+    <MasterCustomizerShell
+      compactHeader={!showPageHero}
+      header={(
+        <CustomizerPageHeader
+          backHref={navigation.backHref}
+          backLabel={navigation.backLabel}
+          badgeLabel={topBadgeLabel ?? undefined}
+          eyebrow={showPageHero ? "Quick Turn" : undefined}
+          title={showPageHero ? "Quick Turn Beanies" : undefined}
+          description={showPageHero ? "Use the same shared customizer rhythm as the hat pages, now focused on the AS Colour beanie lineup." : undefined}
+        >
+          {showPageHero ? (
+            <>
+              <span className={immersiveCustomizerGhostLinkClass}>
+                {BEANIE_STYLES.length} styles
+              </span>
+              <span className={`${immersiveCustomizerGhostLinkClass} border-[#FF4200]/20 bg-[#FFF4ED] text-[#FF4200] hover:border-[#FF4200] hover:text-[#FF4200]`}>
+                2-3 week turnaround
+              </span>
+            </>
+          ) : null}
+        </CustomizerPageHeader>
+      )}
+    >
+          <div className="space-y-4 xl:max-w-[41rem]">
+            <div className="grid gap-4">
+              <button
+                type="button"
+                className="group relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-[#081E6F]/10 bg-[linear-gradient(180deg,#FFFFFF_0%,#F7F9FC_100%)] text-left sm:aspect-[5/4]"
+              >
+                <Image
+                  src={selectedColor?.image ?? selectedStyle.image}
+                  alt={`${selectedStyle.title} in ${selectedColor?.name ?? "selected color"}`}
+                  fill
+                  sizes="(min-width: 1280px) 34vw, (min-width: 1024px) 46vw, 100vw"
+                  className="object-contain p-10 transition duration-500 group-hover:scale-[1.02]"
+                  style={selectedStyle.imagePosition ? { objectPosition: selectedStyle.imagePosition } : undefined}
+                  priority
+                />
+              </button>
             </div>
 
             <div className={shellCardClass}>
-              <p className={labelTextClass}>From order to delivery</p>
-              <div className="relative mt-5 space-y-3 before:absolute before:bottom-[24px] before:left-[10px] before:top-[24px] before:w-px before:bg-[#0B32A0]/18">
+              <p className={labelTextClass}>
+                From order to delivery
+              </p>
+              <div className="relative mt-5 space-y-4 before:absolute before:bottom-[26px] before:left-[11px] before:top-[26px] before:w-px before:bg-[#0B32A0]/18">
                 {timelineItems.map((item) => (
-                  <div key={item.label} className="relative grid grid-cols-[22px_1fr] items-center gap-4">
+                  <div key={item.label} className="relative grid grid-cols-[24px_1fr] items-center gap-4">
                     <span className="z-10 h-3 w-3 justify-self-center rounded-full bg-[#FF4200]" />
-                    <div className="flex flex-1 items-center justify-between gap-4 rounded-[1.15rem] bg-[linear-gradient(180deg,#FFF9F2_0%,#F6F1E8_100%)] px-5 py-4">
-                      <span className="text-base font-medium text-[#4b4b4b]">{item.label}</span>
-                      <span className="text-base font-semibold text-[#0B32A0]">{item.value}</span>
+                    <div className="flex flex-1 items-center justify-between gap-4 rounded-[1.2rem] bg-[#F5F7FC] px-5 py-4">
+                      <span className="text-[15px] font-medium text-[#4b4b4b]">{item.label}</span>
+                      <span className="text-[15px] font-semibold text-[#0B32A0]">{item.value}</span>
                     </div>
                   </div>
                 ))}
               </div>
+              <p className="mt-5 text-[15px] text-[#4b4b4b]">
+                <span className="font-semibold text-[#0B32A0]">Estimated delivery if ordered today:</span>{" "}
+                {estimatedDeliveryLabel}
+              </p>
             </div>
 
-            <section className="border-t border-[#081E6F]/10 pt-10">
+            <section className="border-t border-[#081E6F]/10 pt-8">
               <div>
-                <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#FF4200]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FF4200]">
                   Order process
                 </p>
-                <p className="mt-3 text-[1.35rem] font-semibold leading-tight text-[#0B32A0]">
-                  What happens after you start your beanie order
+                <p className="mt-2 text-lg font-semibold text-[#0B32A0]">
+                  What happens after you start your order
                 </p>
               </div>
-              <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {orderProcessSteps.map((step, index) => (
                   <div key={step.title} className={processCardClass}>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#FF4200]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#FF4200]">
                       Step {index + 1}
                     </p>
                     <p className="mt-3 text-xl font-semibold leading-tight">{step.title}</p>
-                    <p className="mt-2 text-sm leading-6 text-[#4b4b4b]">{step.detail}</p>
+                    <p className="mt-2 text-[15px] leading-6 text-[#4b4b4b]">{step.detail}</p>
                   </div>
                 ))}
               </div>
             </section>
           </div>
 
-          <aside className="space-y-4 lg:self-start">
+          <aside className="space-y-3 lg:self-start">
             <div className={shellCardClass}>
-              <nav className="flex flex-wrap gap-1 text-xs text-[#6b6b6b]">
-                <span>Goods</span>
-                <span>/</span>
-                <span>Beanies</span>
-                <span>/</span>
-                <span className="font-semibold text-[#0B32A0]">{selectedStyle.title}</span>
-              </nav>
+              <CustomizerBreadcrumbs
+                items={navigation.breadcrumbs}
+                className="flex flex-wrap gap-1 text-xs text-[#6b6b6b]"
+              />
 
-              <div className="mt-6">
-                <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-[#FF4200]">
-                  Selected blank
-                </p>
-                <h2 className="mt-3 text-[2.55rem] leading-[0.94] tracking-[-0.03em] text-[#0B32A0]">
+              <div className="mt-5">
+                <h2 className="mt-2 text-5xl leading-none text-[#0B32A0]">
                   {selectedStyle.title}
                 </h2>
                 <p className="mt-3 text-base leading-7 text-[#4b4b4b]">
-                  {selectedStyle.model} · {selectedStyle.typeLabel} · {selectedStyle.fit}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
-                    {selectedStyle.material}
-                  </span>
-                  <span className="rounded-full border border-[#0B32A0]/12 bg-[#EEF4FF] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
-                    {selectedStyle.fit}
-                  </span>
-                  <span className="rounded-full border border-[#FF4200]/16 bg-[#FFF4ED] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FF4200]">
-                    {estimatedUnitPriceLabel}
-                  </span>
-                </div>
-                <p className="mt-5 text-base leading-7 text-[#4b4b4b]">
                   {selectedStyle.description}
+                </p>
+                <p className="mt-5 text-[15px] leading-7 text-[#4b4b4b]">
+                  {selectedStyle.model} · {selectedStyle.typeLabel} · {selectedStyle.fit}
                 </p>
               </div>
             </div>
 
             <div className={shellCardClass}>
-              <div className="space-y-8 py-1">
-                <div>
-                  <label className={`mb-4 block ${labelTextClass}`}>Beanie style</label>
-                  <div className="grid gap-3.5">
-                    {BEANIE_STYLES.map((style) => {
-                      const isActive = style.slug === selectedStyle.slug;
+              <div className="space-y-7 py-2">
+                {showStyleChooser ? (
+                  <div>
+                    <label className={`mb-3 block ${labelTextClass}`}>Beanie style</label>
+                    <select
+                      value={selectedStyle.slug}
+                      onChange={(event) => handleStyleChange(event.target.value)}
+                      className="h-12 w-full appearance-none rounded-[1rem] border border-[#0B32A0]/12 bg-[#F5F7FC] bg-[length:14px_14px] bg-[right_1rem_center] bg-no-repeat px-4 pr-11 text-[15px] font-semibold text-[#0B32A0] transition focus:border-[#FF4200] focus:outline-none"
+                      style={{ backgroundImage: selectArrowSvg }}
+                    >
+                      {BEANIE_STYLES.map((style) => (
+                        <option key={style.slug} value={style.slug}>
+                          {`${style.model} - ${style.title}`}
+                        </option>
+                      ))}
+                    </select>
+                    <p className={`mt-2 ${helperTextClass}`}>
+                      {selectedStyle.typeLabel} · {selectedStyle.material}
+                    </p>
+                  </div>
+                ) : null}
+
+                <section>
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#7a7a7a]">
+                      Quantity (100-piece minimum)
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        min={100}
+                        max={5000}
+                        step={10}
+                        value={qtyInput}
+                        onChange={(event) => handleQtyInput(event.target.value)}
+                        className="h-12 w-32 rounded-xl border border-[#081E6F]/15 px-4 text-base font-semibold text-[#0B32A0] focus:border-[#0B32A0] focus:outline-none"
+                      />
+                      <span className="text-sm font-medium text-[#8a8a8a]">units</span>
+                    </div>
+                  </div>
+                  <div className="relative px-1 pt-8">
+                    <div className="pointer-events-none absolute top-0 z-10" style={qtyTooltipPosition}>
+                      <span className="inline-flex min-h-7 whitespace-nowrap rounded-full bg-[#FF4200] px-4 py-1.5 text-xs font-semibold text-white shadow-[0_10px_24px_rgba(255,66,0,0.18)]">
+                        {estimatedUnitPriceLabel}
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={0}
+                      max={QUANTITY_OPTIONS.length - 1}
+                      step={1}
+                      value={quantityTierIndex}
+                      onChange={(event) => handleQtySlider(event.target.value)}
+                      className="h-2 w-full cursor-pointer accent-[#0B32A0]"
+                      style={{ accentColor: "#0B32A0" }}
+                    />
+                    <div className="pointer-events-none relative mt-1.5 h-8">
+                      {QUANTITY_OPTIONS.map((value, index) => {
+                        const position = sliderPositionStyle(index, QUANTITY_OPTIONS.length);
+
+                        return (
+                          <div key={value} className="absolute top-0 flex min-w-0 flex-col items-center" style={position}>
+                            <div className="h-1.5 w-px bg-[#081E6F]/30" />
+                            <span
+                              className={`mt-0.5 text-[10px] ${
+                                quantityTierIndex === index ? "font-semibold text-[#0B32A0]" : "text-[#8a8a8a]"
+                              }`}
+                            >
+                              {value.toLocaleString()}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <div className="mb-3 flex items-center justify-between">
+                    <p className={labelTextClass}>Color</p>
+                    <p className="text-sm font-semibold text-[#0B32A0]">{selectedColor?.name ?? ""}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2.5 overflow-visible py-1">
+                    {selectedStyle.colors.map((color) => {
+                      const isActive = color.name === selectedColor?.name;
                       return (
                         <button
-                          key={style.slug}
+                          key={`${selectedStyle.slug}-${color.name}`}
                           type="button"
-                          onClick={() => {
-                            setSelectedStyleSlug(style.slug);
-                            setDecoration(style.decorationOptions[0] ?? "Embroidery");
-                          }}
-                          className={`rounded-[1.5rem] border px-5 py-5 text-left transition ${
-                            isActive ? blueSelectedOptionClass : unselectedOptionClass
+                          onClick={() => setSelectedColorName(color.name)}
+                          className={`h-7 w-7 shrink-0 rounded-full border border-[#1C1C1C]/10 shadow-sm transition ${
+                            isActive
+                              ? "ring-2 ring-[#FF4200] ring-offset-2"
+                              : "hover:ring-2 hover:ring-[#FF4200] hover:ring-offset-2"
                           }`}
+                          title={color.name}
+                          aria-label={`Choose ${color.name}`}
+                          style={{ backgroundColor: color.swatch ?? "#d8d0c2" }}
                         >
-                          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] opacity-75">
-                            {style.model}
-                          </p>
-                          <p className="mt-2 text-[1.85rem] font-semibold leading-none tracking-[-0.03em]">
-                            {style.title}
-                          </p>
-                          <p className={`mt-3 text-sm leading-6 ${isActive ? "text-white/80" : "text-[#4b4b4b]"}`}>
-                            {style.typeLabel} · {style.material}
-                          </p>
-                          <p className={`mt-1 text-sm leading-6 ${isActive ? "text-white/72" : "text-[#6b6b6b]"}`}>
-                            {style.fit}
-                          </p>
+                          <span
+                            className={`block h-full w-full rounded-full border ${
+                              isActive ? "border-transparent" : swatchBorderClass(color.swatch)
+                            }`}
+                          />
                         </button>
                       );
                     })}
                   </div>
-                </div>
+                  <p className={`mt-2 ${helperTextClass}`}>Click a swatch to lock in the color.</p>
+                </section>
 
                 <section>
-                  <p className={`mb-4 block ${labelTextClass}`}>Decoration method</p>
-                  <div className="grid gap-3.5">
+                  <p className={`mb-3 block ${labelTextClass}`}>Front decoration</p>
+                  <p className={`mb-3 ${helperTextClass}`}>
+                    Keep the beanie front simple here and we&apos;ll guide the final placement in review.
+                  </p>
+                  <div className="grid gap-3">
                     {selectedStyle.decorationOptions.map((option) => {
                       const isActive = decoration === option;
                       return (
@@ -241,8 +491,8 @@ export function BeanieBuilderPreview() {
                           key={option}
                           type="button"
                           onClick={() => setDecoration(option)}
-                          className={`min-h-[4.6rem] rounded-[1.25rem] border px-5 py-4 text-left text-base font-semibold uppercase tracking-[0.14em] transition ${
-                            isActive ? orangeSelectedOptionClass : unselectedOptionClass
+                          className={`min-h-[5rem] rounded-xl border px-4 py-3.5 text-left text-base font-semibold uppercase tracking-[0.14em] transition ${
+                            isActive ? blueSelectedOptionClass : unselectedOptionClass
                           }`}
                         >
                           {option}
@@ -253,55 +503,65 @@ export function BeanieBuilderPreview() {
                 </section>
 
                 <section>
-                  <label className={`mb-4 block ${labelTextClass}`}>Quantity</label>
-                  <div className="flex flex-wrap gap-3">
-                    {QUANTITY_OPTIONS.map((option) => {
-                      const isActive = quantity === option;
-                      return (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() => setQuantity(option)}
-                          className={`min-h-12 rounded-full border px-5 py-3 text-base font-semibold transition ${
-                            isActive
-                              ? blueSelectedOptionClass
-                              : "border-[#081E6F]/12 bg-[#F5F0E8] text-[#0B32A0] hover:border-[#0B50D0]"
-                          }`}
-                        >
-                          {option.toLocaleString()}
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <label className={`mb-3 block ${labelTextClass}`}>
+                    Additional notes
+                  </label>
+                  <p className={`mb-3 ${helperTextClass}`}>
+                    Flag patch ideas, branding notes, rush context, or anything else we should build around.
+                  </p>
+                  <p className={`mb-3 ${helperTextClass}`}>
+                    Need to split this across different colors or styles? Leave a note and we&apos;ll reach out.
+                  </p>
+                  <textarea
+                    value={additionalNotes}
+                    onChange={(event) => setAdditionalNotes(event.target.value)}
+                    placeholder="Optional notes on placement, artwork, timing, or anything else to flag"
+                    rows={3}
+                    className="w-full rounded-[1.2rem] border border-[#081E6F]/15 bg-[#F5F7FC] px-4 py-4 text-[15px] font-normal text-[#0B32A0] placeholder:text-[#8a8a8a] focus:border-[#FF4200] focus:outline-none"
+                  />
                 </section>
 
-                <section>
-                  <label
-                    className={`mb-3 flex items-start justify-between gap-4 rounded-[1.5rem] border px-5 py-5 transition ${
-                      needsArtworkHelp ? "border-[#0B32A0]/18 bg-[#EEF4FF]" : "border-[#081E6F]/12 bg-[#F4EEDF]"
-                    }`}
-                  >
+                <section className="rounded-xl border border-dashed border-[#081E6F]/25 bg-[#FFF6ED] p-5">
+                  <div className="flex flex-col gap-3">
                     <div>
-                      <p className={labelTextClass}>Need artwork?</p>
-                      <p className="mt-2 text-sm leading-6 text-[#4b4b4b]">
-                        Turn this on if the logo needs cleanup or adaptation for the beanie decoration.
-                      </p>
+                      <p className={labelTextClass}>Upload your logo</p>
+                      <p className={`mt-1 ${helperTextClass}`}>Vector files preferred: AI, PDF, EPS, SVG</p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => setNeedsArtworkHelp((current) => !current)}
-                      className={`inline-flex h-11 min-w-[5.25rem] items-center rounded-full px-1 transition ${
-                        needsArtworkHelp ? "bg-[#0B32A0]" : "bg-[#CBD5E7]"
-                      }`}
-                      aria-pressed={needsArtworkHelp}
-                    >
-                      <span
-                        className={`h-9 w-9 rounded-full bg-white shadow-sm transition ${
-                          needsArtworkHelp ? "translate-x-[2.1rem]" : "translate-x-0"
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <label className="flex min-h-12 cursor-pointer items-center justify-center rounded-xl bg-white px-5 text-base font-semibold text-[#0B32A0] ring-1 ring-[#081E6F]/15 transition hover:ring-[#0B32A0]">
+                        {logoFileName || "Upload artwork"}
+                        <input
+                          type="file"
+                          className="sr-only"
+                          accept=".ai,.pdf,.eps,.svg,.png,.jpg,.jpeg"
+                          onChange={(event) => setLogoFileName(event.target.files?.[0]?.name ?? "")}
+                        />
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setNeedsArtworkHelp((current) => !current)}
+                        className={`flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-base font-semibold transition ${
+                          needsArtworkHelp
+                            ? "bg-[#F5F7FC] text-[#0B32A0] ring-2 ring-[#0B32A0]"
+                            : "bg-white text-[#0B32A0] ring-1 ring-[#081E6F]/15 hover:ring-[#FF4200] hover:text-[#FF4200]"
                         }`}
-                      />
-                    </button>
-                  </label>
+                      >
+                        <span
+                          className={`flex h-6 w-6 items-center justify-center rounded border text-[11px] leading-none ${
+                            needsArtworkHelp
+                              ? "border-[#0B32A0] bg-[#0B32A0] text-white"
+                              : "border-[#081E6F]/18 bg-white text-transparent"
+                          }`}
+                        >
+                          &#10003;
+                        </span>
+                        Need Artwork?
+                      </button>
+                    </div>
+                    <p className="text-base leading-7 text-[#4b4b4b]">
+                      Not sure your artwork is right? Upload what you&apos;ve got, and we&apos;ll check it out for free.
+                    </p>
+                  </div>
                 </section>
 
                 <section className="border-t border-[#081E6F]/10 pt-6">
@@ -313,7 +573,7 @@ export function BeanieBuilderPreview() {
                         className="flex items-center justify-between gap-3 rounded-[1.1rem] border border-[#0B32A0]/10 bg-[#FBF7F1] px-4 py-3 text-sm text-[#4b4b4b]"
                       >
                         <span className="flex items-center gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-[var(--og-orange)]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#FF4200]" />
                           {item}
                         </span>
                         <span className="inline-flex shrink-0 rounded-full border border-[#2F7D32]/18 bg-[#E8F6EA] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2F7D32]">
@@ -327,68 +587,66 @@ export function BeanieBuilderPreview() {
             </div>
           </aside>
 
-          <aside className="xl:sticky xl:top-28 xl:self-start">
-            <div className="rounded-[1.85rem] border border-[#081E6F]/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(246,241,233,0.96)_100%)] p-6 shadow-[0_24px_70px_rgba(8,30,111,0.08)]">
+          <aside className="lg:sticky lg:top-28 lg:self-start xl:col-start-3 xl:self-start">
+            <div className={shellCardClass}>
               <div>
-                <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#8a8a8a]">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                   Live price summary
-                </p>
-                <p className="mt-2 text-[1.65rem] font-semibold leading-tight text-[#0B32A0]">
-                  Your build at a glance
                 </p>
               </div>
 
               <div className="mt-6 space-y-3 text-sm">
                 {[
-                  { label: "Product", value: "Beanies" },
-                  { label: "Style", value: `${selectedStyle.model} ${selectedStyle.title}` },
-                  { label: "Decoration", value: decoration },
-                  { label: "Quantity", value: `${quantity.toLocaleString()} units` },
+                  { label: "Units", value: `${quantity.toLocaleString()}` },
+                  { label: "Beanie style", value: `${selectedStyle.model} ${selectedStyle.title}` },
+                  { label: "Color", value: selectedColor?.name ?? "Selected color" },
+                  { label: "Front decoration", value: decoration },
                   { label: "Fit", value: selectedStyle.fit },
                   { label: "Material", value: selectedStyle.material },
+                  ...(logoFileName ? [{ label: "Artwork file", value: logoFileName }] : []),
                   { label: "Artwork help", value: needsArtworkHelp ? "Yes" : "No" },
-                  { label: "Turnaround", value: decoration === "Woven Label" ? "Custom quote" : "3-5 weeks" },
+                  ...(additionalNotes.trim() ? [{ label: "Additional notes", value: additionalNotes.trim() }] : []),
+                  { label: "Turnaround", value: decoration === "Woven Label" ? "Custom quote" : "2-3 weeks" },
                 ].map((row) => (
                   <div
                     key={row.label}
-                    className="grid grid-cols-[1fr_auto] items-baseline gap-4 rounded-[1.1rem] border border-[#081E6F]/10 bg-[#FBF7F1]/85 px-4 py-3"
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-4 rounded-[1rem] bg-[#F7F9FC] px-4 py-3"
                   >
-                    <span className="text-[#6b6b6b]">{row.label}</span>
-                    <span className="text-right font-semibold text-[#171717]">{row.value}</span>
+                    <span className={summaryLabelClass}>{row.label}</span>
+                    <span className={summaryValueClass}>{row.value}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-6 border-t border-[#081E6F]/10 pt-6">
+              <div className={`${insetPanelClass} mt-6`}>
                 <div className="mb-3 flex items-end justify-between gap-4">
-                  <p className="text-[13px] font-semibold uppercase tracking-[0.16em] text-[#8a8a8a]">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                     Unit price
                   </p>
-                  <p className="text-[1.7rem] font-semibold leading-none text-[#0B32A0]">
-                    {estimatedUnitPriceLabel}
-                  </p>
+                  <p className="text-2xl font-semibold leading-none text-[#0B32A0]">{estimatedUnitPriceLabel}</p>
                 </div>
               </div>
 
-              <Link
-                href={submitHref}
-                className="mt-6 flex min-h-[3.5rem] w-full items-center justify-center rounded-[1.1rem] bg-[#FF4200] px-5 text-center text-base font-semibold uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5 hover:bg-[#E24A14]"
+              <button
+                type="button"
+                onClick={handleAddToProject}
+                className="mt-6 flex min-h-14 w-full items-center justify-center rounded-[1.1rem] bg-[#FF4200] px-6 text-center text-[15px] font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255,66,0,0.24)]"
               >
-                Submit order for review
-              </Link>
-              <p className="mt-3 text-center text-sm leading-6 text-[#6b6b6b]">
-                Send us your build for review. Final quote is confirmed after review.
-              </p>
-              <Link
-                href="/contact"
-                className="mt-4 block text-center text-sm font-semibold text-[#777] underline-offset-4 transition hover:text-[#0B32A0] hover:underline"
-              >
-                Have Questions? Talk to our team.
-              </Link>
+                Add to Project
+              </button>
+              <div className="mt-3 rounded-[1rem] border border-[#081E6F]/10 bg-[#F7F9FC] px-4 py-3 text-left">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                  Project flow
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  Add this beanie build to your project cart, keep building, and send one combined request when everything is ready.
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  We&apos;ll review the full project before final pricing and next-step timing are confirmed.
+                </p>
+              </div>
             </div>
           </aside>
-        </div>
-      </section>
-    </main>
+    </MasterCustomizerShell>
   );
 }

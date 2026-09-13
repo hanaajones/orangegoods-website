@@ -1,7 +1,18 @@
 import Link from "next/link";
 import { ServiceLeadForm } from "@/app/services/_components/ServiceLeadForm";
+import { DiscoveryLinksSection } from "@/components/DiscoveryLinksSection";
 import { Reveal } from "@/components/Reveal";
 import { GoodsUseCaseRotator } from "@/components/GoodsUseCaseRotator";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Branded Goods — Orange Goods",
+  description:
+    "Explore Orange Goods categories for custom hats, apparel, bags, drinkware, blankets, socks, and other branded goods built to feel worth keeping.",
+  path: "/goods",
+  image: "/images/gallery/goods-hero-misc-dscf4876.jpg",
+  imageAlt: "A mix of Orange Goods custom branded products",
+});
 
 type CategoryCard = {
   name: string;
@@ -84,7 +95,7 @@ const categories: CategoryCard[] = [
   {
     name: "Beanies",
     description: "Cuffed, ribbed, heavyweight, tonal, patch, and embroidered beanies.",
-    href: "/goods/hats",
+    href: "/goods/beanies/quick-turn",
     image: "/images/gallery/headwear-fish-at-sea-beanie-img-4864.jpg",
     className: "lg:col-span-2 lg:min-h-[19rem]",
     imagePosition: "center 52%",
@@ -134,6 +145,33 @@ const useCaseWords = [
   "teams",
   "launches",
 ];
+const customizeHref = "/goods/all";
+const goodsDiscoveryLinks = [
+  {
+    eyebrow: "Case Study",
+    title: "See a retail-feeling merch mix in the real world",
+    description:
+      "Verve Coffee's program shows how apparel, drinkware, and socks can work together without turning into a pile of unrelated logo products.",
+    href: "/case-studies/verve-coffee-retail-merch-program",
+    cta: "View case study",
+  },
+  {
+    eyebrow: "Guide",
+    title: "Compare full custom versus quick turn first",
+    description:
+      "If timing, budget, and product control are still fuzzy, this guide is the cleanest place to narrow the right production path.",
+    href: "/insights/full-custom-hats-vs-quick-turn-hats",
+    cta: "Read guide",
+  },
+  {
+    eyebrow: "Process",
+    title: "See how Orange Goods approaches the job",
+    description:
+      "Full Custom, Quick Turn, and in-house design each solve different problems. This page makes the split easier to understand.",
+    href: "/services",
+    cta: "See our process",
+  },
+];
 
 export default function GoodsPage() {
   return (
@@ -158,7 +196,7 @@ export default function GoodsPage() {
               Quality Custom Goods
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-              Everything your brand wears, carries, drinks from, gifts, ships, and remembers, made with better taste and tighter guidance.
+              Custom hats, apparel, drinkware, bags, blankets, and accessories for brands that want better product taste, clearer direction, and goods people actually keep.
             </p>
             <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
               Most custom programs start at 100 pieces.
@@ -167,6 +205,12 @@ export default function GoodsPage() {
           <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
             <Link href="/contact" className="btn-og-white inline-flex">
               Start a Project
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex items-center justify-center rounded-xl border-2 border-white/72 bg-white/10 px-6 py-3 text-sm font-semibold uppercase tracking-[0.1em] text-white transition hover:-translate-y-[2px] hover:border-white hover:bg-white hover:text-[var(--og-blue)]"
+            >
+              Customize
             </Link>
           </div>
         </div>
@@ -183,7 +227,7 @@ export default function GoodsPage() {
                 </span>
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-[#1C1C1C]/60">
-                From concept to delivery. We&apos;ll source the highest quality product at the best price.
+                From product direction and decoration through sourcing, packing, and delivery, we help narrow the right goods before the project gets messy.
               </p>
             </div>
           </div>
@@ -222,7 +266,7 @@ export default function GoodsPage() {
           <div className="mt-8 flex flex-col gap-5 rounded-[1.5rem] border border-[#d4c5ae] bg-white px-5 py-5 md:px-6 md:py-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#FF4200]">
-                This is just a taste
+                Here is just a taste
               </p>
               <p className="mt-2 text-xs leading-5 text-[#1C1C1C]/62 md:text-sm md:leading-6">
                 We make far more than what you see here.
@@ -232,7 +276,13 @@ export default function GoodsPage() {
               href="/contact"
               className="btn-og inline-flex min-h-12 w-fit shrink-0 items-center justify-center"
             >
-              Start a custom project
+              Start a Project
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex min-h-12 w-fit shrink-0 items-center justify-center rounded-xl border-2 border-[var(--og-blue)] bg-transparent px-6 text-sm font-semibold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:-translate-y-[2px] hover:bg-[var(--og-blue)] hover:text-white"
+            >
+              Customize
             </Link>
           </div>
         </section>
@@ -270,6 +320,15 @@ export default function GoodsPage() {
           </div>
         </div>
       </section>
+
+      <Reveal className="px-4 pb-12 md:px-8 md:pb-16 lg:px-12">
+        <DiscoveryLinksSection
+          eyebrow="Keep Exploring"
+          title="Helpful next reads before you start"
+          description="These pages do the best job of explaining how Orange Goods thinks about product direction, production paths, and what makes a merch program feel stronger."
+          items={goodsDiscoveryLinks}
+        />
+      </Reveal>
 
       <Reveal className="bg-[#F7F4ED] px-4 pb-16 md:px-8 md:pb-24 lg:px-12">
         <section

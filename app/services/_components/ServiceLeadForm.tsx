@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { getLeadAttributionHiddenFields } from "@/lib/lead-attribution";
 
 const labelClass =
   "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
@@ -18,16 +19,6 @@ const selectArrowSvg = encodeURIComponent(`
 `);
 
 const selectClass = `${inputClass} appearance-none bg-[length:14px_14px] bg-[right_1rem_center] bg-no-repeat pr-12`;
-
-const attributionFieldNames = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_content",
-  "utm_term",
-  "gclid",
-  "fbclid",
-] as const;
 
 const selectOptions = {
   designHelp: ["Yes", "No", "I'm not sure"],
@@ -219,18 +210,7 @@ function ServiceLeadFormFields({
       return;
     }
 
-    const searchParams = new URLSearchParams(window.location.search);
-    const nextAttributionHiddenFields: Record<string, string> = {};
-
-    for (const fieldName of attributionFieldNames) {
-      const value = searchParams.get(fieldName)?.trim();
-
-      if (value) {
-        nextAttributionHiddenFields[fieldName] = value;
-      }
-    }
-
-    setAttributionHiddenFields(nextAttributionHiddenFields);
+    setAttributionHiddenFields(getLeadAttributionHiddenFields());
   }, [captureAttributionFields]);
 
   const allHiddenFields = {

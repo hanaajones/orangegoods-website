@@ -127,7 +127,7 @@ export function FeaturedPhotoCarousel() {
         onFocusCapture={() => setIsPaused(true)}
         onBlurCapture={() => setIsPaused(false)}
       >
-        <div className="mb-6 flex items-end justify-between gap-4 md:mb-8">
+        <div className="mb-6 flex flex-col items-start gap-3 md:mb-8 md:flex-row md:items-end md:justify-between md:gap-4">
           <div className="relative flex items-start">
             <p className="font-accent pr-10 text-3xl font-normal leading-none text-[#FF4200] md:pr-14 md:text-5xl">
               Recent Projects
@@ -141,11 +141,11 @@ export function FeaturedPhotoCarousel() {
               className="pointer-events-none absolute -right-[24px] -top-[37px] hidden w-20 rotate-[9deg] select-none drop-shadow-[0_8px_18px_rgba(28,28,28,0.16)] md:block lg:-right-[28px] lg:-top-[41px] lg:w-24"
             />
           </div>
-          <div className="flex shrink-0 gap-2">
+          <div className="flex shrink-0 gap-1.5 md:gap-2">
             <button
               type="button"
               onClick={goToPrevious}
-              className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+              className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#0B32A0] bg-white text-xl leading-none text-[#0B32A0] shadow-[2px_2px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200] md:h-11 md:w-11 md:border-[3px] md:text-2xl md:shadow-[3px_3px_0px_#0B32A0]"
               aria-label="Previous featured photo"
             >
               ‹
@@ -153,7 +153,7 @@ export function FeaturedPhotoCarousel() {
             <button
               type="button"
               onClick={goToNext}
-              className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+              className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#0B32A0] bg-white text-xl leading-none text-[#0B32A0] shadow-[2px_2px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200] md:h-11 md:w-11 md:border-[3px] md:text-2xl md:shadow-[3px_3px_0px_#0B32A0]"
               aria-label="Next featured photo"
             >
               ›

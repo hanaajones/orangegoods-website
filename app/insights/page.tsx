@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
+import { buildMetadata } from "@/lib/seo";
 import { posts } from "./data";
 
 const POSTS_PER_PAGE = 8;
@@ -13,6 +15,23 @@ export const dynamic = "force-dynamic";
 
 function getPageHref(page: number) {
   return page <= 1 ? "/insights" : `/insights?page=${page}`;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: InsightsPageProps): Promise<Metadata> {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+  const parsedPage = Number(resolvedSearchParams?.page);
+  const currentPage = Number.isFinite(parsedPage) && parsedPage > 1 ? parsedPage : 1;
+
+  return buildMetadata({
+    title: currentPage > 1 ? `Insights — Page ${currentPage} · Orange Goods` : "Insights — Orange Goods",
+    description:
+      "Orange Goods insights on custom hats, apparel, drinkware, accessories, merch strategy, product decisions, and production-minded branded goods.",
+    path: currentPage > 1 ? `/insights?page=${currentPage}` : "/insights",
+    image: "/images/gallery/design-built-production-dscf1585.jpg",
+    imageAlt: "Orange Goods insights and merch strategy content",
+  });
 }
 
 export default async function InsightsPage({ searchParams }: InsightsPageProps) {

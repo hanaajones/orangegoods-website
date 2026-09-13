@@ -4,6 +4,7 @@ import { CTASection } from "@/components/CTASection";
 import { HatBuildAccordion } from "@/components/HatBuildAccordion";
 import { HatPageStickyNav } from "@/components/HatPageStickyNav";
 import { HatPricingSlider } from "@/components/HatPricingSlider";
+import { HatQuickLeadForm } from "@/components/HatQuickLeadForm";
 import { HomepageGoodsSlideshow } from "@/components/HomepageGoodsSlideshow";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
@@ -19,8 +20,20 @@ import {
   hatFaqs,
   hatProcess,
 } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 
-const hatsBuilderHref = "/build/og-crafted-hats";
+export const metadata = buildMetadata({
+  title: "Custom Hats — Orange Goods",
+  description:
+    "Explore Orange Goods custom hats across full custom builds, quick-turn blanks, decoration options, fabrics, closures, and add-ons.",
+  path: "/goods/hats",
+  image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
+  imageAlt: "Custom hat by Orange Goods",
+});
+
+const hatsBuilderHref = "/create/hats/full-custom";
+const fullCustomHatsBrowserHref = "/goods/hats/full-custom";
+const quickTurnHatsBrowserHref = "/goods/hats/quick-turn";
 const featuredStyleStartingPrice = "$13.00";
 
 const quantityTiers = [
@@ -114,7 +127,7 @@ const brandConfidenceCards = [
   {
     name: "Verve Coffee",
     image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
-    imagePosition: "center 44%",
+    imagePosition: "center 58%",
     logoType: "wordmark" as const,
     wordmark: "Verve Coffee",
     wordmarkClassName: brandConfidenceWordmarkClassName,
@@ -122,7 +135,7 @@ const brandConfidenceCards = [
   {
     name: "Grateful Dead",
     image: "/images/gallery/hat-grateful-dead-img-7444-2.jpg",
-    imagePosition: "center 55%",
+    imagePosition: "center 68%",
     logoType: "wordmark" as const,
     wordmark: "Grateful Dead",
     wordmarkClassName: brandConfidenceWordmarkClassName,
@@ -130,7 +143,7 @@ const brandConfidenceCards = [
   {
     name: "Bread Head",
     image: "/images/gallery/hat-bread-head-tezza-3828.jpg",
-    imagePosition: "center bottom",
+    imagePosition: "center 96%",
     logoType: "wordmark" as const,
     wordmark: "Bread Head",
     wordmarkClassName: brandConfidenceWordmarkClassName,
@@ -361,9 +374,9 @@ export default function HatsPage() {
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-12 text-white md:px-8 md:py-[4.5rem] lg:px-12">
         <ParallaxHeroBackground
-          image="/images/gallery/headwear-patch-layout-mg-9412.jpg"
+          image="/images/gallery/headwear-custom-hats-hero-dscf3128.jpg"
           inset="-0.75%"
-          position="center 40%"
+          position="center 56%"
           speed={0.1}
         />
         <div className="absolute inset-0 bg-[#1C1C1C]/46" />
@@ -385,9 +398,9 @@ export default function HatsPage() {
         </div>
       </section>
 
-      <HatPageStickyNav mode="og-crafted" links={hatAnchorLinks} />
+      <HatPageStickyNav mode="og-crafted" links={hatAnchorLinks} showModeToggle={false} />
 
-      <Reveal className="px-4 py-10 md:px-8 lg:px-12">
+      <Reveal className="px-4 pb-10 pt-5 md:px-8 lg:px-12">
         <section id="overview" className="mx-auto max-w-6xl">
           <article className="relative overflow-hidden rounded-[2rem] border-[3px] border-[#0B32A0] text-white">
             <div className="absolute inset-0">
@@ -446,7 +459,7 @@ export default function HatsPage() {
                 key={card.name}
                 className="relative overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] bg-[#d8c3aa]"
               >
-                <div className="relative aspect-[4/5]">
+                <div className="relative aspect-[4/4.35]">
                   <Image
                     src={card.image}
                     alt={card.name}
@@ -466,6 +479,12 @@ export default function HatsPage() {
         </section>
       </Reveal>
 
+      <Reveal className="px-4 pb-8 pt-2 md:px-8 lg:px-12">
+        <section className="mx-auto max-w-6xl">
+          <HatQuickLeadForm />
+        </section>
+      </Reveal>
+
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <section id="pricing" className="mx-auto max-w-6xl">
           <SectionHeader
@@ -475,7 +494,19 @@ export default function HatsPage() {
 
           <HatPricingSlider tiers={quantityTiers} />
 
-          <div id="styles" className="mt-8 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
+          <div className="relative left-1/2 mt-12 w-screen -translate-x-1/2 border-y-[3px] border-[#1C1C1C] bg-[#081E6F] px-4 py-4 text-center md:mt-14 md:px-6 md:py-5 lg:px-8">
+            <p
+              className="mx-auto flex max-w-[76rem] flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[1.9rem] uppercase leading-none tracking-[0.01em] text-[#FF4200] sm:gap-x-5 sm:text-[2.5rem] md:flex-nowrap md:gap-x-6 md:text-[3.4rem] lg:gap-x-8 lg:text-[4.6rem] xl:text-[5.35rem]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              <span>HATS</span>
+              <span>BUILT</span>
+              <span>FROM</span>
+              <span>SCRATCH</span>
+            </p>
+          </div>
+
+          <div id="styles" className="mt-12 rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:mt-14 md:p-7">
             <SectionHeader
               eyebrow="Styles"
               title="Start with the right shape"
@@ -488,7 +519,7 @@ export default function HatsPage() {
                   className="group relative overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[rgba(255,248,241,0.88)] transition hover:border-[#0B32A0] hover:shadow-lg"
                 >
                   <Link
-                    href={`${hatsBuilderHref}?hatStyle=${encodeURIComponent(style.slug)}`}
+                    href={`${hatsBuilderHref}/${encodeURIComponent(style.slug)}`}
                     aria-label={`Open ${style.title}`}
                     className="absolute inset-0 z-10 rounded-[1.9rem]"
                   />
@@ -536,7 +567,7 @@ export default function HatsPage() {
 
             <div className="mt-8 flex justify-center">
               <Link
-                href="/goods/hats/styles"
+                href={fullCustomHatsBrowserHref}
                 className="inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See all styles
@@ -576,10 +607,10 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <OptionPathCard
-          id="closure"
-          title="Choose your closure"
+          id="closures"
+          title="Choose your closures"
           description="Closure changes the feel fast. Click through to compare the full set."
-          href="/goods/hats/closure"
+          href="/goods/hats/closures"
           cta="See all closure options"
           options={closureOptions}
           horizontal
@@ -718,7 +749,7 @@ export default function HatsPage() {
                 ))}
               </div>
               <Link
-                href="/goods/hats/quick-turn"
+                href={quickTurnHatsBrowserHref}
                 className="mt-6 inline-flex min-h-11 items-center rounded-xl border-2 border-[#0B32A0] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[3px] hover:bg-[#0B32A0] hover:text-white"
               >
                 See quick turn hats
@@ -759,9 +790,9 @@ export default function HatsPage() {
 
       <CTASection
         title="Ready to start your hat project?"
-        description="Send the style, quantity, and timeline. We will take it from there."
-        buttonLabel="Customize your hat"
-        buttonHref="/goods/hats/styles"
+        description="Start with the style and details you want, and we’ll help build out the rest."
+        buttonLabel="Customize your hats"
+        buttonHref={fullCustomHatsBrowserHref}
         backgroundImage="/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg"
         backgroundImagePosition="center 32%"
         showImageOverlay={false}

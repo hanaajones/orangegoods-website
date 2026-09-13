@@ -5,6 +5,16 @@ import {
   ProductCategoryFaqSection,
   ProductCategoryPage,
 } from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Blankets + Towels — Orange Goods",
+  description:
+    "Custom woven blankets, plush throws, towels, and branded textile goods for gifting, hospitality, beach, retail, and event programs.",
+  path: "/goods/blankets",
+  image: "/images/gallery/blankets-plush-smiley-dscf0389.jpg",
+  imageAlt: "Custom blanket by Orange Goods",
+});
 
 const blanketProducts = [
   {
@@ -188,6 +198,7 @@ export default function BlanketsPage() {
         subhead="Woven blankets, plush throws, beach towels, and textile goods built to feel generous, useful, and worth keeping long after the first handoff."
         image="/images/gallery/blankets-sunrise-lifestyle-3.png"
         imageAlt="Sunrise towel shown as the hero image for the blankets landing page"
+        startProjectHref="/create/blankets"
         heroEyebrow="Textile Goods"
         heroImagePosition="center 28%"
         heroSubnote={null}

@@ -69,6 +69,7 @@ const photos: TestimonialPhoto[] = [
 export function PhotoCarousel() {
   const [current, setCurrent] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartXRef = useRef<number | null>(null);
 
   function startTimer() {
     timerRef.current = setInterval(() => {
@@ -87,11 +88,35 @@ export function PhotoCarousel() {
     startTimer();
   }
 
+  function handleTouchStart(event: React.TouchEvent<HTMLElement>) {
+    touchStartXRef.current = event.touches[0]?.clientX ?? null;
+  }
+
+  function handleTouchEnd(event: React.TouchEvent<HTMLElement>) {
+    const startX = touchStartXRef.current;
+    const endX = event.changedTouches[0]?.clientX ?? null;
+    touchStartXRef.current = null;
+
+    if (startX === null || endX === null) return;
+
+    const deltaX = endX - startX;
+    if (Math.abs(deltaX) < 40) return;
+
+    if (deltaX > 0) {
+      go((current - 1 + photos.length) % photos.length);
+      return;
+    }
+
+    go((current + 1) % photos.length);
+  }
+
   return (
     <section
       className="relative w-full overflow-hidden"
       style={{ height: "clamp(360px, 55vw, 720px)" }}
       aria-label="Client testimonials"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Photos */}
       {photos.map((photo, i) => (
@@ -155,14 +180,14 @@ export function PhotoCarousel() {
       {/* Prev / Next arrows */}
       <button
         onClick={() => go((current - 1 + photos.length) % photos.length)}
-        className="absolute left-9 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+        className="absolute left-9 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200] md:flex"
         aria-label="Previous photo"
       >
         ‹
       </button>
       <button
         onClick={() => go((current + 1) % photos.length)}
-        className="absolute right-9 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200]"
+        className="absolute right-9 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:bg-[#F7F4ED] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF4200] md:flex"
         aria-label="Next photo"
       >
         ›

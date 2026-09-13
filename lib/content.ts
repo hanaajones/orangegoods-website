@@ -6,7 +6,7 @@ type Stat = {
 export const startProjectHref =
   "/contact";
 
-export const buildOnlineHref = "/build";
+export const buildOnlineHref = "/create";
 
 export const hatImage =
   "https://orangegoods.co/wp-content/uploads/2024/06/Hat-271x300.jpg";

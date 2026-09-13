@@ -2,8 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
+import {
+  CustomizerPageHeader,
+  immersiveCustomizerGhostLinkClass,
+  immersiveCustomizerInsetPanelClass,
+  immersiveCustomizerLabelTextClass,
+  immersiveCustomizerProcessCardClass,
+  immersiveCustomizerSelectInputClass,
+  immersiveCustomizerShellCardClass,
+  immersiveCustomizerSummaryLabelClass,
+  immersiveCustomizerTextInputClass,
+  getCustomizerTopBadgeAsset,
+  MasterCustomizerShell,
+} from "@/components/MasterCustomizerShell";
+import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import {
   CATALOG_PACKAGING_PRICES,
   calculateCatalogBuilderPricing,
@@ -11,6 +26,8 @@ import {
   type CatalogSpecialtyPrintUpgrade,
   type PrintCat,
 } from "@/data/catalog";
+import { addProjectCartItem, getProjectCartItem } from "@/lib/project-cart";
+import { QUICK_TURN_FREE_SHIPPING_LABEL, addQuickTurnApparelShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 
 type BuilderColor = {
   name: string;
@@ -221,7 +238,6 @@ function formatShortDate(date: Date) {
 }
 
 function estimatedDeliveryWindow(style: ApparelBuilderStyle) {
-  if (style.timeline === "3-4 weeks") return { startDays: 26, endDays: 35 };
   if (style.timeline === "2-4 weeks") return { startDays: 19, endDays: 35 };
   return { startDays: 19, endDays: 28 };
 }
@@ -258,6 +274,34 @@ function createInkColorSlots(count: number) {
     name: "",
     hex: "#0B32A0",
   }));
+}
+
+function normalizeSavedSizeBreakdown(sizes: string[], sizeBreakdown: Record<string, number> | undefined, fallbackQty: number) {
+  const orderedSizes = sortSizes(sizes);
+  const normalized = Object.fromEntries(
+    orderedSizes.map((size) => [size, Math.max(0, Number(sizeBreakdown?.[size]) || 0)]),
+  );
+  const totalQuantity = Object.values(normalized).reduce((sum, qty) => sum + qty, 0);
+
+  return totalQuantity > 0 ? normalized : buildInitialSizeBreakdown(sizes, fallbackQty);
+}
+
+function normalizeInkColorEntries(entries: unknown) {
+  const fallback = createInkColorSlots(5);
+  if (!Array.isArray(entries)) return fallback;
+
+  return fallback.map((slot, index) => {
+    const entry = entries[index];
+    if (!entry || typeof entry !== "object") return slot;
+
+    return {
+      hex:
+        typeof entry.hex === "string" && /^#[0-9A-Fa-f]{6}$/.test(entry.hex)
+          ? entry.hex.toUpperCase()
+          : slot.hex,
+      name: typeof entry.name === "string" ? entry.name : slot.name,
+    };
+  });
 }
 
 function summarizeInkColors(label: string, colors: InkColorEntry[], count: number) {
@@ -373,15 +417,69 @@ function HexColorPicker({
   );
 }
 
-export function ApparelBuilderPreview({
-  styles,
-  draftLinks,
-}: {
+type ApparelBuilderPreviewProps = {
   styles: ApparelBuilderStyle[];
   draftLinks: Array<{ label: string; href: string }>;
-}) {
+  showPageHero?: boolean;
+  lockedStyleSlug?: string;
+  pageBackHref?: string;
+  pageBackLabel?: string;
+};
+
+type SavedApparelCartConfig = {
+  artworkName?: string;
+  backPrintColors?: number;
+  basePath?: string;
+  colorName?: string;
+  embroideryColorCount?: number;
+  frontDecoration?: FrontDecorationKey;
+  frontPrintColors?: number;
+  frontPrintEnabled?: boolean;
+  kind: "apparel";
+  needsArtworkHelp?: boolean;
+  notes?: string;
+  packaging?: string[];
+  placementInkColors?: {
+    back?: InkColorEntry[];
+    embroidery?: InkColorEntry[];
+    front?: InkColorEntry[];
+    sleeve?: InkColorEntry[];
+  };
+  printUpgrade?: CatalogSpecialtyPrintUpgrade | "none";
+  quantity?: string;
+  sizeBreakdown?: Record<string, number>;
+  sleevePrintColors?: number;
+  sleevePrintSide?: SleevePrintSide;
+  styleSlug?: string;
+};
+
+export function ApparelBuilderPreview(props: ApparelBuilderPreviewProps) {
   const searchParams = useSearchParams();
-  const requestedStyleSlug = searchParams.get("style") ?? searchParams.get("styleSlug");
+  const requestedStyleSlug =
+    props.lockedStyleSlug ??
+    searchParams.get("style") ??
+    searchParams.get("styleSlug") ??
+    props.styles[0]?.slug ??
+    "";
+  const returnTo = searchParams.get("returnTo") ?? "";
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const resetKey = `${requestedStyleSlug}::${returnTo}::${projectCartItemId}`;
+
+  return <ApparelBuilderPreviewContent key={resetKey} {...props} />;
+}
+
+function ApparelBuilderPreviewContent({
+  styles,
+  draftLinks,
+  showPageHero = true,
+  lockedStyleSlug,
+  pageBackHref,
+  pageBackLabel,
+}: ApparelBuilderPreviewProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const requestedStyleSlug = lockedStyleSlug ?? searchParams.get("style") ?? searchParams.get("styleSlug");
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId");
   const fallbackStyle = styles.find((style) => style.slug === requestedStyleSlug) ?? styles[0];
   const [selectedStyleSlug, setSelectedStyleSlug] = useState(fallbackStyle?.slug ?? "");
   const selectedStyle = styles.find((style) => style.slug === selectedStyleSlug) ?? fallbackStyle;
@@ -413,6 +511,8 @@ export function ApparelBuilderPreview({
     sleeve: createInkColorSlots(5),
     embroidery: createInkColorSlots(5),
   });
+  const hydratedCartItemIdRef = useRef<string | null>(null);
+  const skipStyleResetRef = useRef(false);
 
   useEffect(() => {
     if (!selectedStyle) return;
@@ -422,7 +522,16 @@ export function ApparelBuilderPreview({
   }, [selectedStyle, selectedStyleSlug, styles]);
 
   useEffect(() => {
+    if (!lockedStyleSlug || !fallbackStyle || selectedStyleSlug === fallbackStyle.slug) return;
+    setSelectedStyleSlug(fallbackStyle.slug);
+  }, [fallbackStyle, lockedStyleSlug, selectedStyleSlug]);
+
+  useEffect(() => {
     if (!selectedStyle) return;
+    if (skipStyleResetRef.current) {
+      skipStyleResetRef.current = false;
+      return;
+    }
     setSelectedColorName(selectedStyle.colors[0]?.name ?? "");
     setHoveredColorName(null);
     setSizeBreakdown(buildInitialSizeBreakdown(selectedStyle.sizes, 250));
@@ -437,6 +546,55 @@ export function ApparelBuilderPreview({
     setEmbroideryColorCount(1);
     setPrintUpgrade("none");
   }, [frontDecoration]);
+
+  useEffect(() => {
+    if (!projectCartItemId || hydratedCartItemIdRef.current === projectCartItemId) return;
+
+    const savedItem = getProjectCartItem(projectCartItemId);
+    const configuration = savedItem?.configuration as SavedApparelCartConfig | undefined;
+    if (!configuration || configuration.kind !== "apparel") return;
+
+    const nextStyle = styles.find((style) => style.slug === configuration.styleSlug);
+    if (!nextStyle) return;
+
+    const nextColorName = nextStyle.colors.some((color) => color.name === configuration.colorName)
+      ? configuration.colorName ?? ""
+      : nextStyle.colors[0]?.name ?? "";
+    const nextFrontDecoration = configuration.frontDecoration === "embroidery" ? "embroidery" : "screenPrint";
+
+    hydratedCartItemIdRef.current = projectCartItemId;
+    skipStyleResetRef.current = true;
+    setSelectedStyleSlug(nextStyle.slug);
+    setSelectedColorName(nextColorName);
+    setHoveredColorName(null);
+    setSizeBreakdown(
+      normalizeSavedSizeBreakdown(
+        nextStyle.sizes,
+        configuration.sizeBreakdown,
+        Math.max(100, Number(configuration.quantity) || 250),
+      ),
+    );
+    setFrontDecoration(nextFrontDecoration);
+    setFrontPrintEnabled(Boolean(configuration.frontPrintEnabled));
+    setFrontPrintColors(Math.min(5, Math.max(1, configuration.frontPrintColors || 1)));
+    setBackPrintColors(Math.min(5, Math.max(0, configuration.backPrintColors || 0)));
+    setSleevePrintColors(Math.min(5, Math.max(0, configuration.sleevePrintColors || 0)));
+    setSleevePrintSide(configuration.sleevePrintSide === "right" ? "right" : "left");
+    setEmbroideryColorCount(Math.min(5, Math.max(1, configuration.embroideryColorCount || 1)));
+    setPrintUpgrade(configuration.printUpgrade ?? "none");
+    setPackaging(
+      (configuration.packaging ?? []).filter((option): option is CatalogPackagingUpgrade => PACKAGING_OPTIONS.includes(option as CatalogPackagingUpgrade)),
+    );
+    setNotes(configuration.notes ?? "");
+    setArtworkName(configuration.artworkName ?? "");
+    setNeedsArtworkHelp(Boolean(configuration.needsArtworkHelp));
+    setPlacementInkColors({
+      back: normalizeInkColorEntries(configuration.placementInkColors?.back),
+      embroidery: normalizeInkColorEntries(configuration.placementInkColors?.embroidery),
+      front: normalizeInkColorEntries(configuration.placementInkColors?.front),
+      sleeve: normalizeInkColorEntries(configuration.placementInkColors?.sleeve),
+    });
+  }, [projectCartItemId, styles]);
 
   function updatePlacementInkColor(
     placement: "front" | "back" | "sleeve" | "embroidery",
@@ -498,7 +656,8 @@ export function ApparelBuilderPreview({
     rush: false,
     customerSuppliedGoods: false,
   });
-  const estimatedTotal = pricing.unitPrice * pricedQuantity;
+  const shippingIncludedUnitPrice = addQuickTurnApparelShippingIncludedPrice(pricing.unitPrice, selectedStyle.printCat);
+  const estimatedTotal = shippingIncludedUnitPrice * pricedQuantity;
   const selectedFamilyLabel = CATEGORY_LABELS[selectedStyle.category];
   const visibleColorLabel = hoveredColorName ?? selectedColor?.name ?? "Select a color";
   const deliveryWindow = estimatedDeliveryWindow(selectedStyle);
@@ -507,7 +666,7 @@ export function ApparelBuilderPreview({
   const estimatedDeliveryLabel = `${formatLongDate(estimatedDeliveryStart)} - ${formatLongDate(estimatedDeliveryEnd)}`;
   const estimatedDeliveryShortLabel = `${formatShortDate(estimatedDeliveryStart)} - ${formatShortDate(estimatedDeliveryEnd)}`;
   const baseUnitPrice = selectedStyle.blank + selectedStyle.blankMarkup;
-  const selectedOptionsUnitPrice = Math.max(pricing.unitPrice - baseUnitPrice, 0);
+  const selectedOptionsUnitPrice = Math.max(shippingIncludedUnitPrice - baseUnitPrice, 0);
   const basePriceLabel = money(baseUnitPrice);
   const selectedOptionsLabel = selectedOptionsUnitPrice > 0 ? `+${money(selectedOptionsUnitPrice)}` : "Included";
   const sleevePlacementLabel = sleevePrintSide === "left" ? "Left sleeve" : "Right sleeve";
@@ -530,12 +689,12 @@ export function ApparelBuilderPreview({
     "Premium blank",
     "Size run",
     "Setup costs",
-    "Shipping",
+    QUICK_TURN_FREE_SHIPPING_LABEL,
   ];
   const timelineItems = [
     {
-      label: "Tech pack",
-      note: "where we build out the details",
+      label: "Order review",
+      note: "quote, artwork, and final scope check",
       value: "1-2 days",
     },
     { label: "Production", value: timelineLabel(selectedStyle) },
@@ -548,16 +707,16 @@ export function ApparelBuilderPreview({
     },
     {
       title: "Dial in decoration",
-      detail: "We use this build to scope the right print method, placements, and finish upgrades for the piece you chose.",
+      detail: "Use the live build to scope the right print method, placements, and finish upgrades for the actual blank you picked.",
     },
     {
       title: "Review + production",
-      detail: "Once the quote and mockup are approved, we move into production and keep the delivery timing tied to the selected blank.",
+      detail: "Once the quote and mockup are approved, we move into production and keep the timing tied to the selected blank and decoration lane.",
     },
   ];
   const projectSummary = [
     `Product: ${selectedStyle.fullName}`,
-    "Program: Full Custom Apparel",
+    "Program: Quick Turn Apparel",
     `Category: ${selectedFamilyLabel}`,
     `Color: ${selectedColor?.name ?? "Not selected"}`,
     `Quantity: ${pricedQuantity}`,
@@ -570,97 +729,104 @@ export function ApparelBuilderPreview({
     `Packaging: ${packaging.length > 0 ? packaging.join(", ") : "None"}`,
     brandColorSummary ? `Brand colors: ${brandColorSummary}` : "",
     `Timeline: ${timelineLabel(selectedStyle)}`,
-    `Estimated unit price: ${money(pricing.unitPrice)}`,
+    `Estimated unit price: ${money(shippingIncludedUnitPrice)}`,
     `Estimated total: ${money(estimatedTotal)}`,
     artworkName ? `Artwork file: ${artworkName}` : "",
     needsArtworkHelp ? "Needs artwork help: Yes" : "",
     notes.trim() ? `Notes: ${notes.trim()}` : "",
   ].filter(Boolean).join("\n");
 
-  const handoffParams = new URLSearchParams({
-    intent: "apparel-quote",
-    source: "og-crafted-apparel-builder",
-    product: selectedStyle.fullName,
-    mode: "Full Custom Apparel",
-    category: selectedFamilyLabel,
-    color: selectedColor?.name ?? "",
-    qty: String(pricedQuantity),
-    sizeBreakdown: orderedSizes.map((size) => `${size}:${sizeBreakdown[size] ?? 0}`).join(", "),
-    decoration: frontDecoration,
-    frontPrintEnabled: frontDecoration === "screenPrint" && frontPrintEnabled ? "Yes" : "",
-    frontPrintColors: frontDecoration === "screenPrint" && frontPrintEnabled ? String(frontPrintColors) : "",
-    backPrintColors: frontDecoration === "screenPrint" && backPrintColors > 0 ? String(backPrintColors) : "",
-    sleevePrintColors: frontDecoration === "screenPrint" && sleevePrintColors > 0 ? String(sleevePrintColors) : "",
-    sleevePrintSide: frontDecoration === "screenPrint" && sleevePrintColors > 0 ? sleevePrintSide : "",
-    embroideryColorCount: frontDecoration === "embroidery" ? String(embroideryColorCount) : "",
-    printUpgrade: printUpgrade === "none" ? "" : printUpgrade,
-    packaging: packaging.join(", "),
-    brandColors: brandColorSummary,
-    timeline: timelineLabel(selectedStyle),
-    estimatedUnitPrice: money(pricing.unitPrice),
-    estimatedTotal: money(estimatedTotal),
-    projectSummary,
-    additionalCallouts: notes.trim(),
-    logoFile: artworkName,
-    needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
-  });
-  const selectInputClass = "h-12 w-full appearance-none rounded-[1rem] border border-[#0B32A0]/12 bg-[#F5F7FC] bg-[length:14px_14px] bg-[right_1rem_center] bg-no-repeat px-4 pr-11 text-[15px] font-semibold text-[#0B32A0] transition focus:border-[#FF4200] focus:outline-none";
-  const textInputClass = "min-h-12 rounded-[1rem] border border-[#0B32A0]/12 bg-[#F5F7FC] px-4 text-[15px] font-medium text-[#0B32A0] outline-none transition placeholder:text-[#8a8a8a] focus:border-[#FF4200]";
+  const selectInputClass = immersiveCustomizerSelectInputClass;
+  const textInputClass = immersiveCustomizerTextInputClass;
   const neutralOptionClass = "border-[#0B32A0]/12 bg-[#F5F7FC] text-[#0B32A0] hover:border-[#FF4200] hover:shadow-[0_12px_24px_rgba(8,30,111,0.08)]";
-  const primarySelectedOptionClass = "border-[#FF4200] bg-[#FF4200] text-white shadow-[0_16px_32px_rgba(255,66,0,0.18)]";
-  const secondarySelectedOptionClass = "border-[#0B32A0] bg-[#0B32A0] text-white shadow-[0_16px_32px_rgba(11,50,160,0.16)]";
-  const tintedSecondarySelectedOptionClass = "border-[#0B32A0] bg-[#EAF0FF] text-[#0B32A0] shadow-[0_12px_24px_rgba(11,50,160,0.1)]";
+  const secondarySelectedOptionClass = "border-[#0B32A0] bg-[#0B32A0] text-white";
+  const frontDecorationSelectedOptionClass = secondarySelectedOptionClass;
+  const tintedSecondarySelectedOptionClass = "border-[#0B32A0] bg-[#EAF0FF] text-[#0B32A0]";
   const disabledOptionClass = "cursor-not-allowed border-[#0B32A0]/10 bg-[#EEF1F6] text-[#0B32A0]/35";
-  const panelClass = "rounded-[1.6rem] border border-[#081E6F]/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,253,0.94)_100%)] p-6 shadow-[0_20px_60px_rgba(8,30,111,0.08)]";
-  const warmPanelClass = "rounded-[1.6rem] border border-[#081E6F]/10 bg-[linear-gradient(180deg,#FBF8F1_0%,#F3EEE4_100%)] p-5 shadow-[0_18px_42px_rgba(8,30,111,0.06)]";
-  const insetPanelClass = "rounded-[1.35rem] border border-[#0B32A0]/10 bg-[linear-gradient(180deg,#F8FAFD_0%,#F1F4FA_100%)] p-5";
-  const sectionEyebrowClass = "text-[11px] font-semibold uppercase tracking-[0.16em] text-[#6b6b6b]";
-  const summaryLabelClass = "text-[12px] uppercase tracking-[0.12em] text-[#7a7a7a]";
-  const summaryValueClass = "text-right text-[15px] font-semibold text-[#171717]";
+  const panelClass = immersiveCustomizerShellCardClass;
+  const warmPanelClass = immersiveCustomizerProcessCardClass;
+  const insetPanelClass = immersiveCustomizerInsetPanelClass;
+  const sectionEyebrowClass = immersiveCustomizerLabelTextClass;
+  const summaryLabelClass = immersiveCustomizerSummaryLabelClass;
+  const summaryTitle = selectedStyle.fullName.startsWith(`${selectedStyle.name} — `)
+    ? selectedStyle.fullName.slice(selectedStyle.name.length + 3)
+    : selectedStyle.fullName;
+  const navigation = buildCustomizerNavigation({
+    category: "apparel",
+    productionPath: "quick-turn",
+    currentLabel: summaryTitle,
+    returnTo: searchParams.get("returnTo"),
+    fallbackHref: pageBackHref,
+    fallbackLabel: pageBackLabel,
+  });
+  const topBadgeLabel = getCustomizerProductionPathLabel("quick-turn");
+  const topBadgeAsset = getCustomizerTopBadgeAsset(topBadgeLabel ?? undefined);
+
+  function handleAddToProject() {
+    const targetCartId = projectCartItemId ?? `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    addProjectCartItem({
+      artworkName,
+      configuration: {
+        artworkName: artworkName || undefined,
+        backPrintColors,
+        basePath: pathname,
+        colorName: selectedColor?.name ?? "",
+        embroideryColorCount,
+        frontDecoration,
+        frontPrintColors,
+        frontPrintEnabled,
+        kind: "apparel",
+        needsArtworkHelp,
+        notes: notes.trim() || undefined,
+        packaging,
+        placementInkColors,
+        printUpgrade,
+        quantity: String(pricedQuantity),
+        schemaVersion: 1,
+        sizeBreakdown,
+        sleevePrintColors,
+        sleevePrintSide,
+        styleSlug: selectedStyle.slug,
+      },
+      editHref: `${pathname}?cartEdit=${encodeURIComponent(targetCartId)}&style=${encodeURIComponent(selectedStyle.slug)}&returnTo=%2Fcart`,
+      id: targetCartId,
+      kind: "apparel",
+      needsArtworkHelp,
+      product: selectedStyle.fullName,
+      program: "Quick Turn Apparel",
+      quantity: String(pricedQuantity),
+      sizeBreakdown,
+      source: "quick-turn-apparel-builder",
+      summaryLines: projectSummary.split("\n").filter(Boolean),
+      title: selectedStyle.fullName,
+    });
+    window.location.assign("/cart");
+  }
 
   return (
-    <main className="bg-[linear-gradient(180deg,#F5F1E8_0%,#EFF3F9_48%,#F5F1E8_100%)] text-[#1C1C1C]">
-      <section className="border-b border-[#081E6F]/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(247,249,252,0.96)_100%)]">
-        <div className="mx-auto flex max-w-[96rem] flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-          <Link
-            href="/goods/apparel/styles"
-            className="inline-flex w-fit items-center gap-1.5 text-base font-semibold text-[#0B32A0] transition hover:text-[#FF4200]"
-          >
-            ← Back to apparel styles
-          </Link>
-
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#FF4200]">
-                Draft builder
-              </p>
-              <h1 className="mt-3 text-4xl leading-none text-[#0B32A0] md:text-6xl">
-                Full Custom Apparel
-              </h1>
-            </div>
-            <p className="max-w-2xl text-base leading-7 text-[#4b4b4b]">
-              Same builder structure as full custom hats, now loaded with the live supplier-backed apparel catalog so blank, color, and pricing decisions start from real garments.
-            </p>
-          </div>
-
-          {draftLinks.length > 0 ? (
-            <div className="flex flex-wrap gap-3">
-              {draftLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="inline-flex min-h-12 items-center rounded-[1rem] border border-dashed border-[#081E6F]/20 bg-[#F5F7FC] px-5 text-sm font-semibold text-[#0B32A0] transition hover:border-[#FF4200] hover:text-[#FF4200]"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </section>
-
-      <section className="px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-[96rem] gap-6 xl:grid-cols-[minmax(0,1.04fr)_minmax(380px,460px)_minmax(320px,360px)]">
+    <MasterCustomizerShell
+      compactHeader={!showPageHero}
+      header={(
+        <CustomizerPageHeader
+          backHref={navigation.backHref}
+          backLabel={navigation.backLabel}
+          eyebrow={showPageHero ? "Quick Turn" : undefined}
+          title={showPageHero ? "Quick Turn Apparel" : undefined}
+          description={showPageHero ? "Build quick-turn apparel around premium blanks, cleaner decoration decisions, and the same tighter customizer rhythm used across the approved hats flow." : undefined}
+        >
+          {showPageHero && draftLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={immersiveCustomizerGhostLinkClass}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </CustomizerPageHeader>
+      )}
+      gridClassName="xl:grid-cols-[minmax(0,1.04fr)_minmax(380px,460px)_minmax(320px,360px)]"
+    >
           <div className="space-y-6">
             <div className="grid gap-5">
               {selectedColorImages.map((image, index) => (
@@ -731,37 +897,38 @@ export function ApparelBuilderPreview({
 
           <aside className="space-y-4 lg:self-start">
             <div className={panelClass}>
-              <nav className="flex flex-wrap gap-1.5 text-xs uppercase tracking-[0.12em] text-[#6b6b6b]">
-                <span>Goods</span>
-                <span>/</span>
-                <span>Apparel</span>
-                <span>/</span>
-                <span className="font-semibold text-[#0B32A0]">{selectedStyle.name}</span>
-              </nav>
+              <CustomizerBreadcrumbs items={navigation.breadcrumbs} />
 
               <div className="mt-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#FF4200]">
-                  Selected blank
-                </p>
-                <h2 className="mt-2 text-5xl leading-none text-[#0B32A0]">
-                  {selectedStyle.name}
-                </h2>
-                <p className="mt-4 text-[15px] leading-7 text-[#4b4b4b]">
-                  {selectedStyle.fullName} · {selectedFamilyLabel} · {selectedStyle.fit} fit
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
-                    {selectedStyle.weight}
-                  </span>
-                  <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
-                    {selectedStyle.material}
-                  </span>
-                  <span className="rounded-full border border-[#FF4200]/16 bg-[#FFF4ED] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FF4200]">
-                    From {money(selectedStyle.priceFrom)}/unit
-                  </span>
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#FF4200]">
+                      {selectedStyle.name}
+                    </p>
+                    <h2 className="mt-2 text-5xl leading-none text-[#0B32A0]">
+                      {summaryTitle}
+                    </h2>
+                  </div>
+
+                  {topBadgeLabel ? (
+                    topBadgeAsset ? (
+                      <Image
+                        src={topBadgeAsset.src}
+                        alt={topBadgeAsset.alt}
+                        width={topBadgeAsset.width}
+                        height={topBadgeAsset.height}
+                        className="h-10 w-auto shrink-0"
+                        priority
+                      />
+                    ) : (
+                      <span className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-[#0B32A0]/14 bg-[#EFF4FF] px-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B32A0]">
+                        {topBadgeLabel}
+                      </span>
+                    )
+                  ) : null}
                 </div>
-                <p className="mt-5 text-[15px] leading-7 text-[#4b4b4b]">
-                  {selectedStyle.description}
+                <p className="mt-3 text-base leading-7 text-[#4b4b4b]">
+                  A tighter quick-turn apparel build around premium blanks, real colorways, and only the decoration decisions that actually matter.
                 </p>
               </div>
             </div>
@@ -772,20 +939,51 @@ export function ApparelBuilderPreview({
                   <label className={`mb-3 block ${sectionEyebrowClass}`}>
                     Apparel style
                   </label>
-                  <select
-                    value={selectedStyle.slug}
-                    onChange={(event) => setSelectedStyleSlug(event.target.value)}
-                    className={selectInputClass}
-                    style={{ backgroundImage: selectArrowSvg }}
-                  >
-                    {styles.map((style) => (
-                      <option key={style.slug} value={style.slug}>
-                        {`${style.name} - ${CATEGORY_LABELS[style.category]} - ${style.fit} fit`}
-                      </option>
-                    ))}
-                  </select>
+                  {lockedStyleSlug ? (
+                    <div className={`${insetPanelClass} flex flex-wrap items-center gap-2.5`}>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {selectedStyle.name}
+                      </span>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {CATEGORY_LABELS[selectedStyle.category]}
+                      </span>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {selectedStyle.fit} fit
+                      </span>
+                    </div>
+                  ) : (
+                    <select
+                      value={selectedStyle.slug}
+                      onChange={(event) => setSelectedStyleSlug(event.target.value)}
+                      className={selectInputClass}
+                      style={{ backgroundImage: selectArrowSvg }}
+                    >
+                      {styles.map((style) => (
+                        <option key={style.slug} value={style.slug}>
+                          {`${style.name} - ${CATEGORY_LABELS[style.category]} - ${style.fit} fit`}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <p className="mt-3 text-sm leading-6 text-[#8a8a8a]">
-                    {selectedStyle.brand} · {selectedStyle.weight} · {timelineLabel(selectedStyle)}
+                    {selectedStyle.fullName} · {selectedFamilyLabel} · {selectedStyle.fit} fit
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2.5">
+                    <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                      {selectedStyle.brand}
+                    </span>
+                    <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                      {selectedStyle.weight}
+                    </span>
+                    <span className="rounded-full border border-[#081E6F]/12 bg-[#F5F7FC] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                      {selectedStyle.material}
+                    </span>
+                    <span className="rounded-full border border-[#FF4200]/16 bg-[#FFF4ED] px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FF4200]">
+                      From {money(selectedStyle.priceFrom)}/unit
+                    </span>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-7 text-[#4b4b4b]">
+                    {selectedStyle.description}
                   </p>
                 </div>
 
@@ -889,8 +1087,8 @@ export function ApparelBuilderPreview({
                           className="pointer-events-none absolute top-0 z-10"
                           style={sliderPositionStyle(quantityTierIndex, QUANTITY_MARKS.length)}
                         >
-                          <span className="inline-flex min-h-8 whitespace-nowrap rounded-full bg-[#0B32A0] px-3.5 py-1.5 text-[11px] font-semibold text-white shadow-[0_10px_24px_rgba(8,30,111,0.16)]">
-                            {money(pricing.unitPrice)}/unit
+                          <span className="inline-flex min-h-8 whitespace-nowrap rounded-full bg-[#0B32A0] px-3.5 py-1.5 text-[11px] font-semibold text-white">
+                            {money(shippingIncludedUnitPrice)}/unit
                           </span>
                         </div>
                         <input
@@ -940,7 +1138,7 @@ export function ApparelBuilderPreview({
                         onClick={() => setFrontDecoration(option.id)}
                         className={`min-h-[5rem] rounded-[1.2rem] border px-4 py-3 text-left transition duration-200 ${
                           frontDecoration === option.id
-                            ? primarySelectedOptionClass
+                            ? frontDecorationSelectedOptionClass
                             : neutralOptionClass
                         }`}
                       >
@@ -1395,6 +1593,9 @@ export function ApparelBuilderPreview({
                   <p className="mb-3 text-sm leading-6 text-[#8a8a8a]">
                     Flag placements, Pantones, packaging requests, or anything else we should build around.
                   </p>
+                  <p className="mb-3 text-sm leading-6 text-[#8a8a8a]">
+                    Need to split this across different colors or styles? Leave a note and we&apos;ll reach out.
+                  </p>
                   <textarea
                     value={notes}
                     onChange={(event) => setNotes(event.target.value)}
@@ -1430,7 +1631,7 @@ export function ApparelBuilderPreview({
           </aside>
 
           <aside className="xl:sticky xl:top-24 xl:self-start">
-            <div className={`${panelClass} overflow-hidden`}>
+            <div className={`${panelClass} overflow-hidden xl:flex xl:max-h-[calc(100vh-8.5rem)] xl:flex-col`}>
               <div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
@@ -1442,7 +1643,7 @@ export function ApparelBuilderPreview({
                 </div>
               </div>
 
-              <div className="mt-6 space-y-3.5 text-sm">
+              <div className="mt-6 rounded-[1rem] border border-[#081E6F]/10 bg-[#FBF7F1]/65 text-sm xl:min-h-0 xl:flex-1 xl:overflow-y-auto xl:pr-1">
                 {[
                   { label: "Product", value: selectedStyle.name },
                   { label: "Color", value: selectedColor?.name ?? "Not selected" },
@@ -1461,56 +1662,56 @@ export function ApparelBuilderPreview({
                   { label: "Selected options", value: selectedOptionsLabel },
                   { label: "Turnaround", value: timelineLabel(selectedStyle) },
                   { label: "Estimated delivery date", value: estimatedDeliveryShortLabel },
-                ].map((row) => (
-                  <div key={row.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-4 rounded-[1rem] bg-[#F7F9FC] px-4 py-3">
+                ].map((row, index) => (
+                  <div
+                    key={row.label}
+                    className={`grid grid-cols-[minmax(0,1fr)_auto] gap-3 px-3.5 py-2 ${index > 0 ? "border-t border-[#081E6F]/10" : ""}`}
+                  >
                     <span className={summaryLabelClass}>{row.label}</span>
-                    <span className={summaryValueClass}>{row.value}</span>
+                    <span className="text-right text-[12px] font-semibold leading-5 text-[#171717]">{row.value}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="mt-6 rounded-[1.3rem] border border-[#081E6F]/10 bg-[linear-gradient(180deg,#F8F2EA_0%,#FDFDFD_100%)] p-5">
+              <div className="mt-5 border-t border-[#081E6F]/10 pt-5">
                 <div className="mb-3 flex items-end justify-between gap-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                     Unit price
                   </p>
-                  <p className="text-2xl font-semibold leading-none text-[#0B32A0]">
-                    {money(pricing.unitPrice)}
+                  <p className="text-xl font-semibold leading-none text-[#0B32A0]">
+                    {money(shippingIncludedUnitPrice)}
                   </p>
                 </div>
                 <div className="flex items-end justify-between gap-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
                     Total
                   </p>
-                  <p className="text-4xl font-semibold leading-none text-[#FF4200]">
+                  <p className="text-3xl font-semibold leading-none text-[#FF4200]">
                     {money(estimatedTotal)}
                   </p>
                 </div>
               </div>
 
-              <Link
-                href={`/contact?${handoffParams.toString()}`}
-                className="mt-6 flex min-h-14 w-full items-center justify-center rounded-[1.1rem] bg-[#FF4200] px-6 text-center text-[15px] font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255,66,0,0.24)]"
+              <button
+                type="button"
+                onClick={handleAddToProject}
+                className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[#FF4200] px-5 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
               >
-                Submit order for review
-              </Link>
-              <p className="mt-4 text-center text-sm leading-6 text-[#6b6b6b]">
-                Send us your build for review. Final quote is confirmed after review.
-              </p>
-              <Link
-                href={`/contact?${new URLSearchParams({
-                  intent: "apparel-human-help",
-                  product: selectedStyle.fullName,
-                  projectSummary,
-                }).toString()}`}
-                className="mt-4 block text-center text-sm font-semibold text-[#777] underline-offset-4 transition hover:text-[#0B32A0] hover:underline"
-              >
-                Have Questions? Talk to our team.
-              </Link>
+                Add to Project
+              </button>
+              <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                  Project flow
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  Add this build to your project cart, keep stacking products, and send one combined request when you&apos;re ready.
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  We&apos;ll review everything together from the cart before final pricing, decoration guidance, and timing are confirmed.
+                </p>
+              </div>
             </div>
           </aside>
-        </div>
-      </section>
-    </main>
+    </MasterCustomizerShell>
   );
 }

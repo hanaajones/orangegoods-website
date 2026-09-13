@@ -40,16 +40,6 @@ const trendTiles: TrendTile[] = [
     size: "large",
   },
   {
-    title: "Tonal embroidery",
-    note: "Quiet thread colors can make hats and fleece feel premium without shouting.",
-    image: "/images/gallery/hat-feb-img_7550.jpg",
-    category: "Hats",
-    tags: ["Embroidery", "Subtle"],
-    action: "See hats",
-    href: "/goods/hats",
-    size: "medium",
-  },
-  {
     title: "Gift kits that do not feel corporate",
     note: "One useful product, one wearable piece, and one small detail usually beats a box full of filler.",
     image: "/images/gallery/drinkware-goodoonya1.jpg",
@@ -71,7 +61,7 @@ const trendTiles: TrendTile[] = [
   },
   {
     title: "Soft camo hats",
-    note: "Camo is coming back softer: washed, faded, and paired with clean embroidery or a small patch.",
+    note: "Corduroy never goes out of style.",
     image: "/images/gallery/hat-client-bucket-brown.jpg",
     category: "Hats",
     tags: ["Camo", "Outdoor"],
@@ -96,7 +86,7 @@ const trendTiles: TrendTile[] = [
     category: "Outdoor",
     tags: ["Hats", "Rope detail"],
     action: "See rope caps",
-    href: "/goods/hats/quick-turn/1123",
+    href: "/create/hats/surf-rope-snapback",
     size: "small",
   },
   {
@@ -427,6 +417,29 @@ function tileHeight(size: TrendTile["size"]) {
   return "h-[17rem]";
 }
 
+function buildFreshPicksHref(tile: TrendTile) {
+  if (!tile.href.startsWith("/contact")) return tile.href;
+
+  const [pathname, queryString = ""] = tile.href.split("?");
+  const params = new URLSearchParams(queryString);
+  const projectSummary = [
+    `I like the "${tile.title}" idea from your Fresh Picks page and want to make something similar.`,
+    `Category: ${tile.category}.`,
+    `Direction: ${tile.note}`,
+    tile.tags.length ? `Tags: ${tile.tags.join(", ")}.` : "",
+    "",
+    "Can you help me put together something along these lines?",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  params.set("projectSummary", projectSummary);
+  params.set("source", "fresh-picks");
+  params.set("product", tile.title);
+
+  return `${pathname}?${params.toString()}`;
+}
+
 export function FreshPicksBoardPreview() {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -465,7 +478,7 @@ export function FreshPicksBoardPreview() {
                 Start a project
               </Link>
               <Link
-                href="/catalog"
+                href="/goods/all"
                 className="inline-flex min-h-11 items-center text-sm font-semibold uppercase tracking-[0.14em] text-white/82 transition hover:text-white"
               >
                 View full catalog
@@ -527,7 +540,7 @@ export function FreshPicksBoardPreview() {
                     ))}
                   </div>
                   <Link
-                    href={tile.href}
+                    href={buildFreshPicksHref(tile)}
                     className="mt-4 inline-flex items-center text-xs font-semibold uppercase tracking-[0.14em] text-[#FF7F00] transition hover:text-[var(--og-blue)]"
                   >
                     Explore pick →

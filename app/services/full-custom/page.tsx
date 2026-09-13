@@ -14,12 +14,16 @@ import {
   ServiceSnapCarousel,
   type ServiceSnapCarouselItem,
 } from "../_components/ServiceSnapCarousel";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Full Custom - Orange Goods",
   description:
     "Built-from-scratch custom goods for brands that need original product, custom materials, trims, labels, and a tighter end result.",
-};
+  path: "/services/full-custom",
+  image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+  imageAlt: "Full custom branded goods by Orange Goods",
+});
 
 const processSteps = [
   {
@@ -294,6 +298,8 @@ export default function FullCustomPage() {
               alt="OG"
               width={136}
               height={136}
+              loading="eager"
+              unoptimized
               className="h-[1.45em] w-[1.45em] object-contain"
             />
             <span>for full custom</span>
@@ -329,6 +335,8 @@ export default function FullCustomPage() {
                     alt={reason.iconAlt}
                     fill
                     sizes="48px"
+                    loading="eager"
+                    unoptimized
                     className="object-contain"
                   />
                 </div>

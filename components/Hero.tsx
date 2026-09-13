@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
 
+const customizeHref = "/goods/all";
+
 const categories = [
   "Beanies",
   "Polos",
@@ -60,6 +62,12 @@ export function Hero() {
             >
               START A PROJECT
             </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex items-center rounded-xl border-2 border-[var(--og-blue)] bg-white px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-[var(--og-blue)] transition hover:-translate-y-[2px] hover:bg-[var(--og-blue)] hover:text-white"
+            >
+              CUSTOMIZE
+            </Link>
           </div>
         </div>
 
@@ -69,7 +77,7 @@ export function Hero() {
             className="text-3xl uppercase leading-tight text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Good brands. Better goods.
+            Good brands.<br />Better goods.
           </h1>
           <p className="text-base leading-6 text-white/80">
             For brands that care what they sell and hand out. One team from idea to delivery.
@@ -80,6 +88,12 @@ export function Hero() {
               className="btn-og inline-flex items-center rounded-xl px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white"
             >
               START A PROJECT
+            </Link>
+            <Link
+              href={customizeHref}
+              className="inline-flex items-center rounded-xl border-2 border-white/70 bg-white/10 px-6 py-3 text-sm font-bold uppercase tracking-[0.1em] text-white transition hover:border-white hover:bg-white hover:text-[#0B32A0]"
+            >
+              CUSTOMIZE
             </Link>
           </div>
         </div>

@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { StructuredData } from "@/components/StructuredData";
 import { CTASection } from "@/components/CTASection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { buildArticleStructuredData, buildMetadata } from "@/lib/seo";
 
 type CaseStudy = {
   slug: string;
@@ -30,7 +32,7 @@ type CaseStudy = {
   }[];
 };
 
-const caseStudies: CaseStudy[] = [
+export const caseStudies: CaseStudy[] = [
   {
     slug: "verve-coffee-retail-merch-program",
     client: "Verve Coffee Roasters",
@@ -1351,7 +1353,7 @@ const caseStudies: CaseStudy[] = [
   },
 ];
 
-function getCaseStudy(slug: string) {
+export function getCaseStudy(slug: string) {
   return caseStudies.find((study) => study.slug === slug);
 }
 
@@ -1373,10 +1375,14 @@ export async function generateMetadata({ params }: CaseStudyPageProps) {
     return {};
   }
 
-  return {
+  return buildMetadata({
     title: `${study.client} Case Study - Orange Goods`,
     description: study.deck,
-  };
+    path: `/case-studies/${study.slug}`,
+    image: study.heroImage,
+    imageAlt: `${study.client} case study`,
+    type: "article",
+  });
 }
 
 function SectionHeader({
@@ -1418,11 +1424,20 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
     notFound();
   }
 
+  const articleStructuredData = buildArticleStructuredData({
+    title: `${study.client} Case Study`,
+    description: study.deck,
+    path: `/case-studies/${study.slug}`,
+    image: study.heroImage,
+    articleSection: study.category,
+  });
+
   const nextStudy =
     caseStudies[(caseStudies.findIndex((item) => item.slug === study.slug) + 1) % caseStudies.length];
 
   return (
     <main className="bg-[#F7F4ED] pb-24 md:pb-0">
+      <StructuredData id={`case-study-${study.slug}`} data={articleStructuredData} />
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         <ParallaxHeroBackground image={study.heroImage} position={study.heroPosition} />
         <div className="absolute inset-0 bg-[#1C1C1C]/42" />

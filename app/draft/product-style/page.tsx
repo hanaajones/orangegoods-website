@@ -16,8 +16,8 @@ export default function ProductStyleDraftPage() {
         }}
         previewLinks={[
           {
-            label: "AS Colour 5001 Builder",
-            href: "/build/products/as-colour-5001",
+            label: "AS Colour 5026 Builder",
+            href: "/create/apparel/as-colour-5026",
           },
           {
             label: "Gildan 8000 Style Page",

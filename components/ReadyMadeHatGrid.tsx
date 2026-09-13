@@ -2,6 +2,7 @@
 
 import { useState, useMemo, type CSSProperties } from "react";
 import Link from "next/link";
+import { addQuickTurnReadyMadeHatShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 import type { ReadyMadeHatStyle } from "@/components/ShoppableReadyMadeHat";
 
 // ── Filter metadata attached to each style ─────────────────────────────────
@@ -14,7 +15,7 @@ export type HatMeta = ReadyMadeHatStyle & {
 
 const PROFILE_LABELS = { low: "Low Profile", mid: "Mid Profile", high: "High Profile" };
 const PROFILE_OPTIONS = ["all", "low", "mid", "high"] as const;
-const STARTING_PRICE = "$16.50";
+const STARTING_PRICE = `$${addQuickTurnReadyMadeHatShippingIncludedPrice(16.5).toFixed(2)}`;
 const COLOR_OPTIONS = [
   "Black",
   "Cream",

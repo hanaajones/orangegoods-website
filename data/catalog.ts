@@ -1,6 +1,6 @@
 // ── Pricing engine ────────────────────────────────────────────────────────────
 
-export type PrintCat = "base" | "fleece" | "jacket";
+export type PrintCat = "base" | "fleece" | "jacket" | "bag";
 export type CatalogFrontDecoration = "screenPrint" | "embroidery";
 export type CatalogSpecialtyPrintUpgrade = "Water-Based Ink" | "Discharge Print" | "Puff Print";
 export type CatalogPackagingUpgrade = "Printed neck label" | "Woven label" | "Folded + poly bagged";
@@ -30,6 +30,7 @@ export const JOL_SETUP_SCREEN_COST = 25;
 export const JOL_SETUP_FILM_COST = 10;
 export const JOL_FLASH_CURE_PRICE = 0.5;
 export const JOL_FLEECE_OR_SLEEVE_PRICE = 0.25;
+export const JOL_BAG_OR_ACCESSORIES_PRICE = 0.75;
 export const JOL_SPECIALTY_INK_PRICE = 0.75;
 export const JOL_CUSTOMER_SUPPLIED_GOODS_PRICE = 0.25;
 export const JOL_PRINT_MARKUP_MULTIPLIER = 1.1;
@@ -96,7 +97,12 @@ export function calculateJolScreenPrintLocationUnitPrice({
   printCat,
   isSleeveOrSide = false,
 }: JolLocationPriceInput) {
-  const catUpcharge = printCat === "fleece" ? JOL_FLEECE_OR_SLEEVE_PRICE : printCat === "jacket" ? 0.75 : 0;
+  const catUpcharge =
+    printCat === "fleece"
+      ? JOL_FLEECE_OR_SLEEVE_PRICE
+      : printCat === "jacket" || printCat === "bag"
+        ? JOL_BAG_OR_ACCESSORIES_PRICE
+        : 0;
   const placementUpcharge = isSleeveOrSide ? JOL_FLEECE_OR_SLEEVE_PRICE : 0;
   const printRate = getJolPrintRate(qty, colorCount);
   const setupAmortization = getJolSetupAmortizedPerUnit(qty, clampColorCount(colorCount));
@@ -367,24 +373,24 @@ export const CATALOG_PRODUCTS: CatalogProduct[] = [
     slug: 'as-colour-5101',
     category: 'hoodies',
     name: 'AS Colour 5101',
-    fullName: 'AS Colour 5101 — Premium Hoodie',
-    tags: ['Premium', 'Retail Weight'],
-    weight: '12 oz',
-    fit: 'Relaxed',
-    material: '80% cotton, 20% polyester fleece',
-    description: "AS Colour's flagship hoodie. Heavy, premium, and retail-ready.",
-    blank: 38.00, blankMarkup: 5.00, printCat: 'fleece',
+    fullName: 'AS Colour 5101 — Supply Hood',
+    tags: ['Classic Fit', 'Mid Weight'],
+    weight: '8.5 oz',
+    fit: 'Regular',
+    material: '80% cotton, 20% polyester anti-pill CVC fleece',
+    description: 'Mid-weight hoodie with a cleaner everyday fit. Easy to wear, easy to brand, and better aligned with standard quick-turn programs.',
+    blank: 18.50, blankMarkup: 5.00, printCat: 'fleece',
   },
   {
     slug: 'as-colour-5100',
     category: 'hoodies',
     name: 'AS Colour 5100',
-    fullName: 'AS Colour 5100 — Supply Hood',
-    tags: ['Classic Fit', 'Versatile'],
-    weight: '10 oz',
-    fit: 'Classic',
-    material: '80% cotton, 20% polyester fleece',
-    description: 'The everyday hoodie. Clean, versatile, works for any program.',
+    fullName: 'AS Colour 5100 — Supply Crew',
+    tags: ['Crewneck', 'Mid Weight'],
+    weight: '8.5 oz',
+    fit: 'Regular',
+    material: '80% cotton, 20% polyester anti-pill CVC fleece',
+    description: 'Mid-weight crewneck with a straightforward fit. Strong for staff programs, merch tables, and any run that wants a cleaner no-hood fleece option.',
     blank: 28.50, blankMarkup: 5.00, printCat: 'fleece',
   },
   {

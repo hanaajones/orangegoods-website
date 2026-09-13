@@ -6,6 +6,16 @@ import {
   ProductCategoryFaqSection,
   ProductCategoryPage,
 } from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Drinkware — Orange Goods",
+  description:
+    "Custom mugs, tumblers, bottles, and branded drinkware programs for gifting, retail, hospitality, launches, and everyday use.",
+  path: "/goods/drinkware",
+  image: "/images/gallery/drinkware-verve-milk-glass-mug-2026-08-13.jpg",
+  imageAlt: "Custom drinkware by Orange Goods",
+});
 
 const drinkwareProducts = [
   {
@@ -231,6 +241,7 @@ export default function DrinkwarePage() {
         subhead="Reusable bottles, milk glass mugs, tumblers, and barware built to feel useful first, branded second, and worth keeping either way."
         image="/images/gallery/drinkware-hero-img-7758-2026-08-13.jpg"
         imageAlt="Custom Layla Bagels milk glass mugs used as the custom drinkware hero image"
+        startProjectHref="/create/drinkware"
         heroEyebrow="Daily Use Goods"
         heroImagePosition="center 42%"
         heroSubnote={null}

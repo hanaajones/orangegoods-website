@@ -12,8 +12,8 @@ type QuantityTier = {
 
 export function HatPricingSlider({ tiers }: { tiers: QuantityTier[] }) {
   const highlightPills = [
-    "All-in delivered pricing",
     "Free shipping on every order",
+    "All-in delivered pricing",
   ];
 
   return (
@@ -54,24 +54,20 @@ export function HatPricingSlider({ tiers }: { tiers: QuantityTier[] }) {
               Per style / per hat
             </p>
 
-            <p className="mt-5 text-sm leading-6 text-[var(--og-muted)]">
+            <p className="mt-4 text-sm leading-6 text-[var(--og-muted)]">
               Front decoration, fabric choice, and interior label included.
             </p>
 
-            <Link
-              href={tier.href}
-              className="mt-auto inline-flex min-h-12 w-full items-center justify-center rounded-[1rem] border-2 border-[#0B32A0] bg-[#0B32A0] px-5 text-center text-sm font-semibold text-white transition hover:-translate-y-[2px] hover:border-[var(--og-orange)] hover:bg-[var(--og-orange)]"
-            >
-              Start this order
-            </Link>
+            <div className="mt-auto pt-6">
+              <Link
+                href={tier.href}
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-[1rem] border-2 border-[var(--og-orange)] bg-[var(--og-orange)] px-5 text-center text-sm font-semibold text-white transition hover:-translate-y-[2px] hover:border-[#e43b00] hover:bg-[#e43b00]"
+              >
+                Start this order
+              </Link>
+            </div>
           </article>
         ))}
-      </div>
-
-      <div className="mt-4 px-1 text-left">
-        <p className="text-xs leading-5 text-[var(--og-muted)]">
-          Core pricing shown. Add-ons and upgraded decoration can change the total.
-        </p>
       </div>
     </div>
   );

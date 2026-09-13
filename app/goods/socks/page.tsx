@@ -1,482 +1,303 @@
 import Image from "next/image";
-import Link from "next/link";
-import { CTASection } from "@/components/CTASection";
-import { ShoppableProduct } from "@/components/ShoppableProduct";
+import { ServiceLeadForm } from "@/app/services/_components/ServiceLeadForm";
+import type { ServiceSnapCarouselItem } from "@/app/services/_components/ServiceSnapCarousel";
+import { Reveal } from "@/components/Reveal";
+import {
+  ProductCategoryFaqSection,
+  ProductCategoryPage,
+} from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
 
-const sockTiers = [
-  {
-    label: "100 pairs",
-    corePrice: "$8.50 / pair",
-    deluxePrice: "$9.90 / pair",
-    note: "Starting range. Final pricing depends on construction, yarn count, packaging, and freight.",
-    coreFeatures: [
-      "Custom jacquard knit with up to 6 yarn colors",
-      "Crew, quarter, or no-show construction",
-      "Heel, toe, and cuff color blocking",
-      "Size-run planning and proofing",
-      "Design guidance from kickoff to approval",
-    ],
-    deluxeFeatures: [
-      "Everything in Program Core",
-      "Branded header card or belly band",
-      "Sole hit or secondary knit detail",
-      "Higher-detail packaging review",
-      "Kitting guidance for mailers or gifting",
-    ],
-  },
-  {
-    label: "250 pairs",
-    corePrice: "$7.40 / pair",
-    deluxePrice: "$8.60 / pair",
-    note: "A strong range for welcome kits, event programs, and first retail runs.",
-    coreFeatures: [
-      "Custom jacquard knit with up to 6 yarn colors",
-      "Crew, quarter, or no-show construction",
-      "Heel, toe, and cuff color blocking",
-      "Size-run planning and proofing",
-      "Design guidance from kickoff to approval",
-    ],
-    deluxeFeatures: [
-      "Everything in Program Core",
-      "Branded header card or belly band",
-      "Sole hit or secondary knit detail",
-      "Higher-detail packaging review",
-      "Kitting guidance for mailers or gifting",
-    ],
-  },
-  {
-    label: "500 pairs",
-    corePrice: "$6.50 / pair",
-    deluxePrice: "$7.75 / pair",
-    note: "Best fit for broader campaigns, retail inventory, and repeatable merch programs.",
-    coreFeatures: [
-      "Custom jacquard knit with up to 6 yarn colors",
-      "Crew, quarter, or no-show construction",
-      "Heel, toe, and cuff color blocking",
-      "Size-run planning and proofing",
-      "Design guidance from kickoff to approval",
-    ],
-    deluxeFeatures: [
-      "Everything in Program Core",
-      "Branded header card or belly band",
-      "Sole hit or secondary knit detail",
-      "Higher-detail packaging review",
-      "Kitting guidance for mailers or gifting",
-    ],
-  },
-  {
-    label: "1000 pairs",
-    corePrice: "$5.80 / pair",
-    deluxePrice: "$6.95 / pair",
-    note: "Ask about larger runs, mixed size ratios, and multi-SKU packaging programs.",
-    coreFeatures: [
-      "Everything in smaller tiers",
-      "Volume-minded size planning",
-      "Design guidance from kickoff to approval",
-      "Program review for retail or large-scale distribution",
-      "Freight planning support",
-    ],
-    deluxeFeatures: [
-      "Everything in Program Core",
-      "Branded header card or belly band",
-      "Sole hit or secondary knit detail",
-      "Higher-detail packaging review",
-      "Program review for retail or large-scale distribution",
-    ],
-  },
-];
+export const metadata = buildMetadata({
+  title: "Custom Socks — Orange Goods",
+  description:
+    "Custom branded socks for retail drops, gifting, events, uniforms, and merch assortments that need a small but strong product.",
+  path: "/goods/socks",
+  image: "/images/gallery/socks-firestone-_mg_0147.jpg",
+  imageAlt: "Custom socks by Orange Goods",
+});
 
-const sockVariants = [
+const sockProducts = [
   {
-    name: "Crew",
-    modelNum: "OG-S01",
+    title: "Crew Socks",
     description:
-      "The most versatile starting point for gifting, retail, team gear, and everyday branded wear.",
-    image: "/images/gallery/socks-verve-gd.jpg",
+      "The easiest place to start for gifting, retail, uniforms, and everyday merch programs.",
   },
   {
-    name: "Quarter",
-    modelNum: "OG-S02",
+    title: "Quarter Socks",
     description:
-      "A cleaner athletic cut for active kits, summer programs, hospitality drops, and event giveaways.",
-    image: "/images/gallery/socks-firestone-_mg_0158.jpg",
+      "A cleaner athletic cut for active brands, summer kits, and event programs that want a lighter feel.",
   },
   {
-    name: "No-show",
-    modelNum: "OG-S03",
+    title: "No-Show Socks",
     description:
-      "Low-profile pairs that keep the branding subtle on-foot and shift more attention to packaging and sole detail.",
-    image: "/images/gallery/contact-socks-mg-2443.jpg",
+      "Low-profile pairs that shift more of the brand moment into the knit details and packaging.",
   },
   {
-    name: "Gift set",
-    modelNum: "OG-S04",
+    title: "Plush Socks",
     description:
-      "A bundled multi-pair direction for elevated mailers, onboarding kits, seasonal gifting, or simple retail sets.",
-    image: "/images/gallery/socks-verve-gd-dscf4861.jpg",
+      "Soft, gift-forward builds that work well for hospitality, seasonal drops, and comfort-led kits.",
+  },
+  {
+    title: "Graphic Knit Socks",
+    description:
+      "Pattern-heavy directions with room for bold leg graphics, stripes, cuff hits, and sole messages.",
+  },
+  {
+    title: "Gift Sets",
+    description:
+      "Multi-pair sock programs for onboarding, retail bundles, mailers, and more finished gifting moments.",
   },
 ];
 
-const sockTabs = [
+const sockCarouselItems: ServiceSnapCarouselItem[] = [
   {
-    label: "Overview",
-    content: (
-      <div className="space-y-3">
-        <p>
-          Custom socks are one of the easiest categories to make useful, giftable, and still
-          brand-forward. They travel well, size cleanly, and give you more knit real estate than
-          most people expect.
-        </p>
-        <p>
-          Most programs start with crew socks, then adjust the cut, yarn feel, cuff height, and
-          packaging based on whether the end use is retail, a kit insert, or a giveaway.
-        </p>
-      </div>
-    ),
+    title: "Graphic Crew Socks",
+    detail: "Verve Coffee",
+    src: "/images/gallery/socks-verve-gd.jpg",
+    alt: "Graphic custom Verve Coffee socks laid out as a branded product shot",
+    position: "center 44%",
+    activeScaleClass: "scale-[1.08]",
+    thumbnailScaleClass: "scale-[1.05]",
+    activeHoverScaleClass: "group-hover:scale-[1.12]",
   },
   {
-    label: "Knit details",
-    content: (
-      <div className="space-y-3">
-        <p>
-          The main branding route is custom jacquard knit. That covers leg graphics, cuff stripes,
-          heel and toe blocking, and woven-in logo moments without adding bulky decoration.
-        </p>
-        <ul className="space-y-2 text-sm leading-6 text-[var(--og-muted)]">
-          <li>Full-pattern leg graphics</li>
-          <li>Heel, toe, and cuff contrast</li>
-          <li>Sole messages or hidden copy</li>
-          <li>Performance yarn or cushioned-footbed upgrades when needed</li>
-        </ul>
-      </div>
-    ),
+    title: "Packaged Gift Set",
+    detail: "Verve Coffee",
+    src: "/images/gallery/socks-verve-gd-dscf4863.jpg",
+    alt: "Custom Verve Coffee socks photographed in branded packaging",
+    position: "center 48%",
+    activeScaleClass: "scale-[1.04]",
   },
   {
-    label: "Packaging",
-    content: (
-      <div className="space-y-3">
-        <p>
-          Packaging is where socks start feeling noticeably more premium. Header cards, belly
-          bands, and simple backers do a lot when the item needs to live in a kit or on a shelf.
-        </p>
-        <p>
-          If the program is mailer-first or gift-first, we usually spend more energy on pairing and
-          presentation than on overcomplicating the sock itself.
-        </p>
-      </div>
-    ),
+    title: "Can Socks",
+    detail: "Firestone Walker",
+    src: "/images/gallery/socks-firestone-_mg_0156.jpg",
+    alt: "Firestone Walker custom socks photographed as a retail-ready product",
+    position: "center 50%",
   },
   {
-    label: "Timing",
-    content: (
-      <div className="space-y-3">
-        <p>
-          Most custom sock programs land in roughly 4 to 6 weeks after proof approval, depending
-          on the knit complexity and whether custom packaging is part of the scope.
-        </p>
-        <p>
-          Early conversations help if you need size planning, kit assembly, or multiple pairings
-          across one larger merch program.
-        </p>
-      </div>
-    ),
-  },
-];
-
-const sockAddOnGroups = [
-  {
-    heading: "Packaging",
-    note: "Most requested add-ons",
-    items: [
-      { label: "Header card", price: "+$0.40" },
-      { label: "Belly band", price: "+$0.55" },
-      { label: "Custom backer", price: "+$0.85" },
-    ],
+    title: "Quarter Socks",
+    detail: "Firestone Walker",
+    src: "/images/gallery/socks-firestone-_mg_0158.jpg",
+    alt: "Firestone Walker socks shown as a quarter-cut product shot",
+    position: "center 48%",
   },
   {
-    heading: "Construction",
-    note: "Common upgrades",
-    items: [
-      { label: "Cushioned footbed", price: "+$0.35" },
-      { label: "Performance yarn", price: "+$0.60" },
-      { label: "Sole message", price: "+$0.25" },
-    ],
+    title: "Plush Socks",
+    detail: "Beachly",
+    src: "/images/gallery/socks-beachly.jpg",
+    alt: "Beachly plush custom socks styled as a soft lifestyle gift item",
+    position: "center 52%",
+    activeScaleClass: "scale-[1.02]",
   },
   {
-    heading: "Program support",
-    items: [
-      { label: "Split size runs", price: "Included" },
-      { label: "Multi-pair gift set", price: "Custom quote" },
-      { label: "Mailer or kit packing", price: "Custom quote" },
-    ],
+    title: "Gift Pairing",
+    detail: "Verve Coffee",
+    src: "/images/gallery/socks-verve-gd-dscf4861.jpg",
+    alt: "Two pairs of Verve Coffee socks grouped together in a styled product shot",
+    position: "center 46%",
+  },
+  {
+    title: "Packaging Detail",
+    detail: "Orange Goods",
+    src: "/images/gallery/accessories-greatful-dead-socks-packaging.jpg",
+    alt: "Sock packaging detail showing how a branded pair can feel more premium",
+    position: "center 46%",
+    activeScaleClass: "scale-[1.02]",
+  },
+  {
+    title: "Sand Flatlay",
+    detail: "Orange Goods",
+    src: "/images/gallery/accessories-socks-sand-flatlay.jpg",
+    alt: "Custom socks styled in a sand flatlay to show a more lifestyle-driven product direction",
+    position: "center 44%",
   },
 ];
 
-const programCards = [
-  {
-    eyebrow: "Welcome kits",
-    title: "Easy to distribute",
-    body: "Socks are simple to size, easy to pack, and strong when one useful item needs to make the whole kit feel more complete.",
-  },
-  {
-    eyebrow: "Retail add-ons",
-    title: "Low-footprint, high-margin energy",
-    body: "They work well when you want something lower-cost than outerwear but more considered than a throwaway promo item.",
-  },
-  {
-    eyebrow: "Events + gifting",
-    title: "A category people actually keep",
-    body: "This is one of the safer choices when the goal is repeat wear instead of a short single-day brand impression.",
-  },
-];
+const introSection = {
+  eyebrow: "Best For",
+  title: "Socks that feel easy to keep around",
+  description:
+    "Socks work when you want something softer than a throwaway promo item but easier to distribute than heavier apparel. The category works best when the knit, fit, and packaging all support the same use case.",
+  items: [
+    {
+      title: "Welcome Kits + Gifting",
+      description:
+        "Useful pairs that tuck easily into onboarding kits, mailers, retreats, and seasonal gifts without getting too operationally heavy.",
+      imageSrc: "/images/gallery/socks-verve-gd-dscf4863.jpg",
+      imageAlt: "Branded socks shown in packaging for a gift-ready presentation",
+      imagePosition: "center 48%",
+    },
+    {
+      title: "Retail + Hospitality",
+      description:
+        "A strong lane for coffee shops, breweries, hotels, and lifestyle brands that want a product people will actually grab again.",
+      imageSrc: "/images/gallery/socks-firestone-_mg_0175.jpg",
+      imageAlt: "Retail-oriented custom socks photographed for a hospitality-style brand program",
+      imagePosition: "center 48%",
+    },
+    {
+      title: "Events + Everyday Merch",
+      description:
+        "An easy category when you want repeat wear, solid perceived value, and more knit real estate than people expect.",
+      imageSrc: "/images/gallery/socks-verve-gd-dscf4860.jpg",
+      imageAlt: "Custom socks styled as an everyday merch piece",
+      imagePosition: "center 50%",
+    },
+  ],
+} as const;
 
-const processSteps = [
-  {
-    step: "01",
-    title: "Pick the build",
-    description: "Choose the silhouette, quantity, and whether the program needs plain packaging or a more polished presentation.",
-  },
-  {
-    step: "02",
-    title: "Dial in the knit",
-    description: "We map the pattern, yarn direction, sizing, and any sole or cuff details before proof approval.",
-  },
-  {
-    step: "03",
-    title: "Ship it cleanly",
-    description: "Once production is approved, we help land the pairs in bulk, in kits, or in simple gift-ready sets.",
-  },
-];
+const brandSection = {
+  eyebrow: "Program Shapes",
+  title: "There is more than one good sock lane",
+  description:
+    "Some sock projects want to feel retail-ready. Others just need a strong giftable add-on. The right direction usually comes down to cut, yarn feel, and whether the packaging needs to do some of the heavy lifting.",
+  backgroundImage: "/images/gallery/socks-firestone-_mg_0188.jpg",
+  backgroundPosition: "center 46%",
+  brands: [
+    {
+      name: "Crew",
+    },
+    {
+      name: "Quarter",
+    },
+    {
+      name: "Gift Set",
+    },
+  ],
+  footer:
+    "The category can lean simple or more elevated. We usually sort that out early so the knit, packaging, and quantity all point in the same direction.",
+} as const;
 
-const faqs = [
+const detailSection = {
+  eyebrow: "A Few Things To Know",
+  eyebrowClassName: "text-[var(--og-orange)]",
+  title: "What makes a sock program work",
+  description:
+    "The strongest sock programs usually narrow the silhouette early, simplify the knit approach, and use packaging to finish the product instead of overcomplicating the pair itself.",
+  itemTone: "light",
+  items: [
+    {
+      title: "Start with the cut",
+      description:
+        "Crew, quarter, no-show, or plush each point toward a different use case, so that choice usually comes before the artwork.",
+    },
+    {
+      title: "Keep the knit intentional",
+      description:
+        "Jacquard graphics, cuff stripes, heel and toe blocking, and sole messages can do a lot without forcing the sock to feel busy.",
+    },
+    {
+      title: "Packaging can elevate it fast",
+      description:
+        "Header cards, belly bands, and simple gift pairings often do more for perceived value than adding too much extra detail to the sock itself.",
+    },
+  ],
+  backgroundImage: "/images/gallery/accessories-plush-socks-blue.jpg",
+  backgroundPosition: "center 46%",
+} as const;
+
+const sockFaqs = [
   {
     question: "What is the MOQ for custom socks?",
-    answer: "Most custom sock programs start at 100 pairs total.",
+    answer:
+      "Most custom sock programs start at 100 pairs total, though the best pricing usually comes once the quantity climbs beyond that.",
   },
   {
-    question: "How long do custom socks usually take?",
-    answer: "A typical lead time is about 4 to 6 weeks after proof approval, depending on knit and packaging complexity.",
+    question: "How long do custom socks take?",
+    answer:
+      "Most sock programs are better planned in the 6 to 8 week range after proof approval, especially if packaging or multiple pairings are involved.",
   },
   {
-    question: "Can the design cover most of the sock?",
-    answer: "Yes. Full jacquard knit is the most common direction and allows broad pattern coverage across the leg, cuff, heel, toe, and sole.",
+    question: "Can you help choose the right sock style?",
+    answer:
+      "Yes. We usually help narrow the cut first, then shape the knit direction and packaging around the real use case.",
   },
   {
-    question: "Do socks work better for retail or for giveaways?",
-    answer: "Both. They are useful enough for giveaways and clean enough for retail once the packaging and pairing are handled well.",
+    question: "Can socks be packed into kits or gift sets?",
+    answer:
+      "Yes. Socks are a strong fit for onboarding kits, mailers, hospitality gifting, and small retail sets when the presentation is part of the plan.",
   },
-];
+] as const;
 
 export default function SocksPage() {
   return (
-    <main className="bg-[#F7F4ED] pb-24 md:pb-0">
-      <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-12 text-white md:px-8 md:py-[4.5rem] lg:px-12">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/gallery/socks-verve-gd.jpg"
-            alt="Custom Orange Goods socks arranged as a branded set"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-            style={{ objectPosition: "center 42%" }}
-          />
-        </div>
-        <div className="absolute inset-0 bg-[#1C1C1C]/46" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1C1C1C]/74 via-[#1C1C1C]/50 to-[#1C1C1C]/24" />
-        <div className="relative mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-white/75">
-            Full Custom
-          </p>
-          <h1 className="mt-5 max-w-3xl text-5xl uppercase leading-none text-[var(--og-orange)] md:text-6xl lg:text-7xl">
-            Custom Socks
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 md:text-xl">
-            A lighter, easier merch category that still gives you real room for branding, gifting,
-            retail presentation, and repeat wear.
-          </p>
-          <p className="mt-4 text-sm font-semibold uppercase tracking-[0.12em] text-white/78">
-            100+ pairs. Usually 4-6 weeks after proof approval.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="#shop" className="btn-og inline-flex">
-              See pricing
-            </Link>
-            <Link href="/contact?product=socks" className="btn-og-white inline-flex">
-              Start a Project
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-10 md:px-8 lg:px-12">
-        <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-          <article className="overflow-hidden rounded-[1.9rem] border-[3px] border-[#0B32A0] text-white">
-            <div className="relative min-h-[24rem]">
-              <Image
-                src="/images/gallery/socks-verve-gd-dscf4863.jpg"
-                alt="Custom socks shown in branded packaging"
-                fill
-                sizes="(min-width: 1024px) 52vw, 100vw"
-                className="object-cover"
-                style={{ objectPosition: "center 48%" }}
-              />
-              <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(72,72,72,0.72),rgba(28,28,28,0.46))]" />
-              <div className="relative flex h-full flex-col justify-end p-8 md:p-10">
-                <span className="inline-flex w-fit rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
-                  Why socks work
-                </span>
-                <h2 className="mt-4 max-w-xl text-4xl font-semibold leading-none md:text-5xl">
-                  Simple to order. Easy to keep.
-                </h2>
-                <p className="mt-4 max-w-2xl text-lg leading-7 text-white/82">
-                  Socks sit in a useful middle ground: more distinctive than a basic promo item,
-                  but less operationally heavy than outerwear or cut-and-sew apparel.
-                </p>
-              </div>
-            </div>
-          </article>
-
-          <div className="grid gap-4">
-            {programCards.map((card) => (
-              <article
-                key={card.title}
-                className="rounded-[1.75rem] border border-[#0B32A0]/15 bg-white p-6 shadow-[0_18px_50px_rgba(8,30,111,0.07)]"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                  {card.eyebrow}
-                </p>
-                <h2 className="mt-3 text-2xl font-semibold leading-tight text-[#0B32A0]">
-                  {card.title}
-                </h2>
-                <p className="mt-3 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                  {card.body}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="shop" className="px-4 py-8 md:px-8 lg:px-12">
-        <div className="mx-auto mb-8 max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-            Shop the category
-          </p>
-          <h2
-            className="mt-3 text-4xl font-semibold text-[var(--og-blue)] md:text-5xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Start with the sock, then tune the program.
-          </h2>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--og-muted)] md:text-base">
-            This keeps the hats-page shopping pattern, but in a lighter format that fits socks
-            better: pick the build, see the pricing bands, and get a clearer sense of the packaging
-            and upgrade path before reaching out.
-          </p>
-        </div>
-
-        <ShoppableProduct
-          name="Custom Socks"
-          tagline="Pick the silhouette, quantity, and program level. We will guide the knit, packaging, and finishing from there."
-          image="/images/product/socks-lifestyle.jpg"
-          tiers={sockTiers}
-          variants={sockVariants}
-          tabs={sockTabs}
-          addOnGroups={sockAddOnGroups}
-          ctaConfig={{
-            basePath: "/contact",
-            product: "socks",
-            packageValues: {
-              core: "program-core",
-              deluxe: "program-deluxe",
-            },
-            projectSummaryPrefix: "Custom socks inquiry",
-          }}
-          ctaLabel="Start My Sock Project"
-          eyebrowLabel="Shoppable"
-          variantLabel="Sock build"
-          packageLabels={{
-            core: "Program Core",
-            deluxe: "Program Deluxe",
-          }}
-          includedLabels={{
-            core: "Program Core includes",
-            deluxe: "Program Deluxe includes",
-          }}
-          optionsHeading="Packaging and upgrades"
-        />
-      </section>
-
-      <section className="px-4 py-8 md:px-8 lg:px-12">
-        <div className="mx-auto max-w-6xl rounded-[1.9rem] border border-[#0B32A0]/15 bg-white p-6 md:p-7">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-              Process
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#0B32A0] md:text-5xl">
-              How sock programs usually come together
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-              Fewer moving parts than hats, but still enough choices that a little structure helps.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 lg:grid-cols-3">
-            {processSteps.map((step, index) => (
-              <article
-                key={step.title}
-                className="rounded-[1.5rem] border border-[#0B32A0]/10 bg-[rgba(255,248,241,0.88)] p-5"
-              >
-                <p
-                  className={`text-sm font-semibold uppercase tracking-[0.22em] ${
-                    index % 2 === 0 ? "text-[var(--og-orange)]" : "text-[var(--og-blue)]"
-                  }`}
-                >
-                  {step.step}
-                </p>
-                <h3 className="mt-4 text-2xl font-semibold text-[#0B32A0]">
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-[var(--og-muted)] md:text-base">
-                  {step.description}
-                </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="faq" className="px-4 py-8 md:px-8 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-            FAQ
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#0B32A0] md:text-5xl">
-            Good to know before you start.
-          </h2>
-          <div className="mt-8 grid gap-3">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="rounded-[1.5rem] border border-[#0B32A0]/20 bg-[rgba(255,248,241,0.88)] p-5"
-              >
-                <summary className="cursor-pointer text-lg font-semibold text-[#0B32A0]">
-                  {faq.question}
-                </summary>
-                <p className="mt-3 text-base leading-7 text-[var(--og-muted)]">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <CTASection
-        title="Ready to start your socks project?"
-        description="Send the quantity, timing, and how you want the pairs to show up. We will help shape the right build."
-        buttonLabel="Start a Project"
-        buttonHref="/contact?product=socks"
+    <>
+      <ProductCategoryPage
+        title="Custom Socks"
+        subhead="Knit socks built for gifting, retail, hospitality, and everyday merch programs that feel useful first and branded in the right way."
+        image="/images/gallery/socks-verve-gd.jpg"
+        imageAlt="Graphic custom socks used as the hero image for the socks category page"
+        startProjectHref="/create/socks"
+        heroEyebrow="Full Custom"
+        heroImagePosition="center 44%"
+        heroSubnote="100+ pairs. Usually 6-8 weeks from proof approval."
+        introSection={introSection}
+        brandSection={brandSection}
+        products={sockProducts}
+        productSectionEyebrow="What We Make"
+        productSectionTitle="Sock programs worth building out"
+        productSectionDescription="A quick photo-led look at the kinds of sock directions this page is really about, without turning the section into a giant catalog."
+        productSnapCarouselItems={sockCarouselItems}
+        detailSection={detailSection}
+        faqs={[...sockFaqs]}
+        showBottomCta={false}
+        showFaqSection={false}
       />
-    </main>
+      <Reveal className="bg-[var(--og-cream)] px-4 pb-16 md:px-8 md:pb-24 lg:px-12">
+        <section
+          id="start-project"
+          className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-[#0B32A0]/14 bg-[linear-gradient(180deg,#FFF8F1_0%,#FFFDF8_100%)] p-4 shadow-[0_24px_80px_rgba(8,30,111,0.08)] md:grid-cols-[0.94fr_1.06fr] md:p-5"
+        >
+          <div className="relative min-h-[26rem] overflow-hidden rounded-[1.7rem] border border-[#0B32A0]/12 bg-[#1234A6]">
+            <Image
+              src="/images/gallery/socks-verve-gd-dscf4863.jpg"
+              alt="Packaged custom socks styled as a polished merch program"
+              fill
+              sizes="(max-width: 768px) 100vw, 45vw"
+              className="object-cover"
+              style={{ objectPosition: "center 48%" }}
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,30,111,0.12)_0%,rgba(8,30,111,0.24)_42%,rgba(8,30,111,0.86)_100%)]" />
+            <div className="absolute inset-x-0 bottom-0 p-6 text-white md:p-7">
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.24em] text-[#FFB38E]">
+                Get a Quote
+              </p>
+              <h2 className="mt-3 font-display text-4xl uppercase leading-none md:text-5xl">
+                Ready to build the right sock program?
+              </h2>
+              <p className="mt-4 max-w-lg font-body text-sm leading-7 text-white/84 md:text-base">
+                Share the quantity, timing, and how polished the program needs
+                to feel, and we will point you toward the right build faster.
+              </p>
+            </div>
+          </div>
+
+          <ServiceLeadForm
+            title="Get a Quote"
+            description="We will follow up with recommended sock directions, packaging options, and a clear next step."
+            projectDefault=""
+            projectLabel="What kind of socks are you looking for?"
+            projectPlaceholder="Tell us what you want to make: crew, quarter, no-show, plush, gifting, retail, quantity split, packaging notes, or anything else that helps us quote the right direction."
+            hiddenFields={{
+              source: "socks-page",
+              product: "socks",
+              intent: "landing-page-inquiry",
+            }}
+            captureAttributionFields
+            submitLabel="Get a Socks Quote"
+            showPhone={false}
+            showTimeline={false}
+            showDesignHelp={false}
+            showArtworkUpload
+          />
+        </section>
+      </Reveal>
+      <ProductCategoryFaqSection
+        faqs={[...sockFaqs]}
+        className="bg-[var(--og-cream)] px-4 pt-10 pb-16 md:px-8 md:pt-12 md:pb-24 lg:px-12"
+      />
+    </>
   );
 }

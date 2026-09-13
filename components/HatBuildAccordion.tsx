@@ -56,7 +56,7 @@ export function HatBuildAccordion() {
     <div className="mt-8 grid gap-6 lg:h-[38rem] lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
       <div className="rounded-[1.9rem] border border-[#0B32A0]/15 bg-white px-5 py-5 md:px-6 md:py-6 lg:h-full">
         <h3 className="text-3xl font-semibold leading-none text-[var(--og-blue)]">
-          Included in every hat
+          Included in each hat
         </h3>
 
         <div className="mt-6 border-t border-[#0B32A0]/12">

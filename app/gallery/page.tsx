@@ -2,11 +2,15 @@ import { GalleryBoard } from "@/components/GalleryBoard";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import Link from "next/link";
 import { galleryItems } from "@/lib/gallery-data";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Gallery — Orange Goods",
   description: "A look at the custom goods we've made for brands across the country.",
-};
+  path: "/gallery",
+  image: "/images/gallery/ideas-quality-goods-towel-500gsm.jpg",
+  imageAlt: "Orange Goods project gallery",
+});
 
 export default function GalleryPage() {
   return (

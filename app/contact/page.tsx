@@ -4,8 +4,18 @@ import { FormEvent, Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { DiscoveryLinksSection } from "@/components/DiscoveryLinksSection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { getLeadAttributionHiddenFields } from "@/lib/lead-attribution";
+import {
+  buildProjectCartSummary,
+  buildProjectCartTitles,
+  clearProjectCart,
+  collectProjectCartArtworkNames,
+  readProjectCart,
+  type ProjectCartItem,
+} from "@/lib/project-cart";
 
 const inputClass =
   "min-h-12 border border-[#0B32A0]/20 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]";
@@ -87,6 +97,32 @@ const contactFaqs = [
     "Can you help us choose the right product?",
     "Yes. If you're not sure what makes the most sense yet, we can help narrow it down.",
   ],
+];
+const contactDiscoveryLinks = [
+  {
+    eyebrow: "Browse",
+    title: "Need to compare products first?",
+    description:
+      "Use the goods browser to narrow hats, apparel, bags, drinkware, blankets, and other categories before sending the brief.",
+    href: "/goods/all",
+    cta: "Browse goods",
+  },
+  {
+    eyebrow: "Process",
+    title: "Not sure whether this is full custom or quick turn?",
+    description:
+      "The How We Work page makes the production-path split easier to understand before you fill out the form.",
+    href: "/services",
+    cta: "See our process",
+  },
+  {
+    eyebrow: "Case Study",
+    title: "Want to see how a merch system comes together?",
+    description:
+      "Boatsetter is a clear example of multiple branded goods working together around one use case instead of one-off product picks.",
+    href: "/case-studies/boatsetter-coastal-goods-system",
+    cta: "View case study",
+  },
 ];
 
 const builderFieldNames = new Set([
@@ -511,6 +547,8 @@ function ContactPageContent() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
+  const [projectCartItems, setProjectCartItems] = useState<ProjectCartItem[]>([]);
   const searchParams = useSearchParams();
 
   const product = searchParams.get("product") ?? "";
@@ -523,36 +561,50 @@ function ContactPageContent() {
   const source = searchParams.get("source") ?? "";
   const mode = searchParams.get("mode") ?? "";
   const isOgCraftedHatBuilder = source === "og-crafted-hat-builder";
-  const isOgCraftedApparelBuilder = source === "og-crafted-apparel-builder";
+  const isOgCraftedApparelBuilder =
+    source === "og-crafted-apparel-builder" || source === "quick-turn-apparel-builder";
   const isBuilderCheckout = isOgCraftedHatBuilder || isOgCraftedApparelBuilder;
   const isQuickTurnBuilderHandoff = source === "quick-turn-hat-builder";
+  const isProjectCartHandoff = source === "project-cart";
   const builderSummaryLines = projectSummary.split("\n").map((line) => line.trim()).filter(Boolean);
+  const storedProjectCartSummary = buildProjectCartSummary(projectCartItems);
+  const storedProjectCartTitles = buildProjectCartTitles(projectCartItems);
+  const storedProjectCartArtwork = collectProjectCartArtworkNames(projectCartItems);
+  const projectCartNeedsArtworkHelp = projectCartItems.some((item) => item.needsArtworkHelp);
   const builderHiddenFields = Object.fromEntries(
     Array.from(searchParams.entries()).filter(([key]) => !builderFieldNames.has(key)),
   );
   const builderBackHref = isOgCraftedApparelBuilder
-    ? "/build/og-crafted-apparel"
+    ? "/create/apparel/quick-turn"
     : `/draft/product-style?${new URLSearchParams(builderHiddenFields).toString()}`;
-  const builderBackLabel = isOgCraftedApparelBuilder ? "Back to Apparel Builder" : "Back to Hat Builder";
+  const builderBackLabel = isOgCraftedApparelBuilder ? "Back to Quick Turn Apparel" : "Back to Hat Builder";
   const quickTurnBuilderHiddenFields = Object.fromEntries(
     Array.from(searchParams.entries()).filter(([key]) => !contactFieldNames.has(key)),
   );
   const standardHiddenFields = {
+    ...attributionHiddenFields,
     ...(isQuickTurnBuilderHandoff ? quickTurnBuilderHiddenFields : {}),
     intent: "contact",
     pageName: "Contact Page",
     pagePath: "/contact",
     source: source || "contact-page",
     ...(mode ? { mode } : {}),
-    ...(needsArtworkHelp ? { needsArtworkHelp } : {}),
+    ...((needsArtworkHelp || projectCartNeedsArtworkHelp) ? { needsArtworkHelp: needsArtworkHelp || "Yes" } : {}),
     ...(product ? { product } : {}),
     ...(program ? { program } : {}),
     ...(style ? { style } : {}),
     ...(styleName ? { styleName } : {}),
     ...(quantity ? { quantity } : {}),
+    ...(isProjectCartHandoff ? {
+      product: projectCartItems.length > 1 ? "Multi-product project" : (projectCartItems[0]?.product ?? "Project cart"),
+      projectCartItemCount: String(projectCartItems.length),
+      projectCartItems: storedProjectCartTitles,
+      projectCartSummary: storedProjectCartSummary,
+      projectCartArtwork: storedProjectCartArtwork.join(", "),
+    } : {}),
   };
 
-  const projectDefault = projectSummary || [
+  const projectDefault = (isProjectCartHandoff ? storedProjectCartSummary : projectSummary) || [
     product ? `Product: ${product}` : "",
     (program || mode) ? `Program: ${program || mode}` : "",
     style ? `Style: ${style}${styleName ? ` - ${styleName}` : ""}` : "",
@@ -561,6 +613,21 @@ function ContactPageContent() {
   ]
     .filter(Boolean)
     .join("\n");
+  const resolvedDesignHelpDefault = isProjectCartHandoff
+    ? (projectCartNeedsArtworkHelp ? "Yes" : needsArtworkHelp)
+    : needsArtworkHelp;
+
+  useEffect(() => {
+    if (isProjectCartHandoff) {
+      window.location.replace("/cart");
+      return;
+    }
+
+  }, [isProjectCartHandoff]);
+
+  useEffect(() => {
+    setAttributionHiddenFields(getLeadAttributionHiddenFields());
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -569,6 +636,11 @@ function ContactPageContent() {
 
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isProjectCartHandoff) return;
+    setProjectCartItems(readProjectCart());
+  }, [isProjectCartHandoff]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -590,6 +662,9 @@ function ContactPageContent() {
     }
 
     setSubmitting(false);
+    if (isProjectCartHandoff) {
+      clearProjectCart();
+    }
     const thankYouParams = new URLSearchParams({
       source: source || "contact",
       intent: isBuilderCheckout ? "submit-build" : "contact",
@@ -659,20 +734,24 @@ function ContactPageContent() {
                 submitError={submitError}
                 onSubmit={handleSubmit}
                 summaryLines={builderSummaryLines}
-                hiddenFields={builderHiddenFields}
+                hiddenFields={{
+                  ...attributionHiddenFields,
+                  ...builderHiddenFields,
+                }}
               />
             </>
           ) : (
             <ContactForm
+              key={`${source}:${projectDefault}:${resolvedDesignHelpDefault}`}
               submitted={submitted}
               submitting={submitting}
               submitError={submitError}
               onSubmit={handleSubmit}
               variant="rounded"
               projectDefault={projectDefault}
-              designHelpDefault={needsArtworkHelp}
+              designHelpDefault={resolvedDesignHelpDefault}
               hiddenFields={standardHiddenFields}
-              hideQuantityField={isQuickTurnBuilderHandoff}
+              hideQuantityField={isQuickTurnBuilderHandoff || isProjectCartHandoff}
               hideBudgetField={isQuickTurnBuilderHandoff}
             />
           )}
@@ -854,6 +933,15 @@ function ContactPageContent() {
             </div>
           </div>
         </section>
+      </Reveal>
+
+      <Reveal className="px-4 pb-20 md:px-8 md:pb-24 lg:px-12">
+        <DiscoveryLinksSection
+          eyebrow="Helpful Before You Submit"
+          title="A few pages that make the brief easier"
+          description="If you want a little more direction before sending the form, these are the fastest ways to narrow product, process, and real-world examples."
+          items={contactDiscoveryLinks}
+        />
       </Reveal>
 
       <Reveal className="px-4 pb-20 md:px-8 md:pb-24 lg:px-12">

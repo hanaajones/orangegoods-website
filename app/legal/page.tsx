@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Legal — Orange Goods",
   description: "Terms + Conditions, Privacy Policy, and Cookie Notice for Orange Goods",
-};
+  path: "/legal",
+});
 
 const sections = [
   {
