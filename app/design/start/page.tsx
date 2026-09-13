@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
+import { submitContactForm } from "@/lib/contact/client-submit";
 import { Reveal } from "@/components/Reveal";
 
 const labelClass =
@@ -50,21 +51,14 @@ export default function DesignStartPage() {
     setSubmitting(true);
     setSubmitError("");
 
-    const formData = new FormData(event.currentTarget);
+    const result = await submitContactForm(event.currentTarget);
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const result = await response.json().catch(() => null) as { error?: string } | null;
-      setSubmitting(false);
-      setSubmitError(result?.error ?? "Something went wrong. Please try again.");
+    setSubmitting(false);
+    if (!result.ok) {
+      setSubmitError(result.error);
       return;
     }
 
-    setSubmitting(false);
     window.location.assign("/thank-you?source=design-form&intent=design&product=design");
   }
 

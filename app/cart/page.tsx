@@ -4,7 +4,8 @@ import { FormEvent, Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
-import { getLeadAttributionHiddenFields } from "@/lib/lead-attribution";
+import { useLeadAttributionHiddenFields } from "@/hooks/useLeadAttributionHiddenFields";
+import { submitContactForm } from "@/lib/contact/client-submit";
 import {
   buildProjectCartSummary,
   buildProjectCartTitles,
@@ -342,7 +343,7 @@ function ProjectInquiryForm({
 function ProjectCartPageContent() {
   const searchParams = useSearchParams();
   const [items, setItems] = useState<ProjectCartItem[]>([]);
-  const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
+  const attributionHiddenFields = useLeadAttributionHiddenFields();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const legacy = useMemo(() => buildLegacyDetails(searchParams), [searchParams]);
@@ -357,10 +358,6 @@ function ProjectCartPageContent() {
     return () => window.removeEventListener(projectCartUpdateEvent(), syncProjectCart);
   }, []);
 
-  useEffect(() => {
-    setAttributionHiddenFields(getLeadAttributionHiddenFields());
-  }, []);
-
   const projectSummary = buildProjectCartSummary(items);
   const hasSavedProject = items.length > 0;
 
@@ -369,20 +366,14 @@ function ProjectCartPageContent() {
     setSubmitting(true);
     setSubmitError("");
 
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      body: formData,
-    });
+    const result = await submitContactForm(event.currentTarget);
 
-    if (!response.ok) {
-      const result = await response.json().catch(() => null) as { error?: string } | null;
-      setSubmitting(false);
-      setSubmitError(result?.error ?? "Something went wrong. Please try again.");
+    setSubmitting(false);
+    if (!result.ok) {
+      setSubmitError(result.error);
       return;
     }
 
-    setSubmitting(false);
     clearProjectCart();
     window.location.assign("/thank-you?source=project-cart&intent=contact&product=Multi-product+project");
   }
