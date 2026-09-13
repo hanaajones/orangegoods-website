@@ -206,7 +206,7 @@ function BeanieBuilderPreviewContent({
     setNeedsArtworkHelp(Boolean(configuration.needsArtworkHelp));
     setLogoFileName(configuration.artworkName ?? "");
     setAdditionalNotes(configuration.additionalNotes ?? "");
-  }, [projectCartItemId]);
+  }, [projectCartItemId, requestedStyleSlug]);
 
   function handleAddToProject() {
     const targetCartId = projectCartItemId ?? `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;

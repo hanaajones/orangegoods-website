@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
-import { getLeadAttributionHiddenFields } from "@/lib/lead-attribution";
+import { FormEvent, useState } from "react";
+import { submitContactForm } from "@/lib/contact/client-submit";
+import { useLeadAttributionHiddenFields } from "@/hooks/useLeadAttributionHiddenFields";
 
 const labelClass =
   "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
@@ -13,31 +14,21 @@ export function HatQuickLeadForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    setAttributionHiddenFields(getLeadAttributionHiddenFields());
-  }, []);
+  const attributionHiddenFields = useLeadAttributionHiddenFields();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
     setSubmitError("");
 
-    const formData = new FormData(event.currentTarget);
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      body: formData,
-    });
+    const result = await submitContactForm(event.currentTarget);
 
-    if (!response.ok) {
-      const result = (await response.json().catch(() => null)) as { error?: string } | null;
-      setSubmitting(false);
-      setSubmitError(result?.error ?? "Something went wrong. Please try again.");
+    setSubmitting(false);
+    if (!result.ok) {
+      setSubmitError(result.error);
       return;
     }
 
-    setSubmitting(false);
     setSubmitted(true);
     event.currentTarget.reset();
   }
