@@ -69,14 +69,14 @@ const CONTACT_STORAGE_LABEL_ROOT = process.env.VERCEL
 const CONTACT_UPLOADS_DIR = path.join(CONTACT_STORAGE_ROOT, "contact-uploads");
 const HUBSPOT_PRIVATE_APP_TOKEN = process.env.HUBSPOT_PRIVATE_APP_TOKEN ?? process.env.HUBSPOT_TOKEN ?? "";
 const HUBSPOT_API_BASE = "https://api.hubapi.com";
-const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL ?? "";
-const JCORE_TYPEFORM_BRIDGE_SECRET = process.env.JCORE_TYPEFORM_BRIDGE_SECRET ?? "";
-const JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS = Number(process.env.JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS ?? 15000);
+const JCORE_WEBSITE_FORM_BRIDGE_URL = process.env.JCORE_WEBSITE_FORM_BRIDGE_URL ?? process.env.JCORE_TYPEFORM_BRIDGE_URL ?? "";
+const JCORE_WEBSITE_FORM_BRIDGE_SECRET = process.env.JCORE_WEBSITE_FORM_BRIDGE_SECRET ?? process.env.JCORE_TYPEFORM_BRIDGE_SECRET ?? "";
+const JCORE_WEBSITE_FORM_BRIDGE_TIMEOUT_MS = Number(process.env.JCORE_WEBSITE_FORM_BRIDGE_TIMEOUT_MS ?? process.env.JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS ?? 15000);
 const JCORE_ARTWORK_BRIDGE_URL = process.env.JCORE_ARTWORK_BRIDGE_URL
-  ?? (JCORE_TYPEFORM_BRIDGE_URL
-    ? JCORE_TYPEFORM_BRIDGE_URL.replace(/\/api\/typeform-webhook$/, "/api/website-artwork-upload")
+  ?? (JCORE_WEBSITE_FORM_BRIDGE_URL
+    ? JCORE_WEBSITE_FORM_BRIDGE_URL.replace(/\/api\/website-form-submission$/, "/api/website-artwork-upload").replace(/\/api\/typeform-webhook$/, "/api/website-artwork-upload")
     : "");
-const JCORE_ARTWORK_BRIDGE_SECRET = process.env.JCORE_ARTWORK_BRIDGE_SECRET ?? JCORE_TYPEFORM_BRIDGE_SECRET;
+const JCORE_ARTWORK_BRIDGE_SECRET = process.env.JCORE_ARTWORK_BRIDGE_SECRET ?? JCORE_WEBSITE_FORM_BRIDGE_SECRET;
 const JCORE_ARTWORK_BRIDGE_TIMEOUT_MS = Number(process.env.JCORE_ARTWORK_BRIDGE_TIMEOUT_MS ?? 20000);
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN ?? "";
 const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
@@ -569,11 +569,11 @@ function buildJCoreTypeformPayload(payload: Record<string, string>) {
   };
 }
 
-function buildTypeformSignature(rawBody: string) {
-  if (!JCORE_TYPEFORM_BRIDGE_SECRET) return "";
+function buildWebsiteFormSignature(rawBody: string) {
+  if (!JCORE_WEBSITE_FORM_BRIDGE_SECRET) return "";
 
   const digest = crypto
-    .createHmac("sha256", JCORE_TYPEFORM_BRIDGE_SECRET)
+    .createHmac("sha256", JCORE_WEBSITE_FORM_BRIDGE_SECRET)
     .update(rawBody)
     .digest("base64");
 
@@ -821,8 +821,8 @@ async function deliverViaJCore(
   payload: Record<string, string>,
   requestMeta: RequestMeta,
 ): Promise<DeliveryAttemptResult> {
-  if (!JCORE_TYPEFORM_BRIDGE_URL) {
-    return { status: "skipped", detail: "J-Core bridge URL is not configured." } satisfies DeliveryAttemptResult;
+  if (!JCORE_WEBSITE_FORM_BRIDGE_URL) {
+    return { status: "skipped", detail: "J-Core website form bridge URL is not configured." } satisfies DeliveryAttemptResult;
   }
 
   if (!payload.email) {
@@ -830,18 +830,18 @@ async function deliverViaJCore(
   }
 
   const body = JSON.stringify(buildJCoreTypeformPayload(payload));
-  const signature = buildTypeformSignature(body);
-  const response = await fetchWithTimeout(JCORE_TYPEFORM_BRIDGE_URL, {
+  const signature = buildWebsiteFormSignature(body);
+  const response = await fetchWithTimeout(JCORE_WEBSITE_FORM_BRIDGE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(signature ? { "typeform-signature": signature } : {}),
+      ...(signature ? { "x-website-form-signature": signature } : {}),
       ...(requestMeta.forwardedFor ? { "x-forwarded-for": requestMeta.forwardedFor } : {}),
       ...(requestMeta.realIp ? { "x-real-ip": requestMeta.realIp } : {}),
       ...(requestMeta.userAgent ? { "user-agent": requestMeta.userAgent } : {}),
     },
     body,
-  }, JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS);
+  }, JCORE_WEBSITE_FORM_BRIDGE_TIMEOUT_MS);
 
   const data = (await response.json().catch(() => ({}))) as { duplicate?: boolean; ok?: boolean };
   if (!response.ok || !data.ok) {
