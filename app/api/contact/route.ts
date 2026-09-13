@@ -67,8 +67,6 @@ const CONTACT_STORAGE_LABEL_ROOT = process.env.VERCEL
   ? path.join("tmp", "orangegoods-contact")
   : "data";
 const CONTACT_UPLOADS_DIR = path.join(CONTACT_STORAGE_ROOT, "contact-uploads");
-const CONTACT_SUBMISSIONS_DIR = path.join(CONTACT_STORAGE_ROOT, "contact-submissions");
-const CONTACT_SUBMISSIONS_LOG = path.join(CONTACT_STORAGE_ROOT, "contact-submissions.jsonl");
 const HUBSPOT_PRIVATE_APP_TOKEN = process.env.HUBSPOT_PRIVATE_APP_TOKEN ?? process.env.HUBSPOT_TOKEN ?? "";
 const HUBSPOT_API_BASE = "https://api.hubapi.com";
 const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL ?? "";
@@ -931,32 +929,6 @@ async function deliverHatBuilderSlackNotification(
   return { status: "delivered" } satisfies DeliveryAttemptResult;
 }
 
-async function persistSubmissionRecord(record: SubmissionRecord) {
-  await fs.mkdir(CONTACT_SUBMISSIONS_DIR, { recursive: true });
-  const filePath = path.join(CONTACT_SUBMISSIONS_DIR, `${record.id}.json`);
-  await fs.writeFile(filePath, `${JSON.stringify(record, null, 2)}\n`, "utf8");
-}
-
-async function appendSubmissionSnapshot(record: SubmissionRecord) {
-  await fs.mkdir(path.dirname(CONTACT_SUBMISSIONS_LOG), { recursive: true });
-  await fs.appendFile(CONTACT_SUBMISSIONS_LOG, `${JSON.stringify(record)}\n`, "utf8");
-}
-
-async function persistSubmissionRecordSafely(record: SubmissionRecord, context: string) {
-  try {
-    await persistSubmissionRecord(record);
-  } catch (error) {
-    console.error(`[Contact Submission Persistence Error] ${context}`, error);
-  }
-}
-
-async function appendSubmissionSnapshotSafely(record: SubmissionRecord) {
-  try {
-    await appendSubmissionSnapshot(record);
-  } catch (error) {
-    console.error("[Contact Submission Snapshot Error]", error);
-  }
-}
 async function setDeliveryResult(
   record: SubmissionRecord,
   name: DeliveryName,
@@ -968,7 +940,6 @@ async function setDeliveryResult(
     ...(detail ? { detail } : {}),
     status,
   };
-  await persistSubmissionRecordSafely(record, `delivery:${name}`);
 }
 
 async function runDelivery(
@@ -1017,23 +988,36 @@ export async function POST(request: Request) {
       uploads,
     };
 
-    await setDeliveryResult(submission, "stored", "delivered", "Submission captured locally.");
+    await setDeliveryResult(submission, "stored", "skipped", "Local JSON persistence is disabled; J-Core database storage is the source of truth.");
     await runDelivery(submission, "artworkStorage", () => syncUploadsToArtworkStorage(payload, uploads, submissionId, submission.submittedAt));
+    await runDelivery(submission, "jcore", () => deliverViaJCore(payload, requestMeta));
+
+    const jcoreStatus = submission.deliveries.jcore?.status;
+    if (jcoreStatus !== "delivered" && jcoreStatus !== "duplicate") {
+      const detail = submission.deliveries.jcore?.detail ?? "J-Core database delivery was not completed.";
+      console.error("[Contact Submission Database Error]", submission);
+      return NextResponse.json(
+        {
+          id: submission.id,
+          ok: false,
+          error: "We couldn't save this submission. Please try again or email hello@orangegoods.co.",
+          warnings: [`jcore: ${detail}`],
+        },
+        { status: 502 },
+      );
+    }
 
     await runDelivery(submission, "hubspot", () => deliverViaHubSpot(payload, uploads, requestMeta));
-    await runDelivery(submission, "jcore", () => deliverViaJCore(payload, requestMeta));
     await runDelivery(submission, "webhook", () => deliverViaWebhook(payload));
     await runDelivery(submission, "internalEmail", () => deliverInternalEmail(payload, uploads, requestMeta));
     await runDelivery(submission, "clientEmail", () => deliverClientConfirmation(payload));
 
-    const jcoreStatus = submission.deliveries.jcore?.status;
     if (jcoreStatus !== "duplicate") {
       await runDelivery(submission, "slack", () => deliverHatBuilderSlackNotification(payload));
     } else {
       await setDeliveryResult(submission, "slack", "skipped", "Skipped because J-Core marked the submission duplicate.");
     }
 
-    await appendSubmissionSnapshotSafely(submission);
     console.log("[Contact Submission]", submission);
 
     const deliveries = Object.entries(submission.deliveries)
