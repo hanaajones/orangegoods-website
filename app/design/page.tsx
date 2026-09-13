@@ -4,12 +4,16 @@ import { CTASection } from "@/components/CTASection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Design - Orange Goods",
   description:
     "Merch-first design support from Orange Goods. Graphics, packaging, trims, mockups, and production-ready artwork built to become real goods.",
-};
+  path: "/design",
+  image: "/images/gallery/design-built-production-dscf1585.jpg",
+  imageAlt: "Orange Goods design work",
+});
 
 const designProjectHref = "/design/start";
 

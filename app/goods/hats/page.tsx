@@ -20,10 +20,20 @@ import {
   hatFaqs,
   hatProcess,
 } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 
-const hatsBuilderHref = "/build/og-crafted-hats";
-const fullCustomHatsBrowserHref = "/goods/all?productionPath=full-custom&category=hats";
-const quickTurnHatsBrowserHref = "/goods/all?productionPath=quick-turn&category=hats";
+export const metadata = buildMetadata({
+  title: "Custom Hats — Orange Goods",
+  description:
+    "Explore Orange Goods custom hats across full custom builds, quick-turn blanks, decoration options, fabrics, closures, and add-ons.",
+  path: "/goods/hats",
+  image: "/images/gallery/headwear-full-custom-verve-larrea-hat-038.jpg",
+  imageAlt: "Custom hat by Orange Goods",
+});
+
+const hatsBuilderHref = "/create/hats/full-custom";
+const fullCustomHatsBrowserHref = "/goods/hats/full-custom";
+const quickTurnHatsBrowserHref = "/goods/hats/quick-turn";
 const featuredStyleStartingPrice = "$13.00";
 
 const quantityTiers = [
@@ -509,7 +519,7 @@ export default function HatsPage() {
                   className="group relative overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[rgba(255,248,241,0.88)] transition hover:border-[#0B32A0] hover:shadow-lg"
                 >
                   <Link
-                    href={`${hatsBuilderHref}?hatStyle=${encodeURIComponent(style.slug)}`}
+                    href={`${hatsBuilderHref}/${encodeURIComponent(style.slug)}`}
                     aria-label={`Open ${style.title}`}
                     className="absolute inset-0 z-10 rounded-[1.9rem]"
                   />
@@ -597,10 +607,10 @@ export default function HatsPage() {
 
       <Reveal className="px-4 py-8 md:px-8 lg:px-12">
         <OptionPathCard
-          id="closure"
-          title="Choose your closure"
+          id="closures"
+          title="Choose your closures"
           description="Closure changes the feel fast. Click through to compare the full set."
-          href="/goods/hats/closure"
+          href="/goods/hats/closures"
           cta="See all closure options"
           options={closureOptions}
           horizontal

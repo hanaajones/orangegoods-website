@@ -53,7 +53,7 @@ export default async function PortalOrderDetailPage({
               Download invoice
             </Link>
             <Link
-              href={`/build?product=${order.productSlug}`}
+              href={`/create?product=${order.productSlug}`}
               className="inline-flex rounded-xl bg-[#FF4200] px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(8,30,111,0.14)] transition hover:-translate-y-0.5 hover:bg-[#0B32A0]"
             >
               Reorder this product

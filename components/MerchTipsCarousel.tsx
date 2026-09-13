@@ -162,7 +162,47 @@ export function MerchTipsCarousel() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-[minmax(0,1.24fr)_minmax(18rem,0.76fr)] md:items-stretch md:gap-5">
+        <div className="mt-8 -mx-5 overflow-x-auto px-5 [scrollbar-width:none] md:hidden [&::-webkit-scrollbar]:hidden">
+          <div className="flex snap-x snap-mandatory gap-4">
+            {merchTips.map((tip, index) => (
+              <article
+                key={tip.number}
+                className="relative flex w-[84vw] max-w-[24rem] shrink-0 snap-center flex-col overflow-hidden rounded-[1.45rem] border-[3px] border-[#0B32A0] bg-white"
+              >
+                <div className="relative h-[18rem] shrink-0 overflow-hidden bg-[#E4DFCD]">
+                  <Image
+                    src={tip.image}
+                    alt={tip.alt}
+                    fill
+                    sizes="84vw"
+                    className={`object-cover ${tip.imageClassName || ""}`}
+                    style={tip.imagePosition ? { objectPosition: tip.imagePosition } : undefined}
+                  />
+                  <div className="absolute inset-x-4 top-4 flex items-start justify-between gap-3">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-[#FF7F00] bg-[#FFF7ED]/96 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[#0B32A0]">
+                      <span className="h-2 w-2 rounded-full bg-[#FF7F00]" />
+                      {tip.proof}
+                    </span>
+                    <p className="font-noir-alt rounded-full bg-white/92 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-[#0B32A0]">
+                      {index + 1} / {merchTips.length}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="max-w-xl text-[1.8rem] leading-[0.98] text-[#081E6F]">
+                    {renderTitle(tip.title)}
+                  </h3>
+                  <p className="mt-3 max-w-2xl text-sm leading-[1.6] text-[#1C1C1C]/68">
+                    {tip.detail}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-8 hidden gap-4 md:grid md:grid-cols-[minmax(0,1.24fr)_minmax(18rem,0.76fr)] md:items-stretch md:gap-5">
           <article className="relative flex h-full flex-col overflow-hidden rounded-[1.45rem] border-[3px] border-[#0B32A0] bg-white md:h-[33rem] lg:h-[36rem]">
             <div className="relative h-[18rem] shrink-0 overflow-hidden bg-[#E4DFCD] sm:h-[21rem] md:h-[22rem] lg:h-[24rem]">
               <Image
@@ -238,24 +278,6 @@ export function MerchTipsCarousel() {
           </div>
         </div>
 
-        <div className="mt-5 flex justify-center gap-2 md:hidden">
-          <button
-            type="button"
-            onClick={goToPrevious}
-            className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
-            aria-label="Previous merch tip"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            onClick={goToNext}
-            className="flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-[#0B32A0] bg-white text-2xl leading-none text-[#0B32A0] shadow-[3px_3px_0px_#0B32A0] transition hover:-translate-y-0.5 hover:bg-[#F7F4ED]"
-            aria-label="Next merch tip"
-          >
-            ›
-          </button>
-        </div>
       </section>
     </Reveal>
   );

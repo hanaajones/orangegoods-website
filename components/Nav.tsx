@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 
 const startProjectHref = "/contact";
-const buildOnlineHref = "/build";
+const buildOnlineHref = "/create";
 const showBuildOnlineNav = false;
 const goodsMenuPreviewScale = 1.04;
 
@@ -37,7 +37,7 @@ function getGoodsMenuPreview({ image, position, scale }: GoodsMenuPreview) {
 
 const products: PreviewMenuItem[] = [
   { label: "Hats", href: "/goods/hats", image: "/images/gallery/hat-bread-head-tezza-3828.jpg", position: "center bottom" },
-  { label: "Apparel", href: "/goods/apparel/styles", image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg", position: "center 50%" },
+  { label: "Apparel", href: "/goods/apparel/quick-turn", image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg", position: "center 50%" },
   { label: "Drinkware", href: "/goods/drinkware", image: "/images/gallery/drinkware-layla-stacked-mugs-img-7776-2026-08-20.jpg", position: "center 64%" },
   { label: "Bags + Totes", href: "/goods/bags", image: "/images/gallery/totes-bags-boatsetter-dscf3148.jpg", position: "center 50%" },
   { label: "Accessories", href: "/goods/accessories", image: "/images/gallery/accessories-bandana-lalo-trio.png", position: "center 32%" },
@@ -65,19 +65,12 @@ const serviceLinks: PreviewMenuItem[] = [
     image: "/images/gallery/screen-printing-mega-menu-synergy.jpg",
     position: "center 44%",
   },
-  {
-    label: "Gallery",
-    href: "/gallery",
-    image: "/images/gallery/case-studies-small-waves-boat-2s5a1947.jpg",
-    position: "center 72%",
-  },
 ];
 
 const customizeLinks: PreviewMenuLink[] = [
   {
     label: "Customize All",
     href: "/goods/all",
-    note: "Browse every customizable product in one place",
     image: "/images/gallery/goods-explore-catalog-high-street-deli-0477.jpg",
     position: "center 50%",
   },
@@ -101,6 +94,12 @@ const fullCustomLinks: PreviewMenuLink[] = [
 ];
 
 const customLinks: PreviewMenuLink[] = [
+  {
+    label: "Gallery",
+    href: "/gallery",
+    image: "/images/gallery/case-studies-small-waves-boat-2s5a1947.jpg",
+    position: "center 72%",
+  },
   {
     label: "FAQ",
     href: "/faq",
@@ -129,12 +128,19 @@ const startProjectPreview = getGoodsMenuPreview({
   position: "center 48%",
 });
 
+const merchQuizPreview = getGoodsMenuPreview({
+  image: "/images/gallery/quiz-premium-tee-img-8184.jpg",
+  position: "center 46%",
+});
+
 const aboutLinks = [
   { label: "About", href: "/about" },
   { label: "Our Process", href: "/our-process" },
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ];
+
+const aboutDropdownLinks = aboutLinks.filter((item) => item.href !== "/contact");
 
 const aboutFeatureCards = [
   {
@@ -555,6 +561,13 @@ export function Nav() {
                       </div>
                       <div className="mt-auto flex flex-col gap-3 px-3 pt-8">
                         <Link
+                          href="/quiz"
+                          {...getPreviewHandlers(merchQuizPreview)}
+                          className="inline-flex min-h-11 items-center justify-center rounded-xl border-2 border-[#0B32A0] bg-transparent px-5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0B32A0] transition hover:-translate-y-[2px] hover:border-[var(--og-orange)] hover:bg-[var(--og-orange)] hover:text-white"
+                        >
+                          Merch Quiz
+                        </Link>
+                        <Link
                           href={startProjectHref}
                           {...getPreviewHandlers(startProjectPreview)}
                           className="btn-og justify-center"
@@ -601,21 +614,22 @@ export function Nav() {
                     </Link>
                   ))}
 
-                  <div className="h-full rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 p-4">
+                  <div className="flex h-full flex-col rounded-[1.5rem] border border-[#0B32A0]/12 bg-white/70 p-4">
                     <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--og-orange)]">
                       About Orange Goods
                     </p>
                     <div className="grid gap-1">
-                      {aboutLinks.map((item) => (
+                      {aboutDropdownLinks.map((item) => (
                         <MenuLink key={item.label} href={item.href}>
                           {item.label}
                         </MenuLink>
                       ))}
                     </div>
-                    <p className="px-3 pt-4 text-sm leading-6 text-[#1C1C1C]/58">
-                      Learn how we think about product, design, process, and the kind of goods
-                      people actually keep.
-                    </p>
+                    <div className="mt-5 px-3 pt-4">
+                      <Link href="/contact" className="btn-og justify-center">
+                        Contact Us
+                      </Link>
+                    </div>
                   </div>
                 </div>
               ) : null}
@@ -671,6 +685,13 @@ export function Nav() {
                   ))}
                   <div className="mt-2 border-t border-white/15 pt-2">
                     <div className="grid gap-2">
+                      <Link
+                        href="/quiz"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-base font-semibold uppercase tracking-[0.14em] text-white/70"
+                      >
+                        Merch Quiz
+                      </Link>
                       {goodsStartLinks.map((item) => (
                         <Link
                           key={item.label}
@@ -752,7 +773,7 @@ export function Nav() {
               href={buildOnlineHref}
               className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0B32A0]/20 px-4 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--og-blue)]"
             >
-              Build Online
+              Create
             </Link>
           ) : null}
         </div>

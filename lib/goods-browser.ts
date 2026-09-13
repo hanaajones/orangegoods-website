@@ -3,10 +3,10 @@ import {
   buildApparelStyleCatalogItems,
   type ApparelCatalogStyleItem,
 } from "@/lib/apparel-styles";
-import { AS_COLOUR_TOTES, type AsColourToteStyle } from "@/lib/as-colour-totes";
+import { AS_COLOUR_TOTES, getAsColourToteSlug, type AsColourToteStyle } from "@/lib/as-colour-totes";
 import { BEANIE_STYLES, type BeanieStyle } from "@/lib/beanie-styles";
 import { addQuickTurnReadyMadeHatShippingIncludedPrice } from "@/lib/quick-turn-shipping";
-import { getReadyMadeHatBrowserImages, READY_MADE_HATS, type HatMeta } from "@/lib/ready-made-hats";
+import { getReadyMadeHatBrowserImages, getReadyMadeHatSlug, READY_MADE_HATS, type HatMeta } from "@/lib/ready-made-hats";
 
 export type GoodsBrowserCategory =
   | "hats"
@@ -70,8 +70,8 @@ export const GOODS_BROWSER_PRODUCTION_PATH_LABELS: Record<GoodsBrowserProduction
 
 export function hasCustomizerPage(item: GoodsBrowserItem) {
   return (
-    item.href.startsWith("/build/") ||
-    item.href.startsWith("/goods/beanies/") ||
+    item.kind === "entry" ||
+    item.href.startsWith("/create/") ||
     item.href.startsWith("/goods/hats/quick-turn/") ||
     item.id.startsWith("quick-turn-tote:")
   );
@@ -145,7 +145,7 @@ function buildApparelItem(style: ApparelCatalogStyleItem): GoodsBrowserItem {
     title: style.title,
     subtitle: style.brand,
     description: buildApparelSpecs(style),
-    href: `/build/og-crafted-apparel?style=${encodeURIComponent(style.slug)}`,
+    href: `/create/apparel/${encodeURIComponent(style.slug)}`,
     ctaLabel: "Customize",
     image: style.image,
     hoverImage: style.hoverImage,
@@ -198,7 +198,7 @@ function buildBeanieItem(style: BeanieStyle): GoodsBrowserItem {
     title: style.title,
     subtitle: style.model,
     description: style.description,
-    href: `/goods/beanies/${encodeURIComponent(style.slug)}`,
+    href: `/create/beanies/${encodeURIComponent(style.slug)}`,
     ctaLabel: "Customize",
     image: style.image,
     imagePosition: style.imagePosition,
@@ -244,7 +244,7 @@ function buildHatItem(style: HatStyle): GoodsBrowserItem {
     title: style.title,
     subtitle: style.model,
     description: buildHatSpecs(style),
-    href: `/build/og-crafted-hats?hatStyle=${encodeURIComponent(style.slug)}`,
+    href: `/create/hats/${encodeURIComponent(style.slug)}`,
     ctaLabel: "Customize",
     image: frontImage?.src ?? style.image,
     hoverImage,
@@ -301,7 +301,7 @@ function buildQuickTurnHatItem(style: HatMeta): GoodsBrowserItem {
     title: style.name,
     subtitle,
     description: buildQuickTurnHatSpecs(style),
-    href: `/goods/hats/quick-turn/${style.id.toLowerCase()}`,
+    href: `/create/hats/${encodeURIComponent(getReadyMadeHatSlug(style))}`,
     ctaLabel: "Customize",
     image: primaryImage ?? "/images/gallery/headwear-quick-turn-reel-life-gear-film-10.jpg",
     hoverImage,
@@ -344,7 +344,7 @@ function buildQuickTurnToteItem(style: AsColourToteStyle & { fromPrice: number }
     title: style.name,
     subtitle: `AS Colour ${style.id}`,
     description: style.description,
-    href: `/build/og-crafted-totes?style=${encodeURIComponent(style.id)}`,
+    href: `/create/bags/${encodeURIComponent(getAsColourToteSlug(style))}`,
     ctaLabel: "Customize",
     image: style.image,
     imageAspectClass: "aspect-square",
@@ -472,11 +472,11 @@ const entryItems: GoodsBrowserItem[] = [
     categoryLabel: GOODS_BROWSER_CATEGORY_LABELS.socks,
     title: "Socks",
     subtitle: "Accessories",
-    description: "Socks should live in the shared browser too, even if they currently route through the accessories lane.",
-    href: "/goods/accessories",
+    description: "Socks should live in the shared browser with their own category page and create path.",
+    href: "/goods/socks",
     ctaLabel: "Explore socks",
-    image: "/images/gallery/accessories-bandana-lalo-trio.png",
-    imagePosition: "center 32%",
+    image: "/images/gallery/socks-verve-gd.jpg",
+    imagePosition: "center 44%",
     imageAspectClass: "aspect-[4/3]",
     colors: [],
     searchText: "socks accessories knit crew ankle".toLowerCase(),

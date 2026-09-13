@@ -116,6 +116,7 @@ type ProductCategoryPageProps = {
   subhead: string;
   image: string;
   imageAlt: string;
+  startProjectHref?: string;
   heroImagePosition?: string;
   heroSubnote?: string | null;
   products: Array<string | ContentItem>;
@@ -142,7 +143,7 @@ type ProductCategoryPageProps = {
   showFaqSection?: boolean;
 };
 
-const contactHref = "/contact";
+const defaultStartProjectHref = "/create";
 const customizeHref = "/goods/all";
 
 function normalizeItem(item: string | ContentItem): ContentItem {
@@ -346,6 +347,7 @@ export function ProductCategoryPage({
   subhead,
   image,
   imageAlt,
+  startProjectHref = defaultStartProjectHref,
   heroImagePosition = "center",
   heroSubnote = "100+ piece MOQ",
   products,
@@ -418,7 +420,7 @@ export function ProductCategoryPage({
             ) : null}
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
-            <Link href={contactHref} className="btn-og-white">
+            <Link href={startProjectHref} className="btn-og-white">
               Start a Project
             </Link>
             <Link
@@ -523,33 +525,39 @@ export function ProductCategoryPage({
               />
 
               <div className="grid gap-4 md:grid-cols-3">
-                {brandSection.brands.map((brand) => (
-                  <article
-                    key={brand.name}
-                    className={`flex min-h-[9.5rem] items-center justify-center rounded-[1.5rem] border border-[#0B32A0]/12 p-6 shadow-[4px_4px_0px_#0B32A0] ${
-                      brand.wrapClassName ?? "bg-white"
-                    }`}
-                  >
-                    {brand.src ? (
-                      <Image
-                        src={brand.src}
-                        alt={brand.alt ?? brand.name}
-                        width={brand.width ?? 220}
-                        height={brand.height ?? 44}
-                        className={brand.imageClassName ?? "h-10 w-auto"}
-                      />
-                    ) : (
-                      <span
-                        className={
-                          brand.textClassName ??
-                          "font-display text-4xl uppercase tracking-[0.08em] text-[var(--og-blue)] md:text-5xl"
-                        }
-                      >
-                        {brand.name}
-                      </span>
-                    )}
-                  </article>
-                ))}
+                {brandSection.brands.map((brand) => {
+                  const isSvg = brand.src?.endsWith(".svg") ?? false;
+
+                  return (
+                    <article
+                      key={brand.name}
+                      className={`flex min-h-[9.5rem] items-center justify-center rounded-[1.5rem] border border-[#0B32A0]/12 p-6 shadow-[4px_4px_0px_#0B32A0] ${
+                        brand.wrapClassName ?? "bg-white"
+                      }`}
+                    >
+                      {brand.src ? (
+                        <Image
+                          src={brand.src}
+                          alt={brand.alt ?? brand.name}
+                          width={brand.width ?? 220}
+                          height={brand.height ?? 44}
+                          loading={isSvg ? "eager" : undefined}
+                          unoptimized={isSvg}
+                          className={brand.imageClassName ?? "h-10 w-auto"}
+                        />
+                      ) : (
+                        <span
+                          className={
+                            brand.textClassName ??
+                            "font-display text-4xl uppercase tracking-[0.08em] text-[var(--og-blue)] md:text-5xl"
+                          }
+                        >
+                          {brand.name}
+                        </span>
+                      )}
+                    </article>
+                  );
+                })}
               </div>
 
               {brandSection.footer ? (
@@ -858,7 +866,7 @@ export function ProductCategoryPage({
                 Ready to build {title.toLowerCase()}?
               </h2>
             </div>
-            <Link href={contactHref} className="btn-og shrink-0">
+            <Link href={startProjectHref} className="btn-og shrink-0">
               Start a Project
             </Link>
             <Link

@@ -3,12 +3,16 @@ import Link from "next/link";
 import { CTASection } from "@/components/CTASection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Case Studies - Orange Goods",
   description:
     "A closer look at how Orange Goods builds branded goods for real brands, from product direction and decoration to production-ready details.",
-};
+  path: "/case-studies",
+  image: "/images/gallery/apparel-verve-gd-tee-verve_grateful-dead_tshirt_101.jpg",
+  imageAlt: "Orange Goods case studies",
+});
 
 const featuredCaseStudies = [
   {

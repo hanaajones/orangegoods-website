@@ -91,49 +91,55 @@ export function ProcessSteps({
           </div>
         )}
         <div ref={stepsRef} className="mt-8 grid gap-4 lg:grid-cols-3">
-          {steps.map((step, index) => (
-            <article
-              key={step.title}
-              className="rounded-[1.75rem] border border-[#D8CCB7] bg-white p-6 shadow-[0_16px_34px_rgba(11,50,160,0.06)]"
-            >
-              {step.iconSrc ? (
-                <motion.div
-                  className="mb-4 flex h-14 items-center justify-center"
-                  initial={{ opacity: 0, y: 18, scale: 0.86 }}
-                  animate={
-                    stepsInView
-                      ? { opacity: 1, y: 0, scale: 1 }
-                      : { opacity: 0, y: 18, scale: 0.86 }
-                  }
-                  transition={{
-                    duration: 0.45,
-                    delay: index * 0.14,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  <Image
-                    src={step.iconSrc}
-                    alt=""
-                    aria-hidden="true"
-                    width={step.iconWidth ?? 120}
-                    height={step.iconHeight ?? 120}
-                    className={step.iconClassName ?? "h-10 w-auto"}
-                  />
-                </motion.div>
-              ) : null}
-              {step.stepLabel ? (
-                <p className="text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
-                  {step.stepLabel}
+          {steps.map((step, index) => {
+            const isSvg = step.iconSrc?.endsWith(".svg") ?? false;
+
+            return (
+              <article
+                key={step.title}
+                className="rounded-[1.75rem] border border-[#D8CCB7] bg-white p-6 shadow-[0_16px_34px_rgba(11,50,160,0.06)]"
+              >
+                {step.iconSrc ? (
+                  <motion.div
+                    className="mb-4 flex h-14 items-center justify-center"
+                    initial={{ opacity: 0, y: 18, scale: 0.86 }}
+                    animate={
+                      stepsInView
+                        ? { opacity: 1, y: 0, scale: 1 }
+                        : { opacity: 0, y: 18, scale: 0.86 }
+                    }
+                    transition={{
+                      duration: 0.45,
+                      delay: index * 0.14,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <Image
+                      src={step.iconSrc}
+                      alt=""
+                      aria-hidden="true"
+                      width={step.iconWidth ?? 120}
+                      height={step.iconHeight ?? 120}
+                      loading={isSvg ? "eager" : undefined}
+                      unoptimized={isSvg}
+                      className={step.iconClassName ?? "h-10 w-auto"}
+                    />
+                  </motion.div>
+                ) : null}
+                {step.stepLabel ? (
+                  <p className="text-center text-sm font-semibold uppercase tracking-[0.28em] text-[var(--og-orange)]">
+                    {step.stepLabel}
+                  </p>
+                ) : null}
+                <h3 className="mt-4 text-center text-2xl font-semibold text-[var(--og-blue)]">
+                  {step.title}
+                </h3>
+                <p className="mt-2.5 text-center text-base leading-7 text-[var(--og-muted)]">
+                  {step.body}
                 </p>
-              ) : null}
-              <h3 className="mt-4 text-center text-2xl font-semibold text-[var(--og-blue)]">
-                {step.title}
-              </h3>
-              <p className="mt-2.5 text-center text-base leading-7 text-[var(--og-muted)]">
-                {step.body}
-              </p>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         {buttonHref ? (

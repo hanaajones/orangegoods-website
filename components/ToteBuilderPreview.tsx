@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
 import {
   CustomizerPageHeader,
@@ -25,7 +25,8 @@ import {
   calculateJolScreenPrintLocationUnitPrice,
   type CatalogPackagingUpgrade,
 } from "@/data/catalog";
-import { AS_COLOUR_TOTES } from "@/lib/as-colour-totes";
+import { AS_COLOUR_TOTES, getAsColourToteBySlug } from "@/lib/as-colour-totes";
+import { addProjectCartItem, getProjectCartItem } from "@/lib/project-cart";
 import { QUICK_TURN_FREE_SHIPPING_LABEL, addQuickTurnToteShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 
 type ToteBuilderStyle = (typeof AS_COLOUR_TOTES)[number];
@@ -152,6 +153,10 @@ function nearestQuantityMarkIndex(value: number) {
   ), 0);
 }
 
+function clampQuantity(value: number) {
+  return Math.min(5000, Math.max(100, value));
+}
+
 function addDays(date: Date, days: number) {
   const copy = new Date(date);
   copy.setDate(copy.getDate() + days);
@@ -230,17 +235,61 @@ function calculateToteUnitPrice({
   };
 }
 
-export function ToteBuilderPreview({
-  variant = "live",
-  showPageHero = true,
-}: {
+type ToteBuilderPreviewProps = {
+  lockedStyleSlug?: string;
+  pageBackHref?: string;
+  pageBackLabel?: string;
   variant?: ToteBuilderVariant;
   showPageHero?: boolean;
-} = {}) {
+};
+
+type SavedToteCartConfig = {
+  artworkName?: string;
+  backPrintColors?: number;
+  basePath?: string;
+  colorName?: string;
+  embroideryColorCount?: number;
+  frontDecoration?: DecorationMethod;
+  frontPrintColors?: number;
+  kind: "tote";
+  needsArtworkHelp?: boolean;
+  notes?: string;
+  packaging?: string[];
+  quantity?: string;
+  styleId?: string;
+};
+
+export function ToteBuilderPreview(props: ToteBuilderPreviewProps = {}) {
+  const searchParams = useSearchParams();
+  const requestedStyleId =
+    getAsColourToteBySlug(props.lockedStyleSlug)?.id ??
+    searchParams.get("style") ??
+    searchParams.get("styleId") ??
+    AS_COLOUR_TOTES[0]?.id ??
+    "";
+  const returnTo = searchParams.get("returnTo") ?? "";
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const resetKey = `${requestedStyleId}::${returnTo}::${projectCartItemId}::${props.variant ?? "live"}`;
+
+  return <ToteBuilderPreviewContent key={resetKey} {...props} />;
+}
+
+function ToteBuilderPreviewContent({
+  lockedStyleSlug,
+  pageBackHref,
+  pageBackLabel,
+  variant = "live",
+  showPageHero = true,
+}: ToteBuilderPreviewProps = {}) {
   const isMasterDraft = variant === "master-draft";
   const useSharedToteTheme = true;
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const requestedStyleId = searchParams.get("style") ?? searchParams.get("styleId");
+  const requestedStyleId =
+    getAsColourToteBySlug(lockedStyleSlug)?.id ??
+    searchParams.get("style") ??
+    searchParams.get("styleId");
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId");
   const fallbackStyle = AS_COLOUR_TOTES.find((style) => style.id === requestedStyleId) ?? AS_COLOUR_TOTES[0];
   const [selectedStyleId, setSelectedStyleId] = useState(fallbackStyle.id);
   const selectedStyle = AS_COLOUR_TOTES.find((style) => style.id === selectedStyleId) ?? fallbackStyle;
@@ -255,14 +304,52 @@ export function ToteBuilderPreview({
   const [notes, setNotes] = useState("");
   const [artworkName, setArtworkName] = useState("");
   const [needsArtworkHelp, setNeedsArtworkHelp] = useState(false);
+  const hydratedCartItemIdRef = useRef<string | null>(null);
+  const skipStyleResetRef = useRef(false);
 
   useEffect(() => {
+    if (skipStyleResetRef.current) {
+      skipStyleResetRef.current = false;
+      return;
+    }
     setSelectedColorName(selectedStyle.colors[0] ?? "");
   }, [selectedStyle]);
 
   useEffect(() => {
+    if (projectCartItemId) return;
     setSelectedStyleId(fallbackStyle.id);
-  }, [fallbackStyle.id]);
+  }, [fallbackStyle.id, projectCartItemId]);
+
+  useEffect(() => {
+    if (!projectCartItemId || hydratedCartItemIdRef.current === projectCartItemId) return;
+
+    const savedItem = getProjectCartItem(projectCartItemId);
+    const configuration = savedItem?.configuration as SavedToteCartConfig | undefined;
+    if (!configuration || configuration.kind !== "tote") return;
+
+    const nextStyle = AS_COLOUR_TOTES.find((style) => style.id === configuration.styleId);
+    if (!nextStyle) return;
+
+    hydratedCartItemIdRef.current = projectCartItemId;
+    skipStyleResetRef.current = true;
+    setSelectedStyleId(nextStyle.id);
+    setSelectedColorName(
+      nextStyle.colors.includes(configuration.colorName ?? "")
+        ? configuration.colorName ?? ""
+        : nextStyle.colors[0] ?? "",
+    );
+    setQuantity(clampQuantity(Number(configuration.quantity) || 100));
+    setFrontDecoration(configuration.frontDecoration === "embroidery" ? "embroidery" : "screenPrint");
+    setFrontPrintColors(Math.min(5, Math.max(1, configuration.frontPrintColors || 1)));
+    setBackPrintColors(Math.min(5, Math.max(0, configuration.backPrintColors || 0)));
+    setEmbroideryColorCount(Math.min(5, Math.max(1, configuration.embroideryColorCount || 1)));
+    setPackaging(
+      (configuration.packaging ?? []).filter((option): option is CatalogPackagingUpgrade => PACKAGING_OPTIONS.includes(option as CatalogPackagingUpgrade)),
+    );
+    setNotes(configuration.notes ?? "");
+    setArtworkName(configuration.artworkName ?? "");
+    setNeedsArtworkHelp(Boolean(configuration.needsArtworkHelp));
+  }, [projectCartItemId]);
 
   const quantityTierIndex = nearestQuantityMarkIndex(quantity);
   const visibleColorLabel = hoveredColorName ?? selectedColorName ?? "Select a color";
@@ -329,27 +416,6 @@ export function ToteBuilderPreview({
     needsArtworkHelp ? "Needs artwork help: Yes" : "",
     notes.trim() ? `Notes: ${notes.trim()}` : "",
   ].filter(Boolean).join("\n");
-  const handoffParams = new URLSearchParams({
-    intent: "tote-quote",
-    source: "og-crafted-totes-builder",
-    product: `${selectedStyle.name}`,
-    mode: "Quick Turn Tote",
-    styleId: selectedStyle.id,
-    color: selectedColorName,
-    qty: String(quantity),
-    decoration: frontDecoration,
-    frontDecorationDetails: frontDecorationLabel,
-    backPrintColors: backPrintColors > 0 ? String(backPrintColors) : "",
-    packaging: packaging.join(", "),
-    timeline: "2-3 weeks",
-    estimatedUnitPrice: money(shippingIncludedUnitPrice),
-    estimatedTotal: money(estimatedTotal),
-    projectSummary,
-    additionalCallouts: notes.trim(),
-    logoFile: artworkName,
-    needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
-  });
-
   const selectInputClass = immersiveCustomizerSelectInputClass;
   const textInputClass = immersiveCustomizerTextInputClass;
   const neutralOptionClass = "border-[#0B32A0]/12 bg-[#F5F7FC] text-[#0B32A0] hover:border-[#FF4200] hover:shadow-[0_12px_24px_rgba(8,30,111,0.08)]";
@@ -367,8 +433,44 @@ export function ToteBuilderPreview({
     productionPath: "quick-turn",
     currentLabel: selectedStyle.name,
     returnTo: searchParams.get("returnTo"),
+    fallbackHref: pageBackHref,
+    fallbackLabel: pageBackLabel,
   });
   const topBadgeLabel = getCustomizerProductionPathLabel("quick-turn");
+
+  function handleAddToProject() {
+    const targetCartId = projectCartItemId ?? `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    addProjectCartItem({
+      artworkName,
+      configuration: {
+        artworkName: artworkName || undefined,
+        backPrintColors,
+        basePath: pathname,
+        colorName: selectedColorName,
+        embroideryColorCount,
+        frontDecoration,
+        frontPrintColors,
+        kind: "tote",
+        needsArtworkHelp,
+        notes: notes.trim() || undefined,
+        packaging,
+        quantity: String(quantity),
+        schemaVersion: 1,
+        styleId: selectedStyle.id,
+      },
+      editHref: `${pathname}?cartEdit=${encodeURIComponent(targetCartId)}&styleId=${encodeURIComponent(selectedStyle.id)}&returnTo=%2Fcart`,
+      id: targetCartId,
+      kind: "tote",
+      needsArtworkHelp,
+      product: selectedStyle.name,
+      program: "Quick Turn Tote",
+      quantity: String(quantity),
+      source: "quick-turn-totes-builder",
+      summaryLines: projectSummary.split("\n").filter(Boolean),
+      title: `AS Colour ${selectedStyle.id} ${selectedStyle.name}`,
+    });
+    window.location.assign("/cart");
+  }
 
   return (
     <MasterCustomizerShell
@@ -390,7 +492,7 @@ export function ToteBuilderPreview({
         >
           {showPageHero && isMasterDraft ? (
             <Link
-              href="/build/og-crafted-totes"
+              href="/create/bags/quick-turn"
               className={immersiveCustomizerGhostLinkClass}
             >
               Compare current live tote builder
@@ -502,18 +604,32 @@ export function ToteBuilderPreview({
                   <label className={`mb-3 block ${sectionEyebrowClass}`}>
                     Tote style
                   </label>
-                  <select
-                    value={selectedStyle.id}
-                    onChange={(event) => setSelectedStyleId(event.target.value)}
-                    className={selectInputClass}
-                    style={{ backgroundImage: selectArrowSvg }}
-                  >
-                    {AS_COLOUR_TOTES.map((style) => (
-                      <option key={style.id} value={style.id}>
-                        {`AS Colour ${style.id} - ${style.name}`}
-                      </option>
-                    ))}
-                  </select>
+                  {lockedStyleSlug ? (
+                    <div className={`${insetPanelClass} flex flex-wrap items-center gap-2.5`}>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        AS Colour {selectedStyle.id}
+                      </span>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {selectedStyle.name}
+                      </span>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {selectedStyle.typeLabel}
+                      </span>
+                    </div>
+                  ) : (
+                    <select
+                      value={selectedStyle.id}
+                      onChange={(event) => setSelectedStyleId(event.target.value)}
+                      className={selectInputClass}
+                      style={{ backgroundImage: selectArrowSvg }}
+                    >
+                      {AS_COLOUR_TOTES.map((style) => (
+                        <option key={style.id} value={style.id}>
+                          {`AS Colour ${style.id} - ${style.name}`}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <p className="mt-3 text-sm leading-6 text-[#8a8a8a]">
                     {selectedStyle.typeLabel} · {selectedStyle.fabric} · 2-3 weeks
                   </p>
@@ -959,33 +1075,36 @@ export function ToteBuilderPreview({
               ) : null}
 
               <div className="mt-5 space-y-3">
-                <Link
-                  href={`/contact?${handoffParams.toString()}`}
+                <button
+                  type="button"
+                  onClick={handleAddToProject}
                   className={useSharedToteTheme
                     ? "flex min-h-14 w-full items-center justify-center rounded-[1.1rem] bg-[#FF4200] px-6 text-center text-[15px] font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255,66,0,0.24)]"
                     : "inline-flex min-h-14 w-full items-center justify-center rounded-[1rem] bg-[#0B32A0] px-5 text-center text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#082a84]"}
                 >
-                  Submit order for review
-                </Link>
+                  Add to Project
+                </button>
                 {useSharedToteTheme ? (
-                  <>
-                    <p className="mt-4 text-center text-sm leading-6 text-[#6b6b6b]">
-                      Send us your build for review. Final quote is confirmed after review.
+                  <div className="rounded-[1rem] border border-[#081E6F]/10 bg-[#F7F9FC] px-4 py-3 text-left">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                      Project flow
                     </p>
-                    <Link
-                      href={`/contact?${handoffParams.toString()}`}
-                      className="mt-4 flex min-h-12 w-full items-center justify-center rounded-[1rem] border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[#0B32A0] transition hover:border-[#0B32A0] hover:bg-[#F7F9FC]"
-                    >
-                      Talk to our team
-                    </Link>
-                  </>
+                    <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                      Add this tote build to your project cart, keep stacking products, and send one combined request when you&apos;re ready.
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                      We&apos;ll review the full cart before final pricing, decoration guidance, and timing are confirmed.
+                    </p>
+                  </div>
                 ) : (
-                  <Link
-                    href={`/contact?${handoffParams.toString()}`}
-                    className="inline-flex min-h-12 w-full items-center justify-center rounded-[1rem] border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[#0B32A0] transition hover:border-[#FF4200] hover:text-[#FF4200]"
-                  >
-                    Talk to our team
-                  </Link>
+                  <div className="rounded-[1rem] border border-[#081E6F]/10 bg-[#F7F9FC] px-4 py-3 text-left">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                      Project flow
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                      Add this tote build to your project cart, then send one combined request from the cart when the project is ready.
+                    </p>
+                  </div>
                 )}
               </div>
             </div>

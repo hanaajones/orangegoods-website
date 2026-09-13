@@ -1,20 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
+import { DiscoveryLinksSection } from "@/components/DiscoveryLinksSection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
 import { AllGoodsBrowser } from "@/components/AllGoodsBrowser";
 import { startProjectHref } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 import {
   buildGoodsBrowserItems,
   type GoodsBrowserCategory,
   type GoodsBrowserProductionPath,
 } from "@/lib/goods-browser";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "All Goods — Orange Goods",
   description:
-    "Browse the live Orange Goods customizer catalog for hats, tote bags, beanies, and apparel from one shared browser.",
-};
+    "Browse the live Orange Goods customizer catalog for hats, tote bags, beanies, apparel, and other branded goods from one shared browser.",
+  path: "/goods/all",
+  image: "/images/gallery/goods-hero-misc-dscf4876.jpg",
+  imageAlt: "Orange Goods customizer catalog",
+});
 
 const browserSupportHighlights = [
   {
@@ -75,6 +80,32 @@ const browserFaqs = [
     question: "Can you help if I don't see the exact product here?",
     answer:
       "Yes. The browser is the live starting point, not the full universe. If you do not see the exact item you want, contact us and we'll guide the closest route or build it another way.",
+  },
+];
+const allGoodsDiscoveryLinks = [
+  {
+    eyebrow: "Guide",
+    title: "Full custom hats vs quick turn hats",
+    description:
+      "The cleanest explanation of when to build from scratch and when a premium blank will get you there faster.",
+    href: "/insights/full-custom-hats-vs-quick-turn-hats",
+    cta: "Read guide",
+  },
+  {
+    eyebrow: "Case Study",
+    title: "See how Boatsetter tied multiple products together",
+    description:
+      "A useful example of hats, towels, and bags all working as one coastal goods system instead of isolated items.",
+    href: "/case-studies/boatsetter-coastal-goods-system",
+    cta: "View case study",
+  },
+  {
+    eyebrow: "Service",
+    title: "Need help choosing the right path first?",
+    description:
+      "Use the How We Work page if the bigger decision is still the approach itself: Full Custom, Quick Turn, or merch-first design support.",
+    href: "/services",
+    cta: "See our process",
   },
 ];
 
@@ -152,9 +183,7 @@ export default async function AllGoodsPage({ searchParams }: AllGoodsPageProps) 
             Build your merch
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-white/82 md:text-xl">
-            Compare styles across categories, then narrow things down by
-            color, fit, price point, and production path to find the right
-            direction.
+            Compare custom hats, apparel, beanies, totes, and other goods across categories, then narrow by color, fit, price point, and production path to find the right direction.
           </p>
         </div>
       </section>
@@ -328,6 +357,15 @@ export default async function AllGoodsPage({ searchParams }: AllGoodsPageProps) 
             ))}
           </div>
         </section>
+      </Reveal>
+
+      <Reveal className="px-4 pb-12 md:px-8 md:pb-16 lg:px-12">
+        <DiscoveryLinksSection
+          eyebrow="Useful Next Steps"
+          title="A few pages that make the browser easier to use"
+          description="If you know you want branded goods but still need help narrowing the product or path, these are the most useful pages to read next."
+          items={allGoodsDiscoveryLinks}
+        />
       </Reveal>
 
       <Reveal className="px-4 pb-20 md:px-8 lg:px-12">

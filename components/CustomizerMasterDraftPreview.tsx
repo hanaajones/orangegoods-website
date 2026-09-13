@@ -94,9 +94,9 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
 
 export function CustomizerMasterDraftPreview() {
   const previewLinks = [
-    { label: "Live hats builder", href: "/build/og-crafted-hats" },
-    { label: "Live apparel builder", href: "/build/og-crafted-apparel" },
-    { label: "Live totes builder", href: "/build/og-crafted-totes" },
+    { label: "Live hats builder", href: "/create/hats/full-custom" },
+    { label: "Live apparel builder", href: "/create/apparel/quick-turn" },
+    { label: "Live totes builder", href: "/create/bags/quick-turn" },
   ];
 
   return (

@@ -158,3 +158,20 @@ export const AS_COLOUR_TOTES: Array<AsColourToteStyle & { fromPrice: number }> =
     fromPrice: calculateBrowserFromPrice(21),
   },
 ];
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function getAsColourToteSlug(style: Pick<AsColourToteStyle, "id" | "name">) {
+  return `as-colour-${style.id}-${slugify(style.name)}`;
+}
+
+export function getAsColourToteBySlug(slug: string | null | undefined) {
+  if (!slug) return undefined;
+  return AS_COLOUR_TOTES.find((style) => getAsColourToteSlug(style) === slug);
+}

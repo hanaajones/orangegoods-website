@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 type ContactPayload = Record<string, unknown>;
 type DeliveryName =
   | "stored"
+  | "artworkStorage"
   | "hubspot"
   | "jcore"
   | "webhook"
@@ -36,7 +37,10 @@ type JCoreBridgeResult = {
   duplicate: boolean;
 };
 type StoredUpload = {
+  driveFileId?: string;
+  driveFileUrl?: string;
   fieldName: string;
+  driveFolderUrl?: string;
   originalName: string;
   storedName: string;
   relativePath: string;
@@ -70,6 +74,12 @@ const HUBSPOT_API_BASE = "https://api.hubapi.com";
 const JCORE_TYPEFORM_BRIDGE_URL = process.env.JCORE_TYPEFORM_BRIDGE_URL ?? "";
 const JCORE_TYPEFORM_BRIDGE_SECRET = process.env.JCORE_TYPEFORM_BRIDGE_SECRET ?? "";
 const JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS = Number(process.env.JCORE_TYPEFORM_BRIDGE_TIMEOUT_MS ?? 15000);
+const JCORE_ARTWORK_BRIDGE_URL = process.env.JCORE_ARTWORK_BRIDGE_URL
+  ?? (JCORE_TYPEFORM_BRIDGE_URL
+    ? JCORE_TYPEFORM_BRIDGE_URL.replace(/\/api\/typeform-webhook$/, "/api/website-artwork-upload")
+    : "");
+const JCORE_ARTWORK_BRIDGE_SECRET = process.env.JCORE_ARTWORK_BRIDGE_SECRET ?? JCORE_TYPEFORM_BRIDGE_SECRET;
+const JCORE_ARTWORK_BRIDGE_TIMEOUT_MS = Number(process.env.JCORE_ARTWORK_BRIDGE_TIMEOUT_MS ?? 20000);
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN ?? "";
 const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
 const OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL = process.env.OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL ?? "C0AV6PMMFD3";
@@ -79,6 +89,24 @@ const CONTACT_CONFIRMATION_SUBJECT = process.env.CONTACT_CONFIRMATION_SUBJECT ??
 const CONTACT_DELIVERY_TIMEOUT_MS = Number(process.env.CONTACT_DELIVERY_TIMEOUT_MS ?? 4500);
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 const ALLOWED_UPLOAD_EXTENSIONS = new Set([".ai", ".eps", ".pdf", ".svg", ".zip", ".png", ".jpg", ".jpeg"]);
+const INTERNAL_ONLY_PAYLOAD_KEYS = new Set([
+  "artworkFiles",
+  "artworkUploadCount",
+  "fbclid",
+  "firstLandingPage",
+  "firstReferrer",
+  "gclid",
+  "intent",
+  "pageName",
+  "pagePath",
+  "source",
+  "submissionPagePath",
+  "utm_campaign",
+  "utm_content",
+  "utm_medium",
+  "utm_source",
+  "utm_term",
+]);
 
 function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -120,6 +148,13 @@ function truncate(value: string, maxLength: number) {
   const compact = value.replace(/\s+/g, " ").trim();
   if (compact.length <= maxLength) return compact;
   return `${compact.slice(0, Math.max(0, maxLength - 1)).trim()}...`;
+}
+
+function formatBytes(bytes: number) {
+  if (!Number.isFinite(bytes) || bytes < 1024) return `${bytes} bytes`;
+  const mb = bytes / (1024 * 1024);
+  if (mb >= 1) return `${mb.toFixed(mb >= 10 ? 0 : 1)} MB`;
+  return `${(bytes / 1024).toFixed(1)} KB`;
 }
 
 function sanitizeFilename(filename: string) {
@@ -188,6 +223,141 @@ async function fetchWithTimeout(input: string, init: RequestInit, timeoutMs = CO
 
 function isHatBuilderSubmission(payload: Record<string, string>) {
   return payload.source === "og-crafted-hat-builder";
+}
+
+function getAnswerEntries(payload: Record<string, string>) {
+  return Object.entries(payload).filter(([key, value]) => value && !INTERNAL_ONLY_PAYLOAD_KEYS.has(key));
+}
+
+function parseHostname(value: string) {
+  try {
+    return new URL(value).hostname;
+  } catch {
+    return "";
+  }
+}
+
+function inferAcquisitionChannel(payload: Record<string, string>, requestMeta: RequestMeta) {
+  const utmSource = (payload.utm_source ?? "").toLowerCase();
+  const utmMedium = (payload.utm_medium ?? "").toLowerCase();
+  const referrer = payload.firstReferrer || requestMeta.referer;
+  const referrerHost = parseHostname(referrer).toLowerCase();
+
+  if (payload.gclid || utmSource === "google" && /(cpc|ppc|paid|sem)/.test(utmMedium)) {
+    return "Google Ads";
+  }
+
+  if (
+    payload.fbclid
+    || ["facebook", "instagram", "meta"].includes(utmSource)
+    || /(paid_social|paidsocial|social_paid)/.test(utmMedium)
+  ) {
+    return "Meta / paid social";
+  }
+
+  if (utmSource || utmMedium) {
+    return [payload.utm_source, payload.utm_medium].filter(Boolean).join(" / ");
+  }
+
+  if (referrerHost.includes("google.")) return "Google organic";
+  if (referrerHost.includes("bing.")) return "Bing organic";
+  if (referrerHost.includes("linkedin.")) return "LinkedIn referral";
+  if (referrerHost && !referrerHost.includes("orangegoods.co")) return `Referral (${referrerHost})`;
+
+  return "Direct / unknown";
+}
+
+function buildSubmissionOverviewEntries(
+  payload: Record<string, string>,
+  uploads: StoredUpload[],
+  requestMeta: RequestMeta,
+) {
+  const attributionDetail = [
+    payload.utm_source ? `source=${payload.utm_source}` : "",
+    payload.utm_medium ? `medium=${payload.utm_medium}` : "",
+    payload.utm_campaign ? `campaign=${payload.utm_campaign}` : "",
+    payload.gclid ? "gclid present" : "",
+    payload.fbclid ? "fbclid present" : "",
+  ].filter(Boolean).join(" · ");
+
+  return [
+    ["Form used", payload.pageName || prettyLabel(payload.source || "website form")],
+    ["Source tag", payload.source || "website-contact"],
+    ["Form path", payload.pagePath || payload.submissionPagePath || requestMeta.referer || "/contact"],
+    ["Intent", payload.intent || "contact"],
+    ["Product", payload.product || ""],
+    ["Acquisition", inferAcquisitionChannel(payload, requestMeta)],
+    ["Attribution detail", attributionDetail],
+    ["First landing page", payload.firstLandingPage || ""],
+    ["First referrer", payload.firstReferrer || ""],
+    ["Artwork folder", payload.artworkFolderUrl || ""],
+    ["Uploaded files", uploads.length ? uploads.map((upload) => upload.originalName).join(", ") : "None"],
+  ].filter(([, value]) => value);
+}
+
+async function syncUploadsToArtworkStorage(
+  payload: Record<string, string>,
+  uploads: StoredUpload[],
+  submissionId: string,
+  submittedAt: string,
+): Promise<DeliveryAttemptResult> {
+  if (!uploads.length) {
+    return { status: "skipped", detail: "No artwork uploads were included." };
+  }
+
+  if (!JCORE_ARTWORK_BRIDGE_URL) {
+    return { status: "skipped", detail: "J-Core artwork bridge URL is not configured." };
+  }
+
+  const formData = new FormData();
+  formData.set("submissionId", submissionId);
+  formData.set("submittedAt", submittedAt);
+  formData.set("company", payload.company ?? "");
+  formData.set("name", payload.name ?? "");
+  formData.set("email", payload.email ?? "");
+  formData.set("project", payload.project ?? payload.product ?? "");
+  formData.set("source", payload.source ?? "website-contact");
+
+  for (const upload of uploads) {
+    const targetPath = path.join(CONTACT_UPLOADS_DIR, submissionId, upload.storedName);
+    const buffer = await fs.readFile(targetPath);
+    formData.append("artwork", new Blob([buffer], { type: upload.mimeType }), upload.originalName);
+  }
+
+  const response = await fetchWithTimeout(JCORE_ARTWORK_BRIDGE_URL, {
+    method: "POST",
+    headers: {
+      ...(JCORE_ARTWORK_BRIDGE_SECRET ? { "x-artwork-upload-secret": JCORE_ARTWORK_BRIDGE_SECRET } : {}),
+    },
+    body: formData,
+  }, JCORE_ARTWORK_BRIDGE_TIMEOUT_MS);
+
+  const data = (await response.json().catch(() => ({}))) as {
+    files?: Array<{ fileId?: string; fileName?: string; webViewLink?: string }>;
+    folderUrl?: string;
+    ok?: boolean;
+  };
+
+  if (!response.ok || !data.ok || !data.folderUrl) {
+    throw new Error(`Artwork storage bridge failed: ${response.status} ${JSON.stringify(data)}`);
+  }
+
+  payload.artworkFolderUrl = data.folderUrl;
+  if (Array.isArray(data.files) && data.files.length) {
+    payload.artworkFileLinks = data.files
+      .map((file) => [file.fileName, file.webViewLink].filter(Boolean).join(": "))
+      .join("\n");
+
+    for (const upload of uploads) {
+      const matched = data.files.find((file) => file.fileName === upload.originalName);
+      if (!matched) continue;
+      upload.driveFileId = matched.fileId;
+      upload.driveFileUrl = matched.webViewLink;
+      upload.driveFolderUrl = data.folderUrl;
+    }
+  }
+
+  return { status: "delivered", detail: `Stored artwork in Drive folder ${data.folderUrl}` };
 }
 
 function buildRequestMeta(request: Request): RequestMeta {
@@ -280,28 +450,33 @@ async function parseRequestPayload(request: Request, submissionId: string) {
 }
 
 function buildSubmissionRows(payload: Record<string, string>, uploads: StoredUpload[]) {
-  const payloadRows = Object.entries(payload)
-    .filter(([, value]) => value)
+  const payloadRows = getAnswerEntries(payload)
     .map(([key, value]) => {
       const formattedValue = escapeHtml(value).replaceAll("\n", "<br />");
       return `<tr><td style="padding:8px 12px;border:1px solid #e7e1d5;font-weight:700;vertical-align:top;">${escapeHtml(prettyLabel(key))}</td><td style="padding:8px 12px;border:1px solid #e7e1d5;">${formattedValue}</td></tr>`;
     });
 
   const uploadRows = uploads.map((upload) => {
-    const detail = `${upload.originalName} (${upload.size} bytes)`;
-    return `<tr><td style="padding:8px 12px;border:1px solid #e7e1d5;font-weight:700;vertical-align:top;">Uploaded File</td><td style="padding:8px 12px;border:1px solid #e7e1d5;">${escapeHtml(detail)}<br /><span style="color:#666;">${escapeHtml(upload.relativePath)}</span></td></tr>`;
+    const detail = `${upload.originalName} (${formatBytes(upload.size)})`;
+    const storageLine = upload.driveFileUrl
+      ? `<a href="${escapeHtml(upload.driveFileUrl)}" style="color:#0b32a0;text-decoration:underline;">Open file</a>${upload.driveFolderUrl ? ` · <a href="${escapeHtml(upload.driveFolderUrl)}" style="color:#0b32a0;text-decoration:underline;">Open folder</a>` : ""}`
+      : `<span style="color:#666;">${escapeHtml(upload.relativePath)}</span>`;
+    return `<tr><td style="padding:8px 12px;border:1px solid #e7e1d5;font-weight:700;vertical-align:top;">Uploaded File</td><td style="padding:8px 12px;border:1px solid #e7e1d5;">${escapeHtml(detail)}<br />${storageLine}</td></tr>`;
   });
 
   return [...payloadRows, ...uploadRows].join("");
 }
 
 function buildSubmissionSummary(payload: Record<string, string>, uploads: StoredUpload[]) {
-  const lines = Object.entries(payload)
-    .filter(([, value]) => value)
+  const lines = getAnswerEntries(payload)
     .map(([key, value]) => `${prettyLabel(key)}: ${value}`);
 
   if (uploads.length) {
     lines.push(`Uploaded files: ${uploads.map((upload) => upload.originalName).join(", ")}`);
+  }
+
+  if (payload.artworkFolderUrl) {
+    lines.push(`Artwork folder: ${payload.artworkFolderUrl}`);
   }
 
   return lines.join("\n");
@@ -376,6 +551,17 @@ function buildJCoreTypeformPayload(payload: Record<string, string>) {
       form_id: formId,
       hidden: {
         intent: payload.intent ?? "",
+        pageName: payload.pageName ?? "",
+        pagePath: payload.pagePath ?? payload.submissionPagePath ?? "",
+        firstLandingPage: payload.firstLandingPage ?? "",
+        firstReferrer: payload.firstReferrer ?? "",
+        utm_source: payload.utm_source ?? "",
+        utm_medium: payload.utm_medium ?? "",
+        utm_campaign: payload.utm_campaign ?? "",
+        utm_content: payload.utm_content ?? "",
+        utm_term: payload.utm_term ?? "",
+        gclid: payload.gclid ?? "",
+        fbclid: payload.fbclid ?? "",
         product: payload.product ?? "",
         source: payload.source ?? "website-contact",
       },
@@ -437,12 +623,21 @@ async function sendResendEmail(params: {
 async function deliverInternalEmail(
   payload: Record<string, string>,
   uploads: StoredUpload[],
+  requestMeta: RequestMeta,
 ): Promise<DeliveryAttemptResult> {
   const replyTo = payload.email || undefined;
   const subjectBase = payload.source === "og-crafted-hat-builder"
     ? "New OG Crafted hat build submission"
     : "New Orange Goods website form";
   const subject = payload.product ? `${subjectBase} · ${payload.product}` : subjectBase;
+  const overviewEntries = buildSubmissionOverviewEntries(payload, uploads, requestMeta);
+  const overviewRows = overviewEntries
+    .map(([label, value]) => {
+      const formattedValue = escapeHtml(value).replaceAll("\n", "<br />");
+      return `<tr><td style="padding:8px 12px;border:1px solid #d8d0c2;font-weight:700;vertical-align:top;background:#f7f2ea;">${escapeHtml(label)}</td><td style="padding:8px 12px;border:1px solid #d8d0c2;">${formattedValue}</td></tr>`;
+    })
+    .join("");
+  const overviewText = overviewEntries.map(([label, value]) => `${label}: ${value}`).join("\n");
   const rows = buildSubmissionRows(payload, uploads);
   const summary = buildSubmissionSummary(payload, uploads);
 
@@ -453,14 +648,17 @@ async function deliverInternalEmail(
         <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:24px;">
           <p style="margin:0 0 8px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#ff4200;">Orange Goods website</p>
           <h1 style="margin:0 0 10px;font-size:28px;line-height:1.1;color:#0b32a0;">We got a form.</h1>
-          <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#1c1c1c;">A new website form came in and is summarized below.</p>
+          <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:#1c1c1c;">A new website form came in. Overview first, then the submitted answers.</p>
+          <h2 style="margin:0 0 10px;font-size:15px;letter-spacing:0.16em;text-transform:uppercase;color:#7a6a55;">Submission overview</h2>
+          <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">${overviewRows}</table>
+          <h2 style="margin:0 0 10px;font-size:15px;letter-spacing:0.16em;text-transform:uppercase;color:#7a6a55;">Submitted answers</h2>
           <table style="width:100%;border-collapse:collapse;">${rows}</table>
         </div>
       </div>
     `,
     replyTo,
     subject,
-    text: `We got a form.\n\nA new website form came in and is summarized below.\n\n${summary}`,
+    text: `We got a form.\n\nSubmission overview:\n${overviewText}\n\nSubmitted answers:\n${summary}`,
     to: [CONTACT_TO_EMAIL],
   });
 }
@@ -820,11 +1018,12 @@ export async function POST(request: Request) {
     };
 
     await setDeliveryResult(submission, "stored", "delivered", "Submission captured locally.");
+    await runDelivery(submission, "artworkStorage", () => syncUploadsToArtworkStorage(payload, uploads, submissionId, submission.submittedAt));
 
     await runDelivery(submission, "hubspot", () => deliverViaHubSpot(payload, uploads, requestMeta));
     await runDelivery(submission, "jcore", () => deliverViaJCore(payload, requestMeta));
     await runDelivery(submission, "webhook", () => deliverViaWebhook(payload));
-    await runDelivery(submission, "internalEmail", () => deliverInternalEmail(payload, uploads));
+    await runDelivery(submission, "internalEmail", () => deliverInternalEmail(payload, uploads, requestMeta));
     await runDelivery(submission, "clientEmail", () => deliverClientConfirmation(payload));
 
     const jcoreStatus = submission.deliveries.jcore?.status;

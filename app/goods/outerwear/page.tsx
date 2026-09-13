@@ -1,4 +1,14 @@
 import { ProductCategoryPage } from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Outerwear — Orange Goods",
+  description:
+    "Custom jackets, puffers, coach jackets, windbreakers, and branded outerwear programs for teams, retail, gifting, and events.",
+  path: "/goods/outerwear",
+  image: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif",
+  imageAlt: "Orange Goods custom outerwear",
+});
 
 export default function OuterwearPage() {
   return (
@@ -7,6 +17,7 @@ export default function OuterwearPage() {
       subhead="Jackets, windbreakers, vests, and premium layers built for staff uniforms, retail drops, and high-value gifting."
       image="https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_17.avif"
       imageAlt="Orange Goods custom outerwear"
+      startProjectHref="/create/outerwear"
       products={["Jackets", "Coach Jackets", "Windbreakers", "Quarter-Zips", "Vests", "Puffers"]}
       services={["Embroidery", "Screen Print", "Labels", "Patches"]}
       faqs={[

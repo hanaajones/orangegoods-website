@@ -77,7 +77,7 @@ export function Hero() {
             className="text-3xl uppercase leading-tight text-white"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Good brands. Better goods.
+            Good brands.<br />Better goods.
           </h1>
           <p className="text-base leading-6 text-white/80">
             For brands that care what they sell and hand out. One team from idea to delivery.

@@ -31,7 +31,7 @@ export function ApparelPageStickyNav({
   };
 
   const toggleOptions = [
-    { href: "/goods/apparel/styles", label: "Apparel styles", value: "full-custom" as const },
+    { href: "/goods/apparel/quick-turn", label: "Quick turn apparel", value: "full-custom" as const },
   ];
 
   return (

@@ -20,11 +20,11 @@ export default function HatBuilderExperienceDraftPage() {
         previewLinks={[
           {
             label: "Live hats builder",
-            href: "/build/og-crafted-hats",
+            href: "/create/hats/full-custom",
           },
           {
             label: "Beanie builder reference",
-            href: "/build/og-crafted-beanies?style=as-colour-1107-cuff-beanie",
+            href: "/create/beanies/as-colour-1107-cuff-beanie",
           },
         ]}
       />

@@ -7,12 +7,16 @@ import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Reveal } from "@/components/Reveal";
 import { logos, startProjectHref } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "About - Orange Goods",
   description:
     "Orange Goods is a founder-led custom merch studio built on product taste, production experience, and clear communication.",
-};
+  path: "/about",
+  image: "/images/gallery/about-team-hana-headshot-2026-08-13.jpg",
+  imageAlt: "Orange Goods team",
+});
 
 const trustPoints = [
   {
@@ -25,6 +29,8 @@ const trustPoints = [
         aria-hidden="true"
         width={294}
         height={288}
+        loading="eager"
+        unoptimized
         className="h-12 w-auto"
       />
     ),
@@ -39,6 +45,8 @@ const trustPoints = [
         aria-hidden="true"
         width={183}
         height={238}
+        loading="eager"
+        unoptimized
         className="h-12 w-auto"
       />
     ),
@@ -53,6 +61,8 @@ const trustPoints = [
         aria-hidden="true"
         width={262}
         height={277}
+        loading="eager"
+        unoptimized
         className="h-12 w-auto"
       />
     ),

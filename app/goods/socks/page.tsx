@@ -6,6 +6,16 @@ import {
   ProductCategoryFaqSection,
   ProductCategoryPage,
 } from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Socks — Orange Goods",
+  description:
+    "Custom branded socks for retail drops, gifting, events, uniforms, and merch assortments that need a small but strong product.",
+  path: "/goods/socks",
+  image: "/images/gallery/socks-firestone-_mg_0147.jpg",
+  imageAlt: "Custom socks by Orange Goods",
+});
 
 const sockProducts = [
   {
@@ -219,6 +229,7 @@ export default function SocksPage() {
         subhead="Knit socks built for gifting, retail, hospitality, and everyday merch programs that feel useful first and branded in the right way."
         image="/images/gallery/socks-verve-gd.jpg"
         imageAlt="Graphic custom socks used as the hero image for the socks category page"
+        startProjectHref="/create/socks"
         heroEyebrow="Full Custom"
         heroImagePosition="center 44%"
         heroSubnote="100+ pairs. Usually 6-8 weeks from proof approval."

@@ -1,22 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { getLeadAttributionHiddenFields } from "@/lib/lead-attribution";
 
 const labelClass =
   "grid gap-2 text-sm font-semibold uppercase tracking-[0.18em] text-[var(--og-blue)]";
 
 const inputClass =
   "min-h-12 rounded-2xl border border-[#0B32A0]/16 bg-white px-4 text-base font-normal normal-case tracking-normal text-[var(--og-ink)] outline-none transition focus:border-[var(--og-orange)]";
-
-const attributionFieldNames = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_content",
-  "utm_term",
-  "gclid",
-  "fbclid",
-] as const;
 
 export function HatQuickLeadForm() {
   const [submitting, setSubmitting] = useState(false);
@@ -25,18 +16,7 @@ export function HatQuickLeadForm() {
   const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const nextAttributionHiddenFields: Record<string, string> = {};
-
-    for (const fieldName of attributionFieldNames) {
-      const value = searchParams.get(fieldName)?.trim();
-
-      if (value) {
-        nextAttributionHiddenFields[fieldName] = value;
-      }
-    }
-
-    setAttributionHiddenFields(nextAttributionHiddenFields);
+    setAttributionHiddenFields(getLeadAttributionHiddenFields());
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

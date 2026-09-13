@@ -1,39 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LeadAttributionTracker } from "@/components/LeadAttributionTracker";
+import { StructuredData } from "@/components/StructuredData";
 import { SiteChrome } from "@/components/SiteChrome";
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  buildMetadata,
+  organizationStructuredData,
+  websiteStructuredData,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://orangegoods.co"),
-  title: "Orange Goods — Custom Branded Merchandise, Los Angeles",
-  description:
-    "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team",
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
+  ...buildMetadata({
     title: "Orange Goods — Custom Branded Merchandise, Los Angeles",
-    description:
-      "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team",
-    url: "https://orangegoods.co",
-    siteName: "Orange Goods",
-    images: [
-      {
-        url: "https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif",
-        width: 1200,
-        height: 630,
-        alt: "Orange Goods custom branded merchandise",
-      },
-    ],
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Orange Goods — Custom Branded Merchandise, Los Angeles",
-    description:
-      "Premium custom merch for brands. Hats, apparel, drinkware, accessories — designed, produced, and delivered by our Southern California team",
-    images: ["https://orangegoods.co/wp-content/uploads/2025/03/OrangeGoods_Goods_5-1.avif"],
-  },
+    description: DEFAULT_DESCRIPTION,
+    path: "/",
+    image: DEFAULT_OG_IMAGE,
+  }),
 };
 
 export default function RootLayout({
@@ -45,8 +30,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/ogr4tvs.css" />
+        <StructuredData id="orange-goods-org" data={organizationStructuredData} />
+        <StructuredData id="orange-goods-website" data={websiteStructuredData} />
       </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-body, 'NoirPro', sans-serif)" }}>
+        <LeadAttributionTracker />
         <div className="relative min-h-screen overflow-x-clip">
           <SiteChrome>{children}</SiteChrome>
         </div>

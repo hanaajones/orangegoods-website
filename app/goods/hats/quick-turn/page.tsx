@@ -6,6 +6,7 @@ import { HatPageStickyNav } from "@/components/HatPageStickyNav";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { ReadyMadeHatGrid } from "@/components/ReadyMadeHatGrid";
 import { READY_MADE_HATS } from "@/lib/ready-made-hats";
+import { buildMetadata } from "@/lib/seo";
 
 const quickTurnNextLinks = [
   {
@@ -27,7 +28,7 @@ const quickTurnNextLinks = [
   },
   {
     title: "Decoration",
-    href: "/build/quick-turn-hats",
+    href: "/create/hats/quick-turn",
     description: "Move into embroidery, patches, or print depending on the blank and the look you want.",
     image: "/images/gallery/hat-feb-img_7603.jpg",
     imagePosition: "center 52%",
@@ -44,10 +45,13 @@ const quickTurnNextLinks = [
   },
 ];
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "Quick Turn Hats — Orange Goods",
   description: "Premium blank hats with your embroidery. 2–3 week turnaround from 100 units.",
-};
+  path: "/goods/hats/quick-turn",
+  image: "/images/gallery/headwear-quick-turn-hickerson-20220208-2344.jpg",
+  imageAlt: "Quick turn custom hats",
+});
 
 export default function QuickTurnHatsPage() {
   return (

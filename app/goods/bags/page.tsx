@@ -6,6 +6,16 @@ import {
   ProductCategoryFaqSection,
   ProductCategoryPage,
 } from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Bags + Totes — Orange Goods",
+  description:
+    "Custom tote bags, canvas bags, backpacks, and branded carry goods for retail, hospitality, gifting, launches, and everyday use.",
+  path: "/goods/bags",
+  image: "/images/gallery/bags-boatsetter-dscf3241.jpg",
+  imageAlt: "Custom tote bag by Orange Goods",
+});
 
 const bagProducts = [
   {
@@ -157,6 +167,8 @@ const buildPathSection = {
         "Best for retail programs, premium gifting, and bags that need their own identity",
       ],
       detail: "100+ pieces · 5-7 weeks",
+      href: "/create/bags/full-custom",
+      ctaLabel: "Start full custom",
       imageSrc: "/images/gallery/bags-fabric-swatches-mg-9430.jpg",
       imageAlt: "Fabric swatch book showing color and material options for a fully custom bag build",
       imagePosition: "center 52%",
@@ -176,6 +188,8 @@ const buildPathSection = {
         "Best for events, staff kits, launches, and tighter timelines",
       ],
       detail: "100+ pieces · 2-3 weeks",
+      href: "/goods/bags/quick-turn",
+      ctaLabel: "See quick turn totes",
       imageSrc: "/images/gallery/screen-printing-field-day-coffee-totes.jpg",
       imageAlt: "Field Day Coffee totes shown with screen printed branding",
       imagePosition: "center 50%",
@@ -216,6 +230,7 @@ export default function BagsPage() {
         subhead="Canvas totes, boat totes, backpacks, and carry goods built to feel useful, specific, and worth keeping beyond the first handoff."
         image="/images/gallery/quiz-canvas-tote-img-1172.jpg"
         imageAlt="Field Day Coffee canvas tote set on sand beside a surfboard"
+        startProjectHref="/create/bags/full-custom"
         heroEyebrow="Carry Goods"
         heroImagePosition="74% 52%"
         heroSubnote={null}

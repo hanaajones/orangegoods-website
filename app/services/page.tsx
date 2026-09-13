@@ -1,14 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
+import { DiscoveryLinksSection } from "@/components/DiscoveryLinksSection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { startProjectHref } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 
 const designProjectHref = "/design/start";
 
-export const metadata = {
+export const metadata = buildMetadata({
   title: "How We Work — Orange Goods",
-  description: "Full Custom, Quick Turn, and In-House Design — three ways Orange Goods builds the goods your brand deserves.",
-};
+  description:
+    "Full Custom, Quick Turn, and In-House Design — three ways Orange Goods builds the goods your brand deserves.",
+  path: "/services",
+  image: "/images/gallery/full-custom-materials-mg-9406.jpg",
+  imageAlt: "Orange Goods production process",
+});
 
 const services = [
   {
@@ -91,6 +97,32 @@ const comparisons = [
   { label: "What changes", crafted: "Fabric, fit, trims, and labels", readyMade: "Decoration, artwork, and application" },
   { label: "Cost", crafted: "Lower at scale", readyMade: "Higher per unit" },
 ];
+const serviceDiscoveryLinks = [
+  {
+    eyebrow: "Guide",
+    title: "Start with the production-path comparison",
+    description:
+      "This guide is the easiest way to understand how speed, customization, and timing change the right call.",
+    href: "/insights/full-custom-hats-vs-quick-turn-hats",
+    cta: "Read guide",
+  },
+  {
+    eyebrow: "Case Study",
+    title: "See a quick-turn program with real shelf appeal",
+    description:
+      "Verve's apparel, socks, and drinkware mix is a good example of how a tighter product edit beats a generic merch pile.",
+    href: "/case-studies/verve-coffee-retail-merch-program",
+    cta: "View case study",
+  },
+  {
+    eyebrow: "Browse",
+    title: "Want to compare products before you contact us?",
+    description:
+      "The shared goods browser lets you sort by category, production path, fit, color, and price before you reach out.",
+    href: "/goods/all",
+    cta: "Browse goods",
+  },
+];
 
 export default function ServicesPage() {
   return (
@@ -111,8 +143,7 @@ export default function ServicesPage() {
               Choose your approach
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-white/82 md:text-xl">
-              Premium blanks decorated fast, fully custom goods built from scratch, and in-house
-              design support to make sure the final product actually lands.
+              Custom hats, apparel, bags, drinkware, and other branded goods handled through the right mix of premium blanks, full custom development, and merch-first design support.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end lg:self-end">
@@ -158,9 +189,11 @@ export default function ServicesPage() {
                       alt=""
                       width={88}
                       height={88}
-                    className={service.iconClassName ?? "h-16 w-16 shrink-0 md:h-20 md:w-20"}
-                    aria-hidden="true"
-                  />
+                      loading={service.icon.endsWith(".svg") ? "eager" : undefined}
+                      unoptimized={service.icon.endsWith(".svg")}
+                      className={service.iconClassName ?? "h-16 w-16 shrink-0 md:h-20 md:w-20"}
+                      aria-hidden="true"
+                    />
                   ) : null}
                   <h2
                     className="text-3xl uppercase leading-tight text-[#FF4200] md:text-5xl"
@@ -229,6 +262,15 @@ export default function ServicesPage() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="px-4 py-10 md:px-8 md:py-12 lg:px-12">
+        <DiscoveryLinksSection
+          eyebrow="Keep Exploring"
+          title="A few pages that clarify the decision faster"
+          description="These are the strongest follow-on pages if you are still deciding how custom the product needs to be, which goods make sense, or what good execution actually looks like."
+          items={serviceDiscoveryLinks}
+        />
       </section>
 
       <section className="bg-[#0B32A0] px-4 py-16 text-center text-white md:px-8">

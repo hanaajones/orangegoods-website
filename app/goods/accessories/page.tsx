@@ -6,6 +6,16 @@ import {
   ProductCategoryFaqSection,
   ProductCategoryPage,
 } from "../_components/ProductCategoryPage";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Custom Accessories — Orange Goods",
+  description:
+    "Custom branded accessories including bandanas, towels, sleeves, patches, socks, and small-format goods that round out a merch program.",
+  path: "/goods/accessories",
+  image: "/images/gallery/accessories-stanford-medicine-laptop-sleeve.jpg",
+  imageAlt: "Custom branded accessory by Orange Goods",
+});
 
 const accessoryProducts = [
   {
@@ -204,6 +214,7 @@ export default function AccessoriesPage() {
         subhead="Bandanas, hankies, towels, socks, sleeves, patches, paddles, and smaller-format goods built to support the bigger idea without feeling like filler."
         image="/images/gallery/accessories-bandana-verve-culture-yellow.webp"
         imageAlt="Verve Culture yellow custom bandana styled over a cap in an outdoor portrait"
+        startProjectHref="/create/accessories"
         heroEyebrow="Small Format Goods"
         heroImagePosition="center 34%"
         heroSubnote={null}

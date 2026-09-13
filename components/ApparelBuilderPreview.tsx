@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
 import {
   CustomizerPageHeader,
@@ -26,6 +26,7 @@ import {
   type CatalogSpecialtyPrintUpgrade,
   type PrintCat,
 } from "@/data/catalog";
+import { addProjectCartItem, getProjectCartItem } from "@/lib/project-cart";
 import { QUICK_TURN_FREE_SHIPPING_LABEL, addQuickTurnApparelShippingIncludedPrice } from "@/lib/quick-turn-shipping";
 
 type BuilderColor = {
@@ -275,6 +276,34 @@ function createInkColorSlots(count: number) {
   }));
 }
 
+function normalizeSavedSizeBreakdown(sizes: string[], sizeBreakdown: Record<string, number> | undefined, fallbackQty: number) {
+  const orderedSizes = sortSizes(sizes);
+  const normalized = Object.fromEntries(
+    orderedSizes.map((size) => [size, Math.max(0, Number(sizeBreakdown?.[size]) || 0)]),
+  );
+  const totalQuantity = Object.values(normalized).reduce((sum, qty) => sum + qty, 0);
+
+  return totalQuantity > 0 ? normalized : buildInitialSizeBreakdown(sizes, fallbackQty);
+}
+
+function normalizeInkColorEntries(entries: unknown) {
+  const fallback = createInkColorSlots(5);
+  if (!Array.isArray(entries)) return fallback;
+
+  return fallback.map((slot, index) => {
+    const entry = entries[index];
+    if (!entry || typeof entry !== "object") return slot;
+
+    return {
+      hex:
+        typeof entry.hex === "string" && /^#[0-9A-Fa-f]{6}$/.test(entry.hex)
+          ? entry.hex.toUpperCase()
+          : slot.hex,
+      name: typeof entry.name === "string" ? entry.name : slot.name,
+    };
+  });
+}
+
 function summarizeInkColors(label: string, colors: InkColorEntry[], count: number) {
   const filled = colors
     .slice(0, count)
@@ -388,17 +417,69 @@ function HexColorPicker({
   );
 }
 
-export function ApparelBuilderPreview({
-  styles,
-  draftLinks,
-  showPageHero = true,
-}: {
+type ApparelBuilderPreviewProps = {
   styles: ApparelBuilderStyle[];
   draftLinks: Array<{ label: string; href: string }>;
   showPageHero?: boolean;
-}) {
+  lockedStyleSlug?: string;
+  pageBackHref?: string;
+  pageBackLabel?: string;
+};
+
+type SavedApparelCartConfig = {
+  artworkName?: string;
+  backPrintColors?: number;
+  basePath?: string;
+  colorName?: string;
+  embroideryColorCount?: number;
+  frontDecoration?: FrontDecorationKey;
+  frontPrintColors?: number;
+  frontPrintEnabled?: boolean;
+  kind: "apparel";
+  needsArtworkHelp?: boolean;
+  notes?: string;
+  packaging?: string[];
+  placementInkColors?: {
+    back?: InkColorEntry[];
+    embroidery?: InkColorEntry[];
+    front?: InkColorEntry[];
+    sleeve?: InkColorEntry[];
+  };
+  printUpgrade?: CatalogSpecialtyPrintUpgrade | "none";
+  quantity?: string;
+  sizeBreakdown?: Record<string, number>;
+  sleevePrintColors?: number;
+  sleevePrintSide?: SleevePrintSide;
+  styleSlug?: string;
+};
+
+export function ApparelBuilderPreview(props: ApparelBuilderPreviewProps) {
   const searchParams = useSearchParams();
-  const requestedStyleSlug = searchParams.get("style") ?? searchParams.get("styleSlug");
+  const requestedStyleSlug =
+    props.lockedStyleSlug ??
+    searchParams.get("style") ??
+    searchParams.get("styleSlug") ??
+    props.styles[0]?.slug ??
+    "";
+  const returnTo = searchParams.get("returnTo") ?? "";
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const resetKey = `${requestedStyleSlug}::${returnTo}::${projectCartItemId}`;
+
+  return <ApparelBuilderPreviewContent key={resetKey} {...props} />;
+}
+
+function ApparelBuilderPreviewContent({
+  styles,
+  draftLinks,
+  showPageHero = true,
+  lockedStyleSlug,
+  pageBackHref,
+  pageBackLabel,
+}: ApparelBuilderPreviewProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const requestedStyleSlug = lockedStyleSlug ?? searchParams.get("style") ?? searchParams.get("styleSlug");
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId");
   const fallbackStyle = styles.find((style) => style.slug === requestedStyleSlug) ?? styles[0];
   const [selectedStyleSlug, setSelectedStyleSlug] = useState(fallbackStyle?.slug ?? "");
   const selectedStyle = styles.find((style) => style.slug === selectedStyleSlug) ?? fallbackStyle;
@@ -430,6 +511,8 @@ export function ApparelBuilderPreview({
     sleeve: createInkColorSlots(5),
     embroidery: createInkColorSlots(5),
   });
+  const hydratedCartItemIdRef = useRef<string | null>(null);
+  const skipStyleResetRef = useRef(false);
 
   useEffect(() => {
     if (!selectedStyle) return;
@@ -439,7 +522,16 @@ export function ApparelBuilderPreview({
   }, [selectedStyle, selectedStyleSlug, styles]);
 
   useEffect(() => {
+    if (!lockedStyleSlug || !fallbackStyle || selectedStyleSlug === fallbackStyle.slug) return;
+    setSelectedStyleSlug(fallbackStyle.slug);
+  }, [fallbackStyle, lockedStyleSlug, selectedStyleSlug]);
+
+  useEffect(() => {
     if (!selectedStyle) return;
+    if (skipStyleResetRef.current) {
+      skipStyleResetRef.current = false;
+      return;
+    }
     setSelectedColorName(selectedStyle.colors[0]?.name ?? "");
     setHoveredColorName(null);
     setSizeBreakdown(buildInitialSizeBreakdown(selectedStyle.sizes, 250));
@@ -454,6 +546,55 @@ export function ApparelBuilderPreview({
     setEmbroideryColorCount(1);
     setPrintUpgrade("none");
   }, [frontDecoration]);
+
+  useEffect(() => {
+    if (!projectCartItemId || hydratedCartItemIdRef.current === projectCartItemId) return;
+
+    const savedItem = getProjectCartItem(projectCartItemId);
+    const configuration = savedItem?.configuration as SavedApparelCartConfig | undefined;
+    if (!configuration || configuration.kind !== "apparel") return;
+
+    const nextStyle = styles.find((style) => style.slug === configuration.styleSlug);
+    if (!nextStyle) return;
+
+    const nextColorName = nextStyle.colors.some((color) => color.name === configuration.colorName)
+      ? configuration.colorName ?? ""
+      : nextStyle.colors[0]?.name ?? "";
+    const nextFrontDecoration = configuration.frontDecoration === "embroidery" ? "embroidery" : "screenPrint";
+
+    hydratedCartItemIdRef.current = projectCartItemId;
+    skipStyleResetRef.current = true;
+    setSelectedStyleSlug(nextStyle.slug);
+    setSelectedColorName(nextColorName);
+    setHoveredColorName(null);
+    setSizeBreakdown(
+      normalizeSavedSizeBreakdown(
+        nextStyle.sizes,
+        configuration.sizeBreakdown,
+        Math.max(100, Number(configuration.quantity) || 250),
+      ),
+    );
+    setFrontDecoration(nextFrontDecoration);
+    setFrontPrintEnabled(Boolean(configuration.frontPrintEnabled));
+    setFrontPrintColors(Math.min(5, Math.max(1, configuration.frontPrintColors || 1)));
+    setBackPrintColors(Math.min(5, Math.max(0, configuration.backPrintColors || 0)));
+    setSleevePrintColors(Math.min(5, Math.max(0, configuration.sleevePrintColors || 0)));
+    setSleevePrintSide(configuration.sleevePrintSide === "right" ? "right" : "left");
+    setEmbroideryColorCount(Math.min(5, Math.max(1, configuration.embroideryColorCount || 1)));
+    setPrintUpgrade(configuration.printUpgrade ?? "none");
+    setPackaging(
+      (configuration.packaging ?? []).filter((option): option is CatalogPackagingUpgrade => PACKAGING_OPTIONS.includes(option as CatalogPackagingUpgrade)),
+    );
+    setNotes(configuration.notes ?? "");
+    setArtworkName(configuration.artworkName ?? "");
+    setNeedsArtworkHelp(Boolean(configuration.needsArtworkHelp));
+    setPlacementInkColors({
+      back: normalizeInkColorEntries(configuration.placementInkColors?.back),
+      embroidery: normalizeInkColorEntries(configuration.placementInkColors?.embroidery),
+      front: normalizeInkColorEntries(configuration.placementInkColors?.front),
+      sleeve: normalizeInkColorEntries(configuration.placementInkColors?.sleeve),
+    });
+  }, [projectCartItemId, styles]);
 
   function updatePlacementInkColor(
     placement: "front" | "back" | "sleeve" | "embroidery",
@@ -595,33 +736,6 @@ export function ApparelBuilderPreview({
     notes.trim() ? `Notes: ${notes.trim()}` : "",
   ].filter(Boolean).join("\n");
 
-  const handoffParams = new URLSearchParams({
-    intent: "apparel-quote",
-    source: "og-crafted-apparel-builder",
-    product: selectedStyle.fullName,
-    mode: "Quick Turn Apparel",
-    category: selectedFamilyLabel,
-    color: selectedColor?.name ?? "",
-    qty: String(pricedQuantity),
-    sizeBreakdown: orderedSizes.map((size) => `${size}:${sizeBreakdown[size] ?? 0}`).join(", "),
-    decoration: frontDecoration,
-    frontPrintEnabled: frontDecoration === "screenPrint" && frontPrintEnabled ? "Yes" : "",
-    frontPrintColors: frontDecoration === "screenPrint" && frontPrintEnabled ? String(frontPrintColors) : "",
-    backPrintColors: frontDecoration === "screenPrint" && backPrintColors > 0 ? String(backPrintColors) : "",
-    sleevePrintColors: frontDecoration === "screenPrint" && sleevePrintColors > 0 ? String(sleevePrintColors) : "",
-    sleevePrintSide: frontDecoration === "screenPrint" && sleevePrintColors > 0 ? sleevePrintSide : "",
-    embroideryColorCount: frontDecoration === "embroidery" ? String(embroideryColorCount) : "",
-    printUpgrade: printUpgrade === "none" ? "" : printUpgrade,
-    packaging: packaging.join(", "),
-    brandColors: brandColorSummary,
-    timeline: timelineLabel(selectedStyle),
-    estimatedUnitPrice: money(shippingIncludedUnitPrice),
-    estimatedTotal: money(estimatedTotal),
-    projectSummary,
-    additionalCallouts: notes.trim(),
-    logoFile: artworkName,
-    needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
-  });
   const selectInputClass = immersiveCustomizerSelectInputClass;
   const textInputClass = immersiveCustomizerTextInputClass;
   const neutralOptionClass = "border-[#0B32A0]/12 bg-[#F5F7FC] text-[#0B32A0] hover:border-[#FF4200] hover:shadow-[0_12px_24px_rgba(8,30,111,0.08)]";
@@ -642,9 +756,52 @@ export function ApparelBuilderPreview({
     productionPath: "quick-turn",
     currentLabel: summaryTitle,
     returnTo: searchParams.get("returnTo"),
+    fallbackHref: pageBackHref,
+    fallbackLabel: pageBackLabel,
   });
   const topBadgeLabel = getCustomizerProductionPathLabel("quick-turn");
   const topBadgeAsset = getCustomizerTopBadgeAsset(topBadgeLabel ?? undefined);
+
+  function handleAddToProject() {
+    const targetCartId = projectCartItemId ?? `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    addProjectCartItem({
+      artworkName,
+      configuration: {
+        artworkName: artworkName || undefined,
+        backPrintColors,
+        basePath: pathname,
+        colorName: selectedColor?.name ?? "",
+        embroideryColorCount,
+        frontDecoration,
+        frontPrintColors,
+        frontPrintEnabled,
+        kind: "apparel",
+        needsArtworkHelp,
+        notes: notes.trim() || undefined,
+        packaging,
+        placementInkColors,
+        printUpgrade,
+        quantity: String(pricedQuantity),
+        schemaVersion: 1,
+        sizeBreakdown,
+        sleevePrintColors,
+        sleevePrintSide,
+        styleSlug: selectedStyle.slug,
+      },
+      editHref: `${pathname}?cartEdit=${encodeURIComponent(targetCartId)}&style=${encodeURIComponent(selectedStyle.slug)}&returnTo=%2Fcart`,
+      id: targetCartId,
+      kind: "apparel",
+      needsArtworkHelp,
+      product: selectedStyle.fullName,
+      program: "Quick Turn Apparel",
+      quantity: String(pricedQuantity),
+      sizeBreakdown,
+      source: "quick-turn-apparel-builder",
+      summaryLines: projectSummary.split("\n").filter(Boolean),
+      title: selectedStyle.fullName,
+    });
+    window.location.assign("/cart");
+  }
 
   return (
     <MasterCustomizerShell
@@ -782,18 +939,32 @@ export function ApparelBuilderPreview({
                   <label className={`mb-3 block ${sectionEyebrowClass}`}>
                     Apparel style
                   </label>
-                  <select
-                    value={selectedStyle.slug}
-                    onChange={(event) => setSelectedStyleSlug(event.target.value)}
-                    className={selectInputClass}
-                    style={{ backgroundImage: selectArrowSvg }}
-                  >
-                    {styles.map((style) => (
-                      <option key={style.slug} value={style.slug}>
-                        {`${style.name} - ${CATEGORY_LABELS[style.category]} - ${style.fit} fit`}
-                      </option>
-                    ))}
-                  </select>
+                  {lockedStyleSlug ? (
+                    <div className={`${insetPanelClass} flex flex-wrap items-center gap-2.5`}>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {selectedStyle.name}
+                      </span>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {CATEGORY_LABELS[selectedStyle.category]}
+                      </span>
+                      <span className="rounded-full border border-[#081E6F]/12 bg-white px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0B32A0]">
+                        {selectedStyle.fit} fit
+                      </span>
+                    </div>
+                  ) : (
+                    <select
+                      value={selectedStyle.slug}
+                      onChange={(event) => setSelectedStyleSlug(event.target.value)}
+                      className={selectInputClass}
+                      style={{ backgroundImage: selectArrowSvg }}
+                    >
+                      {styles.map((style) => (
+                        <option key={style.slug} value={style.slug}>
+                          {`${style.name} - ${CATEGORY_LABELS[style.category]} - ${style.fit} fit`}
+                        </option>
+                      ))}
+                    </select>
+                  )}
                   <p className="mt-3 text-sm leading-6 text-[#8a8a8a]">
                     {selectedStyle.fullName} · {selectedFamilyLabel} · {selectedStyle.fit} fit
                   </p>
@@ -1521,26 +1692,24 @@ export function ApparelBuilderPreview({
                 </div>
               </div>
 
-              <Link
-                href={`/contact?${handoffParams.toString()}`}
+              <button
+                type="button"
+                onClick={handleAddToProject}
                 className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[#FF4200] px-5 text-center text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
               >
-                Submit order for review
-              </Link>
+                Add to Project
+              </button>
               <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
-                  Next steps
+                  Project flow
                 </p>
                 <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
-                  Send us your build for review and we&apos;ll confirm final pricing, decoration guidance, and delivery timing.
+                  Add this build to your project cart, keep stacking products, and send one combined request when you&apos;re ready.
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  We&apos;ll review everything together from the cart before final pricing, decoration guidance, and timing are confirmed.
                 </p>
               </div>
-              <Link
-                href={`/contact?${handoffParams.toString()}`}
-                className="mt-3 flex min-h-11 w-full items-center justify-center rounded-lg border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[#0B32A0] transition hover:border-[#0B32A0] hover:bg-[#F7F9FC]"
-              >
-                Talk to our team
-              </Link>
             </div>
           </aside>
     </MasterCustomizerShell>

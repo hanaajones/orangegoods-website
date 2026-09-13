@@ -240,7 +240,7 @@ export function buildApparelStyleCatalogItems(): ApparelCatalogStyleItem[] {
         name: product.name,
         fullName: product.fullName,
         fromPrice: addQuickTurnApparelShippingIncludedPrice(
-          style.minPiecePrice ?? calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
+          calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
           product.printCat,
         ),
       } satisfies ApparelCatalogStyleItem;
@@ -318,7 +318,7 @@ export function buildApparelBuilderStyles(): ApparelBuilderDataStyle[] {
         blankMarkup: product.blankMarkup,
         timeline: timelineForProduct(),
         priceFrom: addQuickTurnApparelShippingIncludedPrice(
-          style.minPiecePrice ?? product.blank + product.blankMarkup,
+          calcPrice(product.blank, product.blankMarkup, product.printCat, 100),
           product.printCat,
         ),
         sizes: style.sizes ?? [],

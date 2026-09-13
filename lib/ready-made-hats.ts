@@ -549,6 +549,15 @@ function build(
 
 const FIT_DEFAULT = "One size fits most. Adjustable closure.";
 
+function slugifyReadyMadeHatName(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-{2,}/g, "-");
+}
+
 export const READY_MADE_HATS: HatMeta[] = [
   // ── Low profile ──────────────────────────────────────────────────────────
   build("1130","Dad Hat",            "Unstructured cotton. The everyday go-to.",                   "100% Cotton",                "Low Profile · 6-Panel · Unstructured","Metal Clasp Strapback",  "Curved","Cap",          "low", FIT_DEFAULT, "100% Cotton. Soft, breathable, breaks in over time."),
@@ -583,3 +592,31 @@ export const READY_MADE_HATS: HatMeta[] = [
 export const READY_MADE_HATS_BY_ID: Record<string, HatMeta> = Object.fromEntries(
   READY_MADE_HATS.map(s => [s.id.toLowerCase(), s])
 );
+
+const READY_MADE_HAT_BASE_SLUGS = READY_MADE_HATS.map((style) => ({
+  style,
+  baseSlug: slugifyReadyMadeHatName(style.name),
+}));
+
+export const READY_MADE_HAT_SLUG_BY_ID: Record<string, string> = Object.fromEntries(
+  READY_MADE_HAT_BASE_SLUGS.map(({ style, baseSlug }, _, all) => {
+    const hasDuplicate = all.some(
+      (candidate) => candidate.style.id !== style.id && candidate.baseSlug === baseSlug,
+    );
+
+    return [style.id.toLowerCase(), hasDuplicate ? `${baseSlug}-${style.id.toLowerCase()}` : baseSlug];
+  }),
+);
+
+export const READY_MADE_HATS_BY_SLUG: Record<string, HatMeta> = Object.fromEntries(
+  READY_MADE_HATS.map((style) => [READY_MADE_HAT_SLUG_BY_ID[style.id.toLowerCase()], style]),
+);
+
+export function getReadyMadeHatSlug(styleOrId: HatMeta | string) {
+  const id = typeof styleOrId === "string" ? styleOrId.toLowerCase() : styleOrId.id.toLowerCase();
+  return READY_MADE_HAT_SLUG_BY_ID[id] ?? id;
+}
+
+export function getReadyMadeHatBySlug(slug: string) {
+  return READY_MADE_HATS_BY_SLUG[slug];
+}

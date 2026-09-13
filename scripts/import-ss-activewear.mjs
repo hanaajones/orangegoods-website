@@ -7,8 +7,10 @@ const OUTPUT_DIR = path.join(ROOT, "data", "ss-activewear");
 const AS_COLOUR_SOURCE_DIR = path.join(ROOT, "data", "as-colour-source", "US");
 const AS_COLOUR_PRICE_LIST_PATH = path.join(ROOT, "data", "as-colour-source", "reference", "gold_9286.csv");
 const DEFAULT_BASE_URL = process.env.SS_ACTIVEWEAR_BASE_URL || "https://api.ssactivewear.com/v2";
+const AS_COLOUR_BASE_URL = process.env.AS_COLOUR_BASE_URL || "https://api.ascolour.com/v1";
 const SS_IMAGE_BASE_URL = "https://cdn.ssactivewear.com";
 const STYLE_ID_BATCH_SIZE = 8;
+const AS_COLOUR_VARIANTS_PAGE_SIZE = 500;
 const STYLE_TARGETS = [
   {
     query: "Bella+Canvas 3001",
@@ -210,7 +212,9 @@ Required environment:
   SS_ACTIVEWEAR_API_KEY
 
 Optional environment:
-  SS_ACTIVEWEAR_BASE_URL (defaults to ${DEFAULT_BASE_URL})`);
+  SS_ACTIVEWEAR_BASE_URL (defaults to ${DEFAULT_BASE_URL})
+  AS_COLOUR_SUBSCRIPTION_KEY (uses live AS Colour API for targeted AS Colour styles)
+  AS_COLOUR_BASE_URL (defaults to ${AS_COLOUR_BASE_URL})`);
 }
 
 function parseArgs(argv) {
@@ -525,6 +529,194 @@ function buildAsColourStyleFromRows(target, rows, productRow, categoryRow, price
   };
 }
 
+async function fetchAsColourApiJson(endpoint) {
+  const subscriptionKey = process.env.AS_COLOUR_SUBSCRIPTION_KEY?.trim();
+  if (!subscriptionKey) {
+    throw new Error("Missing required environment variable: AS_COLOUR_SUBSCRIPTION_KEY");
+  }
+
+  const response = await fetch(`${AS_COLOUR_BASE_URL}${endpoint}`, {
+    headers: {
+      Accept: "application/json",
+      "Subscription-Key": subscriptionKey,
+    },
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`AS Colour request failed for ${endpoint}: ${response.status} ${response.statusText}\n${body.slice(0, 500)}`);
+  }
+
+  return response.json();
+}
+
+function buildAsColourImageIndex(entries) {
+  const index = new Map();
+
+  for (const entry of entries) {
+    const labelSource = String(entry?.imageType || "").trim();
+    const url = entry?.urlZoom || entry?.urlStandard || entry?.urlThumbnail || entry?.urlTiny || null;
+    if (!labelSource || !url) continue;
+
+    const [rawColor, rawView] = labelSource.split(" - ");
+    const colorKey = rawColor.trim().toUpperCase();
+    if (!colorKey) continue;
+
+    const label = rawView
+      ? rawView.trim().charAt(0).toUpperCase() + rawView.trim().slice(1).toLowerCase()
+      : "Front";
+    const existing = index.get(colorKey) || [];
+    if (!existing.some((image) => image.url === url)) {
+      existing.push({ label, url });
+      index.set(colorKey, existing);
+    }
+  }
+
+  return index;
+}
+
+function pickAsColourRepresentativeImage(images, variants) {
+  return (
+    images.find((image) => !image?.imageType)?.urlZoom
+    || images.find((image) => !String(image?.imageType || "").includes("BACK"))?.urlZoom
+    || variants.find((variant) => variant?.imageUrl)?.imageUrl
+    || null
+  );
+}
+
+function buildAsColourStyleFromApi(target, product, imagesPayload, variantsPayload, fallbackPriceRow) {
+  const variants = Array.isArray(variantsPayload?.data) ? variantsPayload.data : [];
+  const images = Array.isArray(imagesPayload?.data) ? imagesPayload.data : [];
+  const imageIndex = buildAsColourImageIndex(images);
+  const representativeImage = pickAsColourRepresentativeImage(images, variants);
+  const fallbackPrice = toNumber(fallbackPriceRow?.PRICE) ?? null;
+
+  const normalizedVariants = variants.map((variant) => {
+    const colorName = cleanDelimitedLabel(variant?.colour) || "Unknown";
+    const galleryImages = imageIndex.get(colorName.toUpperCase()) || [];
+    const imageUrl = galleryImages[0]?.url || variant?.imageUrl || representativeImage;
+
+    return {
+      productId: variant?.sku || null,
+      colorName,
+      sizeName: cleanDelimitedLabel(variant?.sizeCode) || null,
+      piecePrice: fallbackPrice,
+      inventory: null,
+      imageUrl,
+      galleryImages: galleryImages.length > 0
+        ? galleryImages
+        : imageUrl
+          ? [{ label: "Front", url: imageUrl }]
+          : [],
+      colorFamily: mapAsColourColorFamily(colorName),
+      colorHexPrimary: null,
+      colorHexSecondary: null,
+      baseCategory: product?.productType || target.family,
+      colorSwatchImageUrl: null,
+      warehouses: [],
+    };
+  });
+
+  const piecePrices = normalizedVariants
+    .map((variant) => variant.piecePrice)
+    .filter((price) => typeof price === "number");
+
+  return {
+    source: "as-colour-api",
+    styleId: String(product?.styleCode || target.styleAliases[0] || ""),
+    styleSlug: target.slug,
+    brandName: "AS Colour",
+    styleName: String(product?.styleCode || target.styleAliases[0] || ""),
+    title: cleanDelimitedLabel(product?.styleName || target.query),
+    categoryName: target.family,
+    baseCategory: product?.productType || target.family,
+    description: stripHtml(product?.description || product?.shortDescription || ""),
+    colors: [...new Set(normalizedVariants.map((variant) => variant.colorName))],
+    sizes: [...new Set(normalizedVariants.map((variant) => variant.sizeName).filter(Boolean))],
+    imageUrl: representativeImage,
+    styleImageUrl: representativeImage,
+    colorSwatchImageUrl: null,
+    minPiecePrice: piecePrices.length > 0 ? Math.min(...piecePrices) : null,
+    maxPiecePrice: piecePrices.length > 0 ? Math.max(...piecePrices) : null,
+    totalInventory: null,
+    variants: normalizedVariants,
+  };
+}
+
+async function loadAsColourApiCatalog() {
+  const subscriptionKey = process.env.AS_COLOUR_SUBSCRIPTION_KEY?.trim();
+  if (!subscriptionKey) {
+    return {
+      source: "as-colour-api",
+      resolvedTargets: [],
+      counts: { styles: 0, products: 0 },
+      styles: [],
+    };
+  }
+
+  const priceRows = readLooseCsvFile(AS_COLOUR_PRICE_LIST_PATH);
+  const pricesByStyleCode = new Map(priceRows.map((row) => [String(row.STYLECODE || "").trim(), row]));
+  const asColourTargets = STYLE_TARGETS.filter(targetUsesAsColourFallback);
+  const resolvedTargets = [];
+  const styles = [];
+
+  for (const target of asColourTargets) {
+    try {
+      const styleCode = String(target.styleAliases[0] || "").trim();
+      const [product, imagesPayload, variantsPayload] = await Promise.all([
+        fetchAsColourApiJson(`/catalog/products/${encodeURIComponent(styleCode)}`),
+        fetchAsColourApiJson(`/catalog/products/${encodeURIComponent(styleCode)}/images`),
+        fetchAsColourApiJson(`/catalog/products/${encodeURIComponent(styleCode)}/variants?pageSize=${AS_COLOUR_VARIANTS_PAGE_SIZE}`),
+      ]);
+
+      const style = buildAsColourStyleFromApi(
+        target,
+        product,
+        imagesPayload,
+        variantsPayload,
+        pricesByStyleCode.get(styleCode) || null,
+      );
+
+      styles.push(style);
+      resolvedTargets.push({
+        ...target,
+        found: true,
+        styleId: style.styleId,
+        styleName: style.styleName,
+        brandName: style.brandName,
+        title: style.title,
+        baseCategory: style.baseCategory,
+        score: 100,
+        source: "as-colour-api",
+        error: null,
+      });
+    } catch (error) {
+      resolvedTargets.push({
+        ...target,
+        found: false,
+        styleId: null,
+        styleName: null,
+        brandName: "AS Colour",
+        title: null,
+        baseCategory: null,
+        score: 0,
+        source: "as-colour-api",
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+
+  return {
+    source: "as-colour-api",
+    resolvedTargets,
+    counts: {
+      styles: styles.length,
+      products: styles.reduce((total, style) => total + style.variants.length, 0),
+    },
+    styles,
+  };
+}
+
 function loadAsColourFallbackCatalog() {
   if (!existsSync(AS_COLOUR_SOURCE_DIR)) {
     return {
@@ -609,6 +801,32 @@ function mergeResolvedTargets(primaryTargets, secondaryTargets) {
   });
 }
 
+function mergeAsColourSources(primaryCatalog, secondaryCatalog) {
+  const mergedResolvedTargets = mergeResolvedTargets(primaryCatalog.resolvedTargets, secondaryCatalog.resolvedTargets);
+  const stylesById = new Map();
+
+  for (const style of [...primaryCatalog.styles, ...secondaryCatalog.styles]) {
+    const key = style.styleId || style.styleSlug || `${style.brandName}-${style.styleName}`;
+    stylesById.set(key, style);
+  }
+
+  const mergedStyles = Array.from(stylesById.values()).sort((left, right) => {
+    return `${left.brandName} ${left.styleName}`.localeCompare(`${right.brandName} ${right.styleName}`);
+  });
+
+  return {
+    source: "as-colour",
+    resolvedTargets: mergedResolvedTargets,
+    counts: {
+      asColourApiStyles: primaryCatalog.styles.length,
+      asColourCsvStyles: secondaryCatalog.styles.length,
+      products: mergedStyles.reduce((total, style) => total + style.variants.length, 0),
+      styles: mergedStyles.length,
+    },
+    styles: mergedStyles,
+  };
+}
+
 function mergeCatalogs(primaryCatalog, secondaryCatalog) {
   const mergedResolvedTargets = mergeResolvedTargets(primaryCatalog.resolvedTargets, secondaryCatalog.resolvedTargets);
   const stylesById = new Map();
@@ -635,7 +853,8 @@ function mergeCatalogs(primaryCatalog, secondaryCatalog) {
       apparelProducts: primaryCatalog.counts.apparelProducts + secondaryCatalog.counts.products,
       apparelStyles: mergedStyles.length,
       ssActivewearStyles: primaryCatalog.styles.length,
-      asColourCsvStyles: secondaryCatalog.styles.length,
+      asColourApiStyles: secondaryCatalog.counts.asColourApiStyles ?? 0,
+      asColourCsvStyles: secondaryCatalog.counts.asColourCsvStyles ?? secondaryCatalog.styles.length,
     },
     styles: mergedStyles,
   };
@@ -1030,8 +1249,10 @@ async function main() {
   );
   const products = productBatches.flat();
   const ssCatalog = normalizeCatalog({ brands, styles, products, resolvedTargets });
+  const asColourApiCatalog = await loadAsColourApiCatalog();
   const asColourFallbackCatalog = loadAsColourFallbackCatalog();
-  const normalizedCatalog = mergeCatalogs(ssCatalog, asColourFallbackCatalog);
+  const mergedAsColourCatalog = mergeAsColourSources(asColourApiCatalog, asColourFallbackCatalog);
+  const normalizedCatalog = mergeCatalogs(ssCatalog, mergedAsColourCatalog);
   const missingStyles = normalizedCatalog.resolvedTargets
     .filter((target) => !target.found)
     .map(({ query, family, error }) => ({
@@ -1057,6 +1278,10 @@ async function main() {
     JSON.stringify(products, null, 2)
   );
   writeFileSync(
+    path.join(OUTPUT_DIR, "latest.as-colour-api.json"),
+    JSON.stringify(asColourApiCatalog, null, 2)
+  );
+  writeFileSync(
     path.join(OUTPUT_DIR, "latest.as-colour-fallback.json"),
     JSON.stringify(asColourFallbackCatalog, null, 2)
   );
@@ -1075,6 +1300,7 @@ Catalog styles: ${normalizedCatalog.counts.apparelStyles}
 Catalog products: ${normalizedCatalog.counts.apparelProducts}
 Missing styles: ${missingStyles.length}
 S&S styles: ${normalizedCatalog.counts.ssActivewearStyles}
+AS Colour API styles: ${asColourApiCatalog.counts.styles}
 AS Colour CSV styles: ${normalizedCatalog.counts.asColourCsvStyles}
 Output: ${OUTPUT_DIR}`);
 }

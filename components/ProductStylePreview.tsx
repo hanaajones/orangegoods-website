@@ -9,7 +9,8 @@ import {
   type CatalogPackagingUpgrade,
   type CatalogSpecialtyPrintUpgrade,
 } from "@/data/catalog";
-import { READY_MADE_HATS, READY_MADE_HATS_BY_ID } from "@/lib/ready-made-hats";
+import { addProjectCartItem, getProjectCartItem } from "@/lib/project-cart";
+import { READY_MADE_HATS, READY_MADE_HATS_BY_ID, getReadyMadeHatSlug } from "@/lib/ready-made-hats";
 import {
   CustomizerPageHeader,
   getCustomizerTopBadgeAsset,
@@ -41,6 +42,7 @@ type ProductStylePreviewProps = {
   initialMode?: ModeKey;
   lockedMode?: ModeKey;
   experienceVariant?: "default" | "immersive";
+  initialHatStyleSlug?: string;
   initialReadyMadeStyleId?: string;
   readyMadeRouteBase?: string;
   pageKicker?: string;
@@ -109,7 +111,7 @@ const modes: Record<ModeKey, {
     eyebrow: "Quick Turn · AS Colour",
     title: "Quick Turn Hats",
     description: "A simplified branded-hat builder built around premium blanks, fast turns, and only the decisions that actually matter.",
-    cta: "Submit order for review",
+    cta: "Add to Project",
     unitLabel: "per hat",
     unitPrice: 16.5,
     timeline: "2-3 weeks",
@@ -135,11 +137,11 @@ const modes: Record<ModeKey, {
     timeline: "Ships this week",
   },
   build: {
-    label: "Build Online",
-    eyebrow: "Build Online · Full Custom",
-    title: "Build Your Hat",
+    label: "Create",
+    eyebrow: "Create · Full Custom",
+    title: "Create Your Hat",
     description: "A guided builder path for shape, fabric, interior labels, seam tape, patches, and full custom decisions.",
-    cta: "Submit order for review",
+    cta: "Add to Project",
     unitLabel: "starting at",
     unitPrice: 12.5,
     timeline: "6-8 weeks",
@@ -149,7 +151,7 @@ const modes: Record<ModeKey, {
     eyebrow: "Full Custom · Hats",
     title: "Full Custom Hats",
     description: "Customize your hats from scratch, starting with silhouette, fabric, labels, seam tape, patches, and the details that make them yours.",
-    cta: "Submit order for review",
+    cta: "Add to Project",
     unitLabel: "starting at",
     unitPrice: 12.5,
     timeline: "6-8 weeks",
@@ -453,25 +455,25 @@ const relatedProducts: RelatedProductCard[] = [
     image: "/images/product/hats/feb-snapback-navy-front.jpg",
   },
   {
-    href: "/goods/hats/quick-turn/1130",
+    href: `/create/hats/${getReadyMadeHatSlug("1130")}`,
     name: "Stock Cap",
     price: "From $16.50",
     image: "/images/product/hats/as-colour/1130-cap-ecru-turn.jpg",
   },
   {
-    href: "/goods/hats/quick-turn/1123",
+    href: `/create/hats/${getReadyMadeHatSlug("1123")}`,
     name: "Surf Rope Cap",
     price: "From $17.50",
     image: "/images/product/hats/as-colour/1123-rope-cap-main.jpg",
   },
   {
-    href: "/goods/hats/quick-turn/1141",
+    href: `/create/hats/${getReadyMadeHatSlug("1141")}`,
     name: "Trucker Cap",
     price: "From $15.75",
     image: "/images/product/hats/as-colour/1141-trucker-cap-bone-front.jpg",
   },
   {
-    href: "/goods/hats/quick-turn/1175",
+    href: `/create/hats/${getReadyMadeHatSlug("1175")}`,
     name: "Bucket Hat",
     price: "From $18.50",
     image: "/images/product/hats/as-colour/1175-bucket-hat-white-back.jpg",
@@ -925,10 +927,38 @@ function sliderPositionStyle(index: number, total: number, thumbSizePx = 16) {
   };
 }
 
-export function ProductStylePreview({
+export function ProductStylePreview(props: ProductStylePreviewProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const cartEditId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const cartEditItem = cartEditId ? getProjectCartItem(cartEditId) : null;
+  const cartEditConfig = (cartEditItem?.configuration ?? {}) as Record<string, unknown>;
+  const requestedBuilderMode = (
+    typeof cartEditConfig.mode === "string"
+      ? cartEditConfig.mode
+      : typeof cartEditConfig.builderMode === "string"
+        ? cartEditConfig.builderMode
+        : null
+  ) ?? searchParams.get("builderMode") ?? "";
+  const requestedHatStyleSlug = (
+    typeof cartEditConfig.styleSlug === "string"
+      ? cartEditConfig.styleSlug
+      : typeof cartEditConfig.hatStyleSlug === "string"
+        ? cartEditConfig.hatStyleSlug
+        : null
+  ) ?? searchParams.get("hatStyleSlug") ?? searchParams.get("hatStyle") ?? props.initialHatStyleSlug ?? "";
+  const requestedReadyMadeStyleId = (((typeof cartEditConfig.readyMadeStyleId === "string" ? cartEditConfig.readyMadeStyleId : null) ?? searchParams.get("readyMadeStyleId") ?? props.initialReadyMadeStyleId ?? "")).toLowerCase();
+  const returnTo = searchParams.get("returnTo") ?? "";
+  const resetKey = `${pathname}::${requestedBuilderMode}::${requestedHatStyleSlug}::${requestedReadyMadeStyleId}::${cartEditId}::${returnTo}`;
+
+  return <ProductStylePreviewContent key={resetKey} {...props} />;
+}
+
+function ProductStylePreviewContent({
   initialMode = "ready",
   lockedMode,
   experienceVariant = "default",
+  initialHatStyleSlug,
   initialReadyMadeStyleId,
   readyMadeRouteBase,
   pageKicker = "",
@@ -942,9 +972,40 @@ export function ProductStylePreview({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const requestedBuilderMode = searchParams.get("builderMode");
-  const requestedHatStyleSlug = searchParams.get("hatStyleSlug") ?? searchParams.get("hatStyle");
-  const requestedReadyMadeStyleId = (searchParams.get("readyMadeStyleId") ?? initialReadyMadeStyleId ?? "").toLowerCase();
+  const cartEditId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const cartEditItem = cartEditId ? getProjectCartItem(cartEditId) : null;
+  const cartEditConfig = (cartEditItem?.configuration ?? {}) as Record<string, unknown>;
+  const configString = (key: string) => {
+    if (key === "builderMode" && typeof cartEditConfig.mode === "string") {
+      return cartEditConfig.mode;
+    }
+    if (key === "hatStyleSlug" && typeof cartEditConfig.styleSlug === "string") {
+      return cartEditConfig.styleSlug;
+    }
+    if (key === "qty" && typeof cartEditConfig.quantity === "string") {
+      return cartEditConfig.quantity;
+    }
+    if (key === "washedFabric" && typeof cartEditConfig.washedFabric === "boolean") {
+      return cartEditConfig.washedFabric ? "true" : "false";
+    }
+    if (key === "hatAdditionalDecorations" && Array.isArray(cartEditConfig.hatAdditionalDecorations)) {
+      return cartEditConfig.hatAdditionalDecorations.filter((value): value is string => typeof value === "string").join(", ");
+    }
+    if (key === "packagingUpgrades" && Array.isArray(cartEditConfig.packagingUpgrades)) {
+      return cartEditConfig.packagingUpgrades.filter((value): value is string => typeof value === "string").join(", ");
+    }
+    if (key === "rush" && typeof cartEditConfig.rush === "boolean") {
+      return cartEditConfig.rush ? "Yes" : "No";
+    }
+    if (key === "needsArtworkHelp" && typeof cartEditConfig.needsArtworkHelp === "boolean") {
+      return cartEditConfig.needsArtworkHelp ? "Yes" : "";
+    }
+    const value = cartEditConfig[key];
+    return typeof value === "string" ? value : null;
+  };
+  const requestedBuilderMode = configString("builderMode") ?? searchParams.get("builderMode");
+  const requestedHatStyleSlug = configString("hatStyleSlug") ?? searchParams.get("hatStyleSlug") ?? searchParams.get("hatStyle") ?? initialHatStyleSlug;
+  const requestedReadyMadeStyleId = ((configString("readyMadeStyleId") ?? searchParams.get("readyMadeStyleId") ?? initialReadyMadeStyleId ?? "")).toLowerCase();
   const requestedInitialHatStyle = hatStyles.find((style) => style.slug === requestedHatStyleSlug);
   const requestedInitialReadyMadeStyle = READY_MADE_HATS_BY_ID[requestedReadyMadeStyleId] ?? READY_MADE_HATS[0];
   const [mode, setMode] = useState<ModeKey>(lockedMode ?? initialMode);
@@ -1041,7 +1102,6 @@ export function ProductStylePreview({
     ? getCustomizerProductionPathLabel(mode === "crafted" ? "full-custom" : mode === "ready" ? "quick-turn" : null)
     : null;
   const topBadgeAsset = getCustomizerTopBadgeAsset(topBadgeLabel ?? undefined);
-  const showBuilderSecondaryCta = mode === "ready" || mode === "build" || mode === "crafted";
   const selectedHatStyle = hatStyles.find((style) => style.slug === hatStyleSlug) ?? hatStyles[0];
   const formattedHatSelectorDescription = capitalizeFirstCharacter(selectedHatStyle.selectorDescription);
   const summaryDescription = activeMode.description;
@@ -1071,7 +1131,7 @@ export function ProductStylePreview({
 
     const nextSearch = nextParams.toString();
     const href = readyMadeRouteBase
-      ? `${readyMadeRouteBase}/${styleId}${nextSearch ? `?${nextSearch}` : ""}`
+      ? `${readyMadeRouteBase}/${getReadyMadeHatSlug(style)}${nextSearch ? `?${nextSearch}` : ""}`
       : `${pathname}${nextSearch ? `?${nextSearch}` : ""}`;
 
     return {
@@ -1351,31 +1411,29 @@ export function ProductStylePreview({
         : (Object.keys(modes) as ModeKey[]).filter((key) => key !== "build"),
     [lockedMode],
   );
-  const requestedQty = searchParams.get("qty");
-  const requestedDecoration = searchParams.get("decoration");
-  const requestedHatMaterial = searchParams.get("hatMaterial");
-  const requestedWashedFabric = searchParams.get("washedFabric");
-  const requestedFabricColor = searchParams.get("fabricColor");
-  const requestedHatClosure = searchParams.get("hatClosure");
-  const requestedHatBrimCurve = searchParams.get("hatBrimCurve") ?? searchParams.get("brimCurve");
-  const requestedBackDecoration = searchParams.get("backDecoration");
-  const requestedSideDecoration = searchParams.get("sideDecoration");
-  const requestedHatAdditionalDecorations = searchParams.get("hatAdditionalDecorations") ?? searchParams.get("additionalDecorations");
-  const requestedSampleType = searchParams.get("sampleType");
-  const requestedSampleDelivery = searchParams.get("sampleDelivery");
-  const requestedThreadFinish = searchParams.get("threadFinish");
-  const requestedEmbroideryColor = searchParams.get("embroideryColor");
-  const requestedEmbroideryHex = searchParams.get("embroideryHex");
-  const requestedCustomDecoration = searchParams.get("customDecoration")
-    ?? (searchParams.get("decoration") === "other" ? searchParams.get("additionalCallouts") : null);
-  const requestedAdditionalCallouts = searchParams.get("additionalCallouts");
-  const requestedPackagingUpgrades = searchParams.get("packagingUpgrades");
-  const requestedRush = searchParams.get("rush");
-  const requestedNeedsArtworkHelp = searchParams.get("needsArtworkHelp");
-  const readyMadeLocationSummary = [
-    backDecoration === "embroidery" ? "Back embroidery" : "",
-    sideDecoration === "embroidery" ? "Side embroidery" : "",
-  ].filter(Boolean).join(", ");
+  const requestedQty = configString("qty") ?? searchParams.get("qty");
+  const requestedDecoration = configString("decoration") ?? searchParams.get("decoration");
+  const requestedHatMaterial = configString("hatMaterial") ?? searchParams.get("hatMaterial");
+  const requestedWashedFabric = configString("washedFabric") ?? searchParams.get("washedFabric");
+  const requestedFabricColor = configString("fabricColor") ?? searchParams.get("fabricColor");
+  const requestedHatClosure = configString("hatClosure") ?? searchParams.get("hatClosure");
+  const requestedHatBrimCurve = configString("hatBrimCurve") ?? searchParams.get("hatBrimCurve") ?? searchParams.get("brimCurve");
+  const requestedBackDecoration = configString("backDecoration") ?? searchParams.get("backDecoration");
+  const requestedSideDecoration = configString("sideDecoration") ?? searchParams.get("sideDecoration");
+  const requestedHatAdditionalDecorations = configString("hatAdditionalDecorations") ?? searchParams.get("hatAdditionalDecorations") ?? searchParams.get("additionalDecorations");
+  const requestedSampleType = configString("sampleType") ?? searchParams.get("sampleType");
+  const requestedSampleDelivery = configString("sampleDelivery") ?? searchParams.get("sampleDelivery");
+  const requestedThreadFinish = configString("threadFinish") ?? searchParams.get("threadFinish");
+  const requestedEmbroideryColor = configString("embroideryColor") ?? searchParams.get("embroideryColor");
+  const requestedEmbroideryHex = configString("embroideryHex") ?? searchParams.get("embroideryHex");
+  const requestedReadyMadeColorName = configString("readyMadeColorName");
+  const requestedCustomDecoration = configString("customDecoration")
+    ?? searchParams.get("customDecoration")
+    ?? (requestedDecoration === "other" ? (configString("additionalCallouts") ?? searchParams.get("additionalCallouts")) : null);
+  const requestedAdditionalCallouts = configString("additionalCallouts") ?? searchParams.get("additionalCallouts");
+  const requestedPackagingUpgrades = configString("packagingUpgrades") ?? searchParams.get("packagingUpgrades");
+  const requestedRush = configString("rush") ?? searchParams.get("rush");
+  const requestedNeedsArtworkHelp = configString("needsArtworkHelp") ?? searchParams.get("needsArtworkHelp");
   const catalogFrontPlacementSummary = decoration === "screenPrint"
     ? `Screen print · ${catalogFrontPrintColors} color${catalogFrontPrintColors === 1 ? "" : "s"}`
     : "Embroidery";
@@ -1449,72 +1507,66 @@ export function ProductStylePreview({
   ]
     .filter(Boolean)
     .join("\n");
-  const questionsHref = `/contact?${new URLSearchParams({
-    intent: isHatBuilderMode ? "submit-build" : "product-question",
-    source: isHatBuilderMode ? "og-crafted-hat-builder" : mode === "ready" ? "quick-turn-hat-builder" : "",
-    product: activeMode.title,
-    mode: activeMode.label,
-    builderMode: isHatBuilderMode ? mode : "",
-    readyMadeStyleId: mode === "ready" && selectedReadyMadeStyle ? selectedReadyMadeStyle.id : "",
-    readyMadeStyle: mode === "ready" && selectedReadyMadeStyle ? selectedReadyMadeStyle.name : "",
-    hatStyleSlug: isHatBuilderMode ? selectedHatStyle.slug : "",
-    hatStyle: isHatBuilderMode ? `${selectedHatStyle.model} ${selectedHatStyle.title}` : "",
-    color: selectedColorLabel,
-    size: mode === "shop" ? shopSize : "",
-    sizeBreakdown: mode === "catalog" ? apparelSizeOptions.map((size) => `${size}:${apparelSizeBreakdown[size]}`).join(", ") : "",
-    colors: mode === "catalog" ? catalogColors.map((option) => option.name).join(", ") : "",
-    frontPrintColors: mode === "catalog" && decoration === "screenPrint" ? String(catalogFrontPrintColors) : "",
-    backPrint: mode === "catalog" ? (catalogBackPrintEnabled ? "Yes" : "No") : "",
-    backPrintColors: mode === "catalog" && catalogBackPrintEnabled ? String(catalogBackPrintColors) : "",
-    sidePrint: mode === "catalog" ? (catalogSidePrintEnabled ? "Yes" : "No") : "",
-    sidePrintColors: mode === "catalog" && catalogSidePrintEnabled ? String(catalogSidePrintColors) : "",
-    printUpgrades: mode === "catalog" ? selectedLocations.join(", ") : "",
-    packagingUpgrades: mode === "catalog" ? selectedCatalogPackaging.join(", ") : "",
-    qty: String(qty),
-    tier: quantityTierLabel(),
-    decoration,
-    fabricColor: isHatBuilderMode ? hatColorCallout : "",
-    hatMaterial: isHatBuilderMode ? hatMaterial : "",
-    washedFabric: isHatBuilderMode && washedFabric ? "true" : "",
-    fabric: isHatBuilderMode ? [hatMaterial, washedFabric ? "Washed fabric" : ""].filter(Boolean).join(" · ") : "",
-    hatClosure: isHatBuilderMode ? hatClosure : "",
-    hatBrimCurve: isHatBuilderMode && !isBucketHatStyle ? hatBrimCurve : "",
-    brimCurve: isHatBuilderMode && !isBucketHatStyle ? hatBrimCurve : "",
-    closure: isHatBuilderMode ? closureSummaryLabel : "",
-    sampleType: isHatBuilderMode ? sampleType : "",
-    sampleDelivery: isHatBuilderMode ? sampleDelivery : "",
-    sample: isHatBuilderMode ? sampleSummaryLabel : "",
-    sampleFees: isHatBuilderMode ? sampleFeeLabel : "",
-    backDecoration: (isHatBuilderMode || mode === "ready") ? backDecoration : "",
-    sideDecoration: (isHatBuilderMode || mode === "ready") ? sideDecoration : "",
-    hatAdditionalDecorations: isHatBuilderMode ? hatAdditionalDecorations.join(", ") : "",
-    additionalDecorations: isHatBuilderMode ? hatAdditionalDecorations.join(", ") : "",
-    additionalLocations: isHatBuilderMode ? "" : mode === "ready" ? readyMadeLocationSummary : selectedLocations.join(", "),
-    rush: mode === "catalog" ? (catalogRush ? "Yes" : "No") : "",
-    threadFinish,
-    embroideryColor,
-    embroideryHex: normalizedEmbroideryHex,
-    customDecoration,
-    additionalCallouts,
-    needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
-    timeline: timelineLabel(),
-    estimatedDeliveryDate: isHatBuilderMode ? estimatedDeliveryLabel : "",
-    estimatedUnitPrice: isCustomQuote ? "Custom quote" : `$${unitPrice.toFixed(2)}`,
-    estimatedTotal: isCustomQuote ? "Custom quote" : `$${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
-    logoFile: logoFileName,
-    projectSummary,
-  }).toString()}`;
-  const primaryCtaLabel = showBuilderSecondaryCta && !isCustomQuote
-    ? "Submit order for review"
-    : activeMode.cta;
-  const submitNextSteps = isCustomQuote
+  function handleAddToProject() {
+    const targetCartId = cartEditId || `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    addProjectCartItem({
+      id: targetCartId,
+      artworkName: logoFileName,
+      configuration: {
+        additionalCallouts: additionalCallouts || undefined,
+        artworkName: logoFileName || undefined,
+        backDecoration,
+        basePath: pathname,
+        customDecoration: customDecoration || undefined,
+        decoration,
+        embroideryColor: embroideryColor || undefined,
+        embroideryHex: normalizedEmbroideryHex || undefined,
+        fabricColor: hatColorCallout || undefined,
+        hatAdditionalDecorations,
+        hatBrimCurve,
+        hatClosure,
+        hatMaterial,
+        kind: "hat",
+        mode,
+        needsArtworkHelp,
+        packagingUpgrades: selectedCatalogPackaging,
+        quantity: String(qty),
+        readyMadeColorName: selectedReadyMadeColor?.name ?? "",
+        readyMadeStyleId: selectedReadyMadeStyle?.id?.toLowerCase() ?? "",
+        rush: catalogRush,
+        sampleDelivery,
+        sampleType,
+        schemaVersion: 1,
+        sideDecoration,
+        styleSlug: hatStyleSlug,
+        threadFinish,
+        washedFabric,
+      },
+      editHref: `${pathname}?cartEdit=${targetCartId}&returnTo=%2Fcart`,
+      kind: "hat",
+      needsArtworkHelp,
+      product: activeMode.title,
+      program: activeMode.label,
+      quantity: String(qty),
+      source: isHatBuilderMode ? "og-crafted-hat-builder" : mode === "ready" ? "quick-turn-hat-builder" : "product-style-preview",
+      summaryLines: projectSummary.split("\n").filter(Boolean),
+      title:
+        mode === "ready" && selectedReadyMadeStyle
+          ? `${selectedReadyMadeStyle.id} ${selectedReadyMadeStyle.name}`
+          : isHatBuilderMode
+            ? `${selectedHatStyle.model} ${selectedHatStyle.title}`
+            : activeMode.title,
+    });
+    window.location.assign("/cart");
+  }
+  const projectFlowSteps = isCustomQuote
     ? [
-        "We review your build and follow up with the right quote.",
-        "Nothing moves forward until you approve the details.",
+        "Add this build to your project cart, keep stacking products, and send one combined request when you're ready.",
+        "We'll review the full cart, come back with the right quote, and nothing moves forward until you approve the details.",
       ]
     : [
-        "We review and follow up within 1 business day.",
-        "Final quote and timing confirmed before production.",
+        "Add this build to your project cart, keep stacking products, and send one combined request when you're ready.",
+        "We'll review the full cart within 1 business day and confirm pricing, timing, and next steps before production.",
       ];
 
   function toggleLocation(label: string) {
@@ -1891,11 +1943,20 @@ export function ProductStylePreview({
   }, [decoration, mode, readyMadeSupportsHeatTransfer]);
 
   useEffect(() => {
+    if (cartEditId && requestedReadyMadeStyleId) return;
     if (!requestedInitialReadyMadeStyle) return;
     const nextStyleId = requestedInitialReadyMadeStyle.id.toLowerCase();
     if (nextStyleId === readyMadeStyleId) return;
     setReadyMadeStyleId(nextStyleId);
-  }, [readyMadeStyleId, requestedInitialReadyMadeStyle]);
+  }, [cartEditId, readyMadeStyleId, requestedInitialReadyMadeStyle, requestedReadyMadeStyleId]);
+
+  useEffect(() => {
+    if (mode !== "ready" || !requestedReadyMadeColorName) return;
+
+    const nextIndex = selectedReadyMadeStyle.colors.findIndex((color) => color.name === requestedReadyMadeColorName);
+    if (nextIndex === -1 || nextIndex === readyMadeColorIndex) return;
+    setReadyMadeColorIndex(nextIndex);
+  }, [mode, readyMadeColorIndex, requestedReadyMadeColorName, selectedReadyMadeStyle.colors]);
 
   function handleQtyInput(value: string) {
     setQtyInput(value);
@@ -3744,65 +3805,33 @@ export function ProductStylePreview({
                   </div>
                 </div>
 
-                {isCustomQuote ? (
-                  <>
-                    <a
-                      href={questionsHref}
-                      className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
-                    >
-                      Request Custom Quote
-                    </a>
-                    <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
-                        Next steps
-                      </p>
-                      <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
-                        {mode === "ready"
-                          ? "We review your selections and come back with the right quote for 1,500+ hats."
-                          : "We review your selections and come back with the right quote for 5,000+ pieces."}
-                      </p>
-                      {submitNextSteps.map((step) => (
-                        <p key={step} className="text-xs leading-5 text-[#4b4b4b]">
-                          {step}
-                        </p>
-                      ))}
-                    </div>
-                  </>
-                ) : (
-                  showBuilderSecondaryCta ? (
-                    <>
-                      <a
-                        href={questionsHref}
-                        className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
-                      >
-                        {primaryCtaLabel}
-                      </a>
-                      <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
-                          Next steps
-                        </p>
-                        {submitNextSteps.map((step) => (
-                          <p key={step} className="mt-1 text-xs leading-5 text-[#4b4b4b]">
-                            {step}
-                          </p>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <button
-                      type="button"
-                      className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
-                    >
-                      {primaryCtaLabel}
-                    </button>
-                  )
-                )}
-                <a
-                  href={questionsHref}
-                  className="mt-3 flex min-h-11 w-full items-center justify-center rounded-lg border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[var(--og-blue)] transition hover:border-[var(--og-blue)] hover:bg-[#F7F9FC]"
+                <button
+                  type="button"
+                  onClick={handleAddToProject}
+                  className="mt-5 flex min-h-12 w-full items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
                 >
-                  Talk to our team
-                </a>
+                  Add to Project
+                </button>
+                <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-[#F7F9FC] px-3.5 py-3 text-left">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                    Project flow
+                  </p>
+                  {isCustomQuote ? (
+                    <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                      {mode === "ready"
+                        ? "Larger hat quantities stay on the same cart-style path. We&apos;ll review the full project and come back with the right quote for 1,500+ hats."
+                        : "Larger quantities stay on the same cart-style path. We&apos;ll review the full project and come back with the right quote for 5,000+ pieces."}
+                    </p>
+                  ) : null}
+                  {projectFlowSteps.map((step, index) => (
+                    <p
+                      key={step}
+                      className={index === 0 || isCustomQuote ? "mt-1 text-xs leading-5 text-[#4b4b4b]" : "text-xs leading-5 text-[#4b4b4b]"}
+                    >
+                      {step}
+                    </p>
+                  ))}
+                </div>
               </div>
             </aside>
           )}
@@ -3819,7 +3848,7 @@ export function ProductStylePreview({
               {craftedRelatedStyles.map((style) => (
                 <Link
                   key={style.slug}
-                  href={`/build/og-crafted-hats?hatStyle=${encodeURIComponent(style.slug)}`}
+                  href={`/create/hats/${encodeURIComponent(style.slug)}`}
                   className="group flex flex-col gap-1.5"
                 >
                   <div className="relative aspect-square overflow-hidden rounded-[1.35rem] border-2 border-[#1C1C1C]/8 bg-[#F5F0E8] transition-colors duration-200 group-hover:border-[var(--og-blue)]">

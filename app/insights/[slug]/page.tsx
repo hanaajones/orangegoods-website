@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { StructuredData } from "@/components/StructuredData";
+import { buildArticleStructuredData, buildMetadata } from "@/lib/seo";
 import { getPostBySlug, posts } from "../data";
 
 type InsightPostPageProps = {
@@ -21,10 +23,14 @@ export async function generateMetadata({ params }: InsightPostPageProps) {
     return {};
   }
 
-  return {
+  return buildMetadata({
     title: `${post.title} | Orange Goods`,
     description: post.excerpt,
-  };
+    path: `/insights/${post.slug}`,
+    image: post.image,
+    imageAlt: post.title,
+    type: "article",
+  });
 }
 
 export default async function InsightPostPage({
@@ -37,8 +43,18 @@ export default async function InsightPostPage({
     notFound();
   }
 
+  const articleStructuredData = buildArticleStructuredData({
+    title: post.title,
+    description: post.excerpt,
+    path: `/insights/${post.slug}`,
+    image: post.image,
+    datePublished: new Date(post.date).toISOString(),
+    articleSection: post.category,
+  });
+
   return (
     <main className="pb-24 md:pb-0">
+      <StructuredData id={`insight-${post.slug}`} data={articleStructuredData} />
       <section className="relative overflow-hidden bg-[#1C1C1C] px-4 py-16 text-white md:px-8 md:py-24 lg:px-12">
         {post.image && (
           <Image

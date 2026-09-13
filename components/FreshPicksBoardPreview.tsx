@@ -86,7 +86,7 @@ const trendTiles: TrendTile[] = [
     category: "Outdoor",
     tags: ["Hats", "Rope detail"],
     action: "See rope caps",
-    href: "/goods/hats/quick-turn/1123",
+    href: "/create/hats/surf-rope-snapback",
     size: "small",
   },
   {

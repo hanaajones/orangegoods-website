@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
 import {
   CustomizerPageHeader,
@@ -21,6 +20,7 @@ import {
 } from "@/components/MasterCustomizerShell";
 import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import { BEANIE_STYLES, getBeanieStyleBySlug } from "@/lib/beanie-styles";
+import { addProjectCartItem, getProjectCartItem } from "@/lib/project-cart";
 import { QUICK_TURN_FREE_SHIPPING_LABEL } from "@/lib/quick-turn-shipping";
 
 const QUANTITY_OPTIONS = [100, 250, 500, 1000];
@@ -42,6 +42,18 @@ type BeanieBuilderPreviewProps = {
   pageBackHref?: string;
   pageBackLabel?: string;
   showPageHero?: boolean;
+};
+
+type SavedBeanieCartConfig = {
+  additionalNotes?: string;
+  artworkName?: string;
+  basePath?: string;
+  colorName?: string;
+  decoration?: string;
+  kind: "beanie";
+  needsArtworkHelp?: boolean;
+  quantity?: string;
+  styleSlug?: string;
 };
 
 function swatchBorderClass(hex?: string) {
@@ -72,14 +84,26 @@ function clampQuantity(value: number) {
   return Math.min(5000, Math.max(100, value));
 }
 
-export function BeanieBuilderPreview({
+export function BeanieBuilderPreview(props: BeanieBuilderPreviewProps) {
+  const searchParams = useSearchParams();
+  const requestedStyleSlug = props.lockedStyleSlug ?? searchParams.get("style") ?? "";
+  const returnTo = searchParams.get("returnTo") ?? "";
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId") ?? "";
+  const resetKey = `${requestedStyleSlug}::${returnTo}::${projectCartItemId}`;
+
+  return <BeanieBuilderPreviewContent key={resetKey} {...props} />;
+}
+
+function BeanieBuilderPreviewContent({
   lockedStyleSlug,
   pageBackHref = "/goods/all",
   pageBackLabel = "Back to all goods",
   showPageHero: showPageHeroOverride,
 }: BeanieBuilderPreviewProps) {
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const requestedStyleSlug = lockedStyleSlug ?? searchParams.get("style");
+  const projectCartItemId = searchParams.get("cartEdit") ?? searchParams.get("projectCartItemId");
   const initialStyle = getBeanieStyleBySlug(requestedStyleSlug);
   const [selectedStyleSlug, setSelectedStyleSlug] = useState(initialStyle.slug);
   const [selectedColorName, setSelectedColorName] = useState(initialStyle.colors[0]?.name ?? "");
@@ -89,6 +113,7 @@ export function BeanieBuilderPreview({
   const [needsArtworkHelp, setNeedsArtworkHelp] = useState(false);
   const [logoFileName, setLogoFileName] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
+  const hydratedCartItemIdRef = useRef<string | null>(null);
 
   const selectedStyle = useMemo(
     () =>
@@ -146,23 +171,6 @@ export function BeanieBuilderPreview({
     .filter(Boolean)
     .join("\n");
 
-  const submitHref = `/contact?${new URLSearchParams({
-    intent: "submit-build",
-    source: "quick-turn-beanie-builder",
-    product: "Beanies",
-    mode: "Quick Turn",
-    style: selectedStyle.model,
-    styleName: selectedStyle.title,
-    color: selectedColor?.name ?? "",
-    qty: String(quantity),
-    decoration,
-    material: selectedStyle.material,
-    fit: selectedStyle.fit,
-    artworkFile: logoFileName,
-    needsArtworkHelp: needsArtworkHelp ? "Yes" : "",
-    notes: additionalNotes.trim(),
-    projectSummary,
-  }).toString()}`;
   const navigation = buildCustomizerNavigation({
     category: "beanies",
     productionPath: "quick-turn",
@@ -172,6 +180,63 @@ export function BeanieBuilderPreview({
     fallbackLabel: pageBackHref.includes("?") ? pageBackLabel : undefined,
   });
   const topBadgeLabel = getCustomizerProductionPathLabel("quick-turn");
+
+  useEffect(() => {
+    if (!projectCartItemId || hydratedCartItemIdRef.current === projectCartItemId) return;
+
+    const savedItem = getProjectCartItem(projectCartItemId);
+    const configuration = savedItem?.configuration as SavedBeanieCartConfig | undefined;
+    if (!configuration || configuration.kind !== "beanie") return;
+
+    const nextStyle = getBeanieStyleBySlug(configuration.styleSlug ?? requestedStyleSlug ?? "");
+    const nextColorName = nextStyle.colors.some((color) => color.name === configuration.colorName)
+      ? configuration.colorName ?? ""
+      : nextStyle.colors[0]?.name ?? "";
+    const nextDecoration = nextStyle.decorationOptions.includes(configuration.decoration ?? "")
+      ? configuration.decoration ?? "Embroidery"
+      : nextStyle.decorationOptions[0] ?? "Embroidery";
+    const nextQuantity = clampQuantity(Number(configuration.quantity) || 100);
+
+    hydratedCartItemIdRef.current = projectCartItemId;
+    setSelectedStyleSlug(nextStyle.slug);
+    setSelectedColorName(nextColorName);
+    setDecoration(nextDecoration);
+    setQuantity(nextQuantity);
+    setQtyInput(String(nextQuantity));
+    setNeedsArtworkHelp(Boolean(configuration.needsArtworkHelp));
+    setLogoFileName(configuration.artworkName ?? "");
+    setAdditionalNotes(configuration.additionalNotes ?? "");
+  }, [projectCartItemId]);
+
+  function handleAddToProject() {
+    const targetCartId = projectCartItemId ?? `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    addProjectCartItem({
+      artworkName: logoFileName,
+      configuration: {
+        additionalNotes: additionalNotes.trim() || undefined,
+        artworkName: logoFileName || undefined,
+        basePath: pathname,
+        colorName: selectedColor?.name ?? "",
+        decoration,
+        kind: "beanie",
+        needsArtworkHelp,
+        quantity: String(quantity),
+        schemaVersion: 1,
+        styleSlug: selectedStyle.slug,
+      },
+      editHref: `${pathname}?cartEdit=${encodeURIComponent(targetCartId)}&style=${encodeURIComponent(selectedStyle.slug)}&returnTo=%2Fcart`,
+      id: targetCartId,
+      kind: "beanie",
+      needsArtworkHelp,
+      product: "Beanies",
+      program: "Quick Turn",
+      quantity: String(quantity),
+      source: "quick-turn-beanie-builder",
+      summaryLines: projectSummary.split("\n").filter(Boolean),
+      title: `${selectedStyle.model} ${selectedStyle.title}`,
+    });
+    window.location.assign("/cart");
+  }
 
   function handleStyleChange(nextSlug: string) {
     const nextStyle = BEANIE_STYLES.find((style) => style.slug === nextSlug) ?? BEANIE_STYLES[0];
@@ -562,21 +627,24 @@ export function BeanieBuilderPreview({
                 </div>
               </div>
 
-              <Link
-                href={submitHref}
+              <button
+                type="button"
+                onClick={handleAddToProject}
                 className="mt-6 flex min-h-14 w-full items-center justify-center rounded-[1.1rem] bg-[#FF4200] px-6 text-center text-[15px] font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255,66,0,0.24)]"
               >
-                Submit order for review
-              </Link>
-              <p className="mt-3 text-center text-sm leading-6 text-[#6b6b6b]">
-                Send us your build for review. Final quote is confirmed after review.
-              </p>
-              <Link
-                href={submitHref}
-                className="mt-4 flex min-h-12 w-full items-center justify-center rounded-[1rem] border border-[#081E6F]/12 bg-white px-5 text-center text-sm font-semibold text-[#0B32A0] transition hover:border-[#0B32A0] hover:bg-[#F7F9FC]"
-              >
-                Talk to our team
-              </Link>
+                Add to Project
+              </button>
+              <div className="mt-3 rounded-[1rem] border border-[#081E6F]/10 bg-[#F7F9FC] px-4 py-3 text-left">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7a7a7a]">
+                  Project flow
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  Add this beanie build to your project cart, keep building, and send one combined request when everything is ready.
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#4b4b4b]">
+                  We&apos;ll review the full project before final pricing and next-step timing are confirmed.
+                </p>
+              </div>
             </div>
           </aside>
     </MasterCustomizerShell>

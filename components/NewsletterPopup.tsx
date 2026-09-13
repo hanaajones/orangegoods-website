@@ -8,11 +8,16 @@ const SESSION_SEEN_KEY = "og_quiz_popup_session_seen_v1";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const DELAY_MS = IS_PRODUCTION ? 8000 : 300;
 
+const POPUP_ENABLED = false;
+
 export function NewsletterPopup() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (!POPUP_ENABLED) return;
     if (typeof window === "undefined") return;
+    if (!window.matchMedia("(min-width: 1024px)").matches) return;
+
     if (IS_PRODUCTION) {
       if (localStorage.getItem(STORAGE_KEY)) return;
       if (sessionStorage.getItem(SESSION_SEEN_KEY)) return;
@@ -30,7 +35,7 @@ export function NewsletterPopup() {
     setVisible(false);
   }
 
-  if (!visible) return null;
+  if (!POPUP_ENABLED || !visible) return null;
 
   return (
     <>

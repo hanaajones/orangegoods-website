@@ -4,7 +4,17 @@ import type { ServiceSnapCarouselItem } from "@/app/services/_components/Service
 import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { Reveal } from "@/components/Reveal";
 import { logos } from "@/lib/content";
+import { buildMetadata } from "@/lib/seo";
 import { ProductCategoryPage } from "../_components/ProductCategoryPage";
+
+export const metadata = buildMetadata({
+  title: "Custom Apparel — Orange Goods",
+  description:
+    "Premium custom apparel programs across tees, hoodies, fleece, uniforms, and retail-style branded merchandise that people actually want to wear.",
+  path: "/goods/apparel",
+  image: "/images/gallery/apparel-blank-people-would-buy-dscf4886.jpg",
+  imageAlt: "Premium blank apparel for custom merch",
+});
 
 const introSection = {
   eyebrow: "Best For",
@@ -249,7 +259,7 @@ const buildPathSection = {
         "Best for events, team gear, gifting, and faster campaign windows",
       ],
       detail: "100+ pieces · 2-3 weeks",
-      href: "/goods/apparel/styles",
+      href: "/goods/apparel/quick-turn",
       ctaLabel: "See apparel styles",
       imageSrc: "/images/gallery/apparel-blank-people-would-buy-dscf4886.jpg",
       imageAlt: "Premium blank apparel shown as a quick-turn apparel direction",
@@ -271,8 +281,8 @@ const buildPathSection = {
         "Stronger choice when the garment itself matters as much as the logo",
       ],
       detail: "300+ pieces · 8-12 weeks",
-      href: "/goods/apparel/styles",
-      ctaLabel: "See full custom styles",
+      href: "/create/apparel/full-custom",
+      ctaLabel: "Start full custom",
       imageSrc: "/images/gallery/apparel-wearable-palette-bgxhj-23.jpg",
       imageAlt: "Wearable apparel palette shown as a full custom apparel direction",
       imagePosition: "center 44%",
@@ -389,6 +399,7 @@ export default function ApparelPage() {
         subhead="Tees, fleece, polos, outerwear, and branded layers built to feel wearable first, branded second."
         image="/images/gallery/apparel-blank-people-would-buy-dscf4886.jpg"
         imageAlt="Premium blank apparel shown as the hero for the custom apparel page"
+        startProjectHref="/create/apparel/full-custom"
         heroEyebrow="Wearable Goods"
         heroImagePosition="center 54%"
         heroSubnote={null}
