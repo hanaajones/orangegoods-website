@@ -7,7 +7,8 @@ import Image from "next/image";
 import { DiscoveryLinksSection } from "@/components/DiscoveryLinksSection";
 import { ParallaxHeroBackground } from "@/components/ParallaxHeroBackground";
 import { Reveal } from "@/components/Reveal";
-import { getLeadAttributionHiddenFields } from "@/lib/lead-attribution";
+import { submitContactForm } from "@/lib/contact/client-submit";
+import { useLeadAttributionHiddenFields } from "@/hooks/useLeadAttributionHiddenFields";
 import {
   buildProjectCartSummary,
   buildProjectCartTitles,
@@ -547,7 +548,7 @@ function ContactPageContent() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [attributionHiddenFields, setAttributionHiddenFields] = useState<Record<string, string>>({});
+  const attributionHiddenFields = useLeadAttributionHiddenFields();
   const [projectCartItems, setProjectCartItems] = useState<ProjectCartItem[]>([]);
   const searchParams = useSearchParams();
 
@@ -626,10 +627,6 @@ function ContactPageContent() {
   }, [isProjectCartHandoff]);
 
   useEffect(() => {
-    setAttributionHiddenFields(getLeadAttributionHiddenFields());
-  }, []);
-
-  useEffect(() => {
     const timer = setInterval(() => {
       setActiveTestimonial((current) => (current + 1) % contactTestimonials.length);
     }, 4200);
@@ -647,21 +644,14 @@ function ContactPageContent() {
     setSubmitting(true);
     setSubmitError("");
 
-    const formData = new FormData(event.currentTarget);
+    const result = await submitContactForm(event.currentTarget);
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      const result = await response.json().catch(() => null) as { error?: string } | null;
-      setSubmitting(false);
-      setSubmitError(result?.error ?? "Something went wrong. Please try again.");
+    setSubmitting(false);
+    if (!result.ok) {
+      setSubmitError(result.error);
       return;
     }
 
-    setSubmitting(false);
     if (isProjectCartHandoff) {
       clearProjectCart();
     }
