@@ -709,12 +709,12 @@ async function deliverClientConfirmation(payload: Record<string, string>): Promi
                 <tr>
                   <td style="padding:0 6px 0 0;vertical-align:middle;">
                     <a href="https://orangegoods.co/" style="text-decoration:none;border:0;display:block;background-color:#ffffff;line-height:0;">
-                      <img src="https://orangegoods.co/logos/OrangeGoods_Website.png" height="20" style="display:block;height:20px;width:auto;border:0;">
+                      <img src="https://www.orangegoods.co/logos/OrangeGoods_Website.png" height="20" style="display:block;height:20px;width:auto;border:0;">
                     </a>
                   </td>
                   <td style="padding:0 6px 0 0;vertical-align:middle;">
                     <a href="https://www.instagram.com/orangegoods/" style="text-decoration:none;border:0;display:block;background-color:#ffffff;line-height:0;">
-                      <img src="https://orangegoods.co/logos/Instagram_New_EJ.png" height="18" style="display:block;height:18px;width:auto;border:0;">
+                      <img src="https://www.orangegoods.co/logos/Instagram_New_EJ.png" height="18" style="display:block;height:18px;width:auto;border:0;">
                     </a>
                   </td>
                   <td style="vertical-align:middle;padding:0 0 0 4px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;white-space:nowrap;">
@@ -728,7 +728,7 @@ async function deliverClientConfirmation(payload: Record<string, string>): Promi
               <!-- OG logo -->
               <div style="margin-top:16px;line-height:0;">
                 <a href="https://orangegoods.co/" style="text-decoration:none;border:0;display:inline-block;">
-                  <img src="https://orangegoods.co/logos/OrangeGoods_Logo_Email.png" width="110" style="display:block;width:110px;height:auto;border:0;">
+                  <img src="https://www.orangegoods.co/logos/OrangeGoods_Logo_Email.png" width="110" style="display:block;width:110px;height:auto;border:0;">
                 </a>
               </div>
             </div>
