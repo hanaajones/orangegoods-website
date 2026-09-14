@@ -10,6 +10,6 @@ This website now has a small Orange Goods-owned visual layer under `components/o
 
 ## Next safe cleanup candidates
 
-- Extract the product-style option controls into colocated components once the repeated button/select patterns settle.
-- Move cart/request configuration assembly into a focused hook after the visual split has shipped cleanly.
+- Continue migrating product-style option controls into colocated components as the remaining selector patterns settle.
+- Keep cart/request configuration assembly in focused helpers and move more derived summary state there only when it can stay behavior-neutral.
 - Reuse `components/og/visual-primitives.tsx` in the apparel, beanie, and tote builders where markup already matches the hats-master shell.
