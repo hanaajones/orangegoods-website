@@ -3,6 +3,20 @@ import type { NextConfig } from "next";
 const isDev = process.env.NODE_ENV !== "production";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/product/custom-hat/:path*",
+        destination: "/goods/hats",
+        permanent: true,
+      },
+      {
+        source: "/shop/:path*",
+        destination: "/goods/all",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     unoptimized: isDev,
     dangerouslyAllowSVG: true,
