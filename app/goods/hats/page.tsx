@@ -519,7 +519,7 @@ export default function HatsPage() {
                   className="group relative overflow-hidden rounded-[1.9rem] border-[3px] border-transparent bg-[rgba(255,248,241,0.88)] transition hover:border-[#0B32A0] hover:shadow-lg"
                 >
                   <Link
-                    href={`${hatsBuilderHref}/${encodeURIComponent(style.slug)}`}
+                    href={`/create/hats/${encodeURIComponent(style.slug)}`}
                     aria-label={`Open ${style.title}`}
                     className="absolute inset-0 z-10 rounded-[1.9rem]"
                   />
