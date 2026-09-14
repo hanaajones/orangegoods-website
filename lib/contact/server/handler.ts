@@ -640,7 +640,6 @@ async function deliverInternalEmail(
   const summary = buildSubmissionSummary(payload, uploads);
 
   return sendResendEmail({
-    cc: ["easton@orangegoods.co"],
     html: `
       <div style="font-family:Arial,sans-serif;background:#f7f2ea;padding:24px;color:#1c1c1c;">
         <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:24px;">
