@@ -690,8 +690,8 @@ async function deliverClientConfirmation(payload: Record<string, string>): Promi
 
               <!-- Body -->
               <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#1c1c1c;">Hi ${escapeHtml(greetingName)},</p>
-              <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#1c1c1c;">Thanks for reaching out about ${escapeHtml(projectLabel)}. Someone from the OG team will follow up within one business day.</p>
-              <p style="margin:0 0 28px;font-size:16px;line-height:1.7;color:#1c1c1c;">Want to add references, artwork, or timing details? Just reply to this email.</p>
+              <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#1c1c1c;">Thanks for reaching out! Someone from our team will follow up shortly.</p>
+              <p style="margin:0 0 28px;font-size:16px;line-height:1.7;color:#1c1c1c;">Want to add references, artwork, or other details? Just reply to this email.</p>
 
               <!-- CTA buttons -->
               <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;">
@@ -748,7 +748,7 @@ async function deliverClientConfirmation(payload: Record<string, string>): Promi
     `,
     replyTo: CONTACT_TO_EMAIL,
     subject,
-    text: `Hi ${greetingName},\n\nThanks for reaching out about ${projectLabel}. Someone from the OG team will follow up within one business day.\n\nWant to add references, artwork, or timing details? Just reply to this email.\n\nMerch Quiz: https://orangegoods.co/quiz\nOur Work: https://orangegoods.co/gallery\n\nOrange Goods\nhello@orangegoods.co\nhttps://orangegoods.co`,
+    text: `Hi ${greetingName},\n\nThanks for reaching out! Someone from our team will follow up shortly.\n\nWant to add references, artwork, or other details? Just reply to this email.\n\nMerch Quiz: https://orangegoods.co/quiz\nOur Work: https://orangegoods.co/gallery\n\nOrange Goods\nhello@orangegoods.co\nhttps://orangegoods.co`,
     to: [payload.email],
   });
 }
