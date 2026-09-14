@@ -29,6 +29,8 @@ import { OrderTimelinePanel } from "@/components/product-style-preview/OrderTime
 import { ProductQuickFacts } from "@/components/product-style-preview/ProductQuickFacts";
 import { OrderProcessSection } from "@/components/product-style-preview/OrderProcessSection";
 import { ProductSummaryCard } from "@/components/product-style-preview/ProductSummaryCard";
+import { CatalogPrintColorControl, OptionButtonGrid } from "@/components/product-style-preview/OptionControls";
+import { buildProductStyleCartItem } from "@/components/product-style-preview/product-style-cart";
 import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -1506,55 +1508,43 @@ function ProductStylePreviewContent({
     .filter(Boolean)
     .join("\n");
   function handleAddToProject() {
-    const targetCartId = cartEditId || `project-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    addProjectCartItem({
-      id: targetCartId,
-      artworkName: logoFileName,
-      configuration: {
-        additionalCallouts: additionalCallouts || undefined,
-        artworkName: logoFileName || undefined,
-        backDecoration,
-        basePath: pathname,
-        customDecoration: customDecoration || undefined,
-        decoration,
-        embroideryColor: embroideryColor || undefined,
-        embroideryHex: normalizedEmbroideryHex || undefined,
-        fabricColor: hatColorCallout || undefined,
-        hatAdditionalDecorations,
-        hatBrimCurve,
-        hatClosure,
-        hatMaterial,
-        kind: "hat",
-        mode,
-        needsArtworkHelp,
-        packagingUpgrades: selectedCatalogPackaging,
-        quantity: String(qty),
-        readyMadeColorName: selectedReadyMadeColor?.name ?? "",
-        readyMadeStyleId: selectedReadyMadeStyle?.id?.toLowerCase() ?? "",
-        rush: catalogRush,
-        sampleDelivery,
-        sampleType,
-        schemaVersion: 1,
-        sideDecoration,
-        styleSlug: hatStyleSlug,
-        threadFinish,
-        washedFabric,
-      },
-      editHref: `${pathname}?cartEdit=${targetCartId}&returnTo=%2Fcart`,
-      kind: "hat",
+    addProjectCartItem(buildProductStyleCartItem({
+      activeModeLabel: activeMode.label,
+      activeModeTitle: activeMode.title,
+      additionalCallouts,
+      backDecoration,
+      cartEditId,
+      catalogRush,
+      customDecoration,
+      decoration,
+      embroideryColor,
+      hatAdditionalDecorations,
+      hatBrimCurve,
+      hatClosure,
+      hatColorCallout,
+      hatMaterial,
+      hatStyleSlug,
+      isHatBuilderMode,
+      logoFileName,
+      mode,
       needsArtworkHelp,
-      product: activeMode.title,
-      program: activeMode.label,
-      quantity: String(qty),
-      source: isHatBuilderMode ? "og-crafted-hat-builder" : mode === "ready" ? "quick-turn-hat-builder" : "product-style-preview",
-      summaryLines: projectSummary.split("\n").filter(Boolean),
-      title:
-        mode === "ready" && selectedReadyMadeStyle
-          ? `${selectedReadyMadeStyle.id} ${selectedReadyMadeStyle.name}`
-          : isHatBuilderMode
-            ? `${selectedHatStyle.model} ${selectedHatStyle.title}`
-            : activeMode.title,
-    });
+      normalizedEmbroideryHex,
+      pathname,
+      projectSummaryLines: projectSummary.split("\n").filter(Boolean),
+      qty,
+      sampleDelivery,
+      sampleType,
+      selectedCatalogPackaging,
+      selectedHatStyleTitle: `${selectedHatStyle.model} ${selectedHatStyle.title}`,
+      selectedReadyMadeColorName: selectedReadyMadeColor?.name ?? "",
+      selectedReadyMadeStyleId: selectedReadyMadeStyle?.id?.toLowerCase() ?? "",
+      selectedReadyMadeStyleTitle: selectedReadyMadeStyle
+        ? `${selectedReadyMadeStyle.id} ${selectedReadyMadeStyle.name}`
+        : "",
+      sideDecoration,
+      threadFinish,
+      washedFabric,
+    }));
     window.location.assign("/cart");
   }
   const projectFlowSteps = isCustomQuote
@@ -2454,22 +2444,17 @@ function ProductStylePreviewContent({
                         Fit guide
                       </a>
                     </div>
-                    <div className="grid grid-cols-3 gap-2">
-                      {shopSizeOptions.map((size) => (
-                        <button
-                          key={size}
-                          type="button"
-                          onClick={() => setShopSize(size)}
-                          className={`min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
-                            shopSize === size
-                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
-                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
+                    <OptionButtonGrid
+                      options={shopSizeOptions.map((size) => ({ id: size, label: size }))}
+                      value={shopSize}
+                      onChange={setShopSize}
+                      gridClassName="grid grid-cols-3 gap-2"
+                      buttonClassName={(selected) => `min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
+                        selected
+                          ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                          : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                      }`}
+                    />
                   </div>
                 )}
 
@@ -2658,57 +2643,33 @@ function ProductStylePreviewContent({
                         ? "Keep the main decoration simple here, then layer in print upgrades or extra placements below."
                         : "Not sure? We'll help guide you into the right decoration."}
                     </p>
-                    <div className={`grid ${useSingleColumnFrontDecorationOptions ? "grid-cols-1" : "grid-cols-2"} ${optionGridGapClass}`}>
-                      {activeDecorationOptions
-                        .filter((option) => option.id !== "other")
-                        .map((option) => (
-                        <button
-                          key={option.id}
-                          type="button"
-                          onClick={() => setDecoration(option.id)}
-                          className={`${optionCardSizeClass} border text-left transition ${
-                            decoration === option.id
-                              ? secondarySelectedOptionClass
-                              : unselectedOptionClass
-                          }`}
-                        >
-                          <span className="block min-w-0">
-                            <span className={isImmersiveExperience ? "block text-sm font-semibold uppercase tracking-[0.14em]" : "block text-xs font-semibold uppercase tracking-[0.12em]"}>
-                              {option.label}
-                            </span>
-                            <span className={`mt-1 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px] leading-4"} ${
-                              decoration === option.id ? optionSubActiveClass : optionSubInactiveClass
-                            }`}>
-                              {option.sub}
-                            </span>
-                          </span>
-                        </button>
-                      ))}
-                      {(mode === "ready" || isHatBuilderMode) && (
-                        <button
-                          type="button"
-                          onClick={() => setDecoration("other")}
-                          className={`${optionCardSizeClass} border text-left transition ${
-                            decoration === "other"
-                              ? secondarySelectedOptionClass
-                              : unselectedOptionClass
-                          }`}
-                        >
-                          <span className="block min-w-0">
-                            <span className={isImmersiveExperience ? "block text-sm font-semibold uppercase tracking-[0.14em]" : "block text-xs font-semibold uppercase tracking-[0.12em]"}>
-                              Other decoration
-                            </span>
-                            <span className={`mt-1 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px] leading-4"} ${
-                              decoration === "other" ? optionSubActiveClass : optionSubInactiveClass
-                            }`}>
-                              {mode === "ready"
+                    <OptionButtonGrid
+                      options={[
+                        ...activeDecorationOptions
+                          .filter((option) => option.id !== "other")
+                          .map((option) => ({ id: option.id, label: option.label, sub: option.sub })),
+                        ...((mode === "ready" || isHatBuilderMode)
+                          ? [{
+                              id: "other" as const,
+                              label: "Other decoration",
+                              sub: mode === "ready"
                                 ? "If you want something outside the core set."
-                                : "Felt patch, woven label, puff print, and more."}
-                            </span>
-                          </span>
-                        </button>
-                      )}
-                    </div>
+                                : "Felt patch, woven label, puff print, and more.",
+                            }]
+                          : []),
+                      ]}
+                      value={decoration}
+                      onChange={setDecoration}
+                      gridClassName={`grid ${useSingleColumnFrontDecorationOptions ? "grid-cols-1" : "grid-cols-2"} ${optionGridGapClass}`}
+                      buttonClassName={(selected) => `${optionCardSizeClass} border text-left transition ${
+                        selected ? secondarySelectedOptionClass : unselectedOptionClass
+                      }`}
+                      contentClassName="block min-w-0"
+                      labelClassName={isImmersiveExperience ? "block text-sm font-semibold uppercase tracking-[0.14em]" : "block text-xs font-semibold uppercase tracking-[0.12em]"}
+                      subClassName={(selected) => `mt-1 block ${isImmersiveExperience ? "text-xs leading-5" : "text-[11px] leading-4"} ${
+                        selected ? optionSubActiveClass : optionSubInactiveClass
+                      }`}
+                    />
                     {decoration === "other" && (
                       <div className="mt-3">
                         <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-[#6b6b6b]">
@@ -2762,41 +2723,14 @@ function ProductStylePreviewContent({
                             <p className="mb-3 text-[11px] leading-5 text-[#8a8a8a]">
                               Screen print includes one front color. Add more colors here and the price updates automatically.
                             </p>
-                            <div className="rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3">
-                              <div className="flex items-start justify-between gap-4">
-                                <div>
-                                  <p className="text-sm font-semibold text-[var(--og-blue)]">Front decoration colors</p>
-                                  <p className="mt-1 text-[11px] text-[#8a8a8a]">
-                                    {catalogFrontPrintColors === 1 ? "1 color included" : `+$${(catalogFrontPrintColors - 1).toFixed(2)}/tee for extra front colors`}
-                                  </p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    type="button"
-                                    onClick={() => adjustCatalogPrintColors(setCatalogFrontPrintColors, -1)}
-                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
-                                  >
-                                    −
-                                  </button>
-                                  <input
-                                    type="number"
-                                    min={1}
-                                    max={8}
-                                    value={catalogFrontPrintColors}
-                                    onChange={(event) => setCatalogPrintColorCount(setCatalogFrontPrintColors, event.target.value)}
-                                    className="h-10 w-16 rounded-lg border border-[#081E6F]/15 text-center text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
-                                    aria-label="Front decoration color count"
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => adjustCatalogPrintColors(setCatalogFrontPrintColors, 1)}
-                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
-                                  >
-                                    +
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
+                            <CatalogPrintColorControl
+                              label="Front decoration colors"
+                              helperText={catalogFrontPrintColors === 1 ? "1 color included" : `+$${(catalogFrontPrintColors - 1).toFixed(2)}/tee for extra front colors`}
+                              value={catalogFrontPrintColors}
+                              ariaLabel="Front decoration color count"
+                              onAdjust={(delta) => adjustCatalogPrintColors(setCatalogFrontPrintColors, delta)}
+                              onChange={(value) => setCatalogPrintColorCount(setCatalogFrontPrintColors, value)}
+                            />
                           </>
                         ) : (
                           <p className="rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3 text-sm text-[#4b4b4b]">
@@ -2809,60 +2743,30 @@ function ProductStylePreviewContent({
                         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                           Back decoration
                         </p>
-                        <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
-                          {([
+                        <OptionButtonGrid
+                          options={[
                             { id: "none", label: "None" },
                             { id: "print", label: "Add back decoration" },
-                          ] as const).map((option) => (
-                            <button
-                              key={option.id}
-                              type="button"
-                              onClick={() => setCatalogBackPrintEnabled(option.id === "print")}
-                              className={`min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
-                                (catalogBackPrintEnabled && option.id === "print") || (!catalogBackPrintEnabled && option.id === "none")
-                                  ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
-                                  : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
-                              }`}
-                            >
-                              {option.label}
-                            </button>
-                          ))}
-                        </div>
+                          ]}
+                          value={catalogBackPrintEnabled ? "print" : "none"}
+                          onChange={(value) => setCatalogBackPrintEnabled(value === "print")}
+                          gridClassName={`grid grid-cols-2 ${optionGridGapClass}`}
+                          buttonClassName={(selected) => `min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
+                            selected
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                          }`}
+                        />
                         {catalogBackPrintEnabled ? (
-                          <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3">
-                            <div className="flex items-start justify-between gap-4">
-                              <div>
-                                <p className="text-sm font-semibold text-[var(--og-blue)]">Back decoration colors</p>
-                                <p className="mt-1 text-[11px] text-[#8a8a8a]">
-                                  1 color starts at +$3.00/tee, then +$1.00 per extra color
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() => adjustCatalogPrintColors(setCatalogBackPrintColors, -1)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
-                                >
-                                  −
-                                </button>
-                                <input
-                                  type="number"
-                                  min={1}
-                                  max={8}
-                                  value={catalogBackPrintColors}
-                                  onChange={(event) => setCatalogPrintColorCount(setCatalogBackPrintColors, event.target.value)}
-                                  className="h-10 w-16 rounded-lg border border-[#081E6F]/15 text-center text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
-                                  aria-label="Back decoration color count"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => adjustCatalogPrintColors(setCatalogBackPrintColors, 1)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
-                                >
-                                  +
-                                </button>
-                              </div>
-                            </div>
+                          <div className="mt-3">
+                            <CatalogPrintColorControl
+                              label="Back decoration colors"
+                              helperText="1 color starts at +$3.00/tee, then +$1.00 per extra color"
+                              value={catalogBackPrintColors}
+                              ariaLabel="Back decoration color count"
+                              onAdjust={(delta) => adjustCatalogPrintColors(setCatalogBackPrintColors, delta)}
+                              onChange={(value) => setCatalogPrintColorCount(setCatalogBackPrintColors, value)}
+                            />
                           </div>
                         ) : null}
                       </div>
@@ -2871,60 +2775,30 @@ function ProductStylePreviewContent({
                         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
                           Side decoration
                         </p>
-                        <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
-                          {([
+                        <OptionButtonGrid
+                          options={[
                             { id: "none", label: "None" },
                             { id: "print", label: "Add side decoration" },
-                          ] as const).map((option) => (
-                            <button
-                              key={option.id}
-                              type="button"
-                              onClick={() => setCatalogSidePrintEnabled(option.id === "print")}
-                              className={`min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
-                                (catalogSidePrintEnabled && option.id === "print") || (!catalogSidePrintEnabled && option.id === "none")
-                                  ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
-                                  : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
-                              }`}
-                            >
-                              {option.label}
-                            </button>
-                          ))}
-                        </div>
+                          ]}
+                          value={catalogSidePrintEnabled ? "print" : "none"}
+                          onChange={(value) => setCatalogSidePrintEnabled(value === "print")}
+                          gridClassName={`grid grid-cols-2 ${optionGridGapClass}`}
+                          buttonClassName={(selected) => `min-h-10 rounded-lg border px-3 text-sm font-semibold transition ${
+                            selected
+                              ? "border-[var(--og-blue)] bg-[var(--og-blue)] text-white"
+                              : "border-[#081E6F]/15 bg-white text-[var(--og-blue)] hover:border-[var(--og-blue)]"
+                          }`}
+                        />
                         {catalogSidePrintEnabled ? (
-                          <div className="mt-3 rounded-lg border border-[#081E6F]/10 bg-white px-3 py-3">
-                            <div className="flex items-start justify-between gap-4">
-                              <div>
-                                <p className="text-sm font-semibold text-[var(--og-blue)]">Side decoration colors</p>
-                                <p className="mt-1 text-[11px] text-[#8a8a8a]">
-                                  1 color starts at +$2.00/tee, then +$1.00 per extra color
-                                </p>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <button
-                                  type="button"
-                                  onClick={() => adjustCatalogPrintColors(setCatalogSidePrintColors, -1)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
-                                >
-                                  −
-                                </button>
-                                <input
-                                  type="number"
-                                  min={1}
-                                  max={8}
-                                  value={catalogSidePrintColors}
-                                  onChange={(event) => setCatalogPrintColorCount(setCatalogSidePrintColors, event.target.value)}
-                                  className="h-10 w-16 rounded-lg border border-[#081E6F]/15 text-center text-sm font-semibold text-[var(--og-blue)] focus:border-[var(--og-blue)] focus:outline-none"
-                                  aria-label="Side decoration color count"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={() => adjustCatalogPrintColors(setCatalogSidePrintColors, 1)}
-                                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[#081E6F]/15 text-[var(--og-blue)] transition hover:border-[var(--og-blue)]"
-                                >
-                                  +
-                                </button>
-                              </div>
-                            </div>
+                          <div className="mt-3">
+                            <CatalogPrintColorControl
+                              label="Side decoration colors"
+                              helperText="1 color starts at +$2.00/tee, then +$1.00 per extra color"
+                              value={catalogSidePrintColors}
+                              ariaLabel="Side decoration color count"
+                              onAdjust={(delta) => adjustCatalogPrintColors(setCatalogSidePrintColors, delta)}
+                              onChange={(value) => setCatalogPrintColorCount(setCatalogSidePrintColors, value)}
+                            />
                           </div>
                         ) : null}
                       </div>
@@ -2937,22 +2811,15 @@ function ProductStylePreviewContent({
                     <p className={standaloneLabelTextClass}>
                       Fabric
                     </p>
-                    <div className={`grid grid-cols-2 ${optionGridGapClass}`}>
-                      {hatMaterialOptions.map((option) => (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() => setHatMaterial(option)}
-                          className={`${smallOptionSizeClass} border font-semibold transition ${
-                            hatMaterial === option
-                              ? secondarySelectedOptionClass
-                              : unselectedOptionClass
-                          }`}
-                        >
-                          {option}
-                        </button>
-                        ))}
-                      </div>
+                    <OptionButtonGrid
+                      options={hatMaterialOptions.map((option) => ({ id: option, label: option }))}
+                      value={hatMaterial}
+                      onChange={setHatMaterial}
+                      gridClassName={`grid grid-cols-2 ${optionGridGapClass}`}
+                      buttonClassName={(selected) => `${smallOptionSizeClass} border font-semibold transition ${
+                        selected ? secondarySelectedOptionClass : unselectedOptionClass
+                      }`}
+                    />
                     <div className={`mt-3 grid ${optionGridGapClass}`}>
                       <button
                         type="button"
@@ -3072,18 +2939,10 @@ function ProductStylePreviewContent({
                     <p className={standaloneLabelTextClass}>
                       Brim curve
                     </p>
-                    <div className={`grid grid-cols-3 ${optionGridGapClass}`}>
-                      {hatBrimCurveOptions.map((option) => (
-                        <button
-                          key={option}
-                          type="button"
-                          onClick={() => handleHatBrimCurveChange(option)}
-                          className={`${smallOptionSizeClass} border font-semibold transition ${
-                            hatBrimCurve === option
-                              ? secondarySelectedOptionClass
-                              : unselectedOptionClass
-                          }`}
-                        >
+                    <OptionButtonGrid
+                      options={hatBrimCurveOptions.map((option) => ({
+                        id: option,
+                        label: (
                           <span className="flex items-center justify-center gap-1.5">
                             <span>{option}</span>
                             {defaultHatBrimCurve === option ? (
@@ -3096,9 +2955,15 @@ function ProductStylePreviewContent({
                               </span>
                             ) : null}
                           </span>
-                        </button>
-                      ))}
-                    </div>
+                        ),
+                      }))}
+                      value={hatBrimCurve}
+                      onChange={handleHatBrimCurveChange}
+                      gridClassName={`grid grid-cols-3 ${optionGridGapClass}`}
+                      buttonClassName={(selected) => `${smallOptionSizeClass} border font-semibold transition ${
+                        selected ? secondarySelectedOptionClass : unselectedOptionClass
+                      }`}
+                    />
                   </div>
                 )}
 
