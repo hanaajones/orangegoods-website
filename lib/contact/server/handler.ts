@@ -668,27 +668,84 @@ async function deliverClientConfirmation(payload: Record<string, string>): Promi
 
   const firstName = payload.name ? splitName(payload.name).firstname : "";
   const greetingName = firstName || "there";
-  const projectLabel = payload.product || payload.project || "your project";
   const subject = payload.source === "og-crafted-hat-builder"
     ? "We got your hat build request"
     : CONTACT_CONFIRMATION_SUBJECT;
 
   return sendResendEmail({
     html: `
-      <div style="font-family:Arial,sans-serif;background:#f7f2ea;padding:24px;color:#1c1c1c;">
-        <div style="max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:32px;">
-          <p style="margin:0 0 10px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#ff4200;">Orange Goods</p>
-          <h1 style="margin:0 0 18px;font-size:30px;line-height:1.1;color:#0b32a0;">We got your form.</h1>
-          <p style="margin:0 0 14px;font-size:16px;line-height:1.7;">Hi ${escapeHtml(greetingName)},</p>
-          <p style="margin:0 0 14px;font-size:16px;line-height:1.7;">Thanks for reaching out about ${escapeHtml(projectLabel)}. We got your form and someone from Orange Goods will follow up within one business day.</p>
-          <p style="margin:0 0 14px;font-size:16px;line-height:1.7;">If you want to add references, artwork, or timing details in the meantime, just reply to this email.</p>
-          <p style="margin:24px 0 0;font-size:14px;line-height:1.7;color:#555;">Orange Goods<br />hello@orangegoods.co</p>
+      <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:#f7f2ea;padding:32px 16px;color:#1c1c1c;">
+        <div style="max-width:600px;margin:0 auto;">
+
+          <!-- Card with orange top bar -->
+          <div style="background:#ffffff;border:1px solid #e7e1d5;border-top:4px solid #ff4200;">
+            <div style="padding:36px 36px 28px;">
+
+              <!-- Eyebrow + heading -->
+              <p style="margin:0 0 6px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#ff4200;font-weight:700;">Orange Goods</p>
+              <h1 style="margin:0 0 22px;font-size:28px;font-weight:900;line-height:1.1;color:#0b32a0;">We got your form.</h1>
+
+              <!-- Body -->
+              <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#1c1c1c;">Hi ${escapeHtml(greetingName)},</p>
+              <p style="margin:0 0 14px;font-size:16px;line-height:1.7;color:#1c1c1c;">Thanks for reaching out! Someone from our team will follow up shortly.</p>
+              <p style="margin:0 0 28px;font-size:16px;line-height:1.7;color:#1c1c1c;">Want to add references, artwork, or other details? Just reply to this email.</p>
+
+              <!-- CTA buttons -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;">
+                <tr>
+                  <td style="padding-right:10px;">
+                    <a href="https://orangegoods.co/quiz" style="display:inline-block;background:#ff4200;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.04em;padding:10px 20px;text-decoration:none;">Merch Quiz</a>
+                  </td>
+                  <td>
+                    <a href="https://orangegoods.co/gallery" style="display:inline-block;background:#0b32a0;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.04em;padding:10px 20px;text-decoration:none;">Our Work</a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Divider -->
+              <div style="border-top:1px solid #e7e1d5;margin-bottom:24px;"></div>
+
+              <!-- Footer sig icons + links -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;">
+                <tr>
+                  <td style="padding:0 6px 0 0;vertical-align:middle;">
+                    <a href="https://orangegoods.co/" style="text-decoration:none;border:0;display:block;background-color:#ffffff;line-height:0;">
+                      <img src="https://orangegoods.co/logos/OrangeGoods_Website.png" height="20" style="display:block;height:20px;width:auto;border:0;">
+                    </a>
+                  </td>
+                  <td style="padding:0 6px 0 0;vertical-align:middle;">
+                    <a href="https://www.instagram.com/orangegoods/" style="text-decoration:none;border:0;display:block;background-color:#ffffff;line-height:0;">
+                      <img src="https://orangegoods.co/logos/Instagram_New_EJ.png" height="18" style="display:block;height:18px;width:auto;border:0;">
+                    </a>
+                  </td>
+                  <td style="vertical-align:middle;padding:0 0 0 4px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;font-weight:600;white-space:nowrap;">
+                    <a href="sms:+12133764663" style="color:#0b32a0;text-decoration:underline;">Text us</a>
+                    <span style="color:#999;padding:0 4px;">|</span>
+                    <a href="mailto:hello@orangegoods.co" style="color:#0b32a0;text-decoration:underline;">hello@orangegoods.co</a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- OG logo -->
+              <div style="margin-top:16px;line-height:0;">
+                <a href="https://orangegoods.co/" style="text-decoration:none;border:0;display:inline-block;">
+                  <img src="https://orangegoods.co/logos/OrangeGoods_Logo_Email.png" width="110" style="display:block;width:110px;height:auto;border:0;">
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom note -->
+          <p style="margin:14px 0 0;font-size:11px;color:#999;text-align:center;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+            &copy; Orange Goods &middot; Los Angeles &middot;
+            <a href="https://orangegoods.co/" style="color:#999;text-decoration:underline;">orangegoods.co</a>
+          </p>
         </div>
       </div>
     `,
     replyTo: CONTACT_TO_EMAIL,
     subject,
-    text: `Hi ${greetingName},\n\nThanks for reaching out about ${projectLabel}. We got your form and someone from Orange Goods will follow up within one business day.\n\nIf you want to add references, artwork, or timing details in the meantime, just reply to this email.\n\nOrange Goods\nhello@orangegoods.co`,
+    text: `Hi ${greetingName},\n\nThanks for reaching out! Someone from our team will follow up shortly.\n\nWant to add references, artwork, or other details? Just reply to this email.\n\nMerch Quiz: https://orangegoods.co/quiz\nOur Work: https://orangegoods.co/gallery\n\nOrange Goods\nhello@orangegoods.co\nhttps://orangegoods.co`,
     to: [payload.email],
   });
 }
