@@ -85,7 +85,7 @@ const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
 const OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL = process.env.OG_HAT_BUILDER_NOTIFY_SLACK_CHANNEL ?? "C0AV6PMMFD3";
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "hello@orangegoods.co";
 const CONTACT_FROM_EMAIL = process.env.CONTACT_FROM_EMAIL ?? "";
-const CONTACT_CONFIRMATION_SUBJECT = process.env.CONTACT_CONFIRMATION_SUBJECT ?? "We got your form";
+const CONTACT_CONFIRMATION_SUBJECT = process.env.CONTACT_CONFIRMATION_SUBJECT ?? "Got it \u2014 we'll be in touch";
 const CONTACT_DELIVERY_TIMEOUT_MS = Number(process.env.CONTACT_DELIVERY_TIMEOUT_MS ?? 4500);
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 const ALLOWED_UPLOAD_EXTENSIONS = new Set([".ai", ".eps", ".pdf", ".svg", ".zip", ".png", ".jpg", ".jpeg"]);
@@ -642,7 +642,6 @@ async function deliverInternalEmail(
   const summary = buildSubmissionSummary(payload, uploads);
 
   return sendResendEmail({
-    cc: ["easton@orangegoods.co"],
     html: `
       <div style="font-family:Arial,sans-serif;background:#f7f2ea;padding:24px;color:#1c1c1c;">
         <div style="max-width:720px;margin:0 auto;background:#ffffff;border:1px solid #e7e1d5;padding:24px;">
