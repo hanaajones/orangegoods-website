@@ -24,7 +24,11 @@ import {
   immersiveCustomizerShellCardClass,
   immersiveCustomizerUnselectedOptionClass,
 } from "@/components/MasterCustomizerShell";
-import { CustomizerBreadcrumbs } from "@/components/CustomizerBreadcrumbs";
+import { ProductMediaGallery, type ProductStyleMediaItem } from "@/components/product-style-preview/ProductMediaGallery";
+import { OrderTimelinePanel } from "@/components/product-style-preview/OrderTimelinePanel";
+import { ProductQuickFacts } from "@/components/product-style-preview/ProductQuickFacts";
+import { OrderProcessSection } from "@/components/product-style-preview/OrderProcessSection";
+import { ProductSummaryCard } from "@/components/product-style-preview/ProductSummaryCard";
 import { buildCustomizerNavigation, getCustomizerProductionPathLabel } from "@/lib/customizer-navigation";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -57,13 +61,7 @@ type ProductStylePreviewProps = {
   }[];
 };
 
-type PreviewMediaItem = {
-  src: string;
-  alt: string;
-  label: string;
-  imagePosition?: string;
-  imageClassName?: string;
-};
+type PreviewMediaItem = ProductStyleMediaItem;
 
 type RelatedProductCard = {
   href: string;
@@ -2252,166 +2250,51 @@ function ProductStylePreviewContent({
           }`}
         >
           <div className={`space-y-4 ${isImmersiveExperience ? "xl:max-w-[41rem]" : ""}`}>
-            <div className={useSingleColumnMedia ? "grid gap-4" : "grid gap-4 md:grid-cols-2"}>
-              {activeMedia.map((item, index) => (
-                <button
-                  key={item.src}
-                  type="button"
-                  onClick={() => setLightboxIndex(index)}
-                  className={`group relative overflow-hidden rounded-lg bg-white text-left ${
-                    useSingleColumnMedia
-                      ? index === 0
-                        ? "aspect-[4/5] sm:aspect-[5/4]"
-                        : "aspect-[4/5] sm:aspect-[3/2]"
-                      : "aspect-square"
-                  }`}
-                >
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    fill
-                    sizes={useSingleColumnMedia
-                      ? "(min-width: 1280px) 34vw, (min-width: 1024px) 46vw, 100vw"
-                      : "(min-width: 1024px) 32vw, (min-width: 768px) 50vw, 100vw"}
-                    className={item.imageClassName ?? "object-cover transition duration-500 group-hover:scale-[1.02]"}
-                    style={item.imagePosition ? { objectPosition: item.imagePosition } : undefined}
-                    priority={index === 0}
-                  />
-                </button>
-              ))}
-            </div>
+            <ProductMediaGallery
+              items={activeMedia}
+              useSingleColumnMedia={useSingleColumnMedia}
+              onOpenLightbox={setLightboxIndex}
+            />
 
             {showBuilderTimeline ? (
-              <div className={isImmersiveExperience ? "rounded-lg border border-[#081E6F]/10 bg-white p-6 shadow-[0_20px_50px_rgba(8,30,111,0.05)]" : "rounded-lg border border-[#081E6F]/10 bg-white p-5"}>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                  From order to delivery
-                </p>
-                <div className="relative mt-4 space-y-3 before:absolute before:bottom-[22px] before:left-[9px] before:top-[22px] before:w-px before:bg-[#0B32A0]/18">
-                  {timelineItems.map((item) => (
-                    <div key={item.label} className="relative grid grid-cols-[20px_1fr] items-center gap-3">
-                      <span className="z-10 h-2.5 w-2.5 justify-self-center rounded-full bg-[var(--og-orange)]" />
-                      <div className={`flex flex-1 items-center justify-between gap-4 rounded-lg px-4 py-3 ${isImmersiveExperience ? "bg-[#FFF7EF]" : "bg-[#F7F4ED]"}`}>
-                        <span className={isImmersiveExperience ? "text-[15px] font-medium text-[#4b4b4b]" : "text-sm font-medium text-[#4b4b4b]"}>
-                          {item.label}
-                          {"note" in item && item.note ? (
-                            <span className="ml-2 text-xs italic text-[#8a8a8a]">{item.note}</span>
-                          ) : null}
-                        </span>
-                        <span className={isImmersiveExperience ? "text-[15px] font-semibold text-[var(--og-blue)]" : "text-sm font-semibold text-[var(--og-blue)]"}>{item.value}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <p className="mt-4 text-sm text-[#4b4b4b]">
-                  <span className="font-semibold text-[var(--og-blue)]">Estimated delivery if ordered today:</span>{" "}
-                  {estimatedDeliveryLabel}
-                </p>
-              </div>
+              <OrderTimelinePanel
+                estimatedDeliveryLabel={estimatedDeliveryLabel}
+                isImmersiveExperience={isImmersiveExperience}
+                items={timelineItems}
+              />
             ) : (
-              <div className="grid gap-3 md:grid-cols-3">
-                {[
+              <ProductQuickFacts
+                items={[
                   { label: "Best used for", value: mode === "shop" ? "Finished goods" : "Repeatable orders" },
                   { label: "Turnaround", value: activeMode.timeline },
                   { label: "Decision style", value: mode === "shop" ? "Buy now" : "Configure first" },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-lg border border-[#081E6F]/10 bg-white p-4">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6b6b6b]">
-                      {item.label}
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-[var(--og-blue)]">
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
+                ]}
+              />
             )}
 
-            <section className="border-t border-[#081E6F]/10 pt-8">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--og-orange)]">
-                  Order process
-                </p>
-                <p className="mt-2 text-lg font-semibold text-[var(--og-blue)]">
-                  What happens after you start your order
-                </p>
-              </div>
-              <div className={`mt-4 grid gap-4 md:grid-cols-2 ${sampleType !== "none" ? "xl:grid-cols-4" : "xl:grid-cols-3"}`}>
-                {orderProcessSteps.map((step, index) => (
-                  <div key={step.title} className={processCardClass}>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                      Step {index + 1}
-                    </p>
-                    <p className={isImmersiveExperience ? "mt-3 text-xl font-semibold leading-tight" : "mt-3 text-lg font-semibold leading-tight"}>{step.title}</p>
-                    <p className={isImmersiveExperience ? "mt-2 text-[15px] leading-6 text-[#4b4b4b]" : "mt-2 text-sm leading-5 text-[#4b4b4b]"}>{step.detail}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
+            <OrderProcessSection
+              isImmersiveExperience={isImmersiveExperience}
+              processCardClass={processCardClass}
+              sampleType={sampleType}
+              steps={orderProcessSteps}
+            />
           </div>
 
           <aside className="space-y-3 lg:self-start">
-            <div className={shellCardClass}>
-              <CustomizerBreadcrumbs
-                items={customizerNavigation?.breadcrumbs ?? [{ label: "Goods" }, { label: "Hats" }, { label: summaryTitle }]}
-                className="flex flex-wrap gap-1 text-xs text-[#6b6b6b]"
-              />
-
-              <div className="mt-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    {summaryEyebrow ? (
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--og-orange)]">
-                        {summaryEyebrow}
-                      </p>
-                    ) : null}
-                    <h2 className={`mt-2 leading-none text-[var(--og-blue)] ${isImmersiveExperience ? "text-5xl" : "text-4xl"}`}>
-                      {summaryTitle}
-                    </h2>
-                  </div>
-
-                  {isImmersiveExperience && topBadgeLabel ? (
-                    topBadgeAsset ? (
-                      <Image
-                        src={topBadgeAsset.src}
-                        alt={topBadgeAsset.alt}
-                        width={topBadgeAsset.width}
-                        height={topBadgeAsset.height}
-                        className="h-10 w-auto shrink-0"
-                        priority
-                      />
-                    ) : (
-                      <span className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-[#0B32A0]/14 bg-[#EFF4FF] px-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0B32A0]">
-                        {topBadgeLabel}
-                      </span>
-                    )
-                  ) : null}
-                </div>
-                <p className={isImmersiveExperience ? "mt-3 text-base leading-7 text-[#4b4b4b]" : "mt-3 text-sm leading-6 text-[#4b4b4b]"}>
-                  {summaryDescription}
-                </p>
-                {mode === "shop" && (
-                  <div className="mt-5 flex flex-col gap-4 border-t border-[#081E6F]/10 pt-5 sm:flex-row sm:items-end sm:justify-between">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#8a8a8a]">
-                        Price
-                      </p>
-                      <p className="mt-1 text-3xl font-semibold leading-none text-[var(--og-orange)]">
-                        {orderPriceLabel}
-                      </p>
-                      <p className="mt-2 text-xs leading-5 text-[#777]">
-                        {orderDetailLabel}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="flex min-h-12 items-center justify-center rounded-lg bg-[var(--og-orange)] px-5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:-translate-y-0.5"
-                    >
-                      {activeMode.cta}
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+            <ProductSummaryCard
+              activeCta={activeMode.cta}
+              breadcrumbs={customizerNavigation?.breadcrumbs ?? [{ label: "Goods" }, { label: "Hats" }, { label: summaryTitle }]}
+              isImmersiveExperience={isImmersiveExperience}
+              mode={mode}
+              orderDetailLabel={orderDetailLabel}
+              orderPriceLabel={orderPriceLabel}
+              shellCardClass={shellCardClass}
+              summaryDescription={summaryDescription}
+              summaryEyebrow={summaryEyebrow}
+              summaryTitle={summaryTitle}
+              topBadgeAsset={topBadgeAsset ?? undefined}
+              topBadgeLabel={topBadgeLabel ?? undefined}
+            />
 
             <div className={shellCardClass}>
               <div className={isImmersiveExperience ? "space-y-7 py-4" : "space-y-6 py-5"}>
